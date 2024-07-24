@@ -1,0 +1,18 @@
+{
+  "name": "bazlama-web-component-sample",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4"
+  },
+  "dependencies": {
+    "bazlama-web-component": "file:../package/bazlama-web-component-0.0.3.tgz"
+  }
+}
