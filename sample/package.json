@@ -13,6 +13,6 @@
     "vite": "^5.3.4"
   },
   "dependencies": {
-    "bazlama-web-component": "file:../package/bazlama-web-component-0.0.3.tgz"
+    "bazlama-web-component": "^0.0.4"
   }
 }
