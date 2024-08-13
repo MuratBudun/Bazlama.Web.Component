@@ -80,6 +80,3 @@ class TestUserCard extends BazlamaWebComponent {
         `
     }
 }
-
-window.customElements.define("test-user-card", TestUserCard)
- 
