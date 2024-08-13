@@ -1,20 +1,24 @@
-import BazlamaProperty from "../BazlamaProperty"
-import TPropertyChangeHandler from "../TPropertyChangeHandler"
+import BazlamaWebComponent from "../../component/BazlamaWebComponent"
+import PropertyDefine from "../PropertyDefine"
+import TPropertyChangeHook from "../TPropertyChangeHandler"
+import { TPropertyValueType } from "../TPropertyValueType"
 
-export default function useToggleClass<T>(
+export default function useToggleClass(
     query: string,
     className: string,
     calcActive : (
-        value: T,
+        value: TPropertyValueType,
         target: Element,
-        property: BazlamaProperty<T>
+        propertyDefine: PropertyDefine,
+        oldValue: TPropertyValueType,
+        bazComponent: BazlamaWebComponent
     ) => boolean
-): TPropertyChangeHandler<any> {
-    return (element, value, property) => {
-        const targets = element.root?.querySelectorAll(query)
+): TPropertyChangeHook {
+    return (bazComponent, value, propertyDefine, oldValue) => {
+        const targets = bazComponent.root?.querySelectorAll(query)
         targets?.forEach((target) => {
             if (target) {
-                const add = calcActive(value, target, property)
+                const add = calcActive(value, target, propertyDefine, oldValue, bazComponent)
 
                 if (add) {
                     target.classList.add(className)

@@ -11,8 +11,5 @@
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
-  },
-  "dependencies": {
-    "bazlama-web-component": "^0.0.4"
   }
 }

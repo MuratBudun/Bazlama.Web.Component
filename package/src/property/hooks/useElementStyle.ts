@@ -1,12 +1,12 @@
-import TPropertyChangeHandler from "../TPropertyChangeHandler"
+import TPropertyChangeHook from "../TPropertyChangeHandler"
 
-export default function useElementStyle<T>(
+export default function useElementStyle(
     query: string,
     style: string,
     suffix: string = ""
-): TPropertyChangeHandler<T> {
-    return (element, value) => {
-        const targets = element.root?.querySelectorAll(query)
+): TPropertyChangeHook {
+    return (bazComponent, value) => {
+        const targets = bazComponent.root?.querySelectorAll(query)
         targets?.forEach((target) => {
             if (target) {
                 (target as HTMLElement).style.setProperty(style, `${value}${suffix}`);

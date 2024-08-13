@@ -7,12 +7,14 @@
 */
 
 import BazlamaWebComponent from "../component/BazlamaWebComponent"
-import BazlamaProperty from "./BazlamaProperty"
+import PropertyDefine from "./PropertyDefine"
+import { TPropertyValueType } from "./TPropertyValueType"
 
-type TPropertyChangeHandler<T> = (
-    element: BazlamaWebComponent,
-    value: T,
-    property: BazlamaProperty<T>
+type TPropertyChangeHook = (
+    bazComponent: BazlamaWebComponent,
+    value: TPropertyValueType,
+    propertyDefine: PropertyDefine,
+    oldValue: TPropertyValueType,
 ) => void
 
-export default TPropertyChangeHandler
+export default TPropertyChangeHook

@@ -1,15 +1,15 @@
-import TPropertyChangeHandler from "../TPropertyChangeHandler"
+import TPropertyChangeHook from "../TPropertyChangeHandler"
 
-export default function useElementInputValue<T>(query: string): TPropertyChangeHandler<T> {
-    return (element, value, property) => {
-        const targets = element.root?.querySelectorAll(query)
+export default function useElementInputValue(query: string): TPropertyChangeHook {
+    return (bazComponent, value, propertyDefine) => {
+        const targets = bazComponent.root?.querySelectorAll(query)
         targets?.forEach((target) => {
             if (target && (target instanceof HTMLInputElement)) {
                 
                 if (!target.oninput) {
                     target.oninput = (event) => {
-                        if (property) {
-                            property.set(element, (event.target as HTMLInputElement).value as unknown as T)
+                        if (propertyDefine) {
+                            propertyDefine.setValue(bazComponent, (event.target as HTMLInputElement).value)
                         }                            
                     }
                 }

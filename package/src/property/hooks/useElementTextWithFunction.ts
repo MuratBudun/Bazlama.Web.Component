@@ -1,19 +1,23 @@
-import BazlamaProperty from "../BazlamaProperty"
-import TPropertyChangeHandler from "../TPropertyChangeHandler"
+import BazlamaWebComponent from "../../component/BazlamaWebComponent"
+import PropertyDefine from "../PropertyDefine"
+import TPropertyChangeHook from "../TPropertyChangeHandler"
+import { TPropertyValueType } from "../TPropertyValueType"
 
-export default function useElementTextWithFunction<T>(
+export default function useElementTextWithFunction(
     query: string,
     textUpdater: (
-        value: T,
+        value: TPropertyValueType,
         target: Element,
-        property: BazlamaProperty<T>
+        propertyDefine: PropertyDefine,
+        oldValue: TPropertyValueType,
+        bazComponent: BazlamaWebComponent
     ) => string
-): TPropertyChangeHandler<T> {
-    return (element, value, property) => {
-        const targets = element.root?.querySelectorAll(query)
+): TPropertyChangeHook {
+    return (bazComponent, value, propertyDefine, oldValue) => {
+        const targets = bazComponent.root?.querySelectorAll(query)
         targets?.forEach((target) => {
             if (target) {
-                target.textContent = textUpdater(value, target, property)
+                target.textContent = textUpdater(value, target, propertyDefine, oldValue, bazComponent)
             }
         })
     }

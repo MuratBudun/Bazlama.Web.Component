@@ -1,16 +1,21 @@
 import BazlamaWebComponent from "../../component/BazlamaWebComponent"
-import BazlamaProperty from "../BazlamaProperty"
-import TPropertyChangeHandler from "../TPropertyChangeHandler"
+import PropertyDefine from "../PropertyDefine"
+import TPropertyChangeHook from "../TPropertyChangeHandler"
+import { TPropertyValueType } from "../TPropertyValueType"
 
-export default function useCustomHook<T>(
+export default function useCustomHook(
     query: string,
-    func: (target: Element, value: any, prop: BazlamaProperty<T>, element: BazlamaWebComponent) => void
-): TPropertyChangeHandler<T> {
-    return (element, value, prop) => {
-        const targets = element.root?.querySelectorAll(query)
+    func: (
+        target: Element, 
+        value: TPropertyValueType, 
+        propertyDefine: PropertyDefine, 
+        oldValue: TPropertyValueType,
+        bazComponent: BazlamaWebComponent) => void ): TPropertyChangeHook {
+    return (bazComponent, value, propertyDefine, oldValue) => {
+        const targets = bazComponent.root?.querySelectorAll(query)
         targets?.forEach((target) => {
             if (target) {
-                func(target, value, prop, element)
+                func(target, value, propertyDefine, oldValue, bazComponent)
             }
         })
     }

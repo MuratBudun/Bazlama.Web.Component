@@ -1,48 +1,24 @@
-import { BazlamaWebComponent, BazlamaProperty, useElementText, useElementInputValue, ShadowRootMode } from "bazlama-web-component"
+import { BazlamaWebComponent, useElementText, useElementInputValue, Attribute, ChangeHooks, CustomElement } from "bazlama-web-component"
 import css from "./test-user-card.css"
 
-class TestUserCard extends BazlamaWebComponent {
+@CustomElement("test-user-card")
+export default class TestUserCard extends BazlamaWebComponent {
     private ComponentTitle = "Sample Bazlama Web Component"
 
-    static get Properties(): BazlamaProperty<any>[] {
-        return [
-            new BazlamaProperty<string>("userName", {
-                defaultValue: "Murat",
-                isAttribute: true,
-                isAttributeObserved: true,
-                attributeName: "p-user-name",
-                changeHooks: [
-                    useElementText("#username"),
-                    useElementInputValue("#username-input"),
-                ],
-            }),
+    @ChangeHooks([useElementText("#username"), useElementInputValue("#username-input")])
+    @Attribute("p-user-name", true)
+    public userName: string = "Murat"
 
-            new BazlamaProperty<string>("department", {
-                defaultValue: "Computer Engineering",
-                isAttribute: true,
-                isAttributeObserved: true,
-                attributeName: "p-department",
-                changeHooks: [
-                    useElementText("#department"),
-                    useElementInputValue("#department-input"),
-                ],
-            }),
+    @ChangeHooks([useElementText("#department"), useElementInputValue("#department-input")])
+    @Attribute("p-department", true)
+    public department: string = "Computer Engineering"
 
-            new BazlamaProperty<number>("userAge", {
-                defaultValue: 47,
-                isAttribute: true,
-                isAttributeObserved: true,
-                attributeName: "p-user-age",
-                changeHooks: [
-                    useElementText("#age"),
-                    useElementInputValue("#age-input"),
-                ],
-            }),
-        ]
-    }
+    @ChangeHooks([useElementText("#age"), useElementInputValue("#age-input")])
+    @Attribute("p-user-age", true)
+    public userAge: number = 47
 
     getRenderTemplate(): string {
-        return `
+        return /*html*/`
             <style>${css}</style>
             <div class="vertical container">
                 <span class="title">${this.ComponentTitle}</span>

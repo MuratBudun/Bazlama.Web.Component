@@ -6,14 +6,30 @@
     muratbudun@gmail.com
 */
 
-import BazlamaProperty from "../property/BazlamaProperty"
+import PropertyDefine from "../property/PropertyDefine"
+import TPropertyChangeHook from "../property/TPropertyChangeHandler"
+import { TPropertyValueType, TPropertyValueTypeName } from "../property/TPropertyValueType"
 import { ShadowRootMode } from "./ShadowRootMode"
 
+export interface IPropertyValues {
+    [key: string]: TPropertyValueType
+}
+
+export interface IPropertyDefines {
+    [key: string]: PropertyDefine
+}
+
+export interface IPropertyChangeHandlers {
+    [key: string]: TPropertyChangeHook[]
+}
+
 export default class BazlamaWebComponent extends HTMLElement {
+    public propertyValues: IPropertyValues = {}
     public root: ShadowRoot | HTMLElement | null = null
 
     constructor(shadowMode: ShadowRootMode = ShadowRootMode.Closed) {
         super()
+        this.style.display = "block"
         this.root = this
 
         if (shadowMode === ShadowRootMode.Open) {
@@ -26,63 +42,143 @@ export default class BazlamaWebComponent extends HTMLElement {
         }
     }
 
+    //#region Initialize Properties ...
+    public InitProperties(bazComponent: BazlamaWebComponent): void {
+        const constructor = this.getConstructor()
+        if (constructor.PropertyDefinesIsNullOrEmpty) return
+
+        for (const key in constructor.PropertyDefines) {
+            if (Object.prototype.hasOwnProperty.call(constructor.PropertyDefines, key)) {
+                const prop = constructor.PropertyDefines[key]
+                if (prop instanceof PropertyDefine) {
+                    this.InitProperty(bazComponent, prop)
+                }
+            }
+        }
+    }
+
+    public InitProperty(bazComponent: BazlamaWebComponent, propertyDefine: PropertyDefine) {
+        let defaultValue = propertyDefine.defaultValue
+
+        if (Object.keys(bazComponent).includes(propertyDefine.name)) {
+            defaultValue = bazComponent[propertyDefine.name as keyof BazlamaWebComponent] as TPropertyValueType
+            propertyDefine.valueTypeName = (typeof defaultValue) as TPropertyValueTypeName || "string"
+            propertyDefine.defaultValue = defaultValue
+        }
+
+        this.propertyValues[propertyDefine.name] = defaultValue
+
+        Object.defineProperty(bazComponent, propertyDefine.name, {
+            get() {
+                return this.propertyValues[propertyDefine.name]
+                //const prop = bazComponent.getConstructor().GetProperty(propertyDefine.name)
+                //return prop!.getValue(bazComponent)
+            },
+
+            set(value: any) {
+                const prop = bazComponent.getConstructor().GetPropertyDefine(propertyDefine.name)
+                prop!.setValue(bazComponent, value)
+            },
+        })
+    }
+    //#endregion
+
     //#region Static
-    static get Properties(): BazlamaProperty<any>[] {
+    static isPropertyDefineInitialized = false
+    static PropertyDefines: IPropertyDefines = {}
+    static PropertyChangeHandlers: IPropertyChangeHandlers = {}
+
+    static InitPropertyDefines(): void {
+        const propertyDefines = this.CreatePropertyDefines()
+        const createPropertyHooks = this.CreatePropertyHooks()
+
+        if (propertyDefines && Array.isArray(propertyDefines) && propertyDefines.length > 0) {
+            propertyDefines.forEach((prop) => {
+                if (this.HasPropertyDefine(prop.name)) {
+                    this.PropertyDefines[prop.name].isAttribute = prop.isAttribute
+                    this.PropertyDefines[prop.name].attributeName = prop.attributeName
+                    this.PropertyDefines[prop.name].isAttributeObserved = prop.isAttributeObserved
+                    this.PropertyDefines[prop.name].changeHooks = [
+                        ...this.PropertyDefines[prop.name].changeHooks,
+                        ...prop.changeHooks]
+                } else {
+                    this.PropertyDefines[prop.name] = prop
+                }
+            })
+        }
+
+        if (createPropertyHooks) {
+            for (const key in this.PropertyDefines) {
+                if (Object.prototype.hasOwnProperty.call(this.PropertyDefines, key)) {
+                    const prop = this.PropertyDefines[key]
+                    if (createPropertyHooks[prop.name]) {
+                        prop.changeHooks = [...prop.changeHooks, ...createPropertyHooks[prop.name]]
+                    }
+                }
+            }
+        }
+    }
+
+    static CreatePropertyDefines(): PropertyDefine[] {
         return []
     }
 
-    static get PropertiesIsNullOrEmpty(): boolean {
-        return (
-            !this.Properties ||
-            !Array.isArray(this.Properties) ||
-            this.Properties.length === 0
-        )
+    static CreatePropertyHooks(): IPropertyChangeHandlers {
+        return {}
     }
 
-    static HasProperty(propertyName: string, isOnlyAttribute = false): boolean {
-        if (this.PropertiesIsNullOrEmpty) return false
+    static get PropertyDefinesIsNullOrEmpty(): boolean {
+        return !this.PropertyDefines || Object.keys(this.PropertyDefines).length === 0
+    }
+
+    static HasPropertyDefine(propertyName: string, isOnlyAttribute = false): boolean {
+        if (this.PropertyDefinesIsNullOrEmpty) return false
         const _isOnlyAttribute = isOnlyAttribute === true
 
-        return this.Properties.some(
-            (prop) =>
-                prop.name === propertyName &&
-                (!_isOnlyAttribute || prop.isAttribute)
-        )
+        const prop = this.PropertyDefines[propertyName]
+        if (!prop) return false
+        if (!_isOnlyAttribute) return true
+        
+        return prop.isAttribute
     }
 
-    static GetProperty(
-        propertyName: string,
-        isOnlyAttribute = false
-    ): BazlamaProperty<any> | null {
-        if (this.PropertiesIsNullOrEmpty) return null
+    static GetPropertyDefine(propertyName: string, isOnlyAttribute = false): PropertyDefine | null {
+        if (this.PropertyDefinesIsNullOrEmpty) return null
         const _isOnlyAttribute = isOnlyAttribute === true
+        const prop = this.PropertyDefines[propertyName]
+        if (!prop) return null
+        if (!_isOnlyAttribute) return prop
+        if (prop.isAttribute) return prop
 
-        return (
-            this.Properties.find(
-                (prop) =>
-                    prop.name === propertyName &&
-                    (!_isOnlyAttribute || prop.isAttribute)
-            ) || null
-        )
+        return null
     }
 
-    static GetPropertyByAttributeName(
-        attributeName: string
-    ): BazlamaProperty<any> | null {
-        if (this.PropertiesIsNullOrEmpty) return null
+    static GetPropertyDefineByAttributeName(attributeName: string): PropertyDefine | null {
+        if (this.PropertyDefinesIsNullOrEmpty) return null
+        
+        for (const key in this.PropertyDefines) {
+            if (Object.prototype.hasOwnProperty.call(this.PropertyDefines, key)) {
+                const prop = this.PropertyDefines[key]
+                if (prop.attributeName === attributeName) return prop
+            }
+        }
 
-        return (
-            this.Properties.find(
-                (prop) => prop.attributeName === attributeName
-            ) || null
-        )
+        return null
     }
 
     static get observedAttributes(): string[] {
-        if (this.PropertiesIsNullOrEmpty) return []
-        return this.Properties.filter((prop) => prop.isAttribute).map(
-            (prop) => prop.attributeName
-        )
+        if (this.isPropertyDefineInitialized === false) {
+            this.InitPropertyDefines()
+            this.isPropertyDefineInitialized = true
+        }
+        console.log("observedAttributes", this.PropertyDefines)
+        
+        if (this.PropertyDefinesIsNullOrEmpty) return []
+        const attributes = 
+            Object.values(this.PropertyDefines)
+                .filter((prop) => prop.isAttribute)
+                .map((prop) => prop.attributeName)
+        return attributes
     }
 
     getConstructor(): typeof BazlamaWebComponent {
@@ -90,60 +186,60 @@ export default class BazlamaWebComponent extends HTMLElement {
     }
     //#endregion
 
-    attributeChangedCallback(
-        name: string,
-        oldValue: string | null,
-        newValue: string | null
-    ): void {
+    attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
         if (oldValue === newValue) return
 
-        const prop = this.getConstructor().GetPropertyByAttributeName(name)
+        const prop = this.getConstructor().GetPropertyDefineByAttributeName(name)
         if (!prop) return
 
-        prop.setDirectValue(this, newValue)
+        prop.setDirectValue(this, newValue ?? "")
     }
 
     connectedCallback(): void {
-        const constructor = this.getConstructor()
-
-        if (constructor.PropertiesIsNullOrEmpty) return
-
-        constructor.Properties.forEach((prop: BazlamaProperty<any>) => {
-            if (prop instanceof BazlamaProperty) {
-                Object.defineProperty(this, prop.name, {
-                    get() {
-                        return prop.get(this)
-                    },
-
-                    set(value: any) {
-                        prop.set(this, value)
-                    },
-                })
-            }
-        })
-
+        this.onConnected()
         this.render()
     }
+
+    disconnectedCallback(): void {
+        this.onDisconnected()
+    }
+
+    //#region Virtual Methods ...
+    onConnected(): void {}
+    onDisconnected(): void {}
 
     getRenderTemplate(): string {
         return `<span>Not implemented.</span>`
     }
+    beforeRender(htmlTemplate: string): string {
+        return htmlTemplate
+    }
+    afterRender(): void {}
+    //#endregion
 
     render(): void {
+        const htmlTemplate = this.beforeRender(this.getRenderTemplate())
+
         const constructor = this.getConstructor()
 
-        const htmlTemplate = this.getRenderTemplate()
         if (this.root) {
             this.root.innerHTML = htmlTemplate
         }
-        if (constructor.PropertiesIsNullOrEmpty) return
 
-        constructor.Properties.forEach((prop: BazlamaProperty<any>) => {
-            if (prop instanceof BazlamaProperty) {
-                prop.changeHooks.forEach((event) =>
-                    event(this, prop.get(this), prop)
-                )
+        if (!constructor.PropertyDefinesIsNullOrEmpty) {
+
+
+            for (const key in constructor.PropertyDefines) {
+                if (Object.prototype.hasOwnProperty.call(constructor.PropertyDefines, key)) {
+                    const prop = constructor.PropertyDefines[key]
+                    if (prop instanceof PropertyDefine) {
+                        const value = prop.getValue(this)
+                        prop.changeHooks.forEach((event) => event(this, value, prop, value))
+                    }
+                }
             }
-        })
+        }
+
+        this.afterRender()
     }
 }
