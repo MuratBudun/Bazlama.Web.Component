@@ -1,9 +1,35 @@
-import { BazlamaWebComponent, useElementText, useElementInputValue, Attribute, ChangeHooks, CustomElement } from "bazlama-web-component"
+import { BazlamaWebComponent, useElementText, useElementInputValue, Attribute, ChangeHooks, CustomElement, TActionEvent, Action } from "bazlama-web-component"
 import css from "./test-user-card.css"
 
 @CustomElement("test-user-card")
 export default class TestUserCard extends BazlamaWebComponent {
     private ComponentTitle = "Sample Bazlama Web Component"
+
+    constructor() {
+        super()
+        this.InitProperties(this)
+
+        //this.actionList.push(new Action(this, "#incAge", "click", this.userAgeClick))
+    }
+
+    @Action("#incAge", "click")
+    public userAgeClick = (element:any , eventName:any, event:any) =>{
+        console.log("Inc Age, this: ", this)
+        console.log("Inc Age, element: ", element)
+        console.log("Inc Age, eventName: ", eventName)
+        console.log("Inc Age, event: ", event)
+        console.log("Inc Age")
+        this.userAge++
+    }
+
+    /*
+    @Action("#testMethod", "click")
+    public testMethod(element:any , eventName:any, event:any) {
+        console.log("testMethod, this: ", this)
+        console.log("testMethod, event: ", eventName)
+        console.log(this.userAge)
+    }
+    */
 
     @ChangeHooks([useElementText("#username"), useElementInputValue("#username-input")])
     @Attribute("p-user-name", true)
@@ -17,6 +43,23 @@ export default class TestUserCard extends BazlamaWebComponent {
     @Attribute("p-user-age", true)
     public userAge: number = 47
 
+    /*
+    @Action("incAge", "click")
+    IncAge() {
+        this.userAge++
+    }
+    */
+
+
+    /*
+    afterRender(): void {
+        this.root?.querySelector("#incAge")?.addEventListener("click", () => {
+            console.log("Inc Age")
+            this.userAge++
+        })
+    }
+    */
+   
     getRenderTemplate(): string {
         return /*html*/`
             <style>${css}</style>
@@ -52,6 +95,7 @@ export default class TestUserCard extends BazlamaWebComponent {
                         </div>
                     </div>
                 </div>
+                <button id="incAge">Inc Age</button>
             </div>
         `
     }

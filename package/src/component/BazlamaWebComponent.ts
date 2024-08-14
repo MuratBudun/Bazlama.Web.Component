@@ -6,6 +6,7 @@
     muratbudun@gmail.com
 */
 
+import EventAction from "../event-action/EventAction"
 import PropertyDefine from "../property/PropertyDefine"
 import TPropertyChangeHook from "../property/TPropertyChangeHandler"
 import { TPropertyValueType, TPropertyValueTypeName } from "../property/TPropertyValueType"
@@ -25,6 +26,7 @@ export interface IPropertyChangeHandlers {
 
 export default class BazlamaWebComponent extends HTMLElement {
     public propertyValues: IPropertyValues = {}
+    public actionList: EventAction<any>[] = []
     public root: ShadowRoot | HTMLElement | null = null
 
     constructor(shadowMode: ShadowRootMode = ShadowRootMode.Closed) {
@@ -171,7 +173,6 @@ export default class BazlamaWebComponent extends HTMLElement {
             this.InitPropertyDefines()
             this.isPropertyDefineInitialized = true
         }
-        console.log("observedAttributes", this.PropertyDefines)
         
         if (this.PropertyDefinesIsNullOrEmpty) return []
         const attributes = 
@@ -227,8 +228,6 @@ export default class BazlamaWebComponent extends HTMLElement {
         }
 
         if (!constructor.PropertyDefinesIsNullOrEmpty) {
-
-
             for (const key in constructor.PropertyDefines) {
                 if (Object.prototype.hasOwnProperty.call(constructor.PropertyDefines, key)) {
                     const prop = constructor.PropertyDefines[key]
@@ -238,6 +237,10 @@ export default class BazlamaWebComponent extends HTMLElement {
                     }
                 }
             }
+        }
+
+        for (const action of this.actionList) {
+            action.CreateAction()
         }
 
         this.afterRender()

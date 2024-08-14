@@ -16,7 +16,6 @@ export default function ChangeHooks(changeHooks: TPropertyChangeHook[]) {
                 ...constructor.PropertyDefines[propertyName].changeHooks, 
                 ...changeHooks || []]
 
-            console.log("ChangeHooks", propertyName, constructor.PropertyDefines[propertyName], constructor.PropertyDefines[propertyName].changeHooks)
             return
         }
 

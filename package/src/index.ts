@@ -34,6 +34,8 @@ import { IAsyncQueueStats } from "./async-queue/IAsyncQueueStats.ts"
 import { IAsyncQueueRunningTask } from "./async-queue/IAsyncQueueRunningTask.ts"
 import { IAsyncQueueTaskEventListener, PartialRecord, TAsyncQueueEvent, TAsyncQueueTaskEventHandler, TAsyncQueueTaskEventHandlers, TAsyncQueueTaskEventNames } from "./async-queue/TAsyncQueueTaskEventHandlers.ts"
 import { IAsyncQueueTask, TAsyncQueueTaskHandler } from "./async-queue/IAsyncQueueTask.ts"
+import Action from "./decorator/Action.ts"
+import { TEventActionDefine } from "./event-action/TEventActionDefine.ts"
 
 export {
     BazConvert,
@@ -41,6 +43,10 @@ export {
 
     ShadowRootMode,
     BazlamaWebComponent,
+
+    
+    EventAction,
+    Action,
 
     PropertyDefine,
     BazlamaPropertyBuilder,
@@ -73,6 +79,9 @@ export type {
     TPropertyChangeHook as TPropertyChangeHandler,
     IPropertyDefineOption,
     
+    TEventActionDefine as EventActionDefine,
+    TEventActionMethod,
+
     IAsyncQueueTask,
     IAsyncQueueStats,
     IAsyncQueueRunningTask,
