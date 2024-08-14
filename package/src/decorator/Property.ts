@@ -1,5 +1,5 @@
 import BazlamaWebComponent from "../component/BazlamaWebComponent";
-import IPropertyDefineOption from "../property/IPropertyDefineOption";
+import IPropertyDefineOption from "../property/types/IPropertyDefineOption";
 import PropertyDefine from "../property/PropertyDefine";
 
 export default function Property(options: IPropertyDefineOption = {}) {

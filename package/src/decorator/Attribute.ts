@@ -9,7 +9,6 @@ export default function Attribute(attributeName: string, isObserved: boolean = f
         }
         const bazComponent = target as BazlamaWebComponent
         const constructor = bazComponent.getConstructor()
-        //const changeHooks = constructor.CreatePropertyHooks()[propertyName]
 
         if (constructor.HasPropertyDefine(propertyName)) {
             constructor.PropertyDefines[propertyName].isAttribute = true
@@ -17,7 +16,6 @@ export default function Attribute(attributeName: string, isObserved: boolean = f
             constructor.PropertyDefines[propertyName].isAttributeObserved = isObserved
             constructor.PropertyDefines[propertyName].changeHooks = [
                 ...constructor.PropertyDefines[propertyName].changeHooks]
-                //...changeHooks]
             return
         }
 
@@ -25,7 +23,6 @@ export default function Attribute(attributeName: string, isObserved: boolean = f
             isAttribute: true, 
             attributeName: attributeName, 
             isAttributeObserved: isObserved })
-        //prop.changeHooks = [...changeHooks]
     
         constructor.PropertyDefines[propertyName] = prop
     }

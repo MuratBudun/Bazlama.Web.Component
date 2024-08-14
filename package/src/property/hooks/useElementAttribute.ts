@@ -1,14 +1,11 @@
-import TPropertyChangeHook from "../TPropertyChangeHandler"
+import TPropertyChangeHook from "../types/TPropertyChangeHandler"
 
-export default function useElementAttribute(
-    query: string,
-    attribute: string
-): TPropertyChangeHook {
+export default function useElementAttribute(query: string, attribute: string): TPropertyChangeHook {
     return (bazComponent, value) => {
         const targets = bazComponent.root?.querySelectorAll(query)
-        targets?.forEach((target) => {
+        targets?.forEach((target: Element) => {
             if (target) {
-                target.setAttribute(attribute, `${value}`);
+                target.setAttribute(attribute, `${value}`)
             }
         })
     }

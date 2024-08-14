@@ -1,7 +1,7 @@
 import BazlamaWebComponent from "../../component/BazlamaWebComponent"
 import PropertyDefine from "../PropertyDefine"
-import TPropertyChangeHook from "../TPropertyChangeHandler"
-import { TPropertyValueType } from "../TPropertyValueType"
+import TPropertyChangeHook from "../types/TPropertyChangeHandler"
+import { TPropertyValueType } from "../types/TPropertyValueType"
 
 export default function useElementTextWithFunction(
     query: string,
@@ -15,7 +15,7 @@ export default function useElementTextWithFunction(
 ): TPropertyChangeHook {
     return (bazComponent, value, propertyDefine, oldValue) => {
         const targets = bazComponent.root?.querySelectorAll(query)
-        targets?.forEach((target) => {
+        targets?.forEach((target: Element) => {
             if (target) {
                 target.textContent = textUpdater(value, target, propertyDefine, oldValue, bazComponent)
             }

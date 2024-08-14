@@ -7,9 +7,9 @@
 */
 
 import PropertyDefine from "./PropertyDefine"
-import { TPropertyValueType, TPropertyValueTypeName } from "./TPropertyValueType"
+import { TPropertyValueType, TPropertyValueTypeName } from "./types/TPropertyValueType"
 
-export default class BazlamaPropertyBuilder {
+export default class PropertyBuilder {
     private name: string
     private options: any = {}
 
@@ -18,32 +18,32 @@ export default class BazlamaPropertyBuilder {
         this.options.valueTypeName = valueTypeName
     }
 
-    setDefaultValue(defaultValue: TPropertyValueType): BazlamaPropertyBuilder {
+    setDefaultValue(defaultValue: TPropertyValueType): PropertyBuilder {
         this.options.defaultValue = defaultValue
         return this
     }
 
-    setIsAttribute(isAttribute: boolean): BazlamaPropertyBuilder {
+    setIsAttribute(isAttribute: boolean): PropertyBuilder {
         this.options.isAttribute = isAttribute
         return this
     }
 
-    setIsAttributeObserved(isAttributeObserved: boolean): BazlamaPropertyBuilder {
+    setIsAttributeObserved(isAttributeObserved: boolean): PropertyBuilder {
         this.options.isAttributeObserved = isAttributeObserved
         return this
     }
 
-    setAttributeName(attributeName: string): BazlamaPropertyBuilder {
+    setAttributeName(attributeName: string): PropertyBuilder {
         this.options.attributeName = attributeName
         return this
     }
 
-    setChangeHooks(...hooks: Function[]): BazlamaPropertyBuilder {
+    setChangeHooks(...hooks: Function[]): PropertyBuilder {
         this.options.changeHooks = hooks
         return this
     }
 
-    setAttribute(attributeName: string, isObserved: boolean = true): BazlamaPropertyBuilder {
+    setAttribute(attributeName: string, isObserved: boolean = true): PropertyBuilder {
         this.options.isAttribute = true
         this.options.isAttributeObserved = isObserved
         this.options.attributeName = attributeName

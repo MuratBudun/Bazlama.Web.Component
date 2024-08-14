@@ -6,8 +6,8 @@
     muratbudun@gmail.com
 */
 
-import BazlamaWebComponent from "../component/BazlamaWebComponent"
-import PropertyDefine from "./PropertyDefine"
+import BazlamaWebComponent from "../../component/BazlamaWebComponent"
+import PropertyDefine from "../PropertyDefine"
 import { TPropertyValueType } from "./TPropertyValueType"
 
 type TPropertyChangeHook = (

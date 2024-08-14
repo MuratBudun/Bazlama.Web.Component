@@ -1,8 +1,8 @@
-import { BazlamaWebComponent, useElementText, useElementInputValue, Attribute, ChangeHooks, EventAction } from "bazlama-web-component"
+import { BazlamaWebComponent, EventActionBuilder, EventActionMap, PropertyBuilder, PropertyDefine, useElementInputValue, useElementText } from "bazlama-web-component"
+import { IPropertyChangeHandlers } from "bazlama-web-component/dist/property/types/IPropertyChangeHandlers"
 import css from "./test-user-card.css"
-import htmlTemplate from "./user-card.template.htm"
 
-export default class TestUserCard extends BazlamaWebComponent {
+export default class TestUserCardNd extends BazlamaWebComponent {
     private ComponentTitle = "Sample Bazlama Web Component"
 
     constructor() {
@@ -10,28 +10,53 @@ export default class TestUserCard extends BazlamaWebComponent {
         this.InitBazlamaWebComponent()
     }
 
-    @EventAction("#incAge", "click")
-    public userAgeClick = () => {
-        this.userAge++
+    static CreatePropertyDefines(): PropertyDefine[] {
+        return [
+            new PropertyBuilder("userName2", "string")
+                .setAttribute("p-user-name")
+                .setDefaultValue("Murat")
+                .build(),
+            new PropertyBuilder("department2", "string")
+                .setAttribute("p-department")
+                .setDefaultValue("Computer Engineering")
+                .build(),
+            new PropertyBuilder("userAge2", "number")
+                .setAttribute("p-user-age")
+                .setDefaultValue(47)
+                .build()
+        ]
     }
 
-    @ChangeHooks([useElementText("#username"), useElementInputValue("#username-input")])
-    @Attribute("p-user-name", true)
-    public userName: string = "Murat"
+    static CreatePropertyHooks(): IPropertyChangeHandlers {
+        return {
+            "userName2": [
+                useElementText("#username"), 
+                useElementInputValue("#username-input")],
 
-    @ChangeHooks([useElementText("#department"), useElementInputValue("#department-input")])
-    @Attribute("p-department", true)
-    public department: string = "Computer Engineering"
+            "department2": [
+                useElementText("#department"), 
+                useElementInputValue("#department-input")],
 
-    @ChangeHooks([useElementText("#age"), useElementInputValue("#age-input")])
-    @Attribute("p-user-age", true)
-    public userAge: number = 47
-   
+            "userAge2": [
+                useElementText("#age"), 
+                useElementInputValue("#age-input")]
+        }
+    }
+
+    createEventActionMaps(): EventActionMap[] {
+        return [
+            new EventActionBuilder("userAgeClick2", "#incAge", "click")
+                .setActionMethod(() => {
+                    const userAge = this.GetPropertyValue("userAge2") as number
+                    this.SetPropertyValue("userAge2", userAge + 1)
+                })
+                .build()
+        ]
+    }
+
     getRenderTemplate(): string {
-        return `<style>${css}</style>${htmlTemplate}` 
-
         return /*html*/`
-            
+            <style>${css}</style>
             <div class="vertical container">
                 <span part="title" class="title">${this.ComponentTitle}</span>
                 <div class="horizontal">
@@ -70,4 +95,4 @@ export default class TestUserCard extends BazlamaWebComponent {
     }
 }
 
-window.customElements.define("test-user-card", TestUserCard)
+customElements.define("test-user-card-nd", TestUserCardNd)

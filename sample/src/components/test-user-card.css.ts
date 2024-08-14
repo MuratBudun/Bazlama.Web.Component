@@ -58,4 +58,9 @@ export default `
     outline: none;
     border-color: #d19d2ed1;
 }
+
+label {
+    color: green;
+    font-weight: bold;
+}
 `

@@ -7,9 +7,9 @@
 */
 
 import BazlamaWebComponent from "../component/BazlamaWebComponent.ts"
-import TPropertyChangeHook from "./TPropertyChangeHandler.ts"
-import IPropertyDefineOption from "./IPropertyDefineOption.ts"
-import { TPropertyValueTypeName, TPropertyValueType } from "./TPropertyValueType.ts"
+import TPropertyChangeHook from "./types/TPropertyChangeHandler.ts"
+import IPropertyDefineOption from "./types/IPropertyDefineOption.ts"
+import { TPropertyValueTypeName, TPropertyValueType } from "./types/TPropertyValueType.ts"
 import BazConvert from "../helper/BazConvert.ts"
 
 class PropertyDefine {
