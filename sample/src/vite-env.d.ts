@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-declare module "*.template.htm" {
+declare module "*.htm" {
     const content: string
     export default content
 }

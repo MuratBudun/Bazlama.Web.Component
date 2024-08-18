@@ -24,7 +24,7 @@ export default class BazlamaWebComponent extends HTMLElement {
     constructor(shadowMode: ShadowRootMode = ShadowRootMode.Closed) {
         super()
 
-        this.style.display = "block"
+        //this.style.display = "block"
         this.root = this
 
         if (shadowMode === ShadowRootMode.Open) {
