@@ -1,7 +1,6 @@
 import BazlamaWebComponent from "../component/BazlamaWebComponent"
-import TPropertyChangeHook from "../property/types/TPropertyChangeHandler"
 
-export default function ChangeHooks(changeHooks: TPropertyChangeHook[]) {
+export default function FireEvent() {
     return function (target: any, propertyName: string) {
         if (!(target instanceof BazlamaWebComponent)) {
             console.error(`Property Decorator Error: Target is not BazlamaWebComponent for ${propertyName}`)
@@ -12,14 +11,10 @@ export default function ChangeHooks(changeHooks: TPropertyChangeHook[]) {
         const constructor = bazComponent.getConstructor()
 
         if (constructor.HasPropertyDefine(propertyName)) {
-            constructor.PropertyDefines[propertyName].changeHooks = [
-                ...constructor.PropertyDefines[propertyName].changeHooks,
-                ...(changeHooks || []),
-            ]
-
+            constructor.PropertyDefines[propertyName].isFireEventOnChanged = true
             return
         }
 
-        console.error(`ChangeHooks Error: PropertyDefine not found for ${propertyName} in ${constructor.name}`)
+        console.error(`FireEvent Error: PropertyDefine not found for ${propertyName} in ${constructor.name}`)
     }
 }

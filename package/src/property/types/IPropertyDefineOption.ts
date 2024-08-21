@@ -15,6 +15,8 @@ interface IPropertyDefineOption {
     isAttribute?: boolean
     isAttributeObserved?: boolean
     attributeName?: string
+    isFireRenderOnChanged?: boolean
+    isFireEventOnChanged?: boolean
     changeHooks?: TPropertyChangeHook[]
 }
 

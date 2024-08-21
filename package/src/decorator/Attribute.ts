@@ -1,10 +1,11 @@
 import BazlamaWebComponent from "../component/BazlamaWebComponent";
 import PropertyDefine from "../property/PropertyDefine";
 
-export default function Attribute(attributeName: string, isObserved: boolean = false) {
+export default function Attribute(attributeName: string, isObserved: boolean = false, 
+    isFireRenderOnChanged: boolean = false, isFireEventOnChanged: boolean = false) {
     return function (target: any, propertyName: string) { 
         if (!(target instanceof BazlamaWebComponent)) {
-            console.error("Property Decorator Error: Target is not BazlamaWebComponent")
+            console.error(`Property Decorator Error: Target is not BazlamaWebComponent for ${propertyName}`)
             return
         }
         const bazComponent = target as BazlamaWebComponent
@@ -14,6 +15,8 @@ export default function Attribute(attributeName: string, isObserved: boolean = f
             constructor.PropertyDefines[propertyName].isAttribute = true
             constructor.PropertyDefines[propertyName].attributeName = attributeName
             constructor.PropertyDefines[propertyName].isAttributeObserved = isObserved
+            constructor.PropertyDefines[propertyName].isFireRenderOnChanged = isFireRenderOnChanged
+            constructor.PropertyDefines[propertyName].isFireEventOnChanged = isFireEventOnChanged
             constructor.PropertyDefines[propertyName].changeHooks = [
                 ...constructor.PropertyDefines[propertyName].changeHooks]
             return
@@ -22,7 +25,9 @@ export default function Attribute(attributeName: string, isObserved: boolean = f
         const prop = new PropertyDefine(propertyName, { 
             isAttribute: true, 
             attributeName: attributeName, 
-            isAttributeObserved: isObserved })
+            isAttributeObserved: isObserved,
+            isFireRenderOnChanged: isFireRenderOnChanged,
+            isFireEventOnChanged: isFireEventOnChanged})
     
         constructor.PropertyDefines[propertyName] = prop
     }

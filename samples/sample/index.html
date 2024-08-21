@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bazlama Web Component</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/src/main.css" />
+</head>
+
+<body>
+  <div class="flex flex-row min-h-screen">
+    <div class="flex flex-col w-64 items-start navbar bg-base-300">
+      <baz-router-home-logo class="btn w-full h-fit pt-1 pb-2 mb-1">
+        <div class="flex flex-col items-start">
+          <div class="flex items-center justify-start">
+            <baz-icon icon="braces" class="pr-2 text-orange-500"></baz-icon>
+            <span class="text-xl pb-1 text-orange-500">Bazlama</span>
+            </div>
+          <div class="pb-1">Web Component Samples</div>
+        </div>
+      </baz-router-home-logo>
+      <baz-router-menu class="w-full"></baz-router-menu>
+    </div>
+    <div class="flex-1 w-full bg-base-200">
+      <baz-router-breadcrumb class="p-4 w-full bg-base-300"></baz-router-breadcrumb>
+      <div id="page-content" class="p-4">
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

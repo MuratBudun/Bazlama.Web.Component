@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bazlama Web Component Sample</title>
+  <link href="/index.css" rel="stylesheet" />
+  <link href="/src/baz-ui/baz-ui.css" rel="stylesheet" />
+  <script type="module" src="/src/main.ts"></script>
+</head>
+
+<body class="p-4">
+  <h1>Bazlama Web Component Sample</h1>
+  <div style="height: 20px;"></div>
+  
+  <baz-modal title="Merhaba">
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi eligendi perferendis necessitatibus labore saepe blanditiis ex odit laboriosam dolores repudiandae incidunt cumque dolor culpa fuga, maiores, provident doloremque reiciendis ea.
+    </p>
+  </baz-modal>
+
+
+  <button class="btn" onclick="my_modal_2.showModal()">open modal</button>
+  <dialog id="my_modal_2" class="modal">
+    <div class="modal-box" style="height: 500px;">
+      <h3 class="text-lg font-bold">Hello!</h3>
+      <p class="py-4">Press ESC key or click outside to close</p>
+
+      <details class="dropdown">
+        <summary class="btn m-1">open or close</summary>
+        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><a>Item 1</a></li>
+          <li><a>Item 2</a></li>
+          <li>
+            <details class="dropdown">
+              <summary class="btn m-1">open or close</summary>
+              <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                <li><a>Item 1</a></li>
+                <li><a>Item 2</a></li>
+                <li></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </details>
+
+
+
+      <button class="btn" onclick="my_modal_3.showModal()">open modal</button>
+ 
+
+
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
+  <dialog id="my_modal_3" class="modal">
+    <div class="modal-box" style="height: 300px; width: 1000px;">
+      <h3 class="text-lg font-bold">Hello!</h3>
+      <p class="py-4">2. Content Modal Hellooooo</p>
+
+      <details class="dropdown">
+        <summary class="btn m-1">open or close</summary>
+        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><a>Item 1</a></li>
+          <li><a>Item 2</a></li>
+          <li>
+            <details class="dropdown">
+              <summary class="btn m-1">open or close</summary>
+              <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                <li><a>Item 1</a></li>
+                <li><a>Item 2</a></li>
+                <li></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </details>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>   
+
+
+  <baz-icon icon="search" size="2rem" /></baz-icon>
+
+  <div style="height: 10px;"></div>
+  <baz-textbox id="userInput" label="User Name" label-alt-left="Access modules" label-alt-right="U001">
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="search" size="1.2rem" />
+    </button>
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="squareX" size="1.2rem" />
+    </button>
+  </baz-textbox>
+  <baz-textbox label="Message" color="primary" label-alt-left="Generic message" placeholder="Write message."
+    label-alt-right="U002">
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="search" size="1.2rem" />
+    </button>
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="squareX" size="1.2rem" />
+    </button>
+  </baz-textbox>
+  <baz-textbox label="Message" color="secondary" label-alt-left="Generic message" placeholder="Write message."
+    label-alt-right="U003">
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="search" size="1.2rem" />
+    </button>
+    <button class="btn btn-square btn-sm">
+      <baz-icon icon="squareX" size="1.2rem" />
+    </button>
+  </baz-textbox>
+
+  <script>
+    const textbox = document.querySelector('#userInput');
+    textbox.addEventListener('value-changed', (e) => {
+      console.log(e.detail);
+    });
+
+    textbox.addEventListener("property-changed", (e) => {
+      console.log(e);
+      console.log(e.detail);
+    });
+  </script>
+</body>
+
+</html>

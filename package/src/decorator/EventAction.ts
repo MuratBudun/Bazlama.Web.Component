@@ -10,7 +10,7 @@ export default function EventAction(
         propertyName: string) 
     { 
         if (!(target instanceof BazlamaWebComponent)) {
-            console.error("Event Action Decorator Error: Target is not BazlamaWebComponent")
+            console.error(`Event Action Decorator Error: Target is not BazlamaWebComponent for ${eventName}`)
             return
         }
         const bazComponent = target as BazlamaWebComponent

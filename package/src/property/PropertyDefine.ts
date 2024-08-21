@@ -11,6 +11,7 @@ import TPropertyChangeHook from "./types/TPropertyChangeHandler.ts"
 import IPropertyDefineOption from "./types/IPropertyDefineOption.ts"
 import { TPropertyValueTypeName, TPropertyValueType } from "./types/TPropertyValueType.ts"
 import BazConvert from "../helper/BazConvert.ts"
+import IPropertyEventDetail from "./types/IPropertyEventDetail.ts"
 
 class PropertyDefine {
     valueTypeName: TPropertyValueTypeName
@@ -19,6 +20,8 @@ class PropertyDefine {
     isAttribute: boolean
     isAttributeObserved: boolean
     attributeName: string
+    isFireRenderOnChanged: boolean    
+    isFireEventOnChanged: boolean
     changeHooks: TPropertyChangeHook[]
 
     constructor(name: string, options: IPropertyDefineOption = {}) {
@@ -28,6 +31,8 @@ class PropertyDefine {
         this.isAttribute = options.isAttribute || false
         this.isAttributeObserved = options.isAttributeObserved || false
         this.attributeName = options.attributeName || name
+        this.isFireRenderOnChanged = options.isFireRenderOnChanged || false
+        this.isFireEventOnChanged = options.isFireEventOnChanged || false
         this.changeHooks = options.changeHooks || []
     }
 
@@ -83,7 +88,8 @@ class PropertyDefine {
         return true
     }
 
-    public setDirectValue(bazComponent: BazlamaWebComponent, value: TPropertyValueType): void {
+    public setDirectValue(bazComponent: BazlamaWebComponent, value: TPropertyValueType, 
+        disableRenderRequest: boolean = false): void {
         if (!(bazComponent instanceof BazlamaWebComponent)) return
 
         const oldValue = bazComponent.propertyValues[this.name]
@@ -111,6 +117,21 @@ class PropertyDefine {
         }
         
         this.changeHooks.forEach((event) => event(bazComponent, value, this, oldValue))
+        if (this.isFireRenderOnChanged && disableRenderRequest === false && bazComponent.isRendered === true) {
+            bazComponent.render()
+        }
+
+        if (this.isFireEventOnChanged) {
+            const eventDetail: IPropertyEventDetail = {
+                bazComponent: bazComponent,
+                name: this.name,
+                value: value,
+                oldValue: oldValue
+            }
+
+            bazComponent.dispatchEvent(new CustomEvent("property-changed", { detail: eventDetail }))
+            bazComponent.dispatchEvent(new CustomEvent(this.name + "-changed", { detail: eventDetail }))
+        }
     }
 }
 

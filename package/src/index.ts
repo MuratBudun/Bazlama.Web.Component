@@ -9,12 +9,15 @@ import PropertyBuilder from "./property/PropertyBuilder.ts"
 import { TPropertyValueType, TPropertyValueTypeName } from "./property/types/TPropertyValueType.ts"
 import TPropertyChangeHook from "./property/types/TPropertyChangeHandler.ts"
 import IPropertyDefineOption from "./property/types/IPropertyDefineOption.ts"
+import IPropertyEventDetail from "./property/types/IPropertyEventDetail.ts"
 
 import CustomElement from "./decorator/CustomElement.ts"
 import Property from "./decorator/Property.ts"
 import Attribute from "./decorator/Attribute.ts"
 import ChangeHooks from "./decorator/ChangeHooks.ts"
 import EventAction from "./decorator/EventAction.ts"
+import FireEvent from "./decorator/FireEvent.ts"
+import FireRender from "./decorator/FireRender.ts"
 
 import useCustomHook from "./property/hooks/useCustomHook.ts"
 import useElementAttribute from "./property/hooks/useElementAttribute.ts"
@@ -26,8 +29,8 @@ import useElementStyleFromInteger from "./property/hooks/useElementStyleFromInte
 import useElementText from "./property/hooks/useElementText.ts"
 import useElementTextWithFunction from "./property/hooks/useElementTextWithFunction.ts"
 import useToggleClass from "./property/hooks/useToggleClass.ts"
+import useSwitchClass from "./property/hooks/useSwitchClass.ts"
 import useFunction from "./property/hooks/useFunction.ts"
-import useRender from "./property/hooks/useRender.ts"
 
 import EventActionMap from "./event-action/EventActionMap.ts"
 import { TEventActionDefine } from "./event-action/TEventActionDefine.ts"
@@ -55,6 +58,8 @@ export {
     Property,
     Attribute,
     ChangeHooks,
+    FireEvent,
+    FireRender,
 
     // Hooks
     useCustomHook,
@@ -67,8 +72,8 @@ export {
     useElementText,
     useElementTextWithFunction,
     useToggleClass,
+    useSwitchClass,
     useFunction,
-    useRender
 }
 
 export type {
@@ -76,6 +81,7 @@ export type {
     TPropertyValueTypeName,
     TPropertyChangeHook,
     IPropertyDefineOption,
+    IPropertyEventDetail,
     
     TEventActionDefine,
     IEventActionDefines,    

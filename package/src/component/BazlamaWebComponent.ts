@@ -17,14 +17,17 @@ import { TPropertyValueType, TPropertyValueTypeName } from "../property/types/TP
 import { ShadowRootMode } from "./ShadowRootMode"
 
 export default class BazlamaWebComponent extends HTMLElement {
+    public isDomConnected = false
+    public isRendered = false
     public propertyValues: IPropertyValues = {}
     public eventActionMaps: IEventActionMaps = {}
     public root: ShadowRoot | HTMLElement | null = null
+    public isNoRenderedComponent = false
 
     constructor(shadowMode: ShadowRootMode = ShadowRootMode.Closed) {
         super()
 
-        //this.style.display = "block"
+        this.style.display = "block"
         this.root = this
 
         if (shadowMode === ShadowRootMode.Open) {
@@ -38,11 +41,14 @@ export default class BazlamaWebComponent extends HTMLElement {
     }
 
     render(): void {
+        if (this.isNoRenderedComponent) return
         const htmlTemplate = this.beforeRender(this.getRenderTemplate())
 
         if (this.root) {
             this.root.innerHTML = htmlTemplate
         }
+
+        this.isRendered = true
 
         this.ApplyAllPropertyChangeHooks()
         this.CreateHtmlElementEventActions()
@@ -311,11 +317,15 @@ export default class BazlamaWebComponent extends HTMLElement {
     }
 
     connectedCallback(): void {
+        this.isDomConnected = true
+        this.isRendered = false
         this.onConnected()
         this.render()
     }
 
     disconnectedCallback(): void {
+        this.isDomConnected = false
+        this.isRendered = false
         this.onDisconnected()
     }
     //#endregion
