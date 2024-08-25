@@ -23,8 +23,6 @@ export default class BazRouterBreadcrumb extends BazlamaWebComponent {
     getRenderTemplate() {
         const breadcrumb = PageRouter.getBreadcrumb()
 
-        console.log("breadcrumb", breadcrumb)
-
         if (breadcrumb.length === 0) {
             return ""
         }

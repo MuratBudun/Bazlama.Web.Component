@@ -5,7 +5,16 @@ import page404 from "./404.htm"
 import pageIndex from "./index.htm"
 import pageAbout from "./about.htm"
 
+import pagePropertyUseElementText from "./property/hooks/useElementText.htm"
+
 const sampleRootPage = new PageRoute("Home", "/", () => pageIndex, [])
+
+sampleRootPage.addRoute(new PageRoute("Property / Attribute", "property", () => ""))
+    .addRoutes([
+        new PageRoute("Change Hooks", "property-chnage-hooks", () => "", [
+            new PageRoute("useElementText", "useElementText", () => pagePropertyUseElementText),
+        ]),
+    ])
 
 sampleRootPage.addRoute(new PageRoute("About", "about", () => pageAbout))
     .addRoutes([

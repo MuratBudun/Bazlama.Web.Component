@@ -1,3 +1,4 @@
+import BazAnimation from "../../baz-animation/BazAnimation"
 import { TGetPageContentEl } from "../types/TGetPageContentEl"
 import PageRoute from "./PageRoute"
 
@@ -73,7 +74,6 @@ export default class PageRouter {
         }
 
         const pathParts = ["/", ...window.location.pathname.split("/").filter(Boolean)]
-        console.log("pathParts", pathParts)
         if (pathParts.length === 1) {
             return [this.rootRoute]
         }
@@ -87,11 +87,14 @@ export default class PageRouter {
         const pathParts = ["/", ...window.location.pathname.split("/").filter(Boolean)]
         const matchedRoute = this.rootRoute.match(pathParts)
 
-        if (matchedRoute) {
-            this.pageContentEl.innerHTML = matchedRoute.htmlContentFunc()
-        } else {
-            this.pageContentEl.innerHTML = this.route404.htmlContentFunc()
-        }
+        BazAnimation.animate(this.pageContentEl, "fadeOut", { duration: 0.2 }, ["standart"], () => {
+            if (matchedRoute) {
+                this.pageContentEl.innerHTML = matchedRoute.htmlContentFunc()
+            } else {
+                this.pageContentEl.innerHTML = this.route404.htmlContentFunc()
+            }
+            BazAnimation.animate(this.pageContentEl, "fadeIn")
+        })
 
         this.fireRouteChange()
     }
