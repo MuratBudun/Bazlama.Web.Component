@@ -38,6 +38,7 @@ import { IEventActionDefines } from "./event-action/types/IEventActionDefines.ts
 import { IEventActionMaps } from "./event-action/types/IEventActionMaps.ts"
 import { TEventActionMethod } from "./event-action/TEventActionMethod.ts"
 import EventActionBuilder from "./event-action/EventActionBuilder.ts"
+import useAddRemoveClass from "./property/hooks/useAddRemoveClass.ts"
 
 export {
     BazConvert,
@@ -73,6 +74,7 @@ export {
     useElementTextWithFunction,
     useToggleClass,
     useSwitchClass,
+    useAddRemoveClass,
     useFunction,
 }
 

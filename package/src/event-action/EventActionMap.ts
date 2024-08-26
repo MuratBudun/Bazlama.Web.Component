@@ -20,10 +20,12 @@ export default class EventActionMap {
     }
 
     public CreateElementEvent(bazComponent: BazlamaWebComponent): void {
-        const element = bazComponent.root?.querySelector(this.elQuery)
-        if (element) {
-            element.addEventListener(this.eventName as string, (event: Event) => {
-                this.actionMethod(this.name, element as HTMLElement, this.eventName, event)
+        const elements = bazComponent.root?.querySelectorAll(this.elQuery)
+        if (elements) {
+            elements.forEach(element => {
+                element.addEventListener(this.eventName as string, (event: Event) => {
+                    this.actionMethod(this.name, element as HTMLElement, this.eventName, event)
+                })
             })
         }
     }
