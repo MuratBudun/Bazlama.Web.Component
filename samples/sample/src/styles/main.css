@@ -1,0 +1,8 @@
+* {
+    text-wrap: balance;
+}
+
+code {
+    font-family: monospace;
+    font-weight: bold;
+}

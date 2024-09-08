@@ -10,7 +10,7 @@ export default class BazTab extends BazlamaWebComponent {
             (value) => `div[tab-id="${value}"]`, "hidden"),
         useAddRemoveClass(
             (_, value) => `li[tab-id="${value}"]`,
-            (_, oldValue) => `li[tab-id="${oldValue}"]`, ["text-primary", "border-primary"])
+            (_, oldValue) => `li[tab-id="${oldValue}"]`, ["text-primary", "!border-primary"])
     ])
     @Attribute("active-tab-id", true)
     public ActiveTabId: string = ""
@@ -75,6 +75,7 @@ export default class BazTab extends BazlamaWebComponent {
             const tab = this.tabs[tabId]
             result += tab.Html
         }
+
         return result
     }
 }

@@ -1,0 +1,62 @@
+<h2 class="pb-2 text-4xl">useElementAttribute</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to set the attribute of an element.
+    It is useful when you want to set the attribute of an element dynamically.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prims lang="typescript">
+function useElementAttribute(query: string, attribute: string, calcValue?: TCalcValue)  
+
+type TCalcValue = (value: any, query: string, attribute: string, bazComponent: BazlamaWebComponent) 
+        </prims></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select the element.</li>
+            <li class="pb-1"><div class="badge badge-primary">attribute</div> - The attribute to set.</li>
+            <li class="pb-1"><div class="badge badge-primary">calcValue</div> - A function that calculates the value to set. It is optional.</li>
+        </ul>
+        <ul class="font-mono list-disc pl-8 pt-2">
+            <li class="pb-1"><div class="badge badge-outline badge-primary">value</div> - The current value of the property.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">query</div> - The query selector to select the element.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">attribute</div> - The attribute to set.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The Bazlama Web Component instance.</li>
+        </ul>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <p class="indent-8">
+                This web component has an input element. 
+                Define the placeholder attribute of the input element in the <code>baz-s03</code> component.
+                The placeholder of the input element is set by the <code>useElementAttribute</code> hook.
+                This <b>"Change Placeholder Text"</b> button changes the placeholder of the input element.
+            </p>
+            <baz-s03 placeholder=""></baz-s03>
+            <h4>Change Placeholder Text</h4>
+            <div class="flex gap-4 bg-base-100 rounded-box">
+                <input ref="demo-input" type="text" class="input input-bordered input-sm w-full max-w-xs" 
+                    value="New Placeholder" />
+                <button class="btn btn-sm btn-active btn-primary"
+                    onclick="
+                        var container = this.closest('.demo');
+                        var bazElement = container.querySelector('baz-s03');
+                        var inputValue = container.querySelector('input[ref=\'demo-input\']').value;
+
+                        console.log('inputValue', inputValue);
+                        console.log('bazElement', bazElement);
+
+                        bazElement.setAttribute('placeholder', inputValue);
+                    ">
+                    Change Placeholder Text
+                </button>
+            </div>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s03/baz-s03.ts"></prims-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s03/template.htm"></prims-loader></code></pre>
+    </div>
+</baz-tab>

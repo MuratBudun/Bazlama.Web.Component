@@ -24,11 +24,13 @@ export default function htmImportPlugin(): Plugin {
                 // <prims-loader> taglarını işleme
                 document.querySelectorAll("prims-loader").forEach((loader) => {
                     const srcPath = loader.getAttribute("src")
+                    const langAttr = loader.getAttribute("lang")
+
                     if (srcPath) {
                         const fullPath = path.resolve(path.dirname(id), srcPath)
                         const codeContent = fs.readFileSync(fullPath, "utf-8")
 
-                        const languageString = fullPath.split(".").slice(-2)[0]
+                        const languageString = langAttr || fullPath.split(".").slice(-1)[0]
                         const language = languageMap[languageString] || "markup"
 
                         loader.outerHTML = language
@@ -42,7 +44,7 @@ export default function htmImportPlugin(): Plugin {
                     const language = prims.getAttribute("lang") || "typescript" // Örnek olarak default 'typescript' alındı
                     const dontUseTrim = prims.getAttribute("no-trim") === "true" // trim özelliği varsa true alındı
                     const codeContent = dontUseTrim ? prims.textContent || "" : prims.textContent?.trim() || ""
-                    console.log("language: ", language)
+
                     prims.outerHTML = `<pre><code>${Prism.highlight(
                         codeContent,
                         Prism.languages[language],

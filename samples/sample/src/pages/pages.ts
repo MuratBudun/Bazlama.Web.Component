@@ -6,14 +6,18 @@ import pageIndex from "./index.htm"
 import pageAbout from "./about.htm"
 
 import pagePropertyUseElementText from "./property/hooks/useElementText.htm"
+import pagePropertyUseElementTextWithFunction from "./property/hooks/useElementTextWithFunction.htm"
+import pagePropertyUseElementInputValue from "./property/hooks/useElementInputValue.htm"
+import pagePropertyUseElementAttribute from "./property/hooks/useElementAttribute.htm"
 
 const sampleRootPage = new PageRoute("Home", "/", () => pageIndex, [])
 
-sampleRootPage.addRoute(new PageRoute("Property / Attribute", "property", () => ""))
+sampleRootPage.addRoute(new PageRoute("Property Change Hooks", "property-hooks", () => ""))
     .addRoutes([
-        new PageRoute("Change Hooks", "property-chnage-hooks", () => "", [
-            new PageRoute("useElementText", "useElementText", () => pagePropertyUseElementText),
-        ]),
+        new PageRoute("useElementText", "use-element-text", () => pagePropertyUseElementText),
+        new PageRoute("useElementTextWithFunction", "use-element-text-with-function", () => pagePropertyUseElementTextWithFunction),
+        new PageRoute("useElementInputValue", "use-element-input-value", () => pagePropertyUseElementInputValue),
+        new PageRoute("useElementAttribute", "use-element-attribute", () => pagePropertyUseElementAttribute),
     ])
 
 sampleRootPage.addRoute(new PageRoute("About", "about", () => pageAbout))
@@ -24,6 +28,7 @@ sampleRootPage.addRoute(new PageRoute("About", "about", () => pageAbout))
             new PageRoute("2020", "2020", () => "<h1>About -> History -> 2020</h1>"),
             new PageRoute("2019", "2019", () => "<h1>About -> History -> 2019</h1>"),
             new PageRoute("2018", "2018", () => "<h1>About -> History -> 2018</h1>"),
+            new PageRoute("2017 useElementTextWithFunction", "2017", () => "<h1>About -> History -> 2017</h1>"),
         ]),
     ])
     

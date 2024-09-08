@@ -7,8 +7,10 @@ export default function useAddRemoveClass(
     className: string | string[],
 ): TPropertyChangeHook {
     return (bazComponent, value, _propertyDefine, oldValue) => {
-        const addTargets = bazComponent.root?.querySelectorAll(addElQuery(oldValue, value))
-        const removeTargets = bazComponent.root?.querySelectorAll(removeElQuery(value, oldValue))
+        const _oldValue: TPropertyValueType = oldValue === value ? "" : oldValue
+
+        const addTargets = bazComponent.root?.querySelectorAll(addElQuery(_oldValue, value))
+        const removeTargets = bazComponent.root?.querySelectorAll(removeElQuery(value, _oldValue))
 
         let classList: string[] = []
         if (typeof className === "string") {

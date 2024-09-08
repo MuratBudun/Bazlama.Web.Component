@@ -1,3 +1,0 @@
-<label class="form-control w-full max-w-xs">
-  <span ref="label-text" class="label-text"></span>
-</label>

@@ -10,7 +10,7 @@ export default class BazS01 extends BazlamaWebComponent {
 
     @ChangeHooks([useElementText("span[ref='label-text']")])
     @Attribute("label-text", true)
-    public LabelText = "Bazlama Textbox"
+    public LabelText = "Bazlama Sample 01"
 
     getRenderTemplate() {
         return htmlTemplate

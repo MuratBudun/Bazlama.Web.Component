@@ -8,6 +8,8 @@ import "./baz-ui/baz-theme/baz-theme.ts"
 import "./baz-ui/baz-tab/baz-tab.ts"
 
 import "./sample-components/baz-s01/baz-s01.ts"
+import "./sample-components/baz-s02/baz-s02.ts"
+import "./sample-components/baz-s03/baz-s03.ts"
 
 import PageRouter from "./pages/pages.ts"
 

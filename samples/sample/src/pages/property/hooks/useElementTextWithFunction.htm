@@ -1,0 +1,61 @@
+<h2 class="pb-2 text-4xl">useElementTextWithFunction</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to update the text content of an element with a function.
+    The function is called with the current value of the property, the target element, the property define, the old
+    value of the property, and the Bazlama Web Component instance. The function should return the new text content of
+    the element.
+</p>
+
+<baz-tab active-tab-id="tab-0">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prims lang="typescript">
+useElementTextWithFunction(
+    query: string,
+    textUpdater: (
+        value: TPropertyValueType,
+        target: Element,
+        propertyDefine: PropertyDefine,
+        oldValue: TPropertyValueType,
+        bazComponent: BazlamaWebComponent
+    ) => string
+)  
+        </prims></pre>
+
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div><div class="badge badge-primary">query</div> - The query selector to select the element.</li>
+            <li class="pb-1"><div class="badge badge-primary">textUpdater</div> - The function to update the text content of the element.</li>
+        </ul>
+        <ul class="font-mono list-disc pl-8 pt-2">
+            <li class="pb-1"><div class="badge badge-outline badge-primary">value</div> - The current value of the property.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">target</div> - The target element.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">propertyDefine</div> - The property define.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">oldValue</div> - The old value of the property.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The Bazlama Web Component instance.</li>
+        </ul>
+    </div>
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s02 debit="100"></baz-s02>
+            <h4>Change the debit below</h4>
+            <div class="flex gap-4 bg-base-100 rounded-box">
+                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-xs"
+                    value="1001" />
+                <button class="btn btn-sm btn-active btn-primary" onclick="
+                        var container = this.closest('.demo');
+                        var bazElement = container.querySelector('baz-s02');
+                        var inputValue = container.querySelector('input').value;
+                        bazElement.setAttribute('debit', inputValue);
+                    ">
+                    Change Debit
+                </button>
+            </div>
+        </div>
+    </div>
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s02/baz-s02.ts"></prims-loader></code></pre>
+    </div>
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s02/template.htm"></prims-loader></code></pre>
+    </div>
+</baz-tab>

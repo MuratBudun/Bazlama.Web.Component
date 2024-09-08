@@ -1,0 +1,34 @@
+<h2 class="pb-2 text-4xl">useElementInputValue</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to bind the value of an input element to a property of the component.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prims lang="typescript">
+            useElementInputValue(query: string) 
+        </prims></pre>
+
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div><div class="badge badge-primary">query</div> - The query selector to select the element.</li>
+        </ul>
+    </div>
+    <div title="Demo" icon-name="appWindow">
+        <p class="indent-8">
+            This web component has an input element. 
+            Define the value attribute of the input element in the <code>baz-s03</code> component.
+            The value of the input element is set by the <code>useElementInputValue</code> hook.
+            If you type in the input element, the value of the input element is set to the property of the component.
+        </p>
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s03 placeholder="Type here"></baz-s03>
+        </div>
+    </div>
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s03/baz-s03.ts"></prims-loader></code></pre>
+    </div>
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s03/template.htm"></prims-loader></code></pre>
+    </div>
+</baz-tab>
