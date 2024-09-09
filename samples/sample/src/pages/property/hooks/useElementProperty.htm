@@ -1,31 +1,34 @@
-<h2 class="pb-2 text-4xl">useElementAttribute</h2>
+<h2 class="pb-2 text-4xl">useElementProperty</h2>
 
 <p class="font-mono pt-2 pb-2 indent-8">
-    This hook is used to set the attribute of an element.
-    It is useful when you want to set the attribute of an element dynamically.
+    This hook is used to set the property of an element.
+    It is useful when you want to set the property of an element dynamically.
 </p>
 
 <baz-tab active-tab-id="tab-1">
     <div title="Usage" icon-name="list">
         <pre class="language-markup"><prims lang="typescript">
-function useElementAttribute(query: string, attribute: string, onCalculate?: TPropertyChangeCalculateValue)  
+function useElementProperty(query: string, property: string, onCalculate?: TPropertyChangeCalculateValue)  
 
 TPropertyChangeCalculateValue = (value: any, query: string, property: string, bazComponent: BazlamaWebComponent) => any
         </prims></pre>
         <ul class="font-mono list-disc pl-4 pt-1">
             <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select the element.</li>
-            <li class="pb-1"><div class="badge badge-primary">attribute</div> - The attribute to set.</li>
+            <li class="pb-1"><div class="badge badge-primary">property</div> - The property to set.</li>
             <li class="pb-1"><div class="badge badge-primary">onCalculate</div> - A function that calculates the value to set. It is optional.</li>
         </ul>
         <ul class="font-mono list-disc pl-8 pt-2">
             <li class="pb-1"><div class="badge badge-outline badge-primary">value</div> - The current value of the property.</li>
             <li class="pb-1"><div class="badge badge-outline badge-primary">query</div> - The query selector to select the element.</li>
-            <li class="pb-1"><div class="badge badge-outline badge-primary">property</div> - The attribute to set.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">property</div> - The property to set.</li>
             <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The Bazlama Web Component instance.</li>
         </ul>
     </div>    
     <div title="Demo" icon-name="appWindow">
         <div class="demo p-4 flex flex-col gap-4">
+
+            <canvas ref="demo-canvas" width="50" height="50" class="bg-base-300"></canvas>
+
             <baz-s03 placeholder=""></baz-s03>
             <h4>Change Placeholder Text</h4>
             <div class="flex gap-4 bg-base-100 rounded-box">

@@ -7,7 +7,7 @@
     the element.
 </p>
 
-<baz-tab active-tab-id="tab-0">
+<baz-tab active-tab-id="tab-1">
     <div title="Usage" icon-name="list">
         <pre class="language-markup"><prims lang="typescript">
 useElementTextWithFunction(
@@ -50,6 +50,23 @@ useElementTextWithFunction(
                     Change Debit
                 </button>
             </div>
+            <p class="hidden">
+                <span class="badge badge-neutral">Turkish: </span>
+                Yukarıdaki <code>baz-s02</code> bileşeni <code>debit</code> isminde bir property tanımnına sahiptir.
+                Bu property aynı zamanda <code>debit</code> isminde bir html attribute olarak ta tanımlanmıştır.
+                "Change Debit" butonu <code>setAttribute</code> javascript metodu ile bu property'i değiştirir.
+                <code>useElementTextWithFunction</code> hook'u ile <code>debit</code> property'si değiştiğinde debit bilgisi güncellenir.
+                Bu güncelleme işlemi için bir fonksiyon kullanılmıştır. Bu fonksiyon, debit bilgisini alır ve bu bilgiyi formatlar.
+                Daha fazla bilgi için "Script" ve "Template" sekmelerine bakınız.
+            </p>
+            <p class="pt-3">
+                The <code>baz-s02</code> component above has a property named <code>debit</code>.
+                This property is also defined as an html attribute named <code>debit</code>.
+                The "Change Debit" button changes this property using the <code>setAttribute</code> javascript method.
+                The <code>useElementTextWithFunction</code> hook updates the debit information when the <code>debit</code> property changes.
+                A function is used for this update process. This function takes the debit information and formats it.
+            </p>            
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
         </div>
     </div>
     <div title="Script" icon-name="fileTs">

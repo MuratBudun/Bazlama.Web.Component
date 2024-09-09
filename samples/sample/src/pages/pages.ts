@@ -9,6 +9,7 @@ import pagePropertyUseElementText from "./property/hooks/useElementText.htm"
 import pagePropertyUseElementTextWithFunction from "./property/hooks/useElementTextWithFunction.htm"
 import pagePropertyUseElementInputValue from "./property/hooks/useElementInputValue.htm"
 import pagePropertyUseElementAttribute from "./property/hooks/useElementAttribute.htm"
+import pagePropertyUseElementProperty from "./property/hooks/useElementProperty.htm"
 
 const sampleRootPage = new PageRoute("Home", "/", () => pageIndex, [])
 
@@ -18,6 +19,7 @@ sampleRootPage.addRoute(new PageRoute("Property Change Hooks", "property-hooks",
         new PageRoute("useElementTextWithFunction", "use-element-text-with-function", () => pagePropertyUseElementTextWithFunction),
         new PageRoute("useElementInputValue", "use-element-input-value", () => pagePropertyUseElementInputValue),
         new PageRoute("useElementAttribute", "use-element-attribute", () => pagePropertyUseElementAttribute),
+        new PageRoute("useElementProperty", "use-element-property", () => pagePropertyUseElementProperty),
     ])
 
 sampleRootPage.addRoute(new PageRoute("About", "about", () => pageAbout))

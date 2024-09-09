@@ -1,5 +1,6 @@
-* {
+p {
     text-wrap: balance;
+    line-height: 1.5rem;
 }
 
 code {

@@ -1,11 +1,11 @@
 <h2 class="pb-2 text-4xl">useElementText</h2>
 
 <p class="font-mono pt-2 pb-2 indent-8">
-    This hook is used to set the text content of an element. 
+    This hook is used to set the text content of an element.
     It is useful when you want to set the text content of an element from component property on change.
 </p>
 
-<baz-tab active-tab-id="tab-0">
+<baz-tab active-tab-id="tab-1">
     <div title="Usage" icon-name="list">
         <pre class="language-markup"><prims lang="typescript">
             useElementText(query: string, prefix: string = "", suffix: string = "")  
@@ -19,7 +19,7 @@
     </div>    
     <div title="Demo" icon-name="appWindow">
         <div class="demo p-4 flex flex-col gap-4">
-            <baz-s01 class="inline"></baz-s01>
+            <baz-s01></baz-s01>
             <h4>Change the text below</h4>
             <div class="flex gap-4 bg-base-100 rounded-box">
                 <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-xs" 
@@ -34,6 +34,19 @@
                     Change Text
                 </button>
             </div>
+            <p class="hidden">
+                <span class="badge badge-neutral">Turkish: </span>
+                Yukardaki <code>baz-s01</code> bileşeni, <code>labelText</code> isminde bir property tanımınına sahiptir.
+                Bu property aynı zamanda <code>label-text</code> isminde bir html attribute olarak ta tanımlanmıştır.
+                "Change Text" butonu <code>setAttribute</code> javascript metodu ile bu property'i değiştirir.
+                Daha fazla bilgi için "Script" ve "Template" sekmelerine bakınız.
+            </p>
+            <p class="pt-3">
+                The <code>baz-s01</code> component above has a property named <code>labelText</code>.
+                This property is also defined as an html attribute named <code>label-text</code>.
+                The "Change Text" button changes this property using the <code>setAttribute</code> javascript method.
+            </p>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>            
         </div>
     </div>    
     <div title="Script" icon-name="fileTs">
