@@ -1,11 +1,10 @@
-<label class="form-control w-full max-w-xs">
-  <div class="label">
-    <span ref="label" class="label-text"></span>
-  </div>
-  <label ref="input-border" class="group input input-bordered flex items-center pr-2">
-    <input type="text" placeholder="Type here" class="grow placeholder-gray-600" />
-  </label>
-  <div class="label">
-    <span ref="label-summary" class="label-text-alt"></span>
-  </div>
-</label>
+<video width="400" controls>
+  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+<div class="flex items-center gap-4 pt-2 pb-2">
+  <baz-icon icon="volume"></baz-icon>
+  <span ref="volume"></span>
+  <button ref="btn-volume-up" class="btn btn-sm btn-active btn-primary">Volume +</button>
+  <button ref="btn-volume-down" class="btn btn-sm btn-active btn-primary">Volume -</button>
+</div>

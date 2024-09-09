@@ -31,16 +31,16 @@ class BazConvert {
         return defaultValue
     }
 
-    public static anyToNumber(value: any, defaultValue: number = 0): number {
+    public static anyToNumber(value: any, defaultValue: number = 0, decimalCount: number = 4): number {
         if (value === null || value === undefined) return defaultValue
 
         switch (typeof value) {
             case "string":
                 const parsedNumber = parseFloat(value)
-                return isNaN(parsedNumber) ? defaultValue : parsedNumber
+                return isNaN(parsedNumber) ? defaultValue : parseFloat(parsedNumber.toFixed(decimalCount))
                 break
             case "number":
-                return value
+                return parseFloat(value.toFixed(decimalCount))
                 break
             case "bigint":
                 return Number(value)
