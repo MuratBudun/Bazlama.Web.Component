@@ -24,28 +24,40 @@ TPropertyChangeCalculateValue = (value: any, query: string, property: string, ba
             <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The Bazlama Web Component instance.</li>
         </ul>
     </div>    
-    <div title="Demo" icon-name="appWindow">
-        <div class="demo p-4 flex flex-col gap-4">
+    <div title="Demo" icon-name="appWindow" class="demo w-full flex flex-wrap">
+        <div class="p-4 flex flex-col gap-4">
             <baz-s04 volume="0.5"></baz-s04>
-            <h4>Change Placeholder Text</h4>
-            <div class="flex gap-4 bg-base-100 rounded-box">
-                <input ref="demo-input" type="text" class="input input-bordered input-sm w-full max-w-xs" 
-                    value="New Placeholder" />
-                <button class="btn btn-sm btn-active btn-primary"
-                    onclick="
-                        var container = this.closest('.demo');
-                        var bazElement = container.querySelector('baz-s03');
-                        var inputValue = container.querySelector('input[ref=\'demo-input\']').value;
-
-                        console.log('inputValue', inputValue);
-                        console.log('bazElement', bazElement);
-
-                        bazElement.setAttribute('placeholder', inputValue);
-                    ">
-                    Change Placeholder Text
-                </button>
-            </div>
-            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>        
+        </div>
+        <div class="flex-1 p-4">
+            <pre class="language-markup"><prims lang="typescript">
+                &lt;baz-s04 volume="0.5"&gt;&lt;/baz-s04&gt;
+            </prims></pre>
+            <p class="text-justify indent-4">
+                In this example, the <code>baz-s04</code> component wraps a video element. 
+                Normally, it is not possible to set the volume of the video element as an attribute.
+            </p>
+            <div class="h-2"></div>
+            <p class="text-justify indent-4">
+                However, in this example, the volume attribute can be set with the volume attribute.
+                When the volume of the video element is changed, the volume attribute of the <code>baz-s04</code> component is also changed.
+            </p>
+            <div class="h-2"></div>
+            <p>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</p>  
+            <div class="h-4"></div>
+            <button class="btn btn-sm btn-active btn-primary"
+                onclick="
+                    var container = this.closest('.demo')
+                    console.log('container', container)
+                    var bazElement = container.querySelector('baz-s04')
+                    console.log('bazElement', bazElement)
+                    bazElement.setAttribute('volume', '0.8')
+                ">
+                Set Volume to 0.8 with Attribute
+            </button>       
+            <div class="h-2"></div>
+            <pre class="language-markup"><prims lang="typescript">
+                setAttribute('volume', '0.8')
+            </prims></pre>         
         </div>
     </div>    
     <div title="Script" icon-name="fileTs">
