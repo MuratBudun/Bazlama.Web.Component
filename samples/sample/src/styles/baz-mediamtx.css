@@ -1,0 +1,45 @@
+baz-timeline {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    
+    --header-background-fill-style: oklch(var(--b3));
+    --header-background-stroke-style: oklch(var(--p));
+    --hour-line-fill-style: oklch(var(--a));
+    --hour-line-stroke-style: oklch(var(--a));
+
+    --half-hour-line-fill-style: oklch(var(--a) / 0.3);
+    --half-hour-line-stroke-style: oklch(var(--a) / 0.3);    
+
+    --one-sixth-hour-line-fill-style: oklch(var(--n) / 1);
+    --one-sixth-hour-line-stroke-style: oklch(var(--n) / 1);    
+}
+
+baz-timeline .baz-timeline-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+baz-timeline .baz-timeline-main-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+baz-timeline .baz-timeline-mouse-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 10;
+}

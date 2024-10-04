@@ -22,6 +22,7 @@ import FireRender from "./decorator/FireRender.ts"
 import useCustomHook from "./property/hooks/useCustomHook.ts"
 import useElementAttribute from "./property/hooks/useElementAttribute.ts"
 import useElementInputValue from "./property/hooks/useElementInputValue.ts"
+import useElementInputRadioValue from "./property/hooks/useElementInputRadioValue.ts"
 import useElementProperty from "./property/hooks/useElementProperty.ts"
 import useElementStyle from "./property/hooks/useElementStyle.ts"
 import useElementStyleFromFloat from "./property/hooks/useElementStyleFromFloat.ts"
@@ -66,6 +67,7 @@ export {
     useCustomHook,
     useElementAttribute,
     useElementInputValue,
+    useElementInputRadioValue,
     useElementProperty,
     useElementStyle,
     useElementStyleFromFloat,
