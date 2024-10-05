@@ -10,6 +10,8 @@ export default class BazTheme extends BazlamaWebComponent {
             if (theme) {
                 const htmlElement = document.querySelector("html")
                 if (htmlElement) htmlElement.setAttribute("data-theme", theme.name)
+                const themeTitleEl = bazComponent.root?.querySelector("span[ref='theme-title']")
+                if (themeTitleEl) themeTitleEl.innerHTML = theme.title
             }
         })
     ])

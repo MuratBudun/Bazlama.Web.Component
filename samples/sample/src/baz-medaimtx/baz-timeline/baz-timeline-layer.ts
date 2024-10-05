@@ -29,11 +29,11 @@ export default abstract class BazTimelineLayer {
     }
 
     public get canvasWidthPx(): number {
-        return this.canvas.width // / this.pixelRatio
+        return this.canvas.width
     }
 
     public get canvasHeightPx(): number {
-        return this.canvas.height  /// this.pixelRatio
+        return this.canvas.height
     }
 
     public get maxOffsetMs(): number {

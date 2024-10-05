@@ -10,6 +10,7 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
     constructor(name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
         super(name, canvas, timelineProps)
         this.addDrawStyle("header-background", "#d9d9d9", "#bbb")
+        this.addDrawStyle("hour-text", "#a00", "#f00")
         this.addDrawStyle("hour-line", "#a00", "#f00")
         this.addDrawStyle("half-hour-line", "#0a0", "#0f0")
         this.addDrawStyle("one-sixth-hour-line", "#00a", "#00f")
@@ -48,7 +49,6 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
             const positionX = (
                 (hourIndex - this.timelineProps.startOffsetHour) * this.timelineProps.hourWidthPx -
                 (this.timelineProps.startFractionalHourOffset / (60 * 60 * 1000)) * this.timelineProps.hourWidthPx)
-                * this.pixelRatio
 
             // Set the colour based on the current hour inside or outside the range
             if (
@@ -70,7 +70,11 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
             this.context.moveTo(positionX, 0)
             this.context.lineTo(positionX, this.canvasHeightPx)
             this.context.stroke()
-            this.context.fillText(hourText, positionX + 5, 12)
+
+            // Draw the hour text
+            this.setContextStyle("hour-text")
+            this.context.font = "0.8rem Arial"
+            this.context.fillText(hourText, positionX + 8, 20)
 
             // 1 saatlik dilim içindeki ara çizgiler
             for (let i = 1; i < 6; i++) {

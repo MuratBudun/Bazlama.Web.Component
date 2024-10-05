@@ -1,7 +1,7 @@
 <details class="dropdown w-full">
   <summary tabindex="0" role="button" class="btn w-full justify-start">
     <baz-icon icon="palette" class="pr-2"></baz-icon>
-    <span ref="theme-name" class="flex-1 text-left"></span> 
+    <span ref="theme-title" class="flex-1 text-left"></span> 
     <svg width="12px" height="12px" class="inline-block h-2 w-2 fill-current opacity-60"
       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
       <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
@@ -9,8 +9,8 @@
   </summary>
   <ul ref="theme-list" tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
     <li>
-      <input type="radio" name="theme-dropdown"
-        class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Default"
+      <input type="radio" name="theme-radio-group"
+        class="btn btn-sm btn-block btn-ghost justify-start" aria-label="Default"
         value="default" />
     </li>
   </ul>

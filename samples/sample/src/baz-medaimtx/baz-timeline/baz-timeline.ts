@@ -106,7 +106,6 @@ export default class BazTimeline extends BazlamaWebComponent {
     }
 
     afterRender(): void {
-        console.log("afterRender")
         const canvasList = this.root?.querySelectorAll("canvas")
         canvasList?.forEach((canvas) => {
             const canvasName = canvas.getAttribute("ref")
