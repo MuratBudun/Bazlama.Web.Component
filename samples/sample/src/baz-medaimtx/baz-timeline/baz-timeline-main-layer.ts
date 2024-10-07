@@ -10,10 +10,19 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
     constructor(name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
         super(name, canvas, timelineProps)
         this.addDrawStyle("header-background", "#d9d9d9", "#bbb")
+        this.addDrawStyle("header-background-outside", "#d9d9d9", "#bbb")
+
         this.addDrawStyle("hour-text", "#a00", "#f00")
+        this.addDrawStyle("hour-text-outside", "#a00", "#f00")
+
         this.addDrawStyle("hour-line", "#a00", "#f00")
+        this.addDrawStyle("hour-line-outside", "#a00", "#f00")
+
         this.addDrawStyle("half-hour-line", "#0a0", "#0f0")
+        this.addDrawStyle("half-hour-line-outside", "#0a0", "#0f0")
+
         this.addDrawStyle("one-sixth-hour-line", "#00a", "#00f")
+        this.addDrawStyle("one-sixth-hour-line-outside", "#00a", "#00f")
     }
 
     public drawFunction(): void {
@@ -41,7 +50,9 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
             hourIndex <= this.timelineProps.startOffsetHour + this.visibleHours;
             hourIndex++
         ) {
-            const currentHourMs = this.timelineProps.startDateTime.getTime() + hourIndex * 60 * 60 * 1000
+            const currentHourMs = 
+                (this.timelineProps.startDateTime.getTime() - this.timelineProps.startOutsideHours * 60 * 60 * 1000) +
+                hourIndex * 60 * 60 * 1000
             const currentHourDate = new Date(currentHourMs)
             const hourText = currentHourDate.getHours().toString().padStart(2, "0") + ":00"
 
@@ -51,28 +62,25 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
                 (this.timelineProps.startFractionalHourOffset / (60 * 60 * 1000)) * this.timelineProps.hourWidthPx)
 
             // Set the colour based on the current hour inside or outside the range
-            if (
+            const isOutsideRange = (
                 currentHourMs < this.timelineProps.startDateTime.getTime() ||
                 currentHourMs >= this.timelineProps.endDateTime.getTime()
-            ) {
-                // Outside the range
-                //this.context.strokeStyle = this.tickColourOutsideRange
-                //this.context.fillStyle = this.backgroundColourOutsideRange
-            } else {
-                // Inside the range
-                this.setContextStyle("hour-line")
-                //this.context.strokeStyle = this.tickColour
-                //this.context.fillStyle = this.backgroundColour
-            }
+            )
+
+            if (isOutsideRange) {
+                this.setContextStyle("header-background-outside")
+                this.context.fillRect(positionX, 0, positionX + this.timelineProps.hourWidthPx, this.canvasHeightPx)
+            }    
 
             // Draw the hour tick
+            this.setContextStyle(`hour-line${isOutsideRange ? "-outside" : ""}`)
             this.context.beginPath()
             this.context.moveTo(positionX, 0)
             this.context.lineTo(positionX, this.canvasHeightPx)
             this.context.stroke()
 
             // Draw the hour text
-            this.setContextStyle("hour-text")
+            this.setContextStyle(`hour-text${isOutsideRange ? "-outside" : ""}`)
             this.context.font = "0.8rem Arial"
             this.context.fillText(hourText, positionX + 8, 20)
 
@@ -82,13 +90,13 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
                 this.context.beginPath()
                 if (i === 3) {
                     // 30 minutes line
-                    this.setContextStyle("half-hour-line")
+                    this.setContextStyle(`half-hour-line${isOutsideRange ? "-outside" : ""}`)
                     this.context.moveTo(subPositionX, 15)
                     this.context.lineTo(subPositionX, this.canvasHeightPx)
                 } else {
                     // 10 minutes line
                     if (this.timelineProps.hourWidthPx >  (this.timelineProps.minHourWidthPx * 2)) {
-                        this.setContextStyle("one-sixth-hour-line")
+                        this.setContextStyle(`one-sixth-hour-line${isOutsideRange ? "-outside" : ""}`)
                         this.context.moveTo(subPositionX, 25)
                         this.context.lineTo(subPositionX, this.canvasHeightPx)
                     }

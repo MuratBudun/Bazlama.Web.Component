@@ -73,6 +73,7 @@ export default abstract class BazTimelineLayer {
 
     public setContextStyle(styleName: string) {
         const style = this.getDrawStyle(styleName)
+
         if (style) {
             this.context.fillStyle = style.fillStyle
             this.context.strokeStyle = style.strokeStyle

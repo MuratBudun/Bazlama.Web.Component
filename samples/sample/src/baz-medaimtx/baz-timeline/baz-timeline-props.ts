@@ -6,8 +6,12 @@ export default class BazTimelineProps {
     #defaultStartDateTime: Date
     #defaultEndDateTime: Date
 
+    public startOutsideHours: number = 1
     public startDateTime: Date = new Date()
+    
+    public endOutsideHours: number = 3
     public endDateTime: Date = new Date()
+
     public hourWidthRem: number = 10
     public minHourWidthRem: number = 5
     public zoomFactor: number = 1.0
@@ -41,7 +45,9 @@ export default class BazTimelineProps {
     }
 
     public get totalTimeMs(): number {
-        return this.endDateTime.getTime() - this.startDateTime.getTime()
+        return (this.endDateTime.getTime() - this.startDateTime.getTime()) +
+            this.startOutsideHours * 60 * 60 * 1000 +
+            this.endOutsideHours * 60 * 60 * 1000
     }
 
     public get totalHours(): number {
@@ -111,6 +117,6 @@ export default class BazTimelineProps {
     }
 
     public static GetDefaultEndDateTime(): Date {
-        return new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
+        return new Date(new Date().getTime() + 6 * 60 * 60 * 1000)
     }
 }

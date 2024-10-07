@@ -16,6 +16,8 @@ import BazTimelineProps from "./baz-timeline-props"
 export default class BazTimeline extends BazlamaWebComponent {
     #TimeLineProps: BazTimelineProps = new BazTimelineProps()
     #Theme: string = "default"
+    VerticalScrollEl: HTMLElement | undefined | null = null
+    VerticalScrollBarEl: HTMLElement | undefined | null = null
 
     //#region Attributes
     @ChangeHooks([
@@ -35,9 +37,12 @@ export default class BazTimeline extends BazlamaWebComponent {
     public EndDateTimeStr: string = BazTimelineProps.GetDefaultEndDateTime().toISOString()
 
     @ChangeHooks([
-        useFunction((bazComponent, value) =>
-            (bazComponent as BazTimeline).#TimeLineProps.SetZoomFactorFromString(value as string)
-        ),
+        useFunction((bazComponent, value) => {
+            const me = bazComponent as BazTimeline
+            const valueStr = (value as string)
+            me.#TimeLineProps.SetZoomFactorFromString(valueStr)
+            me.calculateVerticalScrollWidth()
+        }),
     ])
     @Attribute("zoom", true)
     public ZoomFactor: number = 1.0
@@ -81,8 +86,30 @@ export default class BazTimeline extends BazlamaWebComponent {
         }).observe(htmlElement as Node, { attributes: true, attributeFilter: ["data-theme"] })
     }
 
+    private calculateVerticalScrollWidth() {
+        const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
+        if (!mainLayer) return
+
+        const widthBySeconds = this.#TimeLineProps.totalTimeMs / 1000
+        const widthBySecondsPx = widthBySeconds * (this.#TimeLineProps.hourWidthPx / 3600) 
+            
+        this.VerticalScrollBarEl?.style.setProperty("width", widthBySecondsPx + "px")
+    }
+
+    @EventAction("div[ref='vertical-scroll']", "scroll")
+    public onScroll = (_name: string, element: HTMLElement, e: Event) => {
+        const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
+        if (!mainLayer) return
+
+        const leftMargin = element.scrollLeft / mainLayer.pixelRatio
+        this.StartOffsetMs = leftMargin * 36000
+    }
+
     private setLayerColors() {
         if (!this.isRendered) return
+
+        this.calculateVerticalScrollWidth()
+
         for (const layerName in this.#TimeLineProps.subscribedLayers) {
             const layer = this.#TimeLineProps.subscribedLayers[layerName]
             if (layer) {
@@ -106,6 +133,9 @@ export default class BazTimeline extends BazlamaWebComponent {
     }
 
     afterRender(): void {
+        this.VerticalScrollEl = this.root?.querySelector("div[ref='vertical-scroll']")
+        this.VerticalScrollBarEl = this.root?.querySelector("div[ref='vertical-scroll-bar']")
+
         const canvasList = this.root?.querySelectorAll("canvas")
         canvasList?.forEach((canvas) => {
             const canvasName = canvas.getAttribute("ref")

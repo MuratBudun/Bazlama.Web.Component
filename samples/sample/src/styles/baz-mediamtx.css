@@ -8,17 +8,32 @@ baz-timeline {
     --header-background-fill-style: oklch(var(--b3));
     --header-background-stroke-style: oklch(var(--p));
 
+    --header-background-outside-fill-style: oklch(var(--b1));
+    --header-background-outside-stroke-style: oklch(var(--p));
+
     --hour-text-fill-style: oklch(var(--bc));
-    --hour-text-stroke-style: oklch(var(--bc));
+    --hour-text-stroke-style: #0f0;
+
+    --hour-text-outside-fill-style: oklch(var(--bc) / 0.2);
+    --hour-text-outside-stroke-style: oklch(var(--bc) / 0.2);
 
     --hour-line-fill-style: oklch(var(--p) / 0.5);
     --hour-line-stroke-style: oklch(var(--p) / 0.5);
 
+    --hour-line-outside-fill-style: oklch(var(--bc) / 0.1);
+    --hour-line-outside-stroke-style: oklch(var(--bc) / 0.1);
+
     --half-hour-line-fill-style: oklch(var(--p) / 0.3);
     --half-hour-line-stroke-style: oklch(var(--p) / 0.3);    
 
+    --half-hour-line-outside-fill-style: oklch(var(--bc) / 0.05);
+    --half-hour-line-outside-stroke-style: oklch(var(--bc) / 0.05);    
+
     --one-sixth-hour-line-fill-style: oklch(var(--p) / 0.1);
     --one-sixth-hour-line-stroke-style: oklch(var(--p) / 0.1);    
+
+    --one-sixth-hour-line-outside-fill-style: oklch(var(--bc) / 0.1);
+    --one-sixth-hour-line-outside-stroke-style: oklch(var(--bc) / 0.1);    
 }
 
 baz-timeline .baz-timeline-container {
@@ -46,4 +61,24 @@ baz-timeline .baz-timeline-mouse-canvas {
     height: 100%;
     overflow: hidden;
     z-index: 10;
+}
+
+baz-timeline .baz-timeline-vertical-scroll {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    opacity: 0.5;
+    z-index: 20;
+}
+
+baz-timeline .baz-timeline-vertical-scroll-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
 }
