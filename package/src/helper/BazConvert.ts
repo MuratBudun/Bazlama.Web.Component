@@ -101,6 +101,85 @@ class BazConvert {
 
         return defaultValue
     }
+
+    public static remToPx(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value * remInPx).toFixed(4))
+    }
+
+    public static pxToRem(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value / remInPx).toFixed(4))
+    }
+
+    public static remToPt(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value * remInPx * 0.75).toFixed(4))
+    }
+
+    public static ptToRem(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value / remInPx / 0.75).toFixed(4))
+    }
+
+    public static remToEm(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value * remInPx / 16).toFixed(4))
+    }
+
+    public static emToRem(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+        const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+
+        return parseFloat((value * 16 / remInPx).toFixed(4))
+    }
+
+    public static pxToPt(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value * 0.75).toFixed(4))
+    }
+
+    public static ptToPx(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value / 0.75).toFixed(4))
+    }
+
+    public static pxToEm(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value / 16).toFixed(4))
+    }
+
+    public static emToPx(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value * 16).toFixed(4))
+    }
+
+    public static ptToEm(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value / 12).toFixed(4))
+    }
+
+    public static emToPt(value: number, defaultValue: number = 0): number {
+        if (value === null || value === undefined) return defaultValue
+
+        return parseFloat((value * 12).toFixed(4))
+    }
+    //https://cssunitconverter.vercel.app/
 }
 
 export default BazConvert

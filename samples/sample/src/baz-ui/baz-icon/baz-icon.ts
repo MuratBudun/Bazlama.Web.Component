@@ -20,7 +20,7 @@ export default class BazIcon extends BazlamaWebComponent {
 
     @ChangeHooks([useElementAttribute("svg", "stroke-width")])
     @Attribute("stroke-width", true)    
-    public strokeWidth: string = "2"
+    public strokeWidth: string = "1"
 
     @ChangeHooks([useElementAttribute("svg", "role")])
     @Attribute("role", true)    

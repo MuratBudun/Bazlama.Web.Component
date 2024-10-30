@@ -6,10 +6,10 @@ export default class BazTimelineProps {
     #defaultStartDateTime: Date
     #defaultEndDateTime: Date
 
-    public startOutsideHours: number = 1
+    public startOutsideHours: number = 0
     public startDateTime: Date = new Date()
     
-    public endOutsideHours: number = 3
+    public endOutsideHours: number = 0
     public endDateTime: Date = new Date()
 
     public hourWidthRem: number = 10
@@ -113,10 +113,10 @@ export default class BazTimelineProps {
     }
 
     public static GetDefaultStartDateTime(): Date {
-        return new Date()
+        return new Date("2024-10-14T10:40:00")
     }
 
     public static GetDefaultEndDateTime(): Date {
-        return new Date(new Date().getTime() + 6 * 60 * 60 * 1000)
+        return new Date((new Date("2024-10-14T10:00:00")).getTime() + (5 * 60 * 60 * 1000))
     }
 }

@@ -1,3 +1,4 @@
+import { start } from "repl"
 import BazTimelineLayer from "./baz-timeline-layer"
 import BazTimelineProps from "./baz-timeline-props"
 
@@ -28,8 +29,25 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
     public drawFunction(): void {
         // Clear the canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        this.drawHeader()
+        //this.drawHeader()
         this.drawHours()
+
+        /*
+        this.setContextStyle(`hour-line`)
+        this.context.beginPath()
+        this.context.moveTo(0, 0)
+        this.context.lineTo(0, this.canvasHeightPx)
+        this.context.stroke()
+
+        const startDateMs = this.timelineProps.startDateTime.getTime()
+        const currentHourDate = new Date(startDateMs + this.timelineProps.startOffsetMs)
+        const hourText = currentHourDate.toLocaleString()  // currentHourDate.getHours().toString().padStart(2, "0") + ":" + this.timelineProps.startDateTime.getMinutes().toString().padStart(2, "0")
+
+        this.setContextStyle(`hour-text`)
+        this.context.font = "0.8rem Arial"
+        this.context.fillText(hourText, 8, 20)        
+        */
+
     }
 
     private drawHeader() {
@@ -42,6 +60,10 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
         this.context.moveTo(0, this.headerHeightPx)
         this.context.lineTo(this.canvasWidthPx, this.headerHeightPx)
         this.context.stroke()
+    }
+
+    private drawHours2() {
+        
     }
 
     private drawHours() {

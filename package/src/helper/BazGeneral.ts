@@ -33,7 +33,7 @@ class BazGeneral {
 
     public static isNull(value: any): boolean {
         return value === null
-    }     
+    }    
 }
 
 export default BazGeneral
