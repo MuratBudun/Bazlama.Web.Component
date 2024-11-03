@@ -1,6 +1,7 @@
 import { start } from "repl"
 import BazTimelineLayer from "./baz-timeline-layer"
 import BazTimelineProps from "./baz-timeline-props"
+import BazTimeline from "./baz-timeline"
 
 export default class BazTimelineMainLayer extends BazTimelineLayer {
     public headerHeightRem: number = 2.5
@@ -8,8 +9,8 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
         return BazTimelineLayer.RemToPx(this.headerHeightRem)
     }
 
-    constructor(name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
-        super(name, canvas, timelineProps)
+    constructor(owner: BazTimeline, name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
+        super(owner, name, canvas, timelineProps)
         this.addDrawStyle("header-background", "#d9d9d9", "#bbb")
         this.addDrawStyle("header-background-outside", "#d9d9d9", "#bbb")
 

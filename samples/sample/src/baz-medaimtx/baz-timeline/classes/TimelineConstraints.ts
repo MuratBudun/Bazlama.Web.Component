@@ -1,3 +1,4 @@
+import TimelineHelper from "./TimelineHelper"
 import TimelineRuler from "./TimelineRuler"
 
 export default class TimelineConstraints {
@@ -14,6 +15,6 @@ export default class TimelineConstraints {
     public ZoomFactorMin: number = 0.1
     public ZoomFactorMax: number = 10.0
 
-    public get HourMinWidthPx() { return TimelineRuler.RemToPx(this.HourMinWidthRem) }
-    public get HourMaxWidthPx() { return TimelineRuler.RemToPx(this.HourMaxWidthRem) }
+    public get HourMinWidthPx() { return TimelineHelper.RemToPx(this.HourMinWidthRem) }
+    public get HourMaxWidthPx() { return TimelineHelper.RemToPx(this.HourMaxWidthRem) }
 }

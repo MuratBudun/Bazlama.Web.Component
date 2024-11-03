@@ -1,3 +1,4 @@
+import BazTimeline from "./baz-timeline"
 import BazTimelineProps from "./baz-timeline-props"
 
 
@@ -14,6 +15,9 @@ export type TCanvasDrawStyle = {
 }
 
 export default abstract class BazTimelineLayer {
+    #owner: BazTimeline
+    public get Owner() { return this.#owner }   
+
     #_name: string = ""
     public get name(): string { return this.#_name }
 
@@ -43,13 +47,15 @@ export default abstract class BazTimelineLayer {
         )
     }
 
-    constructor(name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
+    constructor(owner: BazTimeline, name: string, canvas: HTMLCanvasElement, timelineProps: BazTimelineProps) {
+        if (owner == null) throw new Error("owner is null")
         if (timelineProps == null) throw new Error("timelineProps is null")
         if (name in timelineProps.subscribedLayers) throw new Error(`Layer with name '${name}' already exists`)
         if (canvas == null) throw new Error("canvas is null")
         if (canvas instanceof HTMLCanvasElement == false) throw new Error("canvas is not an instance of HTMLCanvasElement")
         if (canvas.getContext("2d") == null) throw new Error("CanvasRenderingContext2D is null")
 
+        this.#owner = owner
         this.timelineProps = timelineProps
         this.timelineProps.subscribedLayers[name] = this
         this.canvas = canvas

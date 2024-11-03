@@ -4,19 +4,20 @@ import TimelineRuler from "./TimelineRuler"
 export default class TimelineRulerCalculate {
     #owner: TimelineRuler
     public get Owner() { return this.#owner }
+    public get VisibleArea() { return this.Owner.VisibleArea }
 
     constructor(owner: TimelineRuler) {
         this.#owner = owner
     }
 
     public get HourWidthPx(): number {
-        const hourWidthPx = this.Owner.hourWidthRem * TimelineHelper.RemInPx()
+        const hourWidthPx = this.Owner.HourWidthRem * TimelineHelper.RemInPx()
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
         return result
     }
 
     public get HourWidthWithZoomPx(): number {
-        const hourWidthPx = this.HourWidthPx * this.Owner.zoomFactor
+        const hourWidthPx = this.HourWidthPx * this.Owner.ZoomFactor
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
         return result
     }
@@ -24,7 +25,7 @@ export default class TimelineRulerCalculate {
 
 
     public get StartOffsetPx(): number {
-        return Math.round(this.Owner.startOffsetMs / (60 * 60 * 1000) * this.HourWidthWithZoomPx)
+        return Math.round(this.Owner.StartOffsetMs / (60 * 60 * 1000) * this.HourWidthWithZoomPx)
     }
 
     public get StartOffsetRem(): number {
@@ -32,7 +33,7 @@ export default class TimelineRulerCalculate {
     }
 
     public get StartOffsetDateTime(): Date {
-        return new Date(this.Owner.StartDateTime.getTime() + this.#owner.startOffsetMs)
+        return new Date(this.Owner.StartDateTime.getTime() + this.#owner.StartOffsetMs)
     }
 
 
@@ -45,11 +46,19 @@ export default class TimelineRulerCalculate {
     }
 
     public get TotalWidthPx(): number {
-        return this.TotalHours * this.HourWidthWithZoomPx
+        return this.TotalHours * this.HourWidthPx
     }
 
     public get TotalWidthRem(): number {
         return TimelineHelper.PxToRem(this.TotalWidthPx)
+    }
+
+    public get TotalWidthWithZoomPx(): number {
+        return this.TotalHours * this.HourWidthWithZoomPx
+    }
+
+    public get TotalWidthWithZoomRem(): number {
+        return TimelineHelper.PxToRem(this.TotalWidthWithZoomPx)
     }
 
 
@@ -64,6 +73,29 @@ export default class TimelineRulerCalculate {
     }
 
     public get ZoomFactor(): number {
-        return Math.max(Math.min(this.Owner.zoomFactor, this.ZoomFactorMax), this.ZoomFactorMin)
+        return Math.max(Math.min(this.Owner.ZoomFactor, this.ZoomFactorMax), this.ZoomFactorMin)
     }
+
+    public SetZoomFactorFromString(zoomFactorString: string, fireDrawLayers: boolean = true) {
+        if (isNaN(parseFloat(zoomFactorString))) {
+            this.Owner.ZoomFactor = 1.0
+        } else {
+            const zoomFactor = parseFloat(zoomFactorString)
+            this.Owner.ZoomFactor = Math.max(Math.min(zoomFactor, this.ZoomFactorMax), this.ZoomFactorMin)
+        }
+
+        if (fireDrawLayers) {
+            this.Owner.UpdateLayerTimes()
+        }
+    }  
+    
+    public GetFitZoomFactor(): number {
+        return Math.max(
+            this.ZoomFactorMin,
+            Math.min(
+                this.ZoomFactorMax,
+                this.VisibleArea.WidthPx / this.TotalWidthPx
+            )
+        )
+    }    
 }

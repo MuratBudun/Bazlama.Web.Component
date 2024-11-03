@@ -11,6 +11,7 @@ import {
 import htmlTemplate from "./template.htm"
 import BazTimelineMainLayer from "./baz-timeline-main-layer"
 import BazTimelineProps from "./baz-timeline-props"
+import TimelineRuler from "./classes/TimelineRuler"
 
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
@@ -19,19 +20,26 @@ export default class BazTimeline extends BazlamaWebComponent {
     VerticalScrollEl: HTMLElement | undefined | null = null
     VerticalScrollBarEl: HTMLElement | undefined | null = null
 
+
+    public Ruler: TimelineRuler = new TimelineRuler()
+
     //#region Attributes
     @ChangeHooks([
-        useFunction((bazComponent, value) =>
-            (bazComponent as BazTimeline).#TimeLineProps.SetStartDateTimeFromString(value as string)
-        ),
+        useFunction((bazComponent, value) => {
+            const me = bazComponent as BazTimeline
+            me.#TimeLineProps.SetStartDateTimeFromString(value as string)
+            me.Ruler.SetTimes(me.#TimeLineProps.startDateTime, me.#TimeLineProps.endDateTime)
+        }),
     ])
     @Attribute("start-date-time", true)
     public StartDateTimeStr: string = BazTimelineProps.GetDefaultStartDateTime().toISOString()
 
     @ChangeHooks([
-        useFunction((bazComponent, value) =>
-            (bazComponent as BazTimeline).#TimeLineProps.SetEndDateTimeFromString(value as string)
-        ),
+        useFunction((bazComponent, value) => {
+            const me = bazComponent as BazTimeline
+            me.#TimeLineProps.SetEndDateTimeFromString(value as string)
+            me.Ruler.SetTimes(me.#TimeLineProps.startDateTime, me.#TimeLineProps.endDateTime)
+        }),
     ])
     @Attribute("end-date-time", true)
     public EndDateTimeStr: string = BazTimelineProps.GetDefaultEndDateTime().toISOString()
@@ -67,6 +75,7 @@ export default class BazTimeline extends BazlamaWebComponent {
     private initObservers() {
         new ResizeObserver(() => {
             this.#TimeLineProps.setLayersSize(this.clientWidth, this.clientHeight)
+            this.Ruler.VisibleArea.SetSize(this.clientWidth, this.clientHeight)
             this.#TimeLineProps.fireDrawLayers()
         }).observe(this)
 
@@ -140,7 +149,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         canvasList?.forEach((canvas) => {
             const canvasName = canvas.getAttribute("ref")
             if (canvasName === "main-canvas") {
-                    const mainLayer = new BazTimelineMainLayer(canvasName, canvas as HTMLCanvasElement, this.#TimeLineProps)
+                const mainLayer = new BazTimelineMainLayer(this, canvasName, canvas as HTMLCanvasElement, this.#TimeLineProps)
             }
         })
 
