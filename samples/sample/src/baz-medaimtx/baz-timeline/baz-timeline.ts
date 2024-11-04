@@ -112,6 +112,7 @@ export default class BazTimeline extends BazlamaWebComponent {
 
         const leftMargin = element.scrollLeft / mainLayer.pixelRatio
         this.StartOffsetMs = leftMargin * 36000
+        this.Ruler.StartOffsetMs = this.StartOffsetMs
     }
 
     private setLayerColors() {

@@ -33,6 +33,15 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
         //this.drawHeader()
         this.drawHours()
 
+        const visibleHours = this.Owner.Ruler.VisibleArea.GetVisibleHours()
+        
+        this.context.fillStyle = "#ff000033"
+        this.context.fillRect(
+            visibleHours.startPx * this.pixelRatio, 100, 
+            (visibleHours.endPx - visibleHours.startPx) * this.pixelRatio, 
+            this.canvas.height)        
+
+
         /*
         this.setContextStyle(`hour-line`)
         this.context.beginPath()

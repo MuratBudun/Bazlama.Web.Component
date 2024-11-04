@@ -33,6 +33,14 @@ export default class VisibleArea {
 
         return firstVisibleHour        
     } 
+
+    public GetLastVisibleHourDateTime(): Date {
+        const firstVisibleHour = this.GetFirstVisibleHourDateTime()
+        const lastVisibleHour = new Date(firstVisibleHour.getTime() + this.WidthPx 
+            / this.Calculated.HourWidthWithZoomPx * 60 * 60 * 1000)
+
+        return lastVisibleHour
+    }
     
     public GetStartPxFromDateTime(dateTime: Date): number {
         return (dateTime.getTime() - this.Owner.StartDateTime.getTime()) 
