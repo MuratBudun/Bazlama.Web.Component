@@ -22,7 +22,7 @@ export default class TimelineRuler {
     public get VisibleArea() { return this.#visibleArea }
 
 
-    #hourWidthRem: number = 10
+    #hourWidthRem: number = 15
     public get HourWidthRem() { return this.#hourWidthRem }
     public set HourWidthRem(value: number) { 
         this.#hourWidthRem = value 

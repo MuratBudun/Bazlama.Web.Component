@@ -11,21 +11,19 @@ export default class TimelineRulerCalculate {
     }
 
     public get HourWidthPx(): number {
-        const hourWidthPx = this.Owner.HourWidthRem * TimelineHelper.RemInPx()
+        const hourWidthPx = TimelineHelper.RemToPx(this.Owner.HourWidthRem)
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
-        return result
+        return Math.ceil(result)
     }
 
     public get HourWidthWithZoomPx(): number {
         const hourWidthPx = this.HourWidthPx * this.Owner.ZoomFactor
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
-        return result
+        return Math.ceil(result)
     }
 
-
-
     public get StartOffsetPx(): number {
-        return Math.round(this.Owner.StartOffsetMs / (60 * 60 * 1000) * this.HourWidthWithZoomPx)
+        return Math.ceil(this.Owner.StartOffsetMs / (60 * 60 * 1000) * this.HourWidthWithZoomPx)
     }
 
     public get StartOffsetRem(): number {
@@ -98,4 +96,36 @@ export default class TimelineRulerCalculate {
             )
         )
     }    
-}
+
+    public IsTimeInRange(dateTime: Date): boolean {
+        return dateTime.getTime() >= this.Owner.StartDateTime.getTime() 
+            && dateTime.getTime() <= this.Owner.EndDateTime.getTime()
+    }
+
+    public GetEndHourDateTimeFromTime(time: Date): Date {
+        const adjustedDateTime = new Date(time)
+        adjustedDateTime.setMinutes(0, 0, 0)
+        adjustedDateTime.setHours(adjustedDateTime.getHours() + 1)
+
+        if (adjustedDateTime.getTime() > this.Owner.EndDateTime.getTime()) {
+            return this.Owner.EndDateTime
+        }
+
+        return adjustedDateTime
+    }
+
+    public CalculateStartHourDateTimeFromTime(time: Date): Date {
+        const adjustedDateTime = new Date(time)
+        adjustedDateTime.setMinutes(0, 0, 0)
+
+        return adjustedDateTime
+    }
+
+    public CalculateEndHourDateTimeFromTime(time: Date): Date {
+        const adjustedDateTime = new Date(time)
+        adjustedDateTime.setMinutes(0, 0, 0)
+        adjustedDateTime.setHours(adjustedDateTime.getHours() + 1)
+
+        return adjustedDateTime
+    }
+}   

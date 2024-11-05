@@ -49,6 +49,7 @@ export default class BazTimeline extends BazlamaWebComponent {
             const me = bazComponent as BazTimeline
             const valueStr = (value as string)
             me.#TimeLineProps.SetZoomFactorFromString(valueStr)
+            me.Ruler.ZoomFactor = me.#TimeLineProps.zoomFactor
             me.calculateVerticalScrollWidth()
         }),
     ])
@@ -56,9 +57,11 @@ export default class BazTimeline extends BazlamaWebComponent {
     public ZoomFactor: number = 1.0
 
     @ChangeHooks([
-        useFunction((bazComponent, value) =>
-            (bazComponent as BazTimeline).#TimeLineProps.SetStartOffsetMsFromString(value as string)
-        ),
+        useFunction((bazComponent, value) => {
+            const me = bazComponent as BazTimeline
+            me.#TimeLineProps.SetStartOffsetMsFromString(value as string)
+            me.Ruler.StartOffsetMs = me.#TimeLineProps.startOffsetMs
+        }),
     ])
     @Attribute("start-offset-ms", true)
     public StartOffsetMs: number = 0
@@ -112,7 +115,6 @@ export default class BazTimeline extends BazlamaWebComponent {
 
         const leftMargin = element.scrollLeft / mainLayer.pixelRatio
         this.StartOffsetMs = leftMargin * 36000
-        this.Ruler.StartOffsetMs = this.StartOffsetMs
     }
 
     private setLayerColors() {
@@ -150,6 +152,14 @@ export default class BazTimeline extends BazlamaWebComponent {
         canvasList?.forEach((canvas) => {
             const canvasName = canvas.getAttribute("ref")
             if (canvasName === "main-canvas") {
+                this.Ruler.SilentSetValues(
+                    this.#TimeLineProps.startDateTime,
+                    this.#TimeLineProps.endDateTime,
+                    this.#TimeLineProps.hourWidthRem,
+                    this.#TimeLineProps.startOffsetMs,
+                    this.#TimeLineProps.zoomFactor,
+                )
+
                 const mainLayer = new BazTimelineMainLayer(this, canvasName, canvas as HTMLCanvasElement, this.#TimeLineProps)
             }
         })

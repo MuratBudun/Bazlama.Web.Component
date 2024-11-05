@@ -10,11 +10,12 @@ export default class TimelineConstraints {
     }
 
     public HourMinWidthRem: number = 10
-    public HourMaxWidthRem: number = 20
+    public HourMaxWidthRem: number = 2000
 
     public ZoomFactorMin: number = 0.1
-    public ZoomFactorMax: number = 10.0
+    public ZoomFactorMax: number = 4000.0
 
     public get HourMinWidthPx() { return TimelineHelper.RemToPx(this.HourMinWidthRem) }
     public get HourMaxWidthPx() { return TimelineHelper.RemToPx(this.HourMaxWidthRem) }
 }
+

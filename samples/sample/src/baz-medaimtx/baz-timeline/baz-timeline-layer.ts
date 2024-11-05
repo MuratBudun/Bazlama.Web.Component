@@ -1,5 +1,9 @@
 import BazTimeline from "./baz-timeline"
 import BazTimelineProps from "./baz-timeline-props"
+import TimelineConstraints from "./classes/TimelineConstraints"
+import TimelineRuler from "./classes/TimelineRuler"
+import TimelineRulerCalculate from "./classes/TimelineRulerCalculate"
+import VisibleArea from "./classes/VisibleArea"
 
 
 export type TCanvasDrawStyleCssVariableNames = {
@@ -18,12 +22,28 @@ export default abstract class BazTimelineLayer {
     #owner: BazTimeline
     public get Owner() { return this.#owner }   
 
+    #ruler: TimelineRuler
+    public get Ruler() { return this.#ruler }
+
+    #calculated: TimelineRulerCalculate
+    public get Calculated() { return this.#calculated }
+
+    #constraints: TimelineConstraints
+    public get Constraints() { return this.#constraints }
+
+    #visibleArea: VisibleArea
+    public get VisibleArea() { return this.#visibleArea }
+
     #_name: string = ""
     public get name(): string { return this.#_name }
 
     public canvas: HTMLCanvasElement
     public context: CanvasRenderingContext2D
     public pixelRatio: number = window.devicePixelRatio || 1
+
+    public topMarginPx: number = 4
+    public leftMarginPx: number = 4
+
     public timelineProps: BazTimelineProps
     public isNeedRedraw: boolean = true
     public DrawStyles: Record<string, TCanvasDrawStyle> = {}
@@ -33,11 +53,11 @@ export default abstract class BazTimelineLayer {
     }
 
     public get canvasWidthPx(): number {
-        return this.canvas.width
+        return this.canvas.width - (this.leftMarginPx * 2)
     }
 
     public get canvasHeightPx(): number {
-        return this.canvas.height
+        return this.canvas.height - (this.topMarginPx * 2)
     }
 
     public get maxOffsetMs(): number {
@@ -56,6 +76,11 @@ export default abstract class BazTimelineLayer {
         if (canvas.getContext("2d") == null) throw new Error("CanvasRenderingContext2D is null")
 
         this.#owner = owner
+        this.#ruler = owner.Ruler
+        this.#calculated = owner.Ruler.Calculated
+        this.#constraints = owner.Ruler.Constraints
+        this.#visibleArea = owner.Ruler.VisibleArea
+
         this.timelineProps = timelineProps
         this.timelineProps.subscribedLayers[name] = this
         this.canvas = canvas
@@ -111,5 +136,68 @@ export default abstract class BazTimelineLayer {
         this.canvas.style.height = height + "px"
 
         this.context.scale(this.pixelRatio, this.pixelRatio)
+    }
+
+    public convertMarginedX(x: number): number {
+        return x + this.leftMarginPx
+    }
+
+    public convertMarginedY(y: number): number {
+        return y + this.topMarginPx
+    }
+
+    public drawLine(x1: number, y1: number, x2: number, y2: number) {
+        this.context.beginPath()
+        this.context.moveTo(this.convertMarginedX(x1) * this.pixelRatio, this.convertMarginedY(y1) * this.pixelRatio)
+        this.context.lineTo(this.convertMarginedX(x2) * this.pixelRatio, this.convertMarginedY(y2) * this.pixelRatio)
+        this.context.stroke()
+        this.context.closePath()
+    }
+
+    public drawLineVertical(x: number, y: number, height: number) {   
+        if (x > this.canvasWidthPx || x < 0) return
+        if (y > this.canvasHeightPx || y < 0) return
+
+        this.context.beginPath()
+        this.context.moveTo(this.convertMarginedX(x) * this.pixelRatio, 
+            this.convertMarginedY(y) * this.pixelRatio)
+        this.context.lineTo(this.convertMarginedX(x) * this.pixelRatio, 
+            this.convertMarginedY(Math.min(y + height, this.canvasHeightPx)) * this.pixelRatio)
+        this.context.stroke()
+        this.context.closePath()
+    }
+
+    public drawLineHorizontal(x: number, y: number, width: number) {
+        if (x > this.canvasWidthPx || x < 0) return
+        if (y > this.canvasHeightPx || y < 0) return
+        this.context.beginPath()
+        this.context.moveTo(this.convertMarginedX(x) * this.pixelRatio, this.convertMarginedY(y) * this.pixelRatio)
+        this.context.lineTo(this.convertMarginedX(Math.min(x + width, this.canvasWidthPx)) * this.pixelRatio, 
+            this.convertMarginedY(y) * this.pixelRatio)
+        this.context.stroke()
+        this.context.closePath()
+    }   
+    
+    public fillRect(x: number, y: number, width: number, height: number) {
+        this.context.fillRect(
+            this.convertMarginedX(x) * this.pixelRatio, 
+            this.convertMarginedY(y) * this.pixelRatio, 
+            width * this.pixelRatio, 
+            height * this.pixelRatio)
+    }
+
+    public fillText(text: string, x: number, y: number, maxWidth?: number) {
+        this.context.fillText(text, 
+            this.convertMarginedX(x) * this.pixelRatio, 
+            this.convertMarginedY(y) * this.pixelRatio, 
+            maxWidth ? maxWidth * this.pixelRatio : undefined)
+    }
+
+    public clearRect(x: number, y: number, width: number, height: number) {
+        this.context.clearRect(
+            this.convertMarginedX(x) * this.pixelRatio, 
+            this.convertMarginedY(y) * this.pixelRatio, 
+            width * this.pixelRatio, 
+            height * this.pixelRatio)
     }
 }
