@@ -16,7 +16,7 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
         return BazTimelineLayer.RemToPx(this.headerHeightRem)
     }
 
-    public hourLabelMarginTopRem: number = 1.5
+    public hourLabelMarginTopRem: number = 1
     public get hourLabelMarginTopPx(): number {
         return BazTimelineLayer.RemToPx(this.hourLabelMarginTopRem)
     }
@@ -139,9 +139,12 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
 
     private drawHourLabel(time: Date) {
         const startPx = this.VisibleArea.GetStartPxFromDateTime(time) + this.hourLabelMarginLeftPx
-        if (startPx >= this.canvasWidthPx || startPx <= 0) return
+        if (startPx >= this.canvasWidthPx || startPx < 0) return
 
-        let width = this.VisibleArea.GetStartPxFromDateTime(this.Calculated.GetEndHourDateTimeFromTime(time)) - startPx
+        const endDateTime = this.Calculated.CalculateEndHourDateTimeFromTime(time)
+        let width = this.VisibleArea.GetStartPxFromDateTime(endDateTime)
+        console.log(`width = (${width}) - ${startPx} [${time} - ${endDateTime}]`)
+        width = width - startPx
         if (startPx + width > this.canvasWidthPx) {
             width = this.canvasWidthPx - startPx
         }
@@ -155,10 +158,17 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
         this.setContextStyle(`hour-text${this.Calculated.IsTimeInRange(time) ? "" : "-outside"}`)
         this.context.font = "0.8rem Arial"
 
-        const hourTextWidth = this.context.measureText(hourText)
-        if (hourTextWidth.width * 0.95 > width) return        
+        const hourTextWidth =  Math.round(this.context.measureText(hourText).width) 
+        console.log(`hourTextWidth = (${hourText}) - ${hourTextWidth}  - ${hourTextWidth * 0.95} - ${width} - canvasWidthPx: ${this.canvasWidthPx}`)
 
-        this.fillText(hourText, startPx, this.hourLabelMarginTopPx, width - this.hourLabelMarginLeftPx)
+        //console.log(`drawHourLabel: ${hourText} => ${startPx}px - ${time}`)
+        if (hourTextWidth * 0.8 > width) {
+            console.log(`drawHourLabel: Exit ${hourText} => ${startPx}px - ${time} - ${hourTextWidth} - (${width})`)
+            return
+        } 
+
+        this.fillText(hourText, startPx, this.hourLabelMarginTopPx, 
+            Math.min(width - this.hourLabelMarginLeftPx, hourTextWidth + this.hourLabelMarginLeftPx * 2))
     }
 
     private _drawHourLabel(x: number, width: number, time: Date, isRange: boolean) {
@@ -191,7 +201,6 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
                 const isRange = this.Calculated.IsTimeInRange(startHourDateTime)
                 this.setContextStyle(`hour-line${isRange ? "" : "-outside"}`)
                 this.drawLineVertical(startPx, 0, this.canvasHeightPx)
-                console.log(`drawHourTickLine: ${isRange ? "YES" : "NO"} => ${startPx}px - ${hourDateTime} - ${startHourDateTime}`)
             }
 
             if (tickLineType === TickLineType.HalfHour) {
@@ -237,12 +246,13 @@ export default class BazTimelineMainLayer extends BazTimelineLayer {
 
         //this._drawHourLabel(startPx, this.Owner.Ruler.Calculated.HourWidthWithZoomPx, currentDateTime, inRange)
         this.drawHourLabel(currentDateTime)
+
         this.drawHourTickLine(currentDateTime)
     }
 
     private drawHourBackground(currentDateTime: Date) {
-        const startHourDateTime = this.Calculated.CalculateStartHourDateTimeFromTime(currentDateTime)
-        const inRange = this.Calculated.IsTimeInRange(new Date(startHourDateTime.setMilliseconds(1)))
+        //const startHourDateTime = this.Calculated.CalculateStartHourDateTimeFromTime(currentDateTime)
+        const inRange = this.Calculated.IsTimeInRange(new Date(currentDateTime.setMilliseconds(1)))
 
         const inRangeEndDateTime = this.Calculated.GetEndHourDateTimeFromTime(currentDateTime)
         const calEndDateTime = this.Calculated.CalculateEndHourDateTimeFromTime(currentDateTime)

@@ -113,10 +113,10 @@ export default class BazTimelineProps {
     }
 
     public static GetDefaultStartDateTime(): Date {
-        return new Date("2024-10-14T10:00:00")
+        return new Date("2024-10-14T10:20:00")
     }
 
     public static GetDefaultEndDateTime(): Date {
-        return new Date((new Date("2024-10-14T16:45:00")).getTime())
+        return new Date((new Date("2024-10-14T13:45:00")).getTime())
     }
 }

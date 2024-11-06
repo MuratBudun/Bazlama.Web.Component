@@ -148,8 +148,8 @@ export default abstract class BazTimelineLayer {
 
     public drawLine(x1: number, y1: number, x2: number, y2: number) {
         this.context.beginPath()
-        this.context.moveTo(this.convertMarginedX(x1) * this.pixelRatio, this.convertMarginedY(y1) * this.pixelRatio)
-        this.context.lineTo(this.convertMarginedX(x2) * this.pixelRatio, this.convertMarginedY(y2) * this.pixelRatio)
+        this.context.moveTo(this.convertMarginedX(x1), this.convertMarginedY(y1))
+        this.context.lineTo(this.convertMarginedX(x2), this.convertMarginedY(y2))
         this.context.stroke()
         this.context.closePath()
     }
@@ -159,10 +159,10 @@ export default abstract class BazTimelineLayer {
         if (y > this.canvasHeightPx || y < 0) return
 
         this.context.beginPath()
-        this.context.moveTo(this.convertMarginedX(x) * this.pixelRatio, 
-            this.convertMarginedY(y) * this.pixelRatio)
-        this.context.lineTo(this.convertMarginedX(x) * this.pixelRatio, 
-            this.convertMarginedY(Math.min(y + height, this.canvasHeightPx)) * this.pixelRatio)
+        this.context.moveTo(this.convertMarginedX(x), 
+            this.convertMarginedY(y))
+        this.context.lineTo(this.convertMarginedX(x), 
+            this.convertMarginedY(Math.min(y + height, this.canvasHeightPx)))
         this.context.stroke()
         this.context.closePath()
     }
@@ -171,33 +171,34 @@ export default abstract class BazTimelineLayer {
         if (x > this.canvasWidthPx || x < 0) return
         if (y > this.canvasHeightPx || y < 0) return
         this.context.beginPath()
-        this.context.moveTo(this.convertMarginedX(x) * this.pixelRatio, this.convertMarginedY(y) * this.pixelRatio)
-        this.context.lineTo(this.convertMarginedX(Math.min(x + width, this.canvasWidthPx)) * this.pixelRatio, 
-            this.convertMarginedY(y) * this.pixelRatio)
+        this.context.moveTo(this.convertMarginedX(x), this.convertMarginedY(y))
+        this.context.lineTo(this.convertMarginedX(Math.min(x + width, this.canvasWidthPx)), 
+            this.convertMarginedY(y))
         this.context.stroke()
         this.context.closePath()
     }   
     
     public fillRect(x: number, y: number, width: number, height: number) {
         this.context.fillRect(
-            this.convertMarginedX(x) * this.pixelRatio, 
-            this.convertMarginedY(y) * this.pixelRatio, 
-            width * this.pixelRatio, 
-            height * this.pixelRatio)
+            this.convertMarginedX(x), 
+            this.convertMarginedY(y), 
+            width, 
+            height)
     }
 
     public fillText(text: string, x: number, y: number, maxWidth?: number) {
+        console.log("fillText", text, x, y, maxWidth)
         this.context.fillText(text, 
-            this.convertMarginedX(x) * this.pixelRatio, 
-            this.convertMarginedY(y) * this.pixelRatio, 
-            maxWidth ? maxWidth * this.pixelRatio : undefined)
+            this.convertMarginedX(x),
+            this.convertMarginedY(y), 
+            maxWidth)
     }
 
     public clearRect(x: number, y: number, width: number, height: number) {
         this.context.clearRect(
-            this.convertMarginedX(x) * this.pixelRatio, 
-            this.convertMarginedY(y) * this.pixelRatio, 
-            width * this.pixelRatio, 
-            height * this.pixelRatio)
+            this.convertMarginedX(x), 
+            this.convertMarginedY(y), 
+            width, 
+            height)
     }
 }
