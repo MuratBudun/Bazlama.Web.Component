@@ -1,6 +1,6 @@
-import BazTimelineLayer from "./baz-timeline-layer"
+import TimelineLayer from "./layers/TimelineLayer"
 
-export type TSubscribedLayer = Record<string, BazTimelineLayer>
+export type TSubscribedLayer = Record<string, TimelineLayer>
 
 export default class BazTimelineProps {
     #defaultStartDateTime: Date
@@ -113,10 +113,10 @@ export default class BazTimelineProps {
     }
 
     public static GetDefaultStartDateTime(): Date {
-        return new Date("2024-10-14T10:20:00")
+        return new Date("2024-10-14T10:00:00")
     }
 
     public static GetDefaultEndDateTime(): Date {
-        return new Date((new Date("2024-10-14T13:45:00")).getTime())
+        return new Date((new Date("2024-10-15T10:30:00")).getTime())
     }
 }

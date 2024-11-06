@@ -1,12 +1,14 @@
-import { isDate } from "util/types"
-
 export default class TimelineHelper {
+    public static get PixelRatio() { 
+        return window.devicePixelRatio || 1 
+    }    
+
     public static PxToRem(px: number): number {
         return px / this.RemInPx()
     }
 
     public static RemToPx(rem: number): number {
-        return rem * this.RemInPx()
+        return Math.round(rem * this.RemInPx())
     }
 
     public static RemInPx(): number {

@@ -18,4 +18,3 @@ export default class TimelineConstraints {
     public get HourMinWidthPx() { return TimelineHelper.RemToPx(this.HourMinWidthRem) }
     public get HourMaxWidthPx() { return TimelineHelper.RemToPx(this.HourMaxWidthRem) }
 }
-

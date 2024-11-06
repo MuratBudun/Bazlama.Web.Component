@@ -1,7 +1,7 @@
 import TimelineHelper from "./TimelineHelper"
 import TimelineRuler from "./TimelineRuler"
 
-export default class TimelineRulerCalculate {
+export default class TimelineRulerComputed {
     #owner: TimelineRuler
     public get Owner() { return this.#owner }
     public get VisibleArea() { return this.Owner.VisibleArea }
@@ -21,6 +21,23 @@ export default class TimelineRulerCalculate {
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
         return Math.ceil(result)
     }
+
+    public get HeaderHeightPx(): number {
+        return TimelineHelper.RemToPx(this.Owner.HeaderHeightRem)
+    }
+
+    public get HourLabelMarginTopPx(): number {
+        return TimelineHelper.RemToPx(this.Owner.HourLabelMarginTopRem)
+    }
+
+    public get HourLabelMarginLeftPx(): number {
+        return TimelineHelper.RemToPx(this.Owner.HourLabelMarginLeftRem)
+    }
+
+    public get HourLabelFontSizePx(): number {
+        return TimelineHelper.RemToPx(this.Owner.HourLabelFontSizeRem)
+    }
+
 
     public get StartOffsetPx(): number {
         return Math.ceil(this.Owner.StartOffsetMs / (60 * 60 * 1000) * this.HourWidthWithZoomPx)
@@ -74,19 +91,15 @@ export default class TimelineRulerCalculate {
         return Math.max(Math.min(this.Owner.ZoomFactor, this.ZoomFactorMax), this.ZoomFactorMin)
     }
 
-    public SetZoomFactorFromString(zoomFactorString: string, fireDrawLayers: boolean = true) {
-        if (isNaN(parseFloat(zoomFactorString))) {
-            this.Owner.ZoomFactor = 1.0
-        } else {
-            const zoomFactor = parseFloat(zoomFactorString)
-            this.Owner.ZoomFactor = Math.max(Math.min(zoomFactor, this.ZoomFactorMax), this.ZoomFactorMin)
-        }
 
-        if (fireDrawLayers) {
-            this.Owner.UpdateLayerTimes()
-        }
-    }  
-    
+    public GetMsFromPx(px: number): number {
+        return (px / this.TotalWidthPx) * this.TotalMs
+    }
+
+    public GetMsFromPxWithZoom(px: number): number {
+        return (px / this.TotalWidthWithZoomPx) * this.TotalMs
+    }
+
     public GetFitZoomFactor(): number {
         return Math.max(
             this.ZoomFactorMin,

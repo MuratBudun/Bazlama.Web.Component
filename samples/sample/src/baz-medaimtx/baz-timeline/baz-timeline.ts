@@ -4,31 +4,37 @@ import {
     ChangeHooks,
     CustomElement,
     EventAction,
-    Property,
     ShadowRootMode,
     useFunction,
 } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
-import BazTimelineMainLayer from "./baz-timeline-main-layer"
+import TimelineMainLayer from "./layers/TimelineMainLayer"
 import BazTimelineProps from "./baz-timeline-props"
 import TimelineRuler from "./classes/TimelineRuler"
+import TimelineLayerManager from "./layers/TimelineLayerManager"
+import TimelineHelper from "./classes/TimelineHelper"
 
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
     #TimeLineProps: BazTimelineProps = new BazTimelineProps()
-    #Theme: string = "default"
-    VerticalScrollEl: HTMLElement | undefined | null = null
-    VerticalScrollBarEl: HTMLElement | undefined | null = null
+    #currentTheme: string = "default"
+    #verticalScrollEl: HTMLElement | undefined | null = null
+    #verticalScrollBarEl: HTMLElement | undefined | null = null
 
+    #layerManager: TimelineLayerManager = new TimelineLayerManager(this)
+    public get LayerManager() {
+        return this.#layerManager
+    }
 
-    public Ruler: TimelineRuler = new TimelineRuler()
+    #ruler = new TimelineRuler(this)
+    public get Ruler() { return this.#ruler }
 
     //#region Attributes
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            me.#TimeLineProps.SetStartDateTimeFromString(value as string)
-            me.Ruler.SetTimes(me.#TimeLineProps.startDateTime, me.#TimeLineProps.endDateTime)
+            //me.#TimeLineProps.SetStartDateTimeFromString(value as string)
+            me.Ruler.SetStartDateTimeFromString(value as string)
         }),
     ])
     @Attribute("start-date-time", true)
@@ -37,8 +43,8 @@ export default class BazTimeline extends BazlamaWebComponent {
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            me.#TimeLineProps.SetEndDateTimeFromString(value as string)
-            me.Ruler.SetTimes(me.#TimeLineProps.startDateTime, me.#TimeLineProps.endDateTime)
+            //me.#TimeLineProps.SetEndDateTimeFromString(value as string)
+            me.Ruler.SetEndDateTimeFromString(value as string)
         }),
     ])
     @Attribute("end-date-time", true)
@@ -47,9 +53,8 @@ export default class BazTimeline extends BazlamaWebComponent {
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            const valueStr = (value as string)
-            me.#TimeLineProps.SetZoomFactorFromString(valueStr)
-            me.Ruler.ZoomFactor = me.#TimeLineProps.zoomFactor
+            me.#TimeLineProps.SetZoomFactorFromString(value as string)
+            me.Ruler.SetZoomFactorFromString(value as string)
             me.calculateVerticalScrollWidth()
         }),
     ])
@@ -60,7 +65,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
             me.#TimeLineProps.SetStartOffsetMsFromString(value as string)
-            me.Ruler.StartOffsetMs = me.#TimeLineProps.startOffsetMs
+            me.Ruler.SetStartOffsetMsFromString(value as string)
         }),
     ])
     @Attribute("start-offset-ms", true)
@@ -71,100 +76,76 @@ export default class BazTimeline extends BazlamaWebComponent {
     constructor() {
         super(ShadowRootMode.None)
         this.InitBazlamaWebComponent()
-        this.setLayerColors()
+        this.calculateVerticalScrollWidth()
+        //this.setLayerColors()
         this.initObservers()
     }
 
     private initObservers() {
         new ResizeObserver(() => {
-            this.#TimeLineProps.setLayersSize(this.clientWidth, this.clientHeight)
+            this.LayerManager.setCanvasSize(this.clientWidth, this.clientHeight)
             this.Ruler.VisibleArea.SetSize(this.clientWidth, this.clientHeight)
+            this.LayerManager.postDrawMessage()
+            /*                
+            this.#TimeLineProps.setLayersSize(this.clientWidth, this.clientHeight)
             this.#TimeLineProps.fireDrawLayers()
+            */
         }).observe(this)
 
         const htmlElement = document.querySelector("html")
         if (htmlElement) {
-            this.#Theme = htmlElement.getAttribute("data-theme") || "default"
+            this.#currentTheme = htmlElement.getAttribute("data-theme") || "default"
         }
 
         new MutationObserver(() => {
-            console.log("Theme changed")
             const htmlElement = document.querySelector("html")
             if (htmlElement) {
-                this.#Theme = htmlElement.getAttribute("data-theme") || "default"
-                this.setLayerColors()
+                this.#currentTheme = htmlElement.getAttribute("data-theme") || "default"
+                this.LayerManager.computeDrawStyles()
+                //this.setLayerColors()
             }
-            console.log(`Theme: ${this.#Theme}`)
         }).observe(htmlElement as Node, { attributes: true, attributeFilter: ["data-theme"] })
     }
 
     private calculateVerticalScrollWidth() {
-        const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
-        if (!mainLayer) return
+        if (!this.LayerManager.mainLayer) return
 
-        const widthBySeconds = this.#TimeLineProps.totalTimeMs / 1000
-        const widthBySecondsPx = widthBySeconds * (this.#TimeLineProps.hourWidthPx / 3600) 
-            
-        this.VerticalScrollBarEl?.style.setProperty("width", widthBySecondsPx + "px")
+        //const widthBySeconds = this.Ruler.Calculated.TotalMs / 1000
+        //const widthBySecondsPx = widthBySeconds * (this.Ruler.Calculated.HourWidthWithZoomPx / 3600) 
+
+        const width = this.Ruler.Computed.TotalWidthWithZoomPx + this.LayerManager.mainLayer.leftMarginPx * 2
+        this.#verticalScrollBarEl?.style.setProperty("width", `${width}px`)
     }
 
     @EventAction("div[ref='vertical-scroll']", "scroll")
     public onScroll = (_name: string, element: HTMLElement, e: Event) => {
-        const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
-        if (!mainLayer) return
+        if (!this.LayerManager.mainLayer) return
 
-        const leftMargin = element.scrollLeft / mainLayer.pixelRatio
-        this.StartOffsetMs = leftMargin * 36000
-    }
-
-    private setLayerColors() {
-        if (!this.isRendered) return
-
-        this.calculateVerticalScrollWidth()
-
-        for (const layerName in this.#TimeLineProps.subscribedLayers) {
-            const layer = this.#TimeLineProps.subscribedLayers[layerName]
-            if (layer) {
-                for (const drawStyleName in layer.DrawStyles) {
-                    const drawStyle = layer.DrawStyles[drawStyleName]
-                    const fillStyle = getComputedStyle(this).getPropertyValue(drawStyle.cssVariableNames.fillStyle)
-                    const strokeStyle = getComputedStyle(this).getPropertyValue(drawStyle.cssVariableNames.strokeStyle)
-                    
-                    if (fillStyle && fillStyle !== "") drawStyle.fillStyle = fillStyle
-                    if (strokeStyle && strokeStyle !== "") drawStyle.strokeStyle = strokeStyle
-
-                    layer.postDrawMessage()
-                }
-            }
-        }
+        const leftMargin = element.scrollLeft
+        this.StartOffsetMs = this.Ruler.Computed.GetMsFromPxWithZoom(leftMargin)
     }
 
     private renderLoop = () => {
-        this.#TimeLineProps.drawLayers()
+        //this.#TimeLineProps.drawLayers()
+        this.LayerManager.drawLoop()
         requestAnimationFrame(this.renderLoop)
     }
 
     afterRender(): void {
-        this.VerticalScrollEl = this.root?.querySelector("div[ref='vertical-scroll']")
-        this.VerticalScrollBarEl = this.root?.querySelector("div[ref='vertical-scroll-bar']")
+        this.#verticalScrollEl = this.root?.querySelector("div[ref='vertical-scroll']")
+        this.#verticalScrollBarEl = this.root?.querySelector("div[ref='vertical-scroll-bar']")
 
         const canvasList = this.root?.querySelectorAll("canvas")
         canvasList?.forEach((canvas) => {
             const canvasName = canvas.getAttribute("ref")
             if (canvasName === "main-canvas") {
-                this.Ruler.SilentSetValues(
-                    this.#TimeLineProps.startDateTime,
-                    this.#TimeLineProps.endDateTime,
-                    this.#TimeLineProps.hourWidthRem,
-                    this.#TimeLineProps.startOffsetMs,
-                    this.#TimeLineProps.zoomFactor,
-                )
-
-                const mainLayer = new BazTimelineMainLayer(this, canvasName, canvas as HTMLCanvasElement, this.#TimeLineProps)
+                this.LayerManager.mainLayer = new TimelineMainLayer(this, canvasName, canvas as HTMLCanvasElement)
             }
         })
 
-        this.setLayerColors()
+        this.calculateVerticalScrollWidth()
+        this.LayerManager.computeDrawStyles()
+        this.LayerManager.postDrawMessage()
 
         const zoomSlider = document.getElementById("zoomSlider") as HTMLInputElement
         if (zoomSlider) {
@@ -182,7 +163,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
         if (!mainLayer) return
 
-        let zoomFactor = (mainLayer as BazTimelineMainLayer).GetFitZoomFactor()
+        let zoomFactor = this.Ruler.Computed.GetFitZoomFactor()
         if (zoomFactor < 0.1) zoomFactor = 0.1
 
         this.StartOffsetMs = 0
