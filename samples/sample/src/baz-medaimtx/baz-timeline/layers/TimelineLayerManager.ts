@@ -102,6 +102,8 @@ export default class TimelineLayerManager {
                 layer.setSize(width, height)
             }
         }
+
+        this.Owner.Ruler.VisibleArea.SetSize(width, height)
     }
 
     public computeDrawStyles() {

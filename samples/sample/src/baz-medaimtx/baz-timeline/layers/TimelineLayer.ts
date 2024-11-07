@@ -1,5 +1,4 @@
 import BazTimeline from "../baz-timeline"
-import BazTimelineProps from "../baz-timeline-props"
 import TimelineConstraints from "../classes/TimelineConstraints"
 import TimelineHelper from "../classes/TimelineHelper"
 import TimelineRuler from "../classes/TimelineRuler"
@@ -121,12 +120,20 @@ export default abstract class TimelineLayer {
 
     public setSize(width: number, height: number) {
         const pixelRatio = TimelineHelper.PixelRatio
-        this.canvas.width = width * pixelRatio
-        this.canvas.height = height * pixelRatio
+        
         this.canvas.style.width = width + "px"
         this.canvas.style.height = height + "px"
+        this.canvas.width = width 
+        this.canvas.height = height 
 
-        this.context.scale(pixelRatio, pixelRatio)
+        // this.context.scale(pixelRatio, pixelRatio)
+
+        // this.canvas.width = width 
+        // this.canvas.height = height 
+        // this.canvas.style.width = width + "px"
+        // this.canvas.style.height = height + "px"
+
+        console.log(`Canvas ${this.Name} resized to ${width}x${height} | ${this.canvas.width}x${this.canvas.height} | ${pixelRatio}x`)
     }
 
     public convertMarginedX(x: number): number {

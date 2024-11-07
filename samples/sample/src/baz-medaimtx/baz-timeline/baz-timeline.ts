@@ -78,6 +78,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         document.addEventListener('gesturestart', this.gestureStart.bind(this))
         document.addEventListener('gesturechange', this.gestureChange.bind(this))
         document.addEventListener('gestureend', this.gestureEnd.bind(this))
+        document.addEventListener('wheel', this.wheelZoom.bind(this))
     }
 
     private gestureStartedZoomFactor: number = 1.0
@@ -104,9 +105,18 @@ export default class BazTimeline extends BazlamaWebComponent {
         console.log(`Gesture Zoom: ${e.scale}, ZoomFactor: ${this.ZoomFactor}`)
     }
 
+    private wheelZoom(event: WheelEvent) {
+        if (event.altKey) {
+            event.preventDefault()
+            const zoomFactor = event.deltaY < 0 ? 1.1 : 0.9
+            this.ZoomFactor = TimelineHelper.clamp(this.ZoomFactor * zoomFactor, 
+                this.Ruler.Constraints.ZoomFactorMin, this.Ruler.Constraints.ZoomFactorMax)
+        }
+    }
+
     private initObservers() {
         new ResizeObserver(() => {
-            this.Ruler.VisibleArea.SetSize(this.clientWidth, this.clientHeight)
+            console.log(`ResizeObserver: ${this.clientWidth}x${this.clientHeight}`)
             this.LayerManager.setCanvasSize(this.clientWidth, this.clientHeight)
             this.LayerManager.postDrawMessage()
         }).observe(this)
