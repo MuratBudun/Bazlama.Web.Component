@@ -1,5 +1,5 @@
 import TimelineLayer from "./layers/TimelineLayer"
-
+/*
 export type TSubscribedLayer = Record<string, TimelineLayer>
 
 export default class BazTimelineProps {
@@ -120,3 +120,4 @@ export default class BazTimelineProps {
         return new Date((new Date("2024-10-15T10:30:00")).getTime())
     }
 }
+    */

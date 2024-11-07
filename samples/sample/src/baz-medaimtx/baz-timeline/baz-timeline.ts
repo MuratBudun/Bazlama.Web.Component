@@ -9,14 +9,12 @@ import {
 } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 import TimelineMainLayer from "./layers/TimelineMainLayer"
-import BazTimelineProps from "./baz-timeline-props"
 import TimelineRuler from "./classes/TimelineRuler"
 import TimelineLayerManager from "./layers/TimelineLayerManager"
 import TimelineHelper from "./classes/TimelineHelper"
 
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
-    #TimeLineProps: BazTimelineProps = new BazTimelineProps()
     #currentTheme: string = "default"
     #verticalScrollEl: HTMLElement | undefined | null = null
     #verticalScrollBarEl: HTMLElement | undefined | null = null
@@ -33,27 +31,24 @@ export default class BazTimeline extends BazlamaWebComponent {
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            //me.#TimeLineProps.SetStartDateTimeFromString(value as string)
             me.Ruler.SetStartDateTimeFromString(value as string)
         }),
     ])
     @Attribute("start-date-time", true)
-    public StartDateTimeStr: string = BazTimelineProps.GetDefaultStartDateTime().toISOString()
+    public StartDateTimeStr: string = TimelineHelper.GetDefaultStartDateTime().toISOString()
 
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            //me.#TimeLineProps.SetEndDateTimeFromString(value as string)
             me.Ruler.SetEndDateTimeFromString(value as string)
         }),
     ])
     @Attribute("end-date-time", true)
-    public EndDateTimeStr: string = BazTimelineProps.GetDefaultEndDateTime().toISOString()
+    public EndDateTimeStr: string = TimelineHelper.GetDefaultEndDateTime().toISOString()
 
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            me.#TimeLineProps.SetZoomFactorFromString(value as string)
             me.Ruler.SetZoomFactorFromString(value as string)
             me.calculateVerticalScrollWidth()
         }),
@@ -64,8 +59,10 @@ export default class BazTimeline extends BazlamaWebComponent {
     @ChangeHooks([
         useFunction((bazComponent, value) => {
             const me = bazComponent as BazTimeline
-            me.#TimeLineProps.SetStartOffsetMsFromString(value as string)
             me.Ruler.SetStartOffsetMsFromString(value as string)
+            if (me.#verticalScrollEl) {
+                me.#verticalScrollEl.scrollLeft = me.Ruler.Computed.StartOffsetPx
+            }
         }),
     ])
     @Attribute("start-offset-ms", true)
@@ -76,20 +73,42 @@ export default class BazTimeline extends BazlamaWebComponent {
     constructor() {
         super(ShadowRootMode.None)
         this.InitBazlamaWebComponent()
-        this.calculateVerticalScrollWidth()
-        //this.setLayerColors()
         this.initObservers()
+
+        document.addEventListener('gesturestart', this.gestureStart.bind(this))
+        document.addEventListener('gesturechange', this.gestureChange.bind(this))
+        document.addEventListener('gestureend', this.gestureEnd.bind(this))
+    }
+
+    private gestureStartedZoomFactor: number = 1.0
+    private gestureApplySpeed: number = 1
+
+    private gestureStart(e: any) {
+        e.preventDefault()
+        this.gestureStartedZoomFactor = this.ZoomFactor
+    }
+
+    private gestureEnd(e: any) {
+        e.preventDefault()
+        this.gestureStartedZoomFactor = 1.0
+    }
+
+    private gestureChange(e: any) {
+        e.preventDefault()
+
+        const zoomFactor = this.gestureStartedZoomFactor * e.scale * 
+            (e.scale > 0 ? this.gestureApplySpeed : 1 / this.gestureApplySpeed) 
+        this.ZoomFactor = TimelineHelper.clamp(zoomFactor, 
+            this.Ruler.Constraints.ZoomFactorMin, this.Ruler.Constraints.ZoomFactorMax)
+        
+        console.log(`Gesture Zoom: ${e.scale}, ZoomFactor: ${this.ZoomFactor}`)
     }
 
     private initObservers() {
         new ResizeObserver(() => {
-            this.LayerManager.setCanvasSize(this.clientWidth, this.clientHeight)
             this.Ruler.VisibleArea.SetSize(this.clientWidth, this.clientHeight)
+            this.LayerManager.setCanvasSize(this.clientWidth, this.clientHeight)
             this.LayerManager.postDrawMessage()
-            /*                
-            this.#TimeLineProps.setLayersSize(this.clientWidth, this.clientHeight)
-            this.#TimeLineProps.fireDrawLayers()
-            */
         }).observe(this)
 
         const htmlElement = document.querySelector("html")
@@ -102,16 +121,12 @@ export default class BazTimeline extends BazlamaWebComponent {
             if (htmlElement) {
                 this.#currentTheme = htmlElement.getAttribute("data-theme") || "default"
                 this.LayerManager.computeDrawStyles()
-                //this.setLayerColors()
             }
         }).observe(htmlElement as Node, { attributes: true, attributeFilter: ["data-theme"] })
     }
 
     private calculateVerticalScrollWidth() {
         if (!this.LayerManager.mainLayer) return
-
-        //const widthBySeconds = this.Ruler.Calculated.TotalMs / 1000
-        //const widthBySecondsPx = widthBySeconds * (this.Ruler.Calculated.HourWidthWithZoomPx / 3600) 
 
         const width = this.Ruler.Computed.TotalWidthWithZoomPx + this.LayerManager.mainLayer.leftMarginPx * 2
         this.#verticalScrollBarEl?.style.setProperty("width", `${width}px`)
@@ -126,7 +141,6 @@ export default class BazTimeline extends BazlamaWebComponent {
     }
 
     private renderLoop = () => {
-        //this.#TimeLineProps.drawLayers()
         this.LayerManager.drawLoop()
         requestAnimationFrame(this.renderLoop)
     }
@@ -158,11 +172,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         this.renderLoop()
     }
 
-
-    public fit() {
-        const mainLayer = this.#TimeLineProps.subscribedLayers["main-canvas"]
-        if (!mainLayer) return
-
+    public fitToCanvas() {
         let zoomFactor = this.Ruler.Computed.GetFitZoomFactor()
         if (zoomFactor < 0.1) zoomFactor = 0.1
 

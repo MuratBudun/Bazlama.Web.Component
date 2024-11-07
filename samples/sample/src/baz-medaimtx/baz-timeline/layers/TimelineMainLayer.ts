@@ -1,5 +1,4 @@
 import TimelineLayer from "./TimelineLayer"
-import BazTimelineProps from "../baz-timeline-props"
 import BazTimeline from "../baz-timeline"
 
 export enum TickLineType {
@@ -92,7 +91,7 @@ export default class TimelineMainLayer extends TimelineLayer {
                 this.drawLineVertical(startPx, 0, this.CanvasHeightPx)
             }
 
-            if (tickLineType === TickLineType.HalfHour) {
+            if (tickLineType === TickLineType.HalfHour && this.Computed.HourWidthWithZoomRem > 4) {
                 const adjustedDateTime = new Date(startHourDateTime)
                 adjustedDateTime.setMinutes(30)
                 const startPx = this.VisibleArea.GetStartPxFromDateTime(adjustedDateTime)
@@ -101,7 +100,7 @@ export default class TimelineMainLayer extends TimelineLayer {
                 this.drawLineVertical(startPx, Math.floor(this.Computed.HeaderHeightPx / 2), this.CanvasHeightPx)
             }
 
-            if (tickLineType === TickLineType.OneSixthHour) {
+            if (tickLineType === TickLineType.OneSixthHour && this.Computed.HourWidthWithZoomRem > 6) {
                 for (let i = 1; i < 6; i++) {
                     const adjustedDateTime = new Date(startHourDateTime)
                     adjustedDateTime.setMinutes(10 * i)

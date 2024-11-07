@@ -16,10 +16,18 @@ export default class TimelineRulerComputed {
         return Math.ceil(result)
     }
 
+    public get HourWidthRem(): number {
+        return TimelineHelper.PxToRem(this.HourWidthPx)
+    }
+
     public get HourWidthWithZoomPx(): number {
         const hourWidthPx = this.HourWidthPx * this.Owner.ZoomFactor
         const result = Math.max(Math.min(hourWidthPx, this.Owner.Constraints.HourMaxWidthPx), this.Owner.Constraints.HourMinWidthPx)
         return Math.ceil(result)
+    }
+
+    public get HourWidthWithZoomRem(): number {
+        return TimelineHelper.PxToRem(this.HourWidthWithZoomPx)
     }
 
     public get HeaderHeightPx(): number {

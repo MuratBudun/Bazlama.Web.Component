@@ -20,7 +20,7 @@ export default class TimelineHelper {
     }
 
     public static GetDefaultEndDateTime(): Date {
-        return new Date((new Date("2024-10-14T10:00:00")).getTime() + (5 * 60 * 60 * 1000))
+        return new Date("2024-10-15T10:00:00")
     }
 
     public static IsTwoDateSame(date1: Date, date2: Date) {
@@ -28,5 +28,9 @@ export default class TimelineHelper {
         if (date1 === null || date2 === null) return false
 
         return date1.getTime() === date2.getTime()
+    }
+
+    public static clamp(value: number, min: number, max: number): number {
+        return Math.max(min, Math.min(value, max))
     }
 }    
