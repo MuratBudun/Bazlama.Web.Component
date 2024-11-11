@@ -123,10 +123,11 @@ export default abstract class TimelineLayer {
         
         this.canvas.style.width = width + "px"
         this.canvas.style.height = height + "px"
-        this.canvas.width = width 
-        this.canvas.height = height 
+        
+        this.canvas.width = width * pixelRatio
+        this.canvas.height = height * pixelRatio
 
-        // this.context.scale(pixelRatio, pixelRatio)
+        this.context.scale(pixelRatio, pixelRatio)
 
         // this.canvas.width = width 
         // this.canvas.height = height 
