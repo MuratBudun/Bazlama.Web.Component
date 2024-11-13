@@ -12,6 +12,8 @@ import TimelineMainLayer from "./layers/TimelineMainLayer"
 import TimelineRuler from "./classes/TimelineRuler"
 import TimelineLayerManager from "./layers/TimelineLayerManager"
 import TimelineHelper from "./classes/TimelineHelper"
+import TimelineTrack from "./classes/TimelineTrack"
+import TimelineTrackLayer from "./layers/TimelineTrackLayer"
 
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
@@ -26,6 +28,9 @@ export default class BazTimeline extends BazlamaWebComponent {
 
     #ruler = new TimelineRuler(this)
     public get Ruler() { return this.#ruler }
+
+    #tracks: TimelineTrack[] = []
+    public get Tracks() { return this.#tracks }
 
     //#region Attributes
     @ChangeHooks([
@@ -79,6 +84,8 @@ export default class BazTimeline extends BazlamaWebComponent {
         document.addEventListener('gesturechange', this.gestureChange.bind(this))
         document.addEventListener('gestureend', this.gestureEnd.bind(this))
         document.addEventListener('wheel', this.wheelZoom.bind(this))
+
+        this.addTestTracks()
     }
 
     private gestureStartedZoomFactor: number = 1.0
@@ -165,6 +172,11 @@ export default class BazTimeline extends BazlamaWebComponent {
             if (canvasName === "main-canvas") {
                 this.LayerManager.mainLayer = new TimelineMainLayer(this, canvasName, canvas as HTMLCanvasElement)
             }
+            if (canvasName === "track-canvas") {
+                const l = new TimelineTrackLayer(this, canvasName, canvas as HTMLCanvasElement)
+                console.log(`Track Layer: ${canvasName} == ${l.Name}, ${l}`)
+                this.LayerManager.addLayer(l)
+            }
         })
 
         this.calculateVerticalScrollWidth()
@@ -188,5 +200,15 @@ export default class BazTimeline extends BazlamaWebComponent {
 
         this.StartOffsetMs = 0
         this.ZoomFactor = zoomFactor
+    }
+
+    public addTestTracks() {
+        this.#tracks = [
+            new TimelineTrack("Track 1", [
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date(this.Ruler.StartDateTime.getTime() + (60 * 1000) * 120 ), 
+                    new Date(this.Ruler.StartDateTime.getTime() + 1000 * 60 * 60 * 24))
+            ]),
+        ]
     }
 }

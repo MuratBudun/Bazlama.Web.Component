@@ -60,6 +60,7 @@ export default abstract class TimelineLayer {
         if (canvas instanceof HTMLCanvasElement == false) throw new Error("canvas is not an instance of HTMLCanvasElement")
         if (canvas.getContext("2d") == null) throw new Error("CanvasRenderingContext2D is null")
 
+        this.#name = name
         this.#owner = owner
         this.#ruler = owner.Ruler
         this.#computed = owner.Ruler.Computed
@@ -119,22 +120,17 @@ export default abstract class TimelineLayer {
     public abstract drawFunction(): void
 
     public setSize(width: number, height: number) {
-        const pixelRatio = TimelineHelper.PixelRatio
+        const pixelRatio = Math.max(TimelineHelper.PixelRatio, 1)
         
         this.canvas.style.width = width + "px"
         this.canvas.style.height = height + "px"
         
         this.canvas.width = width * pixelRatio
         this.canvas.height = height * pixelRatio
-
+        
         this.context.scale(pixelRatio, pixelRatio)
 
-        // this.canvas.width = width 
-        // this.canvas.height = height 
-        // this.canvas.style.width = width + "px"
-        // this.canvas.style.height = height + "px"
-
-        console.log(`Canvas ${this.Name} resized to ${width}x${height} | ${this.canvas.width}x${this.canvas.height} | ${pixelRatio}x`)
+        //console.log(`Canvas ${this.Name} resized to ${width}x${height} | ${this.canvas.width}x${this.canvas.height} | ${pixelRatio}x`)
     }
 
     public convertMarginedX(x: number): number {

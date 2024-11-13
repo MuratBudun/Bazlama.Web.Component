@@ -4,7 +4,11 @@ baz-timeline {
     width: 100%;
     height: 100%;
     overflow: hidden;
+
+    --track-background-fill-style: oklch(var(--s) / 0.5);
+    --track-background-stroke-style: oklch(var(--s) / 0.5);
     
+
     --header-background-fill-style: oklch(var(--b2));
     --header-background-stroke-style: oklch(var(--p));
 
@@ -51,6 +55,16 @@ baz-timeline .baz-timeline-main-canvas {
     height: 100%;
     overflow: hidden;
     z-index: 1;
+}
+
+baz-timeline .baz-timeline-track-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
 }
 
 baz-timeline .baz-timeline-mouse-canvas {
