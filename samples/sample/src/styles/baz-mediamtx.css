@@ -5,9 +5,58 @@ baz-timeline {
     height: 100%;
     overflow: hidden;
 
-    --track-background-fill-style: oklch(var(--s) / 0.5);
-    --track-background-stroke-style: oklch(var(--s) / 0.5);
+    --track-background-opacity: 0.1;
+    --track-fragment-primary-opacity: 0.8;
+    --track-fragment-secondary-opacity: 0.5;
+
+    --track-primary-background-fill-style: oklch(var(--p) / var(--track-background-opacity));
+    --track-primary-background-stroke-style: oklch(var(--p) / var(--track-background-opacity));
+    --track-primary-fragment-primary-fill-style: oklch(var(--p) / var(--track-fragment-primary-opacity));
+    --track-primary-fragment-primary-stroke-style: oklch(var(--p) / var(--track-fragment-primary-opacity));
+    --track-primary-fragment-secondary-fill-style: oklch(var(--p) / var(--track-fragment-secondary-opacity));
+    --track-primary-fragment-secondary-stroke-style: oklch(var(--p) / var(--track-fragment-secondary-opacity));
     
+    --track-secondary-background-fill-style: oklch(var(--s) / var(--track-background-opacity));
+    --track-secondary-background-stroke-style: oklch(var(--s) / var(--track-background-opacity));
+    --track-secondary-fragment-primary-fill-style: oklch(var(--s) / var(--track-fragment-primary-opacity));
+    --track-secondary-fragment-primary-stroke-style: oklch(var(--s) / var(--track-fragment-primary-opacity));
+    --track-secondary-fragment-secondary-fill-style: oklch(var(--s) / var(--track-fragment-secondary-opacity));
+    --track-secondary-fragment-secondary-stroke-style: oklch(var(--s) / var(--track-fragment-secondary-opacity));
+
+    --track-accent-background-fill-style: oklch(var(--a) / var(--track-background-opacity));
+    --track-accent-background-stroke-style: oklch(var(--a) / var(--track-background-opacity));
+    --track-accent-fragment-primary-fill-style: oklch(var(--a) / var(--track-fragment-primary-opacity));
+    --track-accent-fragment-primary-stroke-style: oklch(var(--a) / var(--track-fragment-primary-opacity));
+    --track-accent-fragment-secondary-fill-style: oklch(var(--a) / var(--track-fragment-secondary-opacity));
+    --track-accent-fragment-secondary-stroke-style: oklch(var(--a) / var(--track-fragment-secondary-opacity));
+
+    --track-info-background-fill-style: oklch(var(--in) / var(--track-background-opacity));
+    --track-info-background-stroke-style: oklch(var(--in) / var(--track-background-opacity));
+    --track-info-fragment-primary-fill-style: oklch(var(--in) / var(--track-fragment-primary-opacity));
+    --track-info-fragment-primary-stroke-style: oklch(var(--in) / var(--track-fragment-primary-opacity));
+    --track-info-fragment-secondary-fill-style: oklch(var(--in) / var(--track-fragment-secondary-opacity));
+    --track-info-fragment-secondary-stroke-style: oklch(var(--in) / var(--track-fragment-secondary-opacity));
+
+    --track-success-background-fill-style: oklch(var(--su) / var(--track-background-opacity));
+    --track-success-background-stroke-style: oklch(var(--su) / var(--track-background-opacity));
+    --track-success-fragment-primary-fill-style: oklch(var(--su) / var(--track-fragment-primary-opacity));
+    --track-success-fragment-primary-stroke-style: oklch(var(--su) / var(--track-fragment-primary-opacity));
+    --track-success-fragment-secondary-fill-style: oklch(var(--su) / var(--track-fragment-secondary-opacity));
+    --track-success-fragment-secondary-stroke-style: oklch(var(--su) / var(--track-fragment-secondary-opacity));
+
+    --track-warning-background-fill-style: oklch(var(--wa) / var(--track-background-opacity));
+    --track-warning-background-stroke-style: oklch(var(--wa) / var(--track-background-opacity));
+    --track-warning-fragment-primary-fill-style: oklch(var(--wa) / var(--track-fragment-primary-opacity));
+    --track-warning-fragment-primary-stroke-style: oklch(var(--wa) / var(--track-fragment-primary-opacity));
+    --track-warning-fragment-secondary-fill-style: oklch(var(--wa) / var(--track-fragment-secondary-opacity));
+    --track-warning-fragment-secondary-stroke-style: oklch(var(--wa) / var(--track-fragment-secondary-opacity));
+
+    --track-error-background-fill-style: oklch(var(--er) / var(--track-background-opacity));
+    --track-error-background-stroke-style: oklch(var(--er) / var(--track-background-opacity));
+    --track-error-fragment-primary-fill-style: oklch(var(--er) / var(--track-fragment-primary-opacity));
+    --track-error-fragment-primary-stroke-style: oklch(var(--er) / var(--track-fragment-primary-opacity));
+    --track-error-fragment-secondary-fill-style: oklch(var(--er) / var(--track-fragment-secondary-opacity));
+    --track-error-fragment-secondary-stroke-style: oklch(var(--er) / var(--track-fragment-secondary-opacity));
 
     --header-background-fill-style: oklch(var(--b2));
     --header-background-stroke-style: oklch(var(--p));

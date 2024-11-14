@@ -12,8 +12,9 @@ import TimelineMainLayer from "./layers/TimelineMainLayer"
 import TimelineRuler from "./classes/TimelineRuler"
 import TimelineLayerManager from "./layers/TimelineLayerManager"
 import TimelineHelper from "./classes/TimelineHelper"
-import TimelineTrack from "./classes/TimelineTrack"
+import TimelineTrack from "./tracks/TimelineTrack"
 import TimelineTrackLayer from "./layers/TimelineTrackLayer"
+import TimelineTrackManager from "./tracks/TimelineTrackManager"
 
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
@@ -21,16 +22,14 @@ export default class BazTimeline extends BazlamaWebComponent {
     #verticalScrollEl: HTMLElement | undefined | null = null
     #verticalScrollBarEl: HTMLElement | undefined | null = null
 
-    #layerManager: TimelineLayerManager = new TimelineLayerManager(this)
-    public get LayerManager() {
-        return this.#layerManager
-    }
+    #layerManager = new TimelineLayerManager(this)
+    public get LayerManager() { return this.#layerManager }
 
     #ruler = new TimelineRuler(this)
     public get Ruler() { return this.#ruler }
 
-    #tracks: TimelineTrack[] = []
-    public get Tracks() { return this.#tracks }
+    #trackManager = new TimelineTrackManager(this)
+    public get TrackManager() { return this.#trackManager }
 
     //#region Attributes
     @ChangeHooks([
@@ -203,12 +202,53 @@ export default class BazTimeline extends BazlamaWebComponent {
     }
 
     public addTestTracks() {
-        this.#tracks = [
-            new TimelineTrack("Track 1", [
+        this.TrackManager.AddTrack(
+            new TimelineTrack(this, "Track 1", "primary", [
                 TimelineTrack.CreateFragmentFromDateTime(
-                    new Date(this.Ruler.StartDateTime.getTime() + (60 * 1000) * 120 ), 
-                    new Date(this.Ruler.StartDateTime.getTime() + 1000 * 60 * 60 * 24))
+                    new Date("2024-10-14T11:00:00"), 
+                    new Date("2024-10-14T12:30:00")),
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T13:00:00"), 
+                    new Date("2024-10-14T14:30:00"))
             ]),
-        ]
+        )
+
+        this.TrackManager.AddTrack(
+            new TimelineTrack(this, "Track 2", "secondary", [
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T11:00:00"), 
+                    new Date("2024-10-14T12:30:00")),
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T13:00:00"), 
+                    new Date("2024-10-14T14:30:00"))
+            ]),
+        )
+
+        this.TrackManager.AddTrack(
+            new TimelineTrack(this, "Track 3", "accent", [
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T11:00:00"), 
+                    new Date("2024-10-14T12:30:00")),
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T13:00:00"), 
+                    new Date("2024-10-14T14:30:00"))
+            ]),
+        )
+
+        this.TrackManager.AddTrack(
+            new TimelineTrack(this, "Track 4", "info", [
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T11:00:00"), 
+                    new Date("2024-10-14T15:30:00")),
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T12:30:00"), 
+                    new Date("2024-10-14T14:30:00"), "secondary"),
+                TimelineTrack.CreateFragmentFromDateTime(
+                    new Date("2024-10-14T16:00:00"), 
+                    new Date("2024-10-14T17:30:00"), "secondary")
+            ]),
+        )
+
+
     }
 }

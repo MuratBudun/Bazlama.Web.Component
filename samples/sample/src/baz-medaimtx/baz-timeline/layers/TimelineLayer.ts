@@ -113,6 +113,7 @@ export default abstract class TimelineLayer {
     public draw(isForceRedraw: boolean = false) {
         if (this.isNeedRedraw || isForceRedraw) {
             this.drawFunction()
+            console.log(`Layer ${this.Name} redrawn`)
             this.isNeedRedraw = false
         }
     }
@@ -173,6 +174,14 @@ export default abstract class TimelineLayer {
         this.context.closePath()
     }   
     
+    public strokeRect(x: number, y: number, width: number, height: number) {
+        this.context.strokeRect(
+            this.convertMarginedX(x), 
+            this.convertMarginedY(y), 
+            width, 
+            height)
+    }
+
     public fillRect(x: number, y: number, width: number, height: number) {
         this.context.fillRect(
             this.convertMarginedX(x), 
