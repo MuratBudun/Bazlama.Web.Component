@@ -1,4 +1,28 @@
-<video width="400" controls>
-  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-  Your browser does not support HTML video.
-</video>
+<div class="flex p-4 gap-4">
+    <div>
+        <label class="label cursor-pointer">
+            <input type="radio" name="selected-tab" class="radio radio-accent" value="tab-1"/>
+            <span class="label-text p-2">Tab Item 1</span>
+        </label>     
+        <label class="label cursor-pointer">
+            <input type="radio" name="selected-tab" class="radio radio-accent" value="tab-2" />
+            <span class="label-text p-2">Tab Item 2</span>
+        </label>     
+        <label class="label cursor-pointer">
+            <input type="radio" name="selected-tab" class="radio radio-accent" value="tab-3" />
+            <span class="label-text p-2">Tab Item 3</span>
+        </label>     
+    </div>
+    <div class="flex-1 p-2">
+        <ul class="s05-tab border-b border-neutral flex">
+            <li ref="tab-1">Tab Item 1</li>
+            <li ref="tab-2">Tab Item 2</li>
+            <li ref="tab-3">Tab Item 3</li>
+        </ul>
+        <div class="s05-tab-content">
+            <div ref="tab-1-content">Content 1</div>
+            <div ref="tab-2-content">Content 2</div>
+            <div ref="tab-3-content">Content 3</div>
+        </div>
+    </div>
+</div>

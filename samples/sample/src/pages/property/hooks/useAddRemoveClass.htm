@@ -1,0 +1,58 @@
+<h2 class="pb-2 text-4xl">useAddRemoveClass</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to set the text content of an element.
+    It is useful when you want to set the text content of an element from component property on change.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prims lang="typescript">
+            useElementText(query: string, prefix: string = "", suffix: string = "")  
+        </prims></pre>
+
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select the element.</li>
+            <li class="pb-1"><div class="badge badge-primary">prefix</div> - The prefix to be added to the text content.</li>
+            <li class="pb-1"><div class="badge badge-primary">suffix</div> - The suffix to be added to the text content.</li>
+        </ul>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s05></baz-s05>
+            <h4>Change the text below</h4>
+            <div class="flex gap-4 bg-base-100 rounded-box">
+                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-xs" 
+                    value="New Text" />
+                <button class="btn btn-sm btn-active btn-primary"
+                    onclick="
+                        var container = this.closest('.demo');
+                        var bazElement = container.querySelector('baz-s01');
+                        var inputValue = container.querySelector('input').value;
+                        bazElement.setAttribute('label-text', inputValue);
+                    ">
+                    Change Text
+                </button>
+            </div>
+            <p class="hidden">
+                <span class="badge badge-neutral">Turkish: </span>
+                Yukardaki <code>baz-s01</code> bileşeni, <code>labelText</code> isminde bir property tanımınına sahiptir.
+                Bu property aynı zamanda <code>label-text</code> isminde bir html attribute olarak ta tanımlanmıştır.
+                "Change Text" butonu <code>setAttribute</code> javascript metodu ile bu property'i değiştirir.
+                Daha fazla bilgi için "Script" ve "Template" sekmelerine bakınız.
+            </p>
+            <p class="pt-3">
+                The <code>baz-s01</code> component above has a property named <code>labelText</code>.
+                This property is also defined as an html attribute named <code>label-text</code>.
+                The "Change Text" button changes this property using the <code>setAttribute</code> javascript method.
+            </p>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>            
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s05/baz-s05.ts"></prims-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s05/template.htm"></prims-loader></code></pre>
+    </div>
+</baz-tab>

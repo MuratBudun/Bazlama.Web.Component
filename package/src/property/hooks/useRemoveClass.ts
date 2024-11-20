@@ -1,18 +1,16 @@
 import TPropertyChangeHook from "../types/TPropertyChangeHandler"
 import { TPropertyValueType } from "../types/TPropertyValueType"
 
-export default function useAddRemoveClass(
+export default function useRemoveClass(
+    addElQuery: (oldValue: TPropertyValueType, value: TPropertyValueType) => string,
+    removeElQuery: (value: TPropertyValueType, oldValue: TPropertyValueType) => string,
     className: string | string[],
-    addElQuery?: (value: TPropertyValueType, oldValue: TPropertyValueType) => string,
-    removeElQuery?: (oldValue: TPropertyValueType, value: TPropertyValueType) => string,
 ): TPropertyChangeHook {
     return (bazComponent, value, _propertyDefine, oldValue) => {
-        if (!addElQuery && !removeElQuery) return
-
         const _oldValue: TPropertyValueType = oldValue === value ? "" : oldValue
 
-        const addTargets = addElQuery ? bazComponent.root?.querySelectorAll(addElQuery(value, _oldValue)) : null
-        const removeTargets = removeElQuery ? bazComponent.root?.querySelectorAll(removeElQuery(_oldValue, value)) : null
+        const addTargets = bazComponent.root?.querySelectorAll(addElQuery(_oldValue, value))
+        const removeTargets = bazComponent.root?.querySelectorAll(removeElQuery(value, _oldValue))
 
         let classList: string[] = []
         if (typeof className === "string") {
@@ -21,9 +19,7 @@ export default function useAddRemoveClass(
         if (Array.isArray(className)) {
             classList = className
         }
-       
-        if (classList.length === 0) return
-
+        
         addTargets?.forEach((target: Element) => {
             if (target) {
                 classList.forEach((className) => {

@@ -1,0 +1,40 @@
+baz-s05 {
+    display: flex;
+    flex-direction: column;
+}
+
+baz-s05 .s05-tab li {
+    list-style-type: none;
+    padding: 0.2rem 1rem;
+}
+
+baz-s05 .s05-tab li.active {
+    color: oklch(var(--p));
+    border-bottom: 2px solid oklch(var(--p));
+    transition: color 1.5s ease, border-color 1.5s ease;
+}
+
+baz-s05 .s05-tab-content {
+    display: flex;
+    flex-direction: column;
+}
+
+baz-s05 .s05-tab-content div {
+    display: none;
+    padding: 1rem;
+    background-color: oklch(var(--b2));
+}
+
+baz-s05 .s05-tab-content div.active {
+    display: block;
+    animation: fade-in 1.5s ease;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -13,6 +13,7 @@ import "./sample-components/baz-s01/baz-s01.ts"
 import "./sample-components/baz-s02/baz-s02.ts"
 import "./sample-components/baz-s03/baz-s03.ts"
 import "./sample-components/baz-s04/baz-s04.ts"
+import "./sample-components/baz-s05/baz-s05.ts"
 
 import PageRouter from "./pages/pages.ts"
 

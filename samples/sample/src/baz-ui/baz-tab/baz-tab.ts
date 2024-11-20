@@ -6,11 +6,11 @@ export default class BazTab extends BazlamaWebComponent {
 
     @ChangeHooks([
         useAddRemoveClass(
-            (oldValue) => `div[tab-id="${oldValue}"]`,
-            (value) => `div[tab-id="${value}"]`, "hidden"),
+            (_, oldValue) => `div[tab-id="${oldValue}"]`,
+            (_, value) => `div[tab-id="${value}"]`, "hidden"),
         useAddRemoveClass(
-            (_, value) => `li[tab-id="${value}"]`,
-            (_, oldValue) => `li[tab-id="${oldValue}"]`, ["text-primary", "!border-primary"])
+            (value) => `li[tab-id="${value}"]`,
+            (oldValue) => `li[tab-id="${oldValue}"]`, ["text-primary", "!border-primary"])
     ])
     @Attribute("active-tab-id", true)
     public ActiveTabId: string = ""
