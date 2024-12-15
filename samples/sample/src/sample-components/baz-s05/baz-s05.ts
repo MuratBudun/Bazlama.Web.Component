@@ -11,12 +11,12 @@ export default class BazS05 extends BazlamaWebComponent {
 
     @ChangeHooks([
         useElementInputRadioValue("selected-tab"),
-        useAddRemoveClass(
-            (value) => `div[ref="${value}-content"]`,
-            (oldValue) => `div[ref="${oldValue}-content"]`, "active"),
-        useAddRemoveClass(
-            (value) => `li[ref="${value}"]`,
-            (oldValue) => `li[ref="${oldValue}"]`, "active")        
+        useAddRemoveClass({
+            addClassName: "active",
+            removeClassName: "active",
+            addElQuery: (value) => `div[ref="${value}-content"], li[ref="${value}"]`,
+            removeElQuery: (oldValue) => `div[ref="${oldValue}-content"], li[ref="${oldValue}"]`
+        })
     ])
     @Attribute("selected-tab", true)
     public SelectedTab: string = "tab-2"

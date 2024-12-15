@@ -5,12 +5,18 @@ export default class BazTab extends BazlamaWebComponent {
     public tabs: Record<string, { Title: string, IconName: string, Html: string }> = {}
 
     @ChangeHooks([
-        useAddRemoveClass(
-            (_, oldValue) => `div[tab-id="${oldValue}"]`,
-            (_, value) => `div[tab-id="${value}"]`, "hidden"),
-        useAddRemoveClass(
-            (value) => `li[tab-id="${value}"]`,
-            (oldValue) => `li[tab-id="${oldValue}"]`, ["text-primary", "!border-primary"])
+        useAddRemoveClass({
+            addClassName: "hidden",
+            removeClassName: "hidden",
+            addElQuery: (_, oldValue) => `div[tab-id="${oldValue}"]`,
+            removeElQuery: (_, value) => `div[tab-id="${value}"]`
+        }),
+        useAddRemoveClass({
+            addClassName: ["text-primary", "!border-primary"],
+            removeClassName: ["text-primary", "!border-primary"],
+            addElQuery: (value) => `li[tab-id="${value}"]`,
+            removeElQuery: (oldValue) => `li[tab-id="${oldValue}"]`
+        })
     ])
     @Attribute("active-tab-id", true)
     public ActiveTabId: string = ""

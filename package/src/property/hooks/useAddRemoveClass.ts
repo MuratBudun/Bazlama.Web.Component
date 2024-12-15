@@ -1,43 +1,52 @@
 import TPropertyChangeHook from "../types/TPropertyChangeHandler"
 import { TPropertyValueType } from "../types/TPropertyValueType"
 
-export default function useAddRemoveClass(
-    className: string | string[],
-    addElQuery?: (value: TPropertyValueType, oldValue: TPropertyValueType) => string,
-    removeElQuery?: (oldValue: TPropertyValueType, value: TPropertyValueType) => string,
-): TPropertyChangeHook {
+export type TAddRemoveClassHookConfig = {
+    addClassName?: string | string[]
+    removeClassName?: string | string[]
+    addElQuery?: (value: TPropertyValueType, oldValue: TPropertyValueType) => string
+    removeElQuery?: (oldValue: TPropertyValueType, value: TPropertyValueType) => string
+}
+
+export default function useAddRemoveClass(config: TAddRemoveClassHookConfig): TPropertyChangeHook {
+    if (!config) return () => {}
+
+    const getClassList = (className?: string | string[]): string[] => {
+        if (!className) return []
+        if (typeof className === "string") return [className]
+        return className
+    }
+
     return (bazComponent, value, _propertyDefine, oldValue) => {
-        if (!addElQuery && !removeElQuery) return
+        if (!config.addClassName && !config.removeClassName) return
+        if (!config.addElQuery && !config.removeElQuery) return
 
         const _oldValue: TPropertyValueType = oldValue === value ? "" : oldValue
 
-        const addTargets = addElQuery ? bazComponent.root?.querySelectorAll(addElQuery(value, _oldValue)) : null
-        const removeTargets = removeElQuery ? bazComponent.root?.querySelectorAll(removeElQuery(_oldValue, value)) : null
+        const addTargets = config.addElQuery ? bazComponent.root?.querySelectorAll(config.addElQuery(value, _oldValue)) : null
+        const removeTargets = config.removeElQuery ? bazComponent.root?.querySelectorAll(config.removeElQuery(_oldValue, value)) : null
 
-        let classList: string[] = []
-        if (typeof className === "string") {
-            classList = [className]
-        } 
-        if (Array.isArray(className)) {
-            classList = className
+        const addClassList = getClassList(config.addClassName)
+        const removeClassList = getClassList(config.removeClassName)
+
+        if (addClassList.length > 0) {
+            addTargets?.forEach((target: Element) => {
+                if (target) {
+                    addClassList.forEach((className) => {
+                        target.classList.add(className)
+                    })
+                }
+            })
         }
-       
-        if (classList.length === 0) return
 
-        addTargets?.forEach((target: Element) => {
-            if (target) {
-                classList.forEach((className) => {
-                    target.classList.add(className)
-                })
-            }
-        })
-
-        removeTargets?.forEach((target: Element) => {
-            if (target) {
-                classList.forEach((className) => {
-                    target.classList.remove(className)
-                })
-            }
-        })
+        if (removeClassList.length > 0) {
+            removeTargets?.forEach((target: Element) => {
+                if (target) {
+                    removeClassList.forEach((className) => {
+                        target.classList.remove(className)
+                    })
+                }
+            })
+        }
     }
 }

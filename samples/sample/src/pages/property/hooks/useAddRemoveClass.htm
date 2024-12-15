@@ -8,6 +8,10 @@
 <baz-tab active-tab-id="tab-1">
     <div title="Usage" icon-name="list">
         <pre class="language-markup"><prims lang="typescript">
+            useAddRemoveClass(className: string | string[],
+                addElQuery?: (value: TPropertyValueType, oldValue: TPropertyValueType) => string,
+                removeElQuery?: (oldValue: TPropertyValueType, value: TPropertyValueType) => string,
+            )            
             useElementText(query: string, prefix: string = "", suffix: string = "")  
         </prims></pre>
 
@@ -34,7 +38,7 @@
                     Change Text
                 </button>
             </div>
-            <p class="hidden">
+            <p>
                 <span class="badge badge-neutral">Turkish: </span>
                 Yukardaki <code>baz-s01</code> bileşeni, <code>labelText</code> isminde bir property tanımınına sahiptir.
                 Bu property aynı zamanda <code>label-text</code> isminde bir html attribute olarak ta tanımlanmıştır.
@@ -54,5 +58,8 @@
     </div>  
     <div title="Template" icon-name="fileHtml">
         <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s05/template.htm"></prims-loader></code></pre>
+    </div>
+    <div title="Style" icon-name="fileCss">
+        <pre class="language-markup"><code><prims-loader src="../../../sample-components/baz-s05/style.css"></prims-loader></code></pre>
     </div>
 </baz-tab>

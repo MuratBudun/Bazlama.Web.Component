@@ -1,12 +1,14 @@
 import { Plugin } from "vite"
 import Prism from "prismjs"
 
+import "prismjs/components/prism-css"
 import "prismjs/components/prism-typescript"
 import "prismjs/components/prism-javascript"
 import "prismjs/components/prism-markup"
 import "prismjs/components/prism-python"
 
 const languageMap: Record<string, string> = {
+    css: "css",
     ts: "typescript",
     js: "javascript",
     py: "python",

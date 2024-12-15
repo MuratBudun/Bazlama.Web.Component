@@ -4,7 +4,14 @@ import path from "path"
 import Prism from "prismjs"
 import { JSDOM } from "jsdom"
 
+import "prismjs/components/prism-css"
+import "prismjs/components/prism-typescript"
+import "prismjs/components/prism-javascript"
+import "prismjs/components/prism-markup"
+import "prismjs/components/prism-python"
+
 const languageMap: Record<string, string> = {
+    css: "css",
     ts: "typescript",
     js: "javascript",
     py: "python",
