@@ -4,4 +4,17 @@ import prismHighlightImportPlugin from "./src/vite-plugin/prism-highlight-import
 
 export default defineConfig({
     plugins: [htmImportPlugin(), prismHighlightImportPlugin()],
+
+    server: {
+        proxy: {
+			"/api": {
+				target: "http://localhost:8087",
+				changeOrigin: true,
+				secure: false,
+				configure: (proxy, options) => {
+					// proxy will be an instance of 'http-proxy'
+				},
+			},
+		},
+	},
 })

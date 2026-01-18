@@ -113,7 +113,6 @@ export default abstract class TimelineLayer {
     public draw(isForceRedraw: boolean = false) {
         if (this.isNeedRedraw || isForceRedraw) {
             this.drawFunction()
-            console.log(`Layer ${this.Name} redrawn`)
             this.isNeedRedraw = false
         }
     }

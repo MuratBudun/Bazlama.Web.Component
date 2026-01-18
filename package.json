@@ -1,0 +1,43 @@
+{
+  "name": "bazlama-web-component-monorepo",
+  "version": "0.0.5",
+  "private": true,
+  "description": "Bazlama Web Component Framework - Monorepo",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "samples/*",
+    "tests/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/core",
+    "build:all": "npm run build --workspaces --if-present",
+    "test": "vitest run --config tests/vitest.config.ts",
+    "test:watch": "vitest --config tests/vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config tests/vitest.config.ts",
+    "lint": "eslint packages/core/src/**/*.ts tests/core/**/*.ts",
+    "lint:fix": "eslint packages/core/src/**/*.ts tests/core/**/*.ts --fix",
+    "format": "prettier --write \"packages/core/src/**/*.ts\" \"tests/core/**/*.ts\"",
+    "format:check": "prettier --check \"packages/core/src/**/*.ts\" \"tests/core/**/*.ts\"",
+    "clean": "rimraf packages/*/dist tests/*/coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.9",
+    "@vitest/coverage-v8": "^2.1.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "jsdom": "^25.0.0",
+    "prettier": "^3.8.0",
+    "rimraf": "^6.0.0",
+    "typescript-eslint": "^8.53.0",
+    "vitest": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicefella/Bazlama.Web.Component"
+  },
+  "author": "muratbudun@gmail.com",
+  "license": "MIT"
+}

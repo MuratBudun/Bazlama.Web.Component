@@ -1,0 +1,69 @@
+<h2 class="pb-2 text-4xl">@FireEvent</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator automatically dispatches custom events when a property value changes.
+    It enables parent components to listen for changes in child components.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@FireEvent()
+        </prism></pre>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Events Dispatched:</strong> Two events are fired on each change:
+                <ul class="list-disc pl-4 mt-2">
+                    <li><code>property-changed</code> - Generic event for any property</li>
+                    <li><code>{propertyName}-changed</code> - Specific event (e.g., <code>count-changed</code>)</li>
+                </ul>
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("counter-component")
+class CounterComponent extends BazlamaWebComponent {
+    @FireEvent()
+    @Attribute("count", true)
+    @Property({ defaultValue: 0 })
+    count: number = 0
+    
+    increment() {
+        this.count++  // Fires "count-changed" event
+    }
+}
+
+// Parent component or external code can listen:
+const counter = document.querySelector('counter-component')
+
+counter.addEventListener('count-changed', (e: CustomEvent) => {
+    console.log('Count changed to:', e.detail.value)
+    console.log('Previous value:', e.detail.oldValue)
+})
+
+counter.addEventListener('property-changed', (e: CustomEvent) => {
+    console.log('Property changed:', e.detail.name)
+})
+        </prism></pre>
+    </div>
+    <div title="Event Detail" icon-name="info">
+        <pre class="language-markup"><prism lang="typescript">
+// Event detail structure (IPropertyEventDetail):
+interface IPropertyEventDetail {
+    bazComponent: BazlamaWebComponent  // The component instance
+    name: string                        // Property name
+    value: TPropertyValueType          // New value
+    oldValue: TPropertyValueType       // Previous value
+}
+
+// Usage example:
+element.addEventListener('value-changed', (e: CustomEvent) => {
+    const { name, value, oldValue, bazComponent } = e.detail
+    
+    console.log(`${name}: ${oldValue} → ${value}`)
+    console.log('Component:', bazComponent)
+})
+        </prism></pre>
+    </div>
+</baz-tab>

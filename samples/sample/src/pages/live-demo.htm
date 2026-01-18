@@ -1,0 +1,366 @@
+<h2 class="pb-2 text-4xl">Live Demo</h2>
+
+<p class="font-mono pt-2 pb-4 indent-8">
+    Experience Bazlama Web Components in action. These interactive demos showcase the framework's 
+    reactive properties, event handling, and real-time DOM updates.
+</p>
+
+<baz-tab>
+    <!-- Timeline Demo -->
+    <div title="Timeline Component" icon-name="calendar">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Media Timeline</h4>
+            <p class="mb-4 opacity-70">
+                A professional video editing timeline built with Bazlama. Features zoom (Alt + scroll), 
+                pan, multiple tracks with fragments, and theme-aware rendering using Canvas API.
+            </p>
+            
+            <!-- Zoom Controls -->
+            <div class="flex flex-wrap gap-4 items-center mb-4">
+                <label class="flex items-center gap-2">
+                    <span class="font-semibold">Zoom:</span>
+                    <input id="timeline-zoom" type="range" min="0.1" max="5" value="1" step="0.1" class="range range-primary w-48" 
+                           oninput="document.querySelector('#demo-timeline').ZoomFactor = parseFloat(this.value); document.getElementById('zoom-value').textContent = parseFloat(this.value).toFixed(1) + 'x';" />
+                    <span id="zoom-value" class="badge badge-primary">1.0x</span>
+                </label>
+                <button class="btn btn-primary btn-sm" onclick="document.querySelector('#demo-timeline').fitToCanvas(); setTimeout(() => { var z = document.querySelector('#demo-timeline').ZoomFactor; document.getElementById('timeline-zoom').value = z; document.getElementById('zoom-value').textContent = z.toFixed(1) + 'x'; }, 50);">
+                    <baz-icon icon="maximize"></baz-icon>
+                    Fit to Canvas
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="document.querySelector('#demo-timeline').ZoomFactor = 1; document.getElementById('timeline-zoom').value = 1; document.getElementById('zoom-value').textContent = '1.0x';">
+                    <baz-icon icon="refresh"></baz-icon>
+                    Reset Zoom
+                </button>
+            </div>
+
+            <!-- Timeline Canvas -->
+            <div class="w-full p-4 rounded-box bg-base-200 overflow-hidden">
+                <baz-timeline id="demo-timeline" style="width: 100%; height: 12rem;"></baz-timeline>
+            </div>
+
+            <div class="mt-4 text-sm opacity-60">
+                <strong>Controls:</strong> Alt + Scroll to zoom • Drag to pan • Click tracks to select
+            </div>
+
+            <!-- Track Management -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+                <div class="card bg-base-200">
+                    <div class="card-body">
+                        <h5 class="card-title text-sm">Track Management</h5>
+                        <p class="text-xs opacity-60 mb-2">Add new tracks or modify existing ones dynamically.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="btn btn-xs btn-primary" onclick="window.addDemoTrack('primary')">+ Primary Track</button>
+                            <button class="btn btn-xs btn-secondary" onclick="window.addDemoTrack('secondary')">+ Secondary Track</button>
+                            <button class="btn btn-xs btn-accent" onclick="window.addDemoTrack('accent')">+ Accent Track</button>
+                            <button class="btn btn-xs btn-info" onclick="window.addDemoTrack('info')">+ Info Track</button>
+                        </div>
+                        <div class="divider my-1"></div>
+                        <button class="btn btn-xs btn-error btn-outline" onclick="window.clearDemoTracks()">Clear All Tracks</button>
+                    </div>
+                </div>
+
+                <div class="card bg-base-200">
+                    <div class="card-body">
+                        <h5 class="card-title text-sm">Architecture Overview</h5>
+                        <p class="text-xs opacity-60 mb-2">Timeline uses a layered canvas rendering system.</p>
+                        <ul class="text-xs space-y-1">
+                            <li><span class="badge badge-sm badge-primary">MainLayer</span> Ruler, time markers, grid</li>
+                            <li><span class="badge badge-sm badge-secondary">TrackLayer</span> Track backgrounds & fragments</li>
+                            <li><span class="badge badge-sm badge-accent">MouseLayer</span> Cursor, selection, interaction</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Examples in Tabs -->
+            <div class="mt-4">
+                <baz-tab>
+                    <div title="Component" icon-name="code">
+                        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("baz-timeline")
+export default class BazTimeline extends BazlamaWebComponent {
+    #layerManager = new TimelineLayerManager(this)
+    #ruler = new TimelineRuler(this)
+    #trackManager = new TimelineTrackManager(this)
+
+    @ChangeHooks([useFunction((baz, value) => {
+        (baz as BazTimeline).Ruler.SetZoomFactorFromString(value as string)
+    })])
+    @Attribute("zoom", true)
+    @Property()
+    public ZoomFactor: number = 1.0
+
+    public fitToCanvas() {
+        this.ZoomFactor = this.Ruler.Computed.GetFitZoomFactor()
+    }
+}
+                        </prism></pre>
+                    </div>
+                    <div title="Tracks" icon-name="layers">
+                        <pre class="language-markup"><prism lang="typescript">
+// Track with fragments (time-based segments)
+const track = new TimelineTrack(timeline, "Video Track", "primary", [
+    TimelineTrack.CreateFragmentFromDateTime(
+        new Date("2024-10-14T11:00:00"), 
+        new Date("2024-10-14T12:30:00")
+    ),
+    TimelineTrack.CreateFragmentFromDateTime(
+        new Date("2024-10-14T13:00:00"), 
+        new Date("2024-10-14T14:30:00")
+    )
+])
+
+// Add track to timeline
+timeline.TrackManager.AddTrack(track)
+
+// Change track color dynamically
+track.ColorTheme = "secondary"
+                        </prism></pre>
+                    </div>
+                    <div title="Layers" icon-name="box">
+                        <pre class="language-markup"><prism lang="typescript">
+// Layer Manager handles canvas rendering
+class TimelineLayerManager {
+    mainLayer?: TimelineMainLayer  // Ruler & grid
+    #layers: Record<string, TimelineLayer> = {}
+
+    addLayer(layer: TimelineLayer) {
+        this.Layers[layer.Name] = layer
+    }
+
+    drawLoop() {
+        // Only redraw layers that need updating
+        if (this.mainLayer?.isNeedRedraw) {
+            this.mainLayer.drawFunction()
+        }
+        for (const layer of Object.values(this.Layers)) {
+            if (layer.isNeedRedraw) {
+                layer.drawFunction()
+            }
+        }
+    }
+}
+                        </prism></pre>
+                    </div>
+                    <div title="Ruler" icon-name="clock">
+                        <pre class="language-markup"><prism lang="typescript">
+// Ruler manages time calculations
+class TimelineRuler {
+    #startDateTime: Date
+    #endDateTime: Date
+    #zoomFactor: number = 1.0
+
+    Computed = new TimelineRulerComputed(this)
+    Constraints = new TimelineConstraints()
+
+    SetZoomFactorFromString(value: string) {
+        this.#zoomFactor = parseFloat(value) || 1.0
+        this.owner.LayerManager.postDrawMessage()
+    }
+
+    // Convert between pixels and milliseconds
+    Computed.GetMsFromPxWithZoom(px: number): number
+    Computed.GetPxFromMsWithZoom(ms: number): number
+    Computed.GetFitZoomFactor(): number
+}
+                        </prism></pre>
+                    </div>
+                </baz-tab>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Binding Demo -->
+    <div title="Reactive Properties" icon-name="refresh">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Two-Way Property Binding</h4>
+            <p class="mb-4 opacity-70">
+                Watch how property changes instantly update the DOM through ChangeHooks.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card bg-base-200">
+                    <div class="card-body">
+                        <h5 class="card-title text-sm">useElementText Hook</h5>
+                        <input type="text" id="demo-label-input" class="input input-bordered input-primary w-full" 
+                               placeholder="Type something..." value="Hello Bazlama!" 
+                               oninput="document.querySelector('#demo-s01').LabelText = this.value" />
+                        <div class="divider">Result</div>
+                        <baz-s01 id="demo-s01" label-text="Hello Bazlama!" class="text-xl"></baz-s01>
+                    </div>
+                </div>
+
+                <div class="card bg-base-200">
+                    <div class="card-body">
+                        <h5 class="card-title text-sm">useElementTextWithFunction Hook</h5>
+                        <input type="number" id="demo-debit-input" class="input input-bordered input-secondary w-full" 
+                               placeholder="Enter amount..." value="500" min="0" max="5000"
+                               oninput="document.querySelector('#demo-s02').debit = parseInt(this.value) || 0" />
+                        <div class="divider">Result</div>
+                        <baz-s02 id="demo-s02" debit="500"></baz-s02>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse collapse-arrow bg-base-200 mt-4">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">View Source Code</div>
+                <div class="collapse-content">
+                    <pre class="language-markup"><prism lang="typescript">
+// baz-s01: Simple text binding
+@ChangeHooks([useElementText("span[ref='label-text']")])
+@Attribute("label-text", true)
+@Property()
+public LabelText = "Bazlama Sample 01"
+
+// baz-s02: Text with transform function
+@ChangeHooks([useElementTextWithFunction("span[ref='label-text']", (value) => {
+    const debit = BazConvert.anyToNumber(value, 0)
+    let result = `Your debit is ${debit} TL`
+    if (debit > 1000) result += " and it's too much"
+    return result
+})])
+@Attribute("debit", true)
+@Property()
+public debit = 0
+                    </prism></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Binding Demo -->
+    <div title="Input Components" icon-name="edit">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Input Value Synchronization</h4>
+            <p class="mb-4 opacity-70">
+                Bidirectional binding between component properties and input elements.
+            </p>
+
+            <div class="card bg-base-200 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-sm">useElementInputValue Hook</h5>
+                    <div class="flex gap-4 flex-wrap items-center">
+                        <button class="btn btn-primary btn-sm" onclick="document.querySelector('#demo-s03').value = 'Set via JavaScript!'">
+                            Set Value via JS
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="document.querySelector('#demo-s03').value = ''">
+                            Clear
+                        </button>
+                        <span class="badge badge-outline" id="s03-value-display">Current: </span>
+                    </div>
+                    <div class="divider"></div>
+                    <baz-s03 id="demo-s03" label="Interactive Input" placeholder="Type here..."></baz-s03>
+                </div>
+            </div>
+
+            <div class="collapse collapse-arrow bg-base-200">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">View Source Code</div>
+                <div class="collapse-content">
+                    <pre class="language-markup"><prism lang="typescript">
+@ChangeHooks([
+    useElementInputValue("input"),
+    useElementTextWithFunction("span[ref='label-summary']", 
+        (value) => value === "" ? "" : `Summary: ${value}`
+    ),
+])
+@Attribute("value", true)
+@Property()
+public value: string = ""
+
+@ChangeHooks([useElementAttribute("input", "placeholder")])
+@Attribute("placeholder", true)
+@Property()
+public placheHolder: string = "Please input text"
+                    </prism></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation Demo -->
+    <div title="Class Switching" icon-name="layers">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Dynamic CSS Class Management</h4>
+            <p class="mb-4 opacity-70">
+                useAddRemoveClass hook for complex class switching scenarios like tabs.
+            </p>
+
+            <div class="card bg-base-200 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-sm">Tab Selection with useAddRemoveClass</h5>
+                    <div class="flex gap-2 mb-4">
+                        <button class="btn btn-sm btn-primary" onclick="document.querySelector('#demo-s05').SelectedTab = 'tab-1'">Tab 1</button>
+                        <button class="btn btn-sm btn-secondary" onclick="document.querySelector('#demo-s05').SelectedTab = 'tab-2'">Tab 2</button>
+                        <button class="btn btn-sm btn-accent" onclick="document.querySelector('#demo-s05').SelectedTab = 'tab-3'">Tab 3</button>
+                    </div>
+                    <baz-s05 id="demo-s05" selected-tab="tab-1"></baz-s05>
+                </div>
+            </div>
+
+            <div class="collapse collapse-arrow bg-base-200">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">View Source Code</div>
+                <div class="collapse-content">
+                    <pre class="language-markup"><prism lang="typescript">
+@ChangeHooks([
+    useElementInputRadioValue("selected-tab"),
+    useAddRemoveClass({
+        addClassName: "active",
+        removeClassName: "active",
+        addElQuery: (value) => `div[ref="${value}-content"], li[ref="${value}"]`,
+        removeElQuery: (oldValue) => `div[ref="${oldValue}-content"], li[ref="${oldValue}"]`
+    })
+])
+@Attribute("selected-tab", true)
+@Property()
+public SelectedTab: string = "tab-2"
+                    </prism></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Action Demo -->
+    <div title="Event Actions" icon-name="mouse-pointer">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Event Handling with @EventAction</h4>
+            <p class="mb-4 opacity-70">
+                Declarative event binding for DOM events like click, input, and media events.
+            </p>
+
+            <div class="card bg-base-200 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-sm">Video Volume Control</h5>
+                    <p class="text-sm opacity-60 mb-2">Control video volume with buttons or video controls - both sync automatically.</p>
+                    <baz-s04 id="demo-s04"></baz-s04>
+                </div>
+            </div>
+
+            <div class="collapse collapse-arrow bg-base-200">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">View Source Code</div>
+                <div class="collapse-content">
+                    <pre class="language-markup"><prism lang="typescript">
+@EventAction("video", "volumechange")
+public onVolumeChange = (name: string, element: HTMLVideoElement) => {
+    this.volume = element.volume
+    this.muted = element.muted || element.volume <= 0
+}
+
+@EventAction("button[ref='btn-mute']", "click")
+public onMute = () => {
+    this.muted = !this.muted
+}
+
+@EventAction("button[ref='btn-volume-up']", "click")
+public onVolumeUp = () => {
+    this.volume = Math.min(1, this.volume + 0.05)
+}
+                    </prism></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</baz-tab>

@@ -1,5 +1,5 @@
 import {
-    Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, EventAction, ShadowRootMode,
+    Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, EventAction, Property, ShadowRootMode,
     useElementAttribute, useElementProperty, useElementText, useFunction,} from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 
@@ -13,10 +13,12 @@ export default class BazS04 extends BazlamaWebComponent {
     @ChangeHooks([
         useElementProperty("video", "volume"),
         useElementText("span[ref='volume']", "Volume: ", "%", (value) => {
-            return `${(value * 100).toFixed(0)}`
+            const numValue = typeof value === 'number' ? value : parseFloat(String(value)) || 0;
+            return `${(numValue * 100).toFixed(0)}`
         }),
     ])
     @Attribute("volume", true)
+    @Property()
     public volume: number = 0
 
     @ChangeHooks([
@@ -31,6 +33,7 @@ export default class BazS04 extends BazlamaWebComponent {
         }),
     ])
     @Attribute("muted", true)
+    @Property()
     public muted: boolean = false
 
     @EventAction("video", "volumechange")

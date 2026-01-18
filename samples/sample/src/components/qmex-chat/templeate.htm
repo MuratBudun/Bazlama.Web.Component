@@ -1,0 +1,25 @@
+<div class="w-full h-full flex flex-col bg-base-100 overflow-hidden">
+    <div class="pb-4">
+        <select class="select select-ghost focus:outline-none">
+            <option>GPT4</option>
+            <option>Gemini</option>
+            <option>Deepseek</option>
+        </select>
+    </div>
+    <div ref="chatBox" class="flex-grow">
+
+    </div>
+    <div class="flex flex-row rounded-box bg-base-300 p-4 skeleton">
+        <input ref="userInput" type="textarea" placeholder="Promptunuzu buraya yazın..."
+            class="w-full px-4 py-2 bg-transparent focus:outline-none">
+        <button ref="sendButton" class="btn btn-active btn-primary">Gönder</button>
+    </div>
+
+</div>
+
+
+<!-- <h1>Chat Örneği</h1>
+<textarea ref="chatBox" cols="80" rows="20" readonly style="white-space: pre-wrap;"></textarea>
+<br>
+<input ref="userInput" type="text" id="userInput" placeholder="Mesajınızı yazın..." style="width: 400px;"/>
+<button ref="sendButton">Gönder</button> -->

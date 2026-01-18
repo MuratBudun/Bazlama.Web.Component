@@ -1,0 +1,154 @@
+<h2 class="pb-2 text-4xl">API Reference</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    Complete reference for the BazlamaWebComponent base class, including all methods, properties, and lifecycle hooks.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Base Class" icon-name="box">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">BazlamaWebComponent</h4>
+            <p class="mb-4">The base class that all Bazlama components extend.</p>
+            
+            <pre class="language-markup"><prism lang="typescript">
+import { BazlamaWebComponent, ShadowRootMode } from "bazlama-web-component"
+
+class MyComponent extends BazlamaWebComponent {
+    constructor() {
+        // ShadowRootMode options:
+        // - ShadowRootMode.Closed (default) - Closed shadow DOM
+        // - ShadowRootMode.Open - Open shadow DOM
+        // - ShadowRootMode.None - No shadow DOM (light DOM)
+        super(ShadowRootMode.Closed)
+        
+        // Initialize decorators (required in constructor)
+        this.InitBazlamaWebComponent()
+    }
+}
+            </prism></pre>
+        </div>
+    </div>    
+    <div title="Properties" icon-name="database">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Instance Properties</h4>
+            
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>root</code></td>
+                        <td><code>ShadowRoot | HTMLElement | null</code></td>
+                        <td>The render target (shadow root or element itself)</td>
+                    </tr>
+                    <tr>
+                        <td><code>isDomConnected</code></td>
+                        <td><code>boolean</code></td>
+                        <td>Whether component is connected to DOM</td>
+                    </tr>
+                    <tr>
+                        <td><code>isRendered</code></td>
+                        <td><code>boolean</code></td>
+                        <td>Whether component has been rendered</td>
+                    </tr>
+                    <tr>
+                        <td><code>propertyValues</code></td>
+                        <td><code>IPropertyValues</code></td>
+                        <td>Object storing all property values</td>
+                    </tr>
+                    <tr>
+                        <td><code>eventActionMaps</code></td>
+                        <td><code>IEventActionMaps</code></td>
+                        <td>Registered event action mappings</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div title="Methods" icon-name="code">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Instance Methods</h4>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">getRenderTemplate(): string</code>
+                <p class="text-sm mt-1">Returns the HTML template string. <strong>Must be implemented.</strong></p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">render(): void</code>
+                <p class="text-sm mt-1">Renders the component. Called automatically on connect and when using @FireRender.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">InitBazlamaWebComponent(): void</code>
+                <p class="text-sm mt-1">Initializes decorators. <strong>Must be called in constructor.</strong></p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">registerCleanup(fn: () => void): void</code>
+                <p class="text-sm mt-1">Registers a cleanup function to run on disconnect. Use for event listeners, timers, etc.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">getConstructor(): typeof BazlamaWebComponent</code>
+                <p class="text-sm mt-1">Returns the component's constructor for accessing static properties.</p>
+            </div>
+        </div>
+    </div>
+    <div title="Lifecycle" icon-name="repeat">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Lifecycle Hooks</h4>
+            <p class="mb-4">Override these methods to hook into component lifecycle:</p>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">onConnected(): void</code>
+                <p class="text-sm mt-1">Called when component is added to DOM. Add event listeners, fetch data here.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">onDisconnected(): void</code>
+                <p class="text-sm mt-1">Called when component is removed from DOM. Cleanup is automatic but add custom cleanup here.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">onRendered(): void</code>
+                <p class="text-sm mt-1">Called after each render. Access rendered DOM elements here.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <code class="font-bold">afterRender(): void</code>
+                <p class="text-sm mt-1">Alias for onRendered. Called after render completes.</p>
+            </div>
+            
+            <pre class="language-markup mt-4"><prism lang="typescript">
+@CustomElement("lifecycle-demo")
+class LifecycleDemo extends BazlamaWebComponent {
+    onConnected() {
+        console.log("Component connected to DOM")
+        window.addEventListener("resize", this.handleResize)
+    }
+    
+    onDisconnected() {
+        console.log("Component disconnected from DOM")
+        window.removeEventListener("resize", this.handleResize)
+    }
+    
+    onRendered() {
+        console.log("Component rendered")
+        const el = this.root?.querySelector(".my-element")
+        // Safe to access rendered elements here
+    }
+    
+    handleResize = () => {
+        // Handle window resize
+    }
+}
+            </prism></pre>
+        </div>
+    </div>
+</baz-tab>

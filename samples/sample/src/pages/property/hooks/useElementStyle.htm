@@ -1,0 +1,51 @@
+<h2 class="pb-2 text-4xl">useElementStyle</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to set inline CSS styles on an element.
+    It is useful when you want to dynamically change the style of an element based on a property value.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+useElementStyle(query: string, style: string, suffix?: string, prefix?: string, onCalculate?: TStyleCalculateValue)
+
+type TStyleCalculateValue = (value: TPropertyValueType, query: string, style: string) => string | number
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - CSS selector to find target elements.</li>
+            <li class="pb-1"><div class="badge badge-primary">style</div> - CSS property name (e.g., "width", "background-color").</li>
+            <li class="pb-1"><div class="badge badge-primary">suffix</div> - Optional unit or suffix to append (e.g., "%" or "px").</li>
+            <li class="pb-1"><div class="badge badge-primary">prefix</div> - Optional prefix to prepend to the value.</li>
+            <li class="pb-1"><div class="badge badge-primary">onCalculate</div> - Optional function to calculate custom value before applying.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Tip:</strong> Use <code>onCalculate</code> for dynamic values like color transitions 
+                based on thresholds, or complex transformations.
+            </p>
+        </div>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s06></baz-s06>
+            <p class="pt-3">
+                The progress bar above uses <code>useElementStyle</code> to dynamically update the width and color.
+                Move the slider to see the smooth style transitions in action.
+            </p>
+            <div class="p-3 bg-base-200 rounded-box">
+                <p class="text-sm">
+                    <strong>Smooth Transitions:</strong> Add <code>transition-all duration-200</code> CSS classes 
+                    to your target element for smooth animations when styles change.
+                </p>
+            </div>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s06/baz-s06.ts"></prism-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s06/template.htm"></prism-loader></code></pre>
+    </div>
+</baz-tab>

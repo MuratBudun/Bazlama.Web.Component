@@ -1,0 +1,41 @@
+<h2 class="pb-2 text-4xl">useSwitchClass</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to switch CSS classes based on property value changes.
+    It removes the class associated with the old value and adds the class for the new value.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+useSwitchClass(query: string, prefix?: string, suffix?: string)
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select the element(s).</li>
+            <li class="pb-1"><div class="badge badge-primary">prefix</div> - Optional prefix for the class name (e.g., "theme-").</li>
+            <li class="pb-1"><div class="badge badge-primary">suffix</div> - Optional suffix for the class name.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Example:</strong> With prefix <code>"theme-"</code> and value <code>"dark"</code>, 
+                the class <code>theme-dark</code> will be added and the previous class (e.g., <code>theme-light</code>) will be removed.
+            </p>
+        </div>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s08></baz-s08>
+            <p class="pt-3">
+                The box above uses <code>useSwitchClass</code> with prefix <code>"theme-"</code>.
+                Click the buttons to switch between different theme classes.
+            </p>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s08/baz-s08.ts"></prism-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s08/template.htm"></prism-loader></code></pre>
+    </div>
+</baz-tab>

@@ -1,0 +1,116 @@
+<h2 class="pb-2 text-4xl">Getting Started</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    Welcome to Bazlama Web Component! This guide will help you create your first custom element in minutes.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Installation" icon-name="download">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Install via npm</h4>
+            <pre class="language-markup"><prism lang="markup">
+npm install bazlama-web-component
+            </prism></pre>
+            
+            <h4 class="font-bold text-lg mt-6 mb-3">TypeScript Configuration</h4>
+            <p class="mb-2">Enable decorators in your <code>tsconfig.json</code>:</p>
+            <pre class="language-markup"><prism lang="javascript">
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "bundler"
+    }
+}
+            </prism></pre>
+        </div>
+    </div>    
+    <div title="First Component" icon-name="rocket">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">Create Your First Component</h4>
+            <pre class="language-markup"><prism lang="typescript">
+import { 
+    BazlamaWebComponent, 
+    CustomElement, 
+    Property, 
+    Attribute,
+    ChangeHooks,
+    EventAction,
+    useElementText 
+} from "bazlama-web-component"
+
+@CustomElement("hello-world")
+class HelloWorld extends BazlamaWebComponent {
+    constructor() {
+        super()
+        this.InitBazlamaWebComponent()
+    }
+
+    @ChangeHooks([useElementText(".greeting")])
+    @Attribute("name", true)
+    @Property({ defaultValue: "World" })
+    name: string = "World"
+
+    @EventAction(".btn", "click")
+    onButtonClick() {
+        this.name = "Bazlama"
+    }
+
+    getRenderTemplate() {
+        return `
+            &lt;div class="container"&gt;
+                &lt;h1 class="greeting"&gt;Hello, World!&lt;/h1&gt;
+                &lt;button class="btn"&gt;Change Name&lt;/button&gt;
+            &lt;/div&gt;
+        `
+    }
+}
+            </prism></pre>
+            
+            <h4 class="font-bold text-lg mt-6 mb-3">Use in HTML</h4>
+            <pre class="language-markup"><prism lang="html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type="module" src="./hello-world.ts"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;hello-world name="Developer"&gt;&lt;/hello-world&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </prism></pre>
+        </div>
+    </div>
+    <div title="Key Concepts" icon-name="lightbulb">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-4">Core Concepts</h4>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">1. Decorators</h5>
+                <p class="text-sm mt-1">TypeScript decorators provide declarative syntax for defining properties, attributes, and event handlers.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">2. Reactive Properties</h5>
+                <p class="text-sm mt-1"><code>@Property</code> creates reactive properties. When changed, hooks are automatically triggered.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">3. Change Hooks</h5>
+                <p class="text-sm mt-1"><code>@ChangeHooks</code> connects property changes to DOM updates without manual manipulation.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">4. Event Actions</h5>
+                <p class="text-sm mt-1"><code>@EventAction</code> binds DOM events to methods with automatic cleanup.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">5. Shadow DOM</h5>
+                <p class="text-sm mt-1">Components use Shadow DOM by default for style encapsulation. Use <code>ShadowRootMode.None</code> for light DOM.</p>
+            </div>
+        </div>
+    </div>
+</baz-tab>

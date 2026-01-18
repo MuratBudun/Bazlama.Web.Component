@@ -1,0 +1,11 @@
+{
+  "name": "@bazlama/core-tests",
+  "version": "0.0.5",
+  "private": true,
+  "description": "Tests for Bazlama Web Component Core",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  }
+}

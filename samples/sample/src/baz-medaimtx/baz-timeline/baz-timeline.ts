@@ -4,6 +4,7 @@ import {
     ChangeHooks,
     CustomElement,
     EventAction,
+    Property,
     ShadowRootMode,
     useFunction,
 } from "bazlama-web-component"
@@ -19,6 +20,7 @@ import TimelineTrackManager from "./tracks/TimelineTrackManager"
 @CustomElement("baz-timeline")
 export default class BazTimeline extends BazlamaWebComponent {
     #currentTheme: string = "default"
+    #themeObserver: MutationObserver | null = null
     #verticalScrollEl: HTMLElement | undefined | null = null
     #verticalScrollBarEl: HTMLElement | undefined | null = null
 
@@ -39,6 +41,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         }),
     ])
     @Attribute("start-date-time", true)
+    @Property()
     public StartDateTimeStr: string = TimelineHelper.GetDefaultStartDateTime().toISOString()
 
     @ChangeHooks([
@@ -48,6 +51,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         }),
     ])
     @Attribute("end-date-time", true)
+    @Property()
     public EndDateTimeStr: string = TimelineHelper.GetDefaultEndDateTime().toISOString()
 
     @ChangeHooks([
@@ -58,6 +62,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         }),
     ])
     @Attribute("zoom", true)
+    @Property()
     public ZoomFactor: number = 1.0
 
     @ChangeHooks([
@@ -70,6 +75,7 @@ export default class BazTimeline extends BazlamaWebComponent {
         }),
     ])
     @Attribute("start-offset-ms", true)
+    @Property()
     public StartOffsetMs: number = 0
     //#endregion
     getRenderTemplate() { return htmlTemplate }
@@ -107,8 +113,6 @@ export default class BazTimeline extends BazlamaWebComponent {
             (e.scale > 0 ? this.gestureApplySpeed : 1 / this.gestureApplySpeed) 
         this.ZoomFactor = TimelineHelper.clamp(zoomFactor, 
             this.Ruler.Constraints.ZoomFactorMin, this.Ruler.Constraints.ZoomFactorMax)
-        
-        console.log(`Gesture Zoom: ${e.scale}, ZoomFactor: ${this.ZoomFactor}`)
     }
 
     private wheelZoom(event: WheelEvent) {
@@ -122,7 +126,6 @@ export default class BazTimeline extends BazlamaWebComponent {
 
     private initObservers() {
         new ResizeObserver(() => {
-            console.log(`ResizeObserver: ${this.clientWidth}x${this.clientHeight}`)
             this.LayerManager.setCanvasSize(this.clientWidth, this.clientHeight)
             this.LayerManager.postDrawMessage()
         }).observe(this)
@@ -130,15 +133,27 @@ export default class BazTimeline extends BazlamaWebComponent {
         const htmlElement = document.querySelector("html")
         if (htmlElement) {
             this.#currentTheme = htmlElement.getAttribute("data-theme") || "default"
-        }
-
-        new MutationObserver(() => {
-            const htmlElement = document.querySelector("html")
-            if (htmlElement) {
+            
+            // Observer'ı instance variable olarak sakla
+            this.#themeObserver = new MutationObserver(() => {
                 this.#currentTheme = htmlElement.getAttribute("data-theme") || "default"
                 this.LayerManager.computeDrawStyles()
-            }
-        }).observe(htmlElement as Node, { attributes: true, attributeFilter: ["data-theme"] })
+            })
+            
+            this.#themeObserver.observe(htmlElement, { 
+                attributes: true, 
+                attributeFilter: ["data-theme"] 
+            })
+        }
+    }
+
+    // Component destroy edildiğinde observer'ı temizle
+    disconnectedCallback() {
+        if (this.#themeObserver) {
+            this.#themeObserver.disconnect()
+            this.#themeObserver = null
+        }
+        super.disconnectedCallback?.()
     }
 
     private calculateVerticalScrollWidth() {
@@ -173,7 +188,6 @@ export default class BazTimeline extends BazlamaWebComponent {
             }
             if (canvasName === "track-canvas") {
                 const l = new TimelineTrackLayer(this, canvasName, canvas as HTMLCanvasElement)
-                console.log(`Track Layer: ${canvasName} == ${l.Name}, ${l}`)
                 this.LayerManager.addLayer(l)
             }
         })
@@ -181,14 +195,6 @@ export default class BazTimeline extends BazlamaWebComponent {
         this.calculateVerticalScrollWidth()
         this.LayerManager.computeDrawStyles()
         this.LayerManager.postDrawMessage()
-
-        const zoomSlider = document.getElementById("zoomSlider") as HTMLInputElement
-        if (zoomSlider) {
-            zoomSlider.value = this.ZoomFactor.toFixed(1)
-            zoomSlider.oninput = () => {
-                this.ZoomFactor = parseFloat(zoomSlider.value)
-            }
-        }
 
         this.renderLoop()
     }

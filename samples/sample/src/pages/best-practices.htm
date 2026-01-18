@@ -1,0 +1,195 @@
+<h2 class="pb-2 text-4xl">Best Practices</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    Follow these guidelines to write efficient, maintainable, and bug-free Bazlama components.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Decorator Order" icon-name="layers">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">📋 Decorator Ordering</h4>
+            <p class="mb-4">Decorators execute <strong>bottom-to-top</strong>. The correct order is crucial:</p>
+            
+            <pre class="language-markup"><prism lang="typescript">
+// ✅ CORRECT ORDER (read bottom-to-top)
+@ChangeHooks([useElementText(".display")])  // 4th - Add change hooks
+@FireEvent()                                 // 3rd - Enable events
+@Attribute("count", true)                    // 2nd - Bind to attribute
+@Property({ defaultValue: 0 })               // 1st - Define property
+count: number = 0
+
+// ❌ WRONG ORDER - Will cause errors!
+@Property({ defaultValue: 0 })
+@Attribute("count", true)
+@ChangeHooks([...])
+count: number = 0
+            </prism></pre>
+            
+            <div class="mt-4 p-3 bg-info/20 rounded-box">
+                <p class="text-sm">
+                    <strong>Rule of thumb:</strong> <code>@Property</code> must always be the <strong>last</strong> 
+                    decorator (closest to the property declaration).
+                </p>
+            </div>
+        </div>
+    </div>    
+    <div title="Event Handlers" icon-name="zap">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">⚡ EventAction Best Practices</h4>
+            
+            <pre class="language-markup"><prism lang="typescript">
+// Method signature for @EventAction
+@EventAction(".button", "click")
+handleClick(
+    eventActionName: string,  // The method name
+    element: HTMLElement,     // The event target element
+    eventName: string,        // "click"
+    event: Event              // The native Event object
+) {
+    // Access event data
+    const target = event.target as HTMLButtonElement
+    const data = element.dataset.value
+}
+
+// ✅ Arrow functions preserve 'this' context
+@EventAction(".btn", "click")
+onClick = () => {
+    this.count++  // 'this' is correctly bound
+}
+
+// ✅ You can omit parameters you don't need
+@EventAction(".btn", "click")
+onSimpleClick() {
+    this.count++  // Works fine for simple cases
+}
+            </prism></pre>
+        </div>
+    </div>
+    <div title="Memory Management" icon-name="trash">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">🧹 Preventing Memory Leaks</h4>
+            
+            <pre class="language-markup"><prism lang="typescript">
+@CustomElement("memory-safe")
+class MemorySafe extends BazlamaWebComponent {
+    private intervalId?: number
+    
+    onConnected() {
+        // ✅ Register cleanup for intervals/timeouts
+        this.intervalId = setInterval(() => {
+            this.tick()
+        }, 1000)
+        
+        this.registerCleanup(() => {
+            if (this.intervalId) {
+                clearInterval(this.intervalId)
+            }
+        })
+        
+        // ✅ Register cleanup for global event listeners
+        const handler = this.handleScroll.bind(this)
+        window.addEventListener("scroll", handler)
+        
+        this.registerCleanup(() => {
+            window.removeEventListener("scroll", handler)
+        })
+    }
+    
+    handleScroll() {
+        // Handle scroll
+    }
+    
+    tick() {
+        // Interval callback
+    }
+}
+
+// Note: @EventAction handlers are automatically cleaned up!
+// No need to manually remove them.
+            </prism></pre>
+        </div>
+    </div>
+    <div title="Shadow DOM" icon-name="shield">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">🛡️ Shadow DOM vs Light DOM</h4>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">Closed Shadow DOM (default)</h5>
+                <pre class="language-markup"><prism lang="typescript">
+super()  // or super(ShadowRootMode.Closed)
+                </prism></pre>
+                <p class="text-sm mt-2">✅ Style encapsulation<br>✅ DOM isolation<br>❌ Harder to style from outside</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">Open Shadow DOM</h5>
+                <pre class="language-markup"><prism lang="typescript">
+super(ShadowRootMode.Open)
+                </prism></pre>
+                <p class="text-sm mt-2">✅ Style encapsulation<br>✅ Accessible via element.shadowRoot<br>⚠️ External code can access internals</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">No Shadow DOM (Light DOM)</h5>
+                <pre class="language-markup"><prism lang="typescript">
+super(ShadowRootMode.None)
+                </prism></pre>
+                <p class="text-sm mt-2">✅ Global CSS works<br>✅ Easier integration with CSS frameworks<br>❌ No style encapsulation</p>
+            </div>
+            
+            <div class="mt-4 p-3 bg-warning/20 rounded-box">
+                <p class="text-sm">
+                    <strong>Tip:</strong> Use <code>ShadowRootMode.None</code> when working with global CSS frameworks 
+                    like Tailwind CSS or DaisyUI.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div title="Performance" icon-name="activity">
+        <div class="p-4">
+            <h4 class="font-bold text-lg mb-3">🚀 Performance Tips</h4>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">1. Prefer ChangeHooks over FireRender</h5>
+                <p class="text-sm mt-1"><code>@ChangeHooks</code> updates only specific elements. <code>@FireRender</code> re-renders the entire component.</p>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">2. Batch Property Updates</h5>
+                <pre class="language-markup"><prism lang="typescript">
+// ❌ Triggers hooks 3 times
+this.firstName = "John"
+this.lastName = "Doe"
+this.age = 30
+
+// ✅ Consider combining into one property for related data
+this.user = { firstName: "John", lastName: "Doe", age: 30 }
+                </prism></pre>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">3. Use Specific Selectors</h5>
+                <pre class="language-markup"><prism lang="typescript">
+// ❌ Broad selector - searches many elements
+useElementText("div span")
+
+// ✅ Specific selector with ref attribute
+useElementText("span[ref='title']")
+                </prism></pre>
+            </div>
+            
+            <div class="mb-4 p-3 bg-base-200 rounded-box">
+                <h5 class="font-bold">4. Lazy Initialization</h5>
+                <pre class="language-markup"><prism lang="typescript">
+// Initialize expensive resources only when needed
+onConnected() {
+    // Defer heavy work
+    requestAnimationFrame(() => {
+        this.initializeHeavyFeature()
+    })
+}
+                </prism></pre>
+            </div>
+        </div>
+    </div>
+</baz-tab>

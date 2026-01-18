@@ -1,0 +1,53 @@
+<h2 class="pb-2 text-4xl">useFunction</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is the simplest way to add custom logic when a property changes.
+    It executes a function with access to the component instance and property values.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+useFunction(func: TPropertyChangeHook)
+
+type TPropertyChangeHook = (
+    bazComponent: BazlamaWebComponent,
+    value: TPropertyValueType,
+    propertyDefine: PropertyDefine,
+    oldValue: TPropertyValueType
+) => void
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">func</div> - The function to execute when property changes.</li>
+        </ul>
+        <ul class="font-mono list-disc pl-8 pt-2">
+            <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The component instance.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">value</div> - The new property value.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">propertyDefine</div> - The property definition object.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">oldValue</div> - The previous property value.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Tip:</strong> Use <code>useFunction</code> for side effects like logging, animations, 
+                or triggering external APIs. Combine with other hooks for complex updates.
+            </p>
+        </div>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s10></baz-s10>
+            <p class="pt-3">
+                The counter above uses <code>useFunction</code> combined with <code>useElementText</code>.
+                The function adds animation, color feedback, and logs changes to console.
+            </p>
+            <span>Check the browser console to see the log messages!</span>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s10/baz-s10.ts"></prism-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s10/template.htm"></prism-loader></code></pre>
+    </div>
+</baz-tab>

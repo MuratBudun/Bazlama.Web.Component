@@ -1,0 +1,59 @@
+<h2 class="pb-2 text-4xl">@Attribute</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator binds a property to an HTML attribute. When the attribute changes in HTML,
+    the property updates automatically, and vice versa.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@Attribute(attributeName: string, reflect?: boolean)
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">attributeName</div> - The HTML attribute name (use kebab-case).</li>
+            <li class="pb-1"><div class="badge badge-primary">reflect</div> - If true, property changes update the attribute. Default: false.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Naming Convention:</strong> Use kebab-case for attribute names (e.g., <code>label-text</code>) 
+                while the property can use camelCase (e.g., <code>labelText</code>).
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("user-card")
+class UserCard extends BazlamaWebComponent {
+    // One-way: HTML attribute -> Property
+    @Attribute("user-name")
+    @Property({ defaultValue: "Anonymous" })
+    userName: string = "Anonymous"
+    
+    // Two-way reflection: Attribute <-> Property
+    @Attribute("selected", true)
+    @Property({ defaultValue: false })
+    selected: boolean = false
+}
+
+// HTML Usage:
+// &lt;user-card user-name="John" selected="true"&gt;&lt;/user-card&gt;
+        </prism></pre>
+    </div>
+    <div title="JavaScript Access" icon-name="terminal">
+        <pre class="language-markup"><prism lang="typescript">
+// Get/set via attribute
+const card = document.querySelector('user-card')
+card.setAttribute('user-name', 'Jane')
+console.log(card.getAttribute('user-name'))  // "Jane"
+
+// Get/set via property (direct access)
+card.userName = 'Bob'
+console.log(card.userName)  // "Bob"
+
+// With reflection (reflect: true), both stay in sync:
+card.selected = true
+console.log(card.getAttribute('selected'))  // "true"
+        </prism></pre>
+    </div>
+</baz-tab>

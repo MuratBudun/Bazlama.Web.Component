@@ -1,4 +1,4 @@
-import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, ShadowRootMode, useElementText } from "bazlama-web-component"
+import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, Property, ShadowRootMode, useElementText } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 
 @CustomElement("baz-s01")
@@ -10,6 +10,7 @@ export default class BazS01 extends BazlamaWebComponent {
 
     @ChangeHooks([useElementText("span[ref='label-text']")])
     @Attribute("label-text", true)
+    @Property()
     public LabelText = "Bazlama Sample 01"
 
     getRenderTemplate() {

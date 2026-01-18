@@ -1,0 +1,63 @@
+<h2 class="pb-2 text-4xl">@Property</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator defines a reactive property on a component. When the property value changes,
+    any registered change hooks are automatically triggered.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@Property(options?: IPropertyDefineOption)
+
+interface IPropertyDefineOption {
+    defaultValue?: TPropertyValueType;  // Default value for the property
+}
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">options</div> - Optional configuration object.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">defaultValue</div> - The default value if the property is not set.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Decorator Order:</strong> When using multiple decorators, <code>@Property</code> must be the 
+                <strong>last</strong> decorator (closest to the property). Decorators execute bottom-to-top.
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+import { BazlamaWebComponent, CustomElement, Property } from "bazlama-web-component"
+
+@CustomElement("counter-component")
+class CounterComponent extends BazlamaWebComponent {
+    @Property({ defaultValue: 0 })
+    count: number = 0
+    
+    @Property({ defaultValue: "Guest" })
+    username: string = "Guest"
+    
+    @Property({ defaultValue: true })
+    isVisible: boolean = true
+    
+    increment() {
+        this.count++  // Triggers change hooks
+    }
+}
+        </prism></pre>
+    </div>
+    <div title="With Other Decorators" icon-name="layers">
+        <pre class="language-markup"><prism lang="typescript">
+// Correct order (decorators execute bottom-to-top):
+@ChangeHooks([useElementText(".display")])  // 3rd - Add hooks
+@Attribute("count", true)                    // 2nd - Make it an attribute
+@Property({ defaultValue: 0 })               // 1st - Define the property
+count: number = 0
+
+// The decorators are processed in this order:
+// 1. @Property - Creates the property definition
+// 2. @Attribute - Adds attribute binding to the property
+// 3. @ChangeHooks - Adds change hooks to the property
+        </prism></pre>
+    </div>
+</baz-tab>

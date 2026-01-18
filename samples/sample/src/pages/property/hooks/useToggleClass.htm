@@ -1,0 +1,40 @@
+<h2 class="pb-2 text-4xl">useToggleClass</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook is used to toggle a CSS class based on a boolean property value.
+    When the property is true, the class is added; when false, the class is removed.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+useToggleClass(query: string, className: string)
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select the element(s).</li>
+            <li class="pb-1"><div class="badge badge-primary">className</div> - The CSS class name to toggle.</li>
+        </ul>
+        <div class="mt-4 p-3 bg-info/20 rounded-box">
+            <p class="text-sm">
+                <strong>Note:</strong> The class is added when the property value is <code>true</code> (truthy) 
+                and removed when it is <code>false</code> (falsy).
+            </p>
+        </div>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s07></baz-s07>
+            <p class="pt-3">
+                The panel above uses <code>useToggleClass</code> to show/hide the content.
+                Click the header to toggle the <code>hidden</code> and <code>rotate-180</code> classes.
+            </p>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s07/baz-s07.ts"></prism-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s07/template.htm"></prism-loader></code></pre>
+    </div>
+</baz-tab>

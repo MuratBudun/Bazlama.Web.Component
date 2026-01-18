@@ -1,0 +1,63 @@
+<h2 class="pb-2 text-4xl">@FireRender</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator triggers a complete re-render of the component whenever the property changes.
+    Use this when you need the entire template to be regenerated.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@FireRender()
+        </prism></pre>
+        <div class="mt-4 p-3 bg-warning/20 rounded-box">
+            <p class="text-sm">
+                <strong>Performance Note:</strong> Use <code>@FireRender</code> sparingly. For most cases, 
+                <code>@ChangeHooks</code> is more efficient as it only updates specific elements rather than 
+                re-rendering the entire component.
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("item-list")
+class ItemList extends BazlamaWebComponent {
+    // When items array changes, re-render the whole list
+    @FireRender()
+    @Property({ defaultValue: [] })
+    items: string[] = []
+    
+    addItem(item: string) {
+        this.items = [...this.items, item]  // Triggers re-render
+    }
+    
+    getRenderTemplate() {
+        return `
+            &lt;ul&gt;
+                ${this.items.map(item => `&lt;li&gt;${item}&lt;/li&gt;`).join('')}
+            &lt;/ul&gt;
+            &lt;button class="add-btn"&gt;Add Item&lt;/button&gt;
+        `
+    }
+}
+        </prism></pre>
+    </div>
+    <div title="When to Use" icon-name="help">
+        <div class="p-4">
+            <h4 class="font-bold mb-2">✅ Good Use Cases:</h4>
+            <ul class="list-disc pl-4 mb-4">
+                <li>Dynamic lists where items are added/removed</li>
+                <li>Complex conditional rendering</li>
+                <li>When template structure changes based on property</li>
+            </ul>
+            
+            <h4 class="font-bold mb-2">❌ Avoid When:</h4>
+            <ul class="list-disc pl-4">
+                <li>Only updating text content (use <code>useElementText</code>)</li>
+                <li>Toggling visibility (use <code>useToggleClass</code>)</li>
+                <li>Updating styles (use <code>useElementStyle</code>)</li>
+                <li>Frequent updates that could cause performance issues</li>
+            </ul>
+        </div>
+    </div>
+</baz-tab>

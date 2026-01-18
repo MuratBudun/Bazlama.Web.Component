@@ -1,4 +1,4 @@
-import { Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, FireEvent, ShadowRootMode, useElementAttribute, useElementInputValue, useElementText, useElementTextWithFunction } from "bazlama-web-component"
+import { Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, FireEvent, Property, ShadowRootMode, useElementAttribute, useElementInputValue, useElementText, useElementTextWithFunction } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 
 @CustomElement("baz-s03")
@@ -15,14 +15,17 @@ export default class BazS03 extends BazlamaWebComponent {
         ),
     ])
     @Attribute("value", true)
+    @Property()
     public value: string = ""
 
     @ChangeHooks([useElementAttribute("input", "placeholder")])
     @Attribute("placeholder", true)
+    @Property()
     public placheHolder: string = "Please input text"
 
     @ChangeHooks([useElementText("span[ref='label']")])
     @Attribute("label", true)
+    @Property()
     public label: string = "Bazlama S03"
 
     getRenderTemplate() {

@@ -10,11 +10,16 @@ import { queryCached } from "../../helper/SelectorCache";
  *
  * @param query - CSS selector to find target elements
  * @param className - CSS class name to toggle
- * @param calcActive - Function that returns true to add class, false to remove
+ * @param calcActive - Optional function that returns true to add class, false to remove. If not provided, uses truthiness of the property value.
  * @returns A property change hook function
  *
  * @example
  * ```typescript
+ * @Property()
+ * @ChangeHooks([useToggleClass('.panel', 'visible')])
+ * isOpen: boolean = false
+ * 
+ * // Or with custom logic
  * @Property()
  * @ChangeHooks([useToggleClass('.panel', 'visible', (value) => value === true)])
  * isOpen: boolean = false
@@ -23,7 +28,7 @@ import { queryCached } from "../../helper/SelectorCache";
 export default function useToggleClass(
   query: string,
   className: string,
-  calcActive: (
+  calcActive?: (
     value: TPropertyValueType,
     target: Element,
     propertyDefine: PropertyDefine,
@@ -34,7 +39,9 @@ export default function useToggleClass(
   return (bazComponent, value, propertyDefine, oldValue) => {
     const targets = queryCached(bazComponent, query);
     targets.forEach((target: Element) => {
-      const add = calcActive(value, target, propertyDefine, oldValue, bazComponent);
+      const add = calcActive 
+        ? calcActive(value, target, propertyDefine, oldValue, bazComponent)
+        : !!value;
 
       if (add) {
         target.classList.add(className);

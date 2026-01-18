@@ -1,4 +1,4 @@
-import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, ShadowRootMode, useAddRemoveClass, useElementInputRadioValue } from "bazlama-web-component"
+import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, Property, ShadowRootMode, useAddRemoveClass, useElementInputRadioValue } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 import "./style.css"
 
@@ -19,6 +19,7 @@ export default class BazS05 extends BazlamaWebComponent {
         })
     ])
     @Attribute("selected-tab", true)
+    @Property()
     public SelectedTab: string = "tab-2"
 
     getRenderTemplate() {

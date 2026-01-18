@@ -1,4 +1,4 @@
-import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, EventAction, ShadowRootMode, useAddRemoveClass, useCustomHook, useFunction } from "bazlama-web-component"
+import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, EventAction, Property, ShadowRootMode, useAddRemoveClass } from "bazlama-web-component"
 
 @CustomElement("baz-tab")
 export default class BazTab extends BazlamaWebComponent {
@@ -8,21 +8,21 @@ export default class BazTab extends BazlamaWebComponent {
         useAddRemoveClass({
             addClassName: "hidden",
             removeClassName: "hidden",
-            addElQuery: (_, oldValue) => `div[tab-id="${oldValue}"]`,
-            removeElQuery: (_, value) => `div[tab-id="${value}"]`
+            addElQuery: (_, oldValue) => `:scope > div[tab-id="${oldValue}"]`,
+            removeElQuery: (_, value) => `:scope > div[tab-id="${value}"]`
         }),
         useAddRemoveClass({
             addClassName: ["text-primary", "!border-primary"],
             removeClassName: ["text-primary", "!border-primary"],
-            addElQuery: (value) => `li[tab-id="${value}"]`,
-            removeElQuery: (oldValue) => `li[tab-id="${oldValue}"]`
+            addElQuery: (value) => `:scope > div:first-child > ul > li[tab-id="${value}"]`,
+            removeElQuery: (oldValue) => `:scope > div:first-child > ul > li[tab-id="${oldValue}"]`
         })
     ])
     @Attribute("active-tab-id", true)
+    @Property()
     public ActiveTabId: string = ""
 
-
-    @EventAction("li", "click")
+    @EventAction(":scope > div:first-child > ul > li", "click")
     public TabClick = (_name: string, element: HTMLElement) => {
         const tabId = element.getAttribute("tab-id")
         if (tabId) {
@@ -37,9 +37,9 @@ export default class BazTab extends BazlamaWebComponent {
     }
 
     private initTabs() {
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children[i]
-
+        const directDivs = Array.from(this.children).filter(child => child.tagName === "DIV") as HTMLElement[]
+        
+        directDivs.forEach((child, i) => {
             const tabId = child.getAttribute("tab-id") ?? child.getAttribute("id") ?? `tab-${i}`
             child.setAttribute("tab-id", tabId)
             child.classList.add("hidden")
@@ -52,7 +52,7 @@ export default class BazTab extends BazlamaWebComponent {
                 IconName: iconName,
                 Html: child.outerHTML
             }
-        }
+        })
     }
 
     afterRender(): void {

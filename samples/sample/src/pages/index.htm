@@ -1,71 +1,189 @@
+<!-- Hero Section -->
+<div class="hero min-h-[60vh] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-box mb-8">
+    <div class="hero-content text-center">
+        <div class="max-w-2xl">
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Bazlama Web Component
+            </h1>
+            <p class="py-6 text-lg opacity-80">
+                A lightweight, decorator-based TypeScript framework for building modern Web Components 
+                with reactive properties, automatic DOM updates, and zero dependencies.
+            </p>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <a href="#/getting-started" class="btn btn-primary btn-lg gap-2">
+                    Get Started
+                </a>
+                <a href="https://github.com/niceforbear/bazlama-web-component" target="_blank" class="btn btn-outline btn-lg gap-2">
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<script>
-    function fitToCanvas() {
-        const timeline = document.querySelector('baz-timeline');
-        timeline.fitToCanvas();
+<!-- Features Grid -->
+<h2 class="text-3xl font-bold text-center mb-8">Key Features</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-primary">
+                <baz-icon icon="code"></baz-icon>
+                Decorator-Based API
+            </h3>
+            <p>Use familiar TypeScript decorators like <code>@Property</code>, <code>@Attribute</code>, and <code>@EventAction</code> for clean, readable component code.</p>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-secondary">
+                <baz-icon icon="refresh"></baz-icon>
+                Reactive Properties
+            </h3>
+            <p>Automatic DOM updates when properties change. Use <code>@ChangeHooks</code> to define how the UI responds to state changes.</p>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-accent">
+                <baz-icon icon="layers"></baz-icon>
+                Shadow DOM Support
+            </h3>
+            <p>Choose between Shadow DOM (open/closed) or Light DOM based on your component's needs with simple configuration.</p>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-info">
+                <baz-icon icon="zap"></baz-icon>
+                Zero Dependencies
+            </h3>
+            <p>Lightweight and fast. No external runtime dependencies - just pure TypeScript compiled to standard Web Components.</p>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-success">
+                <baz-icon icon="package"></baz-icon>
+                Built-in Hooks
+            </h3>
+            <p>11+ pre-built hooks like <code>useElementText</code>, <code>useElementStyle</code>, <code>useToggleClass</code> for common DOM operations.</p>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+        <div class="card-body">
+            <h3 class="card-title text-warning">
+                <baz-icon icon="tool"></baz-icon>
+                TypeScript First
+            </h3>
+            <p>Full TypeScript support with type-safe decorators, intellisense, and compile-time error checking.</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Quick Example -->
+<h2 class="text-3xl font-bold text-center mb-8">Quick Example</h2>
+<div class="mockup-code bg-base-300 mb-12">
+    <pre class="language-markup"><prism lang="typescript">
+import { BazlamaWebComponent, CustomElement, Property, Attribute, ChangeHooks, useElementText } from "bazlama-web-component"
+
+@CustomElement("hello-world")
+class HelloWorld extends BazlamaWebComponent {
+    constructor() {
+        super()
+        this.InitBazlamaWebComponent()
     }
-</script>
 
-<div class="flex w-full gap-8 items-center pb-4">
-    <span>Zoom:</span>
-    <input id="zoomSlider" type="range" min="0.05" max="8" value="1" step="0.05" class="range range-primary" />
-    <button id="fitToCanvas" class="btn btn-primary" 
-        onclick="document.querySelector('baz-timeline').fitToCanvas()">
-        Try Fit to Canvas
-    </button>
+    @ChangeHooks([useElementText(".name")])
+    @Attribute("name", true)
+    @Property({ defaultValue: "World" })
+    name: string = "World"
+
+    getRenderTemplate() {
+        return `&lt;h1&gt;Hello, &lt;span class="name"&gt;&lt;/span&gt;!&lt;/h1&gt;`
+    }
+}
+    </prism></pre>
 </div>
 
-<div class="w-full p-4 rounded-box h-full bg-base-200 overflow-hidden">
-    <baz-timeline style="width: 100%; height: 15rem;">
-    </baz-timeline>
+<!-- Documentation Links -->
+<h2 class="text-3xl font-bold text-center mb-8">Documentation</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+    
+    <a href="#/getting-started" class="card bg-primary text-primary-content hover:scale-105 transition-transform cursor-pointer">
+        <div class="card-body items-center text-center">
+            <baz-icon icon="book" class="text-4xl mb-2"></baz-icon>
+            <h3 class="card-title">Getting Started</h3>
+            <p class="text-sm opacity-80">Installation & first component</p>
+        </div>
+    </a>
+
+    <a href="#/decorators/custom-element" class="card bg-secondary text-secondary-content hover:scale-105 transition-transform cursor-pointer">
+        <div class="card-body items-center text-center">
+            <baz-icon icon="at-sign" class="text-4xl mb-2"></baz-icon>
+            <h3 class="card-title">Decorators</h3>
+            <p class="text-sm opacity-80">7 powerful decorators</p>
+        </div>
+    </a>
+
+    <a href="#/property-hooks/use-element-text" class="card bg-accent text-accent-content hover:scale-105 transition-transform cursor-pointer">
+        <div class="card-body items-center text-center">
+            <baz-icon icon="link" class="text-4xl mb-2"></baz-icon>
+            <h3 class="card-title">Property Hooks</h3>
+            <p class="text-sm opacity-80">11 built-in hooks</p>
+        </div>
+    </a>
+
+    <a href="#/api-reference" class="card bg-info text-info-content hover:scale-105 transition-transform cursor-pointer">
+        <div class="card-body items-center text-center">
+            <baz-icon icon="file-text" class="text-4xl mb-2"></baz-icon>
+            <h3 class="card-title">API Reference</h3>
+            <p class="text-sm opacity-80">Complete API docs</p>
+        </div>
+    </a>
+
 </div>
 
-<baz-textbox label="Type here" color="primary" label-alt-left="Deneme" class="w-96">
-    <baz-icon icon="search" style="color:blueviolet"></baz-icon>
-</baz-textbox>
-<p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex at alias vitae id consequatur laborum corrupti quas
-    neque ipsam, fugiat iusto similique ab placeat. Quas laboriosam quisquam iusto doloremque vel.
-</p>
+<!-- Live Demo Preview -->
+<h2 class="text-3xl font-bold text-center mb-8">Live Demo</h2>
+<div class="bg-base-200 rounded-box mb-8 overflow-hidden">
+    <div class="p-6">
+        <p class="text-center opacity-70 mb-4">Interactive demos showcasing reactive properties, event handling, and real-time DOM updates.</p>
+        
+        <div class="flex flex-wrap gap-4 items-center justify-center mb-4">
+            <span class="font-semibold">Zoom:</span>
+            <input id="home-zoom" type="range" min="0.1" max="5" value="1" step="0.1" class="range range-primary w-48" 
+                   oninput="document.querySelector('#home-timeline').ZoomFactor = parseFloat(this.value);" />
+            <button class="btn btn-primary btn-sm" onclick="document.querySelector('#home-timeline').fitToCanvas(); setTimeout(() => { document.getElementById('home-zoom').value = document.querySelector('#home-timeline').ZoomFactor; }, 50);">
+                <baz-icon icon="maximize"></baz-icon>
+                Fit to Canvas
+            </button>
+        </div>
+        
+        <div class="w-full p-4 rounded-box bg-base-300 overflow-hidden">
+            <baz-timeline id="home-timeline" style="width: 100%; height: 10rem;"></baz-timeline>
+        </div>
+        
+        <div class="text-center mt-4 text-sm opacity-60">
+            Alt + Scroll to zoom • Drag to pan
+        </div>
+    </div>
+    
+    <a href="#/live-demo" class="flex items-center justify-center gap-2 bg-primary text-primary-content p-4 hover:bg-primary-focus transition-colors">
+        <baz-icon icon="play"></baz-icon>
+        <span class="font-semibold">Explore All Interactive Demos</span>
+        <baz-icon icon="arrow-right"></baz-icon>
+    </a>
+</div>
+
+<!-- Footer -->
+<div class="text-center py-8 opacity-60">
+    <p>Made with Bazlama Web Component</p>
+    <p class="text-sm mt-2">MIT License • TypeScript • Web Components</p>
+</div>

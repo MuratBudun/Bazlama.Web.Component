@@ -1,0 +1,63 @@
+<h2 class="pb-2 text-4xl">@ChangeHooks</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator registers hook functions that are called whenever a property changes.
+    Hooks are the primary way to update the DOM in response to property changes.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@ChangeHooks(hooks: TPropertyChangeHook[])
+
+type TPropertyChangeHook = (
+    bazComponent: BazlamaWebComponent,
+    value: TPropertyValueType,
+    propertyDefine: PropertyDefine,
+    oldValue: TPropertyValueType
+) => void
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">hooks</div> - Array of hook functions to execute on property change.</li>
+        </ul>
+    </div>    
+    <div title="Available Hooks" icon-name="puzzle">
+        <ul class="font-mono list-disc pl-4 pt-2">
+            <li class="pb-2"><code>useElementText(query, prefix, suffix)</code> - Updates element's text content</li>
+            <li class="pb-2"><code>useElementTextWithFunction(query, fn)</code> - Updates text with custom formatting</li>
+            <li class="pb-2"><code>useElementInputValue(query)</code> - Syncs with input element value</li>
+            <li class="pb-2"><code>useElementAttribute(query, attr)</code> - Updates element attribute</li>
+            <li class="pb-2"><code>useElementProperty(query, prop)</code> - Updates element property</li>
+            <li class="pb-2"><code>useElementStyle(query, style, suffix)</code> - Updates inline style</li>
+            <li class="pb-2"><code>useAddRemoveClass(options)</code> - Adds/removes CSS classes</li>
+            <li class="pb-2"><code>useToggleClass(query, className)</code> - Toggles class based on boolean</li>
+            <li class="pb-2"><code>useSwitchClass(query, prefix)</code> - Switches between classes</li>
+            <li class="pb-2"><code>useCustomHook(query, fn)</code> - Custom logic per element</li>
+            <li class="pb-2"><code>useFunction(fn)</code> - General custom logic</li>
+        </ul>
+    </div>
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("product-card")
+class ProductCard extends BazlamaWebComponent {
+    // Multiple hooks on one property
+    @ChangeHooks([
+        useElementText(".price-display", "$"),
+        useElementAttribute(".product", "data-price"),
+        useFunction((comp, value) => {
+            console.log(`Price changed to: ${value}`)
+        })
+    ])
+    @Attribute("price", true)
+    @Property({ defaultValue: 0 })
+    price: number = 0
+    
+    // Conditional class based on boolean
+    @ChangeHooks([useToggleClass(".stock-badge", "out-of-stock")])
+    @Attribute("in-stock", true)
+    @Property({ defaultValue: true })
+    inStock: boolean = true
+}
+        </prism></pre>
+    </div>
+</baz-tab>

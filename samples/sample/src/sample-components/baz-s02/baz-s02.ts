@@ -1,4 +1,4 @@
-import { Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, ShadowRootMode, useElementTextWithFunction } from "bazlama-web-component"
+import { Attribute, BazConvert, BazlamaWebComponent, ChangeHooks, CustomElement, Property, ShadowRootMode, useElementTextWithFunction } from "bazlama-web-component"
 import htmlTemplate from "./template.htm"
 
 @CustomElement("baz-s02")
@@ -17,6 +17,7 @@ export default class BazS02 extends BazlamaWebComponent {
         return result
     })])
     @Attribute("debit", true)
+    @Property()
     public debit = 0
 
     getRenderTemplate() {

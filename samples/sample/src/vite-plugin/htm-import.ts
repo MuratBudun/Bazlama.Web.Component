@@ -28,38 +28,43 @@ export default function htmImportPlugin(): Plugin {
                 const dom = new JSDOM(src)
                 const document = dom.window.document
 
-                // <prims-loader> taglarını işleme
-                document.querySelectorAll("prims-loader").forEach((loader) => {
+                // <prism-loader> taglarını işleme
+                document.querySelectorAll("prism-loader").forEach((loader) => {
                     const srcPath = loader.getAttribute("src")
                     const langAttr = loader.getAttribute("lang")
 
                     if (srcPath) {
                         const fullPath = path.resolve(path.dirname(id), srcPath)
-                        const codeContent = fs.readFileSync(fullPath, "utf-8")
+                        
+                        try {
+                            const codeContent = fs.readFileSync(fullPath, "utf-8")
+                            const languageString = langAttr || fullPath.split(".").slice(-1)[0]
+                            const language = languageMap[languageString] || "markup"
 
-                        const languageString = langAttr || fullPath.split(".").slice(-1)[0]
-                        const language = languageMap[languageString] || "markup"
-
-                        loader.outerHTML = language
-                            ? Prism.highlight(codeContent, Prism.languages[language], language)
-                            : codeContent
+                            loader.outerHTML = language
+                                ? Prism.highlight(codeContent, Prism.languages[language], language)
+                                : codeContent
+                        } catch (error) {
+                            console.error(`[htm-import] File not found: ${fullPath}`)
+                            loader.outerHTML = `<!-- Error: Could not load ${srcPath} -->`
+                        }
                     }
                 })
 
-                // <prims> taglarını işleme
-                document.querySelectorAll("prims").forEach((prims) => {
-                    const language = prims.getAttribute("lang") || "typescript" // Örnek olarak default 'typescript' alındı
-                    const dontUseTrim = prims.getAttribute("no-trim") === "true" // trim özelliği varsa true alındı
-                    const codeContent = dontUseTrim ? prims.textContent || "" : prims.textContent?.trim() || ""
+                // <prism> taglarını işleme
+                document.querySelectorAll("prism").forEach((prism) => {
+                    const language = prism.getAttribute("lang") || "typescript"
+                    const dontUseTrim = prism.getAttribute("no-trim") === "true"
+                    const codeContent = dontUseTrim ? prism.textContent || "" : prism.textContent?.trim() || ""
 
-                    prims.outerHTML = `<pre><code>${Prism.highlight(
+                    prism.outerHTML = `<pre><code>${Prism.highlight(
                         codeContent,
                         Prism.languages[language],
                         language
                     )}</code></pre>`
                 })
 
-                const newSrc = dom.serialize();
+                const newSrc = dom.serialize()
                 const escapedHTML = JSON.stringify(newSrc)
                 return {
                     code: `export default ${escapedHTML};`,
@@ -67,40 +72,5 @@ export default function htmImportPlugin(): Plugin {
                 }
             }
         },
-
-        /*
-        async transform(src: string, id: string) {
-            if (id.endsWith(".htm")) {
-                const directory = path.dirname(id)
-                const loaderTagRegex = /<prims-loader[^>]*src="([^"]+)"[^>]*>([\s\S]*?)<\/prims-loader>/gi
-                let match
-
-                while ((match = loaderTagRegex.exec(src)) !== null) {
-                    const srcFile = match[1]
-                    const fullPath = path.resolve(directory, srcFile)
-
-                    try {
-                        const codeContent = fs.readFileSync(fullPath, "utf-8")
-                        const languageString = fullPath.split(".").slice(-2)[0]
-                        const language = languageMap[languageString] || "markup"
-
-                        const highlightedCode = language
-                            ? Prism.highlight(codeContent, Prism.languages[language], language)
-                            : codeContent
-
-                        src = src.replace(match[0], `${highlightedCode}`)
-                    } catch (error) {
-                        console.error(`Error processing code src in ${id}: ${error}`)
-                    }
-                }
-
-                const escapedHTML = JSON.stringify(src)
-                return {
-                    code: `export default ${escapedHTML};`,
-                    map: null,
-                }
-            }
-        },
-        */
     }
 }

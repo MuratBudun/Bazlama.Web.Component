@@ -1,0 +1,49 @@
+<h2 class="pb-2 text-4xl">useCustomHook</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This hook provides maximum flexibility by allowing you to execute custom logic for each element matching a query.
+    It gives you full access to the element, property value, and component instance.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+useCustomHook(query: string, func: CustomHookFunction)
+
+type CustomHookFunction = (
+    target: Element,
+    value: TPropertyValueType,
+    propertyDefine: PropertyDefine,
+    oldValue: TPropertyValueType,
+    bazComponent: BazlamaWebComponent
+) => void
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - The query selector to select target elements.</li>
+            <li class="pb-1"><div class="badge badge-primary">func</div> - The custom function to execute for each matched element.</li>
+        </ul>
+        <ul class="font-mono list-disc pl-8 pt-2">
+            <li class="pb-1"><div class="badge badge-outline badge-primary">target</div> - The matched DOM element.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">value</div> - The new property value.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">propertyDefine</div> - The property definition object.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">oldValue</div> - The previous property value.</li>
+            <li class="pb-1"><div class="badge badge-outline badge-primary">bazComponent</div> - The component instance.</li>
+        </ul>
+    </div>    
+    <div title="Demo" icon-name="appWindow">
+        <div class="demo p-4 flex flex-col gap-4">
+            <baz-s09></baz-s09>
+            <p class="pt-3">
+                The rating component above uses <code>useCustomHook</code> to update multiple elements
+                (stars, rating text, and data attribute) with a single custom function.
+            </p>
+            <span>For more information, see the "<b>Script</b>" and "<b>Template</b>" tabs.</span>
+        </div>
+    </div>    
+    <div title="Script" icon-name="fileTs">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s09/baz-s09.ts"></prism-loader></code></pre>
+    </div>  
+    <div title="Template" icon-name="fileHtml">
+        <pre class="language-markup"><code><prism-loader src="../../../sample-components/baz-s09/template.htm"></prism-loader></code></pre>
+    </div>
+</baz-tab>

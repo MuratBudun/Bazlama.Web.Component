@@ -1,0 +1,19 @@
+{
+  "name": "sample-core",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Core sample demonstrating Bazlama Web Component features",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bazlama-web-component": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4"
+  }
+}

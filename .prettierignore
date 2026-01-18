@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+*.js
+*.cjs
+*.mjs
+!eslint.config.js
+package-lock.json

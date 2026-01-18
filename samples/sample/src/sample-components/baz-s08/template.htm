@@ -1,0 +1,20 @@
+<style>
+    .theme-box { padding: 2rem; border-radius: 0.5rem; text-align: center; transition: all 0.3s; }
+    .theme-primary { background: #3b82f6; color: white; }
+    .theme-secondary { background: #8b5cf6; color: white; }
+    .theme-accent { background: #f59e0b; color: white; }
+    .theme-success { background: #22c55e; color: white; }
+    .theme-error { background: #ef4444; color: white; }
+</style>
+<div class="max-w-md">
+    <div class="theme-box theme-primary mb-4">
+        <span class="text-lg font-bold">Current Theme Box</span>
+    </div>
+    <div class="flex gap-2 flex-wrap">
+        <button class="btn btn-sm btn-primary" data-theme="primary">Primary</button>
+        <button class="btn btn-sm btn-secondary" data-theme="secondary">Secondary</button>
+        <button class="btn btn-sm btn-accent" data-theme="accent">Accent</button>
+        <button class="btn btn-sm btn-success" data-theme="success">Success</button>
+        <button class="btn btn-sm btn-error" data-theme="error">Error</button>
+    </div>
+</div>

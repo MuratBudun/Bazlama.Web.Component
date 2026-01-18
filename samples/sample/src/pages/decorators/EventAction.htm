@@ -1,0 +1,69 @@
+<h2 class="pb-2 text-4xl">@EventAction</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator binds a method to DOM events on elements matching a CSS selector.
+    It automatically handles event listener registration and cleanup.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@EventAction(query: string, eventName: string)
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">query</div> - CSS selector for target element(s).</li>
+            <li class="pb-1"><div class="badge badge-primary">eventName</div> - DOM event name (e.g., "click", "input", "change").</li>
+        </ul>
+        <div class="mt-4 p-3 bg-warning/20 rounded-box">
+            <p class="text-sm">
+                <strong>Method Signature:</strong> The decorated method receives 4 parameters:
+                <code>(eventActionName, element, eventName, event)</code>
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement("form-component")
+class FormComponent extends BazlamaWebComponent {
+    @Property({ defaultValue: "" })
+    inputValue: string = ""
+    
+    // Simple click handler
+    @EventAction(".submit-btn", "click")
+    onSubmit() {
+        console.log("Form submitted:", this.inputValue)
+    }
+    
+    // Full signature with all parameters
+    @EventAction(".text-input", "input")
+    onInput(
+        eventActionName: string,  // "onInput"
+        element: HTMLElement,     // The input element
+        eventName: string,        // "input"
+        event: Event              // The InputEvent
+    ) {
+        const target = event.target as HTMLInputElement
+        this.inputValue = target.value
+    }
+    
+    // Arrow function style (recommended for TypeScript)
+    @EventAction(".cancel-btn", "click")
+    onCancel = () => {
+        this.inputValue = ""
+    }
+}
+        </prism></pre>
+    </div>
+    <div title="Common Events" icon-name="zap">
+        <ul class="font-mono list-disc pl-4 pt-2">
+            <li class="pb-1"><code>click</code> - Mouse click</li>
+            <li class="pb-1"><code>dblclick</code> - Double click</li>
+            <li class="pb-1"><code>input</code> - Input value change (fires on every keystroke)</li>
+            <li class="pb-1"><code>change</code> - Value change (fires on blur)</li>
+            <li class="pb-1"><code>keydown</code> / <code>keyup</code> - Keyboard events</li>
+            <li class="pb-1"><code>mouseover</code> / <code>mouseout</code> - Mouse hover</li>
+            <li class="pb-1"><code>focus</code> / <code>blur</code> - Focus events</li>
+            <li class="pb-1"><code>submit</code> - Form submission</li>
+        </ul>
+    </div>
+</baz-tab>

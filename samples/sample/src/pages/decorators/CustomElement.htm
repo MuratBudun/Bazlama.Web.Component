@@ -1,0 +1,75 @@
+<h2 class="pb-2 text-4xl">@CustomElement</h2>
+
+<p class="font-mono pt-2 pb-2 indent-8">
+    This decorator registers a class as a custom HTML element. It must be applied to the class declaration
+    and defines the tag name used in HTML.
+</p>
+
+<baz-tab active-tab-id="tab-1">
+    <div title="Usage" icon-name="list">
+        <pre class="language-markup"><prism lang="typescript">
+@CustomElement(tagName: string)
+        </prism></pre>
+        <ul class="font-mono list-disc pl-4 pt-1">
+            <li class="pb-1"><div class="badge badge-primary">tagName</div> - The custom element tag name. Must contain a hyphen (e.g., "my-component").</li>
+        </ul>
+        <div class="mt-4 p-3 bg-warning/20 rounded-box">
+            <p class="text-sm">
+                <strong>Important:</strong> Custom element names must contain at least one hyphen (-) to distinguish 
+                them from standard HTML elements.
+            </p>
+        </div>
+    </div>    
+    <div title="Example" icon-name="code">
+        <pre class="language-markup"><prism lang="typescript">
+import { BazlamaWebComponent, CustomElement } from "bazlama-web-component"
+
+@CustomElement("my-greeting")
+class MyGreeting extends BazlamaWebComponent {
+    constructor() {
+        super()
+        this.InitBazlamaWebComponent()
+    }
+    
+    getRenderTemplate() {
+        return `&lt;h1&gt;Hello, World!&lt;/h1&gt;`
+    }
+}
+
+// Usage in HTML:
+// &lt;my-greeting&gt;&lt;/my-greeting&gt;
+        </prism></pre>
+    </div>
+    <div title="With ShadowDOM" icon-name="layers">
+        <pre class="language-markup"><prism lang="typescript">
+import { BazlamaWebComponent, CustomElement, ShadowRootMode } from "bazlama-web-component"
+
+// With Shadow DOM (default - closed)
+@CustomElement("shadow-component")
+class ShadowComponent extends BazlamaWebComponent {
+    constructor() {
+        super() // Uses closed shadow DOM by default
+        this.InitBazlamaWebComponent()
+    }
+}
+
+// Without Shadow DOM
+@CustomElement("light-component")
+class LightComponent extends BazlamaWebComponent {
+    constructor() {
+        super(ShadowRootMode.None) // Renders directly to element
+        this.InitBazlamaWebComponent()
+    }
+}
+
+// Open Shadow DOM (accessible via element.shadowRoot)
+@CustomElement("open-shadow-component")
+class OpenShadowComponent extends BazlamaWebComponent {
+    constructor() {
+        super(ShadowRootMode.Open)
+        this.InitBazlamaWebComponent()
+    }
+}
+        </prism></pre>
+    </div>
+</baz-tab>
