@@ -29,7 +29,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/node": "^25.0.9",
-    "@vitest/coverage-v8": "^2.1.0",
+    "@vitest/coverage-v8": "^4.0.17",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
@@ -37,12 +37,15 @@
     "prettier": "^3.8.0",
     "rimraf": "^6.0.0",
     "typescript-eslint": "^8.53.0",
-    "vitest": "^2.1.0"
+    "vitest": "^4.0.17"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/MuratBudun/Bazlama.Web.Component"
   },
   "author": "muratbudun@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "vite": "7.3.1"
+  }
 }

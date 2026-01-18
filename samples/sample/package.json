@@ -24,11 +24,11 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.3",
     "typography": "^0.16.24",
-    "vite": "^5.4.1"
+    "vite": "^7.3.1"
   },
   "dependencies": {
     "@types/markdown-it": "^14.1.2",
-    "markdown-it": "^14.1.0",
-    "bazlama-web-component": "file:../../libs/core"
+    "bazlama-web-component": "file:../../libs/core",
+    "markdown-it": "^14.1.0"
   }
 }
