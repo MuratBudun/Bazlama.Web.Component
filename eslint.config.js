@@ -50,7 +50,13 @@ export default tseslint.config(
     files: ["**/*.ts"],
     languageOptions: {
       parserOptions: {
-        project: ["./packages/core/tsconfig.json", "./tests/tsconfig.json"],
+        project: [
+          "./libs/core/tsconfig.json",
+          "./tests/tsconfig.json",
+          "./samples/sample/tsconfig.json",
+          "./samples/sample-core/tsconfig.json",
+          "./samples/sample-daisyui/tsconfig.json",
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
