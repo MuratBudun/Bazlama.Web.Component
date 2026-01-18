@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bazlama Web Component - Core Sample</title>
+    <script type="module" crossorigin src="/assets/index-DsBRTPeR.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DwQuultv.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🍞 Bazlama Web Component</h1>
+        <p>Core Features Demo</p>
+      </header>
+
+      <main>
+        <!-- Counter Component -->
+        <section class="demo-section">
+          <h2>Counter Component</h2>
+          <p>Demonstrates: <code>@Property</code>, <code>@Attribute</code>, <code>@ChangeHooks</code>, <code>@EventAction</code></p>
+          <baz-counter count="5"></baz-counter>
+        </section>
+
+        <!-- Theme Switcher Component -->
+        <section class="demo-section">
+          <h2>Theme Switcher</h2>
+          <p>Demonstrates: <code>useSwitchClass</code>, <code>@FireEvent</code></p>
+          <baz-theme-switcher theme="light"></baz-theme-switcher>
+        </section>
+
+        <!-- Input Binding Component -->
+        <section class="demo-section">
+          <h2>Two-Way Binding</h2>
+          <p>Demonstrates: <code>useElementInputValue</code>, <code>useElementText</code></p>
+          <baz-input-binding></baz-input-binding>
+        </section>
+
+        <!-- Progress Component -->
+        <section class="demo-section">
+          <h2>Progress Bar</h2>
+          <p>Demonstrates: <code>useElementStyle</code>, <code>useElementAttribute</code></p>
+          <baz-progress value="35" max="100"></baz-progress>
+        </section>
+
+        <!-- Toggle Component -->
+        <section class="demo-section">
+          <h2>Toggle Panel</h2>
+          <p>Demonstrates: <code>useToggleClass</code>, <code>@FireRender</code></p>
+          <baz-toggle-panel></baz-toggle-panel>
+        </section>
+
+        <!-- Tabs Component -->
+        <section class="demo-section">
+          <h2>Tabs Component</h2>
+          <p>Demonstrates: <code>useSwitchClass</code>, multiple EventActions</p>
+          <baz-tabs></baz-tabs>
+        </section>
+
+        <!-- Todo List Component -->
+        <section class="demo-section">
+          <h2>Todo List</h2>
+          <p>Demonstrates: Complex state, <code>@FireEvent</code>, dynamic rendering</p>
+          <baz-todo></baz-todo>
+        </section>
+
+        <!-- Notification Component -->
+        <section class="demo-section">
+          <h2>Notifications</h2>
+          <p>Demonstrates: <code>@FireEvent</code>, auto-dismiss, animations</p>
+          <baz-notification duration="4000"></baz-notification>
+        </section>
+
+        <!-- Accordion Component -->
+        <section class="demo-section">
+          <h2>Accordion</h2>
+          <p>Demonstrates: Dynamic class management, smooth transitions</p>
+          <baz-accordion></baz-accordion>
+        </section>
+
+        <!-- Color Picker Component -->
+        <section class="demo-section">
+          <h2>Color Picker</h2>
+          <p>Demonstrates: Multiple <code>@ChangeHooks</code>, <code>useElementStyle</code>, <code>@FireEvent</code></p>
+          <baz-color-picker color="#8b5cf6"></baz-color-picker>
+        </section>
+
+        <!-- Star Rating Component -->
+        <section class="demo-section">
+          <h2>Star Rating</h2>
+          <p>Demonstrates: <code>useFunction</code> hook, hover states, <code>@FireEvent</code></p>
+          <baz-rating value="3" max="5"></baz-rating>
+        </section>
+      </main>
+
+      <footer>
+        <p>Built with Bazlama Web Component Framework</p>
+      </footer>
+    </div>
+
+  </body>
+</html>

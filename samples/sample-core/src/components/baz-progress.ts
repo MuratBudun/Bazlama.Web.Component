@@ -31,9 +31,9 @@ export class BazProgress extends BazlamaWebComponent {
 
   @EventAction(".progress-slider", "input")
   onSliderChange(
-    eventActionName: string,
-    element: HTMLElement,
-    eventName: string,
+    _eventActionName: string,
+    _element: HTMLElement,
+    _eventName: string,
     event: Event
   ) {
     const target = event.target as HTMLInputElement;
