@@ -19,13 +19,13 @@
   ],
   "author": "Murat Budun <muratbudun@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/nicefella/Bazlama.Web.Component#readme",
+  "homepage": "https://github.com/MuratBudun/Bazlama.Web.Component#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicefella/Bazlama.Web.Component.git"
+    "url": "git+https://github.com/MuratBudun/Bazlama.Web.Component.git"
   },
   "bugs": {
-    "url": "https://github.com/nicefella/Bazlama.Web.Component/issues"
+    "url": "https://github.com/MuratBudun/Bazlama.Web.Component/issues"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -19,7 +19,12 @@
     "lint:fix": "eslint packages/core/src/**/*.ts tests/core/**/*.ts --fix",
     "format": "prettier --write \"packages/core/src/**/*.ts\" \"tests/core/**/*.ts\"",
     "format:check": "prettier --check \"packages/core/src/**/*.ts\" \"tests/core/**/*.ts\"",
-    "clean": "rimraf packages/*/dist tests/*/coverage"
+    "clean": "rimraf packages/*/dist tests/*/coverage",
+    "release:patch": "npm version patch --workspaces && git push && git push --tags",
+    "release:minor": "npm version minor --workspaces && git push && git push --tags",
+    "release:major": "npm version major --workspaces && git push && git push --tags",
+    "prerelease": "npm run build:all && npm run test",
+    "version": "npm run format && git add -A"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -36,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicefella/Bazlama.Web.Component"
+    "url": "https://github.com/MuratBudun/Bazlama.Web.Component"
   },
   "author": "muratbudun@gmail.com",
   "license": "MIT"

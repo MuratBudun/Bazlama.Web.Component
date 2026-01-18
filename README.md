@@ -132,6 +132,12 @@ Components use Shadow DOM by default for style encapsulation. Use `ShadowRootMod
 - `useCustomHook` - Create custom logic
 - And more...
 
+## Releases
+
+New versions are automatically published to NPM when a version tag is pushed to the repository.
+
+See [RELEASE.md](./RELEASE.md) for detailed release process and [CHANGELOG.md](./CHANGELOG.md) for version history.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues and pull requests.
