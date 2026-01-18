@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/Bazlama.Web.Component/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bazlama Web Component</title>
+  <link href="/Bazlama.Web.Component/index.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/Bazlama.Web.Component/src/styles/prism-nord.css" />
+  <link rel="stylesheet" href="/Bazlama.Web.Component/src/styles/main.css" />
+  <link rel="stylesheet" href="/Bazlama.Web.Component/src/styles/baz-mediamtx.css" />
+  <script>
+    // GitHub Pages SPA fallback
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="flex flex-row h-dvh bg-base-300">
+    <div class="flex flex-col w-72 items-start navbar overflow-hidden gap-2">
+      <baz-router-home-logo class="btn w-full h-fit pt-1 pb-2">
+        <div class="flex flex-col items-start">
+          <div class="flex items-center justify-start">
+            <baz-icon icon="braces" class="pr-2 text-orange-500"></baz-icon>
+            <span class="text-xl pb-1 text-orange-500">Bazlama</span>
+            </div>
+          <div class="pb-1">Web Component Samples</div>
+        </div>
+      </baz-router-home-logo>
+      <baz-theme class="w-full" theme="default"></baz-theme>
+      <baz-router-menu class="flex flex-col flex-1 w-full overflow-auto"></baz-router-menu>
+    </div>
+    <div class="flex flex-col flex-1 p-2 overflow-hidden">
+      <div class="w-full p-4 rounded-box h-full bg-base-100 overflow-hidden">
+        <div id="page-content" class="w-full h-full overflow-auto">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/Bazlama.Web.Component/src/main.ts"></script>
+  <script>
+    var bt = document.querySelector("baz-timeline")
+  </script>
+</body>
+
+</html>
