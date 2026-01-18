@@ -4,7 +4,7 @@ Basic usage examples demonstrating the core features of Bazlama Web Component.
 
 ## Live Demo
 
-**[🚀 View Live Demo](https://niceforbear.github.io/Bazlama.Web.Component/sample-core/)**
+**[View Live Demo](https://muratbudun.github.io/Bazlama.Web.Component/sample-core/)**
 
 ## Features Demonstrated
 
@@ -29,8 +29,8 @@ npm run build
 ## Documentation
 
 For complete documentation and advanced examples, visit:
-- [📖 Full Documentation](https://niceforbear.github.io/Bazlama.Web.Component/)
-- [🏠 Main Repository](https://github.com/niceforbear/bazlama-web-component)
+- [Full Documentation](https://muratbudun.github.io/Bazlama.Web.Component/)
+- [Main Repository](https://github.com/MuratBudun/Bazlama.Web.Component)
 
 ## License
 

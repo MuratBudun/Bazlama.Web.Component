@@ -4,7 +4,7 @@ Complete documentation and interactive examples for Bazlama Web Component.
 
 ## Live Demo
 
-**[📖 View Live Documentation](https://niceforbear.github.io/Bazlama.Web.Component/)**
+**[View Live Documentation](https://muratbudun.github.io/Bazlama.Web.Component/)**
 
 ## What's Included
 
@@ -18,12 +18,12 @@ Complete documentation and interactive examples for Bazlama Web Component.
 
 ## Features
 
-- 🎯 **Zero Dependencies** - No external runtime dependencies
-- 🎨 **Modern UI** - DaisyUI + Tailwind CSS design
-- 🔄 **Reactive Properties** - Automatic DOM updates
-- 🎛️ **Decorator-Based** - Clean TypeScript decorators
-- 📱 **Responsive** - Works on all screen sizes
-- 🌙 **Theme Support** - Multiple theme options
+- **Zero Dependencies** - No external runtime dependencies
+- **Modern UI** - DaisyUI + Tailwind CSS design
+- **Reactive Properties** - Automatic DOM updates
+- **Decorator-Based** - Clean TypeScript decorators
+- **Responsive** - Works on all screen sizes
+- **Theme Support** - Multiple theme options
 
 ## Local Development
 
@@ -52,9 +52,9 @@ src/
 
 ## Related Links
 
-- [🚀 Core Examples](https://niceforbear.github.io/Bazlama.Web.Component/sample-core/)
-- [🏠 Main Repository](https://github.com/niceforbear/bazlama-web-component)
-- [📦 NPM Package](https://www.npmjs.com/package/bazlama-web-component)
+- [Core Examples](https://muratbudun.github.io/Bazlama.Web.Component/sample-core/)
+- [Main Repository](https://github.com/MuratBudun/Bazlama.Web.Component)
+- [NPM Package](https://www.npmjs.com/package/bazlama-web-component)
 
 ## License
 
