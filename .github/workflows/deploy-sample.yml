@@ -2,12 +2,12 @@ name: Deploy Samples to GitHub Pages
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "development" ]
     paths:
       - 'samples/**'
       - 'libs/core/**'
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "development" ]
     paths:
       - 'samples/**'
       - 'libs/core/**'
