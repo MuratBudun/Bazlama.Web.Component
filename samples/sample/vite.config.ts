@@ -4,6 +4,7 @@ import prismHighlightImportPlugin from "./src/vite-plugin/prism-highlight-import
 
 export default defineConfig({
     plugins: [htmImportPlugin(), prismHighlightImportPlugin()],
+    base: process.env.BASE_PATH || '/',
 
     server: {
         proxy: {

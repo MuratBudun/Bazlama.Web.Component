@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "description": "Core sample demonstrating Bazlama Web Component features",
+  "homepage": "https://niceforbear.github.io/Bazlama.Web.Component/sample-core/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

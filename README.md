@@ -13,6 +13,13 @@ A lightweight, decorator-based TypeScript framework for building modern Web Comp
 - **TypeScript First**: Full TypeScript support with type-safe decorators and intellisense
 - **MIT License**: Free to use in any project
 
+## Live Demos
+
+Try out Bazlama Web Component with interactive examples:
+
+- **[📖 Full Documentation & Interactive Samples](https://niceforbear.github.io/Bazlama.Web.Component/)** - Complete documentation with live examples
+- **[🚀 Core Examples](https://niceforbear.github.io/Bazlama.Web.Component/sample-core/)** - Basic usage examples
+
 ## Installation
 
 ```bash
