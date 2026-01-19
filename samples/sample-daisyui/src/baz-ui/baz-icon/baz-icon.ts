@@ -1,4 +1,4 @@
-import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, EventAction, FireRender, ShadowRootMode, useElementAttribute } from "bazlama-web-component"
+import { Attribute, BazlamaWebComponent, ChangeHooks, CustomElement, FireRender, ShadowRootMode, useElementAttribute } from "bazlama-web-component"
 import { IconMap, icons } from "./baz-icon-lib"
 
 @CustomElement("baz-icon")
@@ -33,11 +33,6 @@ export default class BazIcon extends BazlamaWebComponent {
     @ChangeHooks([useElementAttribute("svg", "aria-hidden")])
     @Attribute("aria-hidden", true)
     public ariaHidden: string = "true"
-
-    @EventAction("svg", "click")
-    public SayHello() {
-        console.log("Hello")
-    }
 
     constructor() {
         super(ShadowRootMode.None)

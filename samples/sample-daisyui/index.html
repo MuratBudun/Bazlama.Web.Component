@@ -1,131 +1,114 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bazlama Web Component Sample</title>
+  <title>Bazlama DaisyUI Components</title>
   <link href="/index.css" rel="stylesheet" />
-  <link href="/src/baz-ui/baz-ui.css" rel="stylesheet" />
   <script type="module" src="/src/main.ts"></script>
 </head>
 
-<body class="p-4">
-  <h1>Bazlama Web Component Sample</h1>
-  <div style="height: 20px;"></div>
-  
-  <baz-modal title="Merhaba">
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi eligendi perferendis necessitatibus labore saepe blanditiis ex odit laboriosam dolores repudiandae incidunt cumque dolor culpa fuga, maiores, provident doloremque reiciendis ea.
-    </p>
-  </baz-modal>
+<body>
+  <div class="drawer lg:drawer-open">
+    <input id="drawer" type="checkbox" class="drawer-toggle" />
+    
+    <!-- Main Content -->
+    <div class="drawer-content flex flex-col">
+      <!-- Navbar -->
+      <div class="navbar bg-base-300 lg:hidden">
+        <div class="flex-none">
+          <label for="drawer" class="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </label>
+        </div>
+        <div class="flex-1">
+          <a class="btn btn-ghost text-xl">Bazlama Components</a>
+        </div>
+      </div>
 
-
-  <button class="btn" onclick="my_modal_2.showModal()">open modal</button>
-  <dialog id="my_modal_2" class="modal">
-    <div class="modal-box" style="height: 500px;">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">Press ESC key or click outside to close</p>
-
-      <details class="dropdown">
-        <summary class="btn m-1">open or close</summary>
-        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li><a>Item 1</a></li>
-          <li><a>Item 2</a></li>
-          <li>
-            <details class="dropdown">
-              <summary class="btn m-1">open or close</summary>
-              <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-                <li></li>
-              </ul>
-            </details>
-          </li>
-        </ul>
-      </details>
-
-
-
-      <button class="btn" onclick="my_modal_3.showModal()">open modal</button>
- 
-
-
+      <!-- Page Content -->
+      <div class="flex-1 p-6" id="page-content">
+        <!-- Router content will be loaded here -->
+      </div>
     </div>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
-  </dialog>
 
-  <dialog id="my_modal_3" class="modal">
-    <div class="modal-box" style="height: 300px; width: 1000px;">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">2. Content Modal Hellooooo</p>
-
-      <details class="dropdown">
-        <summary class="btn m-1">open or close</summary>
-        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li><a>Item 1</a></li>
-          <li><a>Item 2</a></li>
-          <li>
-            <details class="dropdown">
-              <summary class="btn m-1">open or close</summary>
-              <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-                <li></li>
-              </ul>
-            </details>
+    <!-- Sidebar -->
+    <div class="drawer-side">
+      <label for="drawer" class="drawer-overlay"></label>
+      <div class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+        <!-- Sidebar Header -->
+        <div class="mb-4">
+          <h1 class="text-2xl font-bold px-4">Bazlama</h1>
+          <p class="text-sm opacity-70 px-4">DaisyUI Components</p>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Navigation Menu -->
+        <ul>
+          <li class="menu-title">
+            <span>Getting Started</span>
           </li>
+          <li><a href="baz-router:/" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Home
+          </a></li>
+          
+          <div class="divider"></div>
+          
+          <li class="menu-title">
+            <span>Components</span>
+          </li>
+          <li><a href="baz-router:/tab" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            Tab
+          </a></li>
+          <li><a href="baz-router:/theme" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+            Theme Switcher
+          </a></li>
+          <li><a href="baz-router:/icon" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+            Icon
+          </a></li>
         </ul>
-      </details>
+
+        <div class="divider"></div>
+
+        <!-- Theme Switcher -->
+        <div class="px-4">
+          <baz-theme-switcher></baz-theme-switcher>
+        </div>
+      </div>
     </div>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
-  </dialog>   
-
-
-  <baz-icon icon="search" size="2rem" /></baz-icon>
-
-  <div style="height: 10px;"></div>
-  <baz-textbox id="userInput" label="User Name" label-alt-left="Access modules" label-alt-right="U001">
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="search" size="1.2rem" />
-    </button>
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="squareX" size="1.2rem" />
-    </button>
-  </baz-textbox>
-  <baz-textbox label="Message" color="primary" label-alt-left="Generic message" placeholder="Write message."
-    label-alt-right="U002">
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="search" size="1.2rem" />
-    </button>
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="squareX" size="1.2rem" />
-    </button>
-  </baz-textbox>
-  <baz-textbox label="Message" color="secondary" label-alt-left="Generic message" placeholder="Write message."
-    label-alt-right="U003">
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="search" size="1.2rem" />
-    </button>
-    <button class="btn btn-square btn-sm">
-      <baz-icon icon="squareX" size="1.2rem" />
-    </button>
-  </baz-textbox>
+  </div>
 
   <script>
-    const textbox = document.querySelector('#userInput');
-    textbox.addEventListener('value-changed', (e) => {
-      console.log(e.detail);
-    });
+    // Active link highlighting
+    window.addEventListener("route-change", updateActiveLink);
+    updateActiveLink();
 
-    textbox.addEventListener("property-changed", (e) => {
-      console.log(e);
-      console.log(e.detail);
-    });
+    function updateActiveLink() {
+      const pathname = window.location.pathname;
+      document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.remove("active");
+        const linkPath = link.getAttribute("href").replace("baz-router:", "");
+        if (linkPath === pathname || (pathname === "/" && linkPath === "/")) {
+          link.classList.add("active");
+        }
+      });
+    }
   </script>
 </body>
 

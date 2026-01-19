@@ -1,0 +1,13 @@
+<li tab-id="{{TAB_ID}}" class="cursor-pointer me-2 inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-primary hover:border-primary group">
+    {{#if ICON_NAME}}
+    <baz-icon class="me-2" icon="{{ICON_NAME}}"></baz-icon>
+    {{/if}}
+    <span>{{TITLE}}</span>
+    {{#if CLOSABLE}}
+    <button class="tab-close ml-2 hover:text-error" onclick="event.stopPropagation()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+    {{/if}}
+</li>

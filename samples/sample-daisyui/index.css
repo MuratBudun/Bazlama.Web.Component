@@ -1,3 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: nord --default, abyss, cupcake, dracula, sunset, light, dark, retro, cyberpunk, valentine, aqua --prefersdark;
+}
+@source "../src/**/*.{htm,html,js,ts}";
+@source "../index.html";
+
+/* Active navigation link */
+.nav-link.active {
+    @apply bg-primary text-primary-content;
+}

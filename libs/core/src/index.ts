@@ -29,6 +29,7 @@ import type {
 import type TPropertyChangeHook from "./property/types/TPropertyChangeHandler.ts";
 import type IPropertyDefineOption from "./property/types/IPropertyDefineOption.ts";
 import type IPropertyEventDetail from "./property/types/IPropertyEventDetail.ts";
+import type { IPropertyChangeHandlers } from "./property/types/IPropertyChangeHandlers.ts";
 
 import CustomElement from "./decorator/CustomElement.ts";
 import Property from "./decorator/Property.ts";
@@ -118,6 +119,7 @@ export type {
   TStyleCalculateValue,
   IPropertyDefineOption,
   IPropertyEventDetail,
+  IPropertyChangeHandlers,
   TEventActionDefine,
   IEventActionDefines,
   TEventActionMethod,
