@@ -4,7 +4,11 @@ import { BasePage } from "./BasePage"
 /**
  * Page Class type - constructor function that creates a BasePage instance
  */
-type PageClass = new (container: HTMLElement) => BasePage
+type PageClass = new (
+    container: HTMLElement,
+    params?: Record<string, string>,
+    query?: Record<string, string>
+) => BasePage
 
 /**
  * Represents a route in the application with its content and children.
@@ -39,7 +43,7 @@ export default class PageRoute {
     /** Route title for display purposes */
     title: string
     
-    /** Route path segment (e.g., "about", "user", "/" for root) */
+    /** Route path segment (e.g., "about", "user/:id", "/" for root) */
     path: string
     
     /** Route content - either a function returning HTML or a Page Class */
@@ -47,6 +51,9 @@ export default class PageRoute {
     
     /** Child routes */
     children: PageRoute[]
+    
+    /** Parsed params from the path match */
+    private params: Record<string, string> = {}
 
     /**
      * Creates a new route
@@ -97,28 +104,64 @@ export default class PageRoute {
 
     /**
      * Matches a path against this route and its children
+     * Supports dynamic segments like :id, :slug, etc.
      * @param pathParts - Array of path segments to match
-     * @returns Matched route or null if no match
+     * @returns Matched route with parsed params or null if no match
      */
     public match(pathParts: string[]): PageRoute | null {
         if (this.path === "/" && pathParts.length === 0) {
             return this
         }
 
-        if (this.path === pathParts[0]) {
+        const pathSegment = pathParts[0]
+        const isMatch = this.matchSegment(this.path, pathSegment)
+        
+        if (isMatch) {
+            // Extract param if path segment is dynamic (e.g., :id)
+            if (this.path.startsWith(":")) {
+                const paramName = this.path.slice(1)
+                this.params[paramName] = pathSegment
+            }
+            
             if (pathParts.length === 1) {
                 return this
             }
 
+            // Try to match children
             for (const child of this.children) {
                 const matchedRoute = child.match(pathParts.slice(1))
                 if (matchedRoute) {
+                    // Copy parent params to child
+                    matchedRoute.params = { ...this.params, ...matchedRoute.params }
                     return matchedRoute
                 }
             }
         }
 
         return null
+    }
+    
+    /**
+     * Checks if a path segment matches a route segment
+     * @param routeSegment - Route segment (e.g., "users", ":id")
+     * @param pathSegment - Actual path segment from URL
+     * @returns True if segments match
+     */
+    private matchSegment(routeSegment: string, pathSegment: string): boolean {
+        // Dynamic segment (starts with :)
+        if (routeSegment.startsWith(":")) {
+            return true
+        }
+        // Exact match
+        return routeSegment === pathSegment
+    }
+    
+    /**
+     * Gets parsed URL parameters
+     * @returns Object containing URL parameters
+     */
+    public getParams(): Record<string, string> {
+        return { ...this.params }
     }
 
     /**

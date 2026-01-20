@@ -1,14 +1,18 @@
-<label class="form-control w-full max-w-xs">
-  <div class="label">
-    <span ref="label" class="label-text"></span>
+<label class="form-control w-full">
+  <div ref="label-container" class="label">
+    <span ref="label" class="label-text font-semibold"></span>
   </div>
-  <label ref="input-border" class="group input input-bordered flex items-center pr-2">
-    <input type="text" placeholder="Type here" class="grow placeholder-gray-600" />
+  <label ref="input-border" class="group input input-bordered flex items-center pr-2 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
+    <input 
+      type="text" 
+      placeholder="Type here..." 
+      class="grow placeholder-gray-400 dark:placeholder-gray-500 bg-transparent focus:outline-none" 
+    />
     <div class="w-2"></div>
-    <div ref="button-container" class="group hidden items-center gap-1 group-hover:flex group-focus-within:flex"></div>
+    <div ref="button-container" class="hidden items-center gap-1 group-hover:flex group-focus-within:flex"></div>
   </label>
-  <div class="label">
-    <span ref="label-alt-left" class="label-text-alt"></span>
-    <span ref="label-alt-right" class="label-text-alt"></span>
+  <div ref="label-alt-container" class="label">
+    <span ref="label-alt-left" class="label-text-alt text-gray-500"></span>
+    <span ref="label-alt-right" class="label-text-alt text-gray-500"></span>
   </div>
 </label>

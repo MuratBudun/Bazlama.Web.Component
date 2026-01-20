@@ -4,15 +4,26 @@ import homeHtml from "./home.htm?raw"
 import themeHtml from "./theme.htm?raw"
 import { IconPage } from "./icon/IconPage"
 import { TabPage } from "./tab/TabPage"
+import { TextboxPage } from "./textbox/TextboxPage"
+import { ModalPage } from "./modal/ModalPage"
 import { ExamplesPage } from "./examples/ExamplesPage"
+import { ProductsListPage } from "./examples/ProductsListPage"
+import { ProductsPage } from "./examples/ProductsPage"
 
 export function initializeRouter() {
     // Setup routes
     const rootRoute = new PageRoute("Home", "/", () => homeHtml)
     rootRoute.addRoute(new PageRoute("Tab", "tab", TabPage))
+    rootRoute.addRoute(new PageRoute("Textbox", "textbox", TextboxPage))
+    rootRoute.addRoute(new PageRoute("Modal", "modal", ModalPage))
     rootRoute.addRoute(new PageRoute("Theme", "theme", () => themeHtml))
     rootRoute.addRoute(new PageRoute("Icon", "icon", IconPage))
     rootRoute.addRoute(new PageRoute("Examples", "examples", ExamplesPage))
+    
+    // Products routes with nested dynamic route
+    const productsRoute = new PageRoute("Products", "products", ProductsListPage)
+    productsRoute.addRoute(new PageRoute("Product Detail", ":id", ProductsPage))
+    rootRoute.addRoute(productsRoute)
 
     // Configure router
     PageRouter.RootRoute = rootRoute

@@ -48,9 +48,23 @@
  */
 export abstract class BasePage {
     protected container: HTMLElement
+    protected params: Record<string, string>
+    protected query: Record<string, string>
 
-    constructor(container: HTMLElement) {
+    /**
+     * Creates a new page instance
+     * @param container - The HTML element that will contain the page
+     * @param params - URL path parameters (e.g., { id: "12" } from /products/:id)
+     * @param query - URL query parameters (e.g., { color: "red" } from ?color=red)
+     */
+    constructor(
+        container: HTMLElement, 
+        params: Record<string, string> = {}, 
+        query: Record<string, string> = {}
+    ) {
         this.container = container
+        this.params = params
+        this.query = query
     }
 
     // Abstract methods - every page must implement

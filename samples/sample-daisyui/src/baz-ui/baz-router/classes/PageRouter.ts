@@ -5,7 +5,7 @@ import { BasePage } from "./BasePage"
 
 declare global {
     interface Window {
-        BazPageRouter: PageRouter
+        BazPageRouter: typeof PageRouter
     }
 }
 
@@ -86,12 +86,33 @@ export default class PageRouter {
         this.basePath = value.replace(/\/$/, "") || "/"
     }
 
-    private static getPathWithoutBase(): string {
-        let pathname = window.location.pathname
+    /**
+     * Gets the relative path by removing the base path from current location
+     * @param pathname - Optional pathname to process (defaults to window.location.pathname)
+     * @returns Relative path without base path (always starts with /)
+     * @example
+     * ```typescript
+     * // If basePath is "/my-app" and pathname is "/my-app/about"
+     * PageRouter.getRelativePath() // returns "/about"
+     * 
+     * // Custom pathname
+     * PageRouter.getRelativePath("/my-app/contact") // returns "/contact"
+     * ```
+     */
+    public static getRelativePath(pathname?: string): string {
+        pathname = pathname ?? window.location.pathname
         if (this.basePath !== "/" && pathname.startsWith(this.basePath)) {
             pathname = pathname.slice(this.basePath.length) || "/"
         }
+        // Ensure it starts with /
+        if (!pathname.startsWith("/")) {
+            pathname = "/" + pathname
+        }
         return pathname
+    }
+
+    private static getPathWithoutBase(): string {
+        return this.getRelativePath()
     }
 
     public static getFullPath(path: string): string {
@@ -105,8 +126,41 @@ export default class PageRouter {
         window.dispatchEvent(new CustomEvent("route-map-change"))
     }
 
+    /**
+     * Fires route-change event with current path information
+     */
     public static fireRouteChange(): void {
-        window.dispatchEvent(new CustomEvent("route-change"))
+        const relativePath = this.getRelativePath()
+        window.dispatchEvent(new CustomEvent("route-change", {
+            detail: { path: relativePath }
+        }))
+    }
+    
+    /**
+     * Parses query string into an object
+     * @param search - Query string (e.g., "?color=red&size=large")
+     * @returns Object containing query parameters
+     */
+    private static parseQueryString(search?: string): Record<string, string> {
+        search = search ?? window.location.search
+        const params: Record<string, string> = {}
+        
+        if (!search || search.length <= 1) {
+            return params
+        }
+        
+        // Remove leading ?
+        const queryString = search.startsWith("?") ? search.slice(1) : search
+        
+        // Parse parameters
+        queryString.split("&").forEach(pair => {
+            const [key, value] = pair.split("=")
+            if (key) {
+                params[decodeURIComponent(key)] = value ? decodeURIComponent(value) : ""
+            }
+        })
+        
+        return params
     }
 
     /**
@@ -188,6 +242,9 @@ export default class PageRouter {
         const pathname = this.getPathWithoutBase()
         const pathParts = ["/", ...pathname.split("/").filter(Boolean)]
         const matchedRoute = this.rootRoute.match(pathParts)
+        
+        // Parse query string
+        const query = this.parseQueryString()
 
         BazAnimation.animate(this.pageContentEl, "fadeOut", { duration: 0.2 }, ["standart"], () => {
             // Destroy previous page instance
@@ -197,18 +254,24 @@ export default class PageRouter {
             this.currentPageInstance = null
 
             if (matchedRoute) {
+                const params = matchedRoute.getParams()
+                
                 // Check if route uses Page Class pattern
                 if (matchedRoute.isPageClass(matchedRoute.content)) {
-                    // Create page instance
-                    const pageInstance = new matchedRoute.content(this.pageContentEl)
+                    // Create page instance with params and query
+                    const pageInstance = new matchedRoute.content(this.pageContentEl, params, query)
                     this.currentPageInstance = pageInstance
                     
                     // Render and initialize
                     this.pageContentEl.innerHTML = pageInstance.render()
                     setTimeout(() => pageInstance.init(), 0)
                 } else {
-                    // Function-based page: just render HTML
-                    this.pageContentEl.innerHTML = matchedRoute.content()
+                    // Function-based page: pass context
+                    this.pageContentEl.innerHTML = matchedRoute.content({
+                        route: matchedRoute,
+                        params,
+                        query
+                    })
                 }
             } else {
                 // 404 page
