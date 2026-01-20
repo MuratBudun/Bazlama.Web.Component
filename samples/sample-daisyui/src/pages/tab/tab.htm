@@ -1,0 +1,648 @@
+<div class="p-6">
+    <div class="prose max-w-none">
+        <!-- Header with Badge -->
+        <div class="flex items-center gap-4 mb-6">
+            <h1 class="text-4xl font-bold m-0">Baz-Tab Component</h1>
+            <div class="badge badge-primary badge-lg">Interactive Tabs</div>
+        </div>
+        
+        <p class="text-lg opacity-80 mb-8">
+            A powerful and flexible tab component with dynamic tab management, icon support, and closable tabs. 
+            Perfect for organizing content in a clean, accessible interface.
+        </p>
+        
+        <div class="divider"></div>
+
+        <!-- Feature Highlights -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="stats shadow bg-base-200">
+                    <div class="stat place-items-center">
+                        <div class="stat-figure text-primary">
+                            <baz-icon icon="layers" size="32"></baz-icon>
+                        </div>
+                        <div class="stat-title">Dynamic</div>
+                        <div class="stat-desc">Add/Remove tabs</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-200">
+                    <div class="stat place-items-center">
+                        <div class="stat-figure text-secondary">
+                            <baz-icon icon="palette" size="32"></baz-icon>
+                        </div>
+                        <div class="stat-title">Customizable</div>
+                        <div class="stat-desc">Icons & styles</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-200">
+                    <div class="stat place-items-center">
+                        <div class="stat-figure text-accent">
+                            <baz-icon icon="x" size="32"></baz-icon>
+                        </div>
+                        <div class="stat-title">Closable</div>
+                        <div class="stat-desc">Optional close</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-200">
+                    <div class="stat place-items-center">
+                        <div class="stat-figure text-info">
+                            <baz-icon icon="zap" size="32"></baz-icon>
+                        </div>
+                        <div class="stat-title">Reactive</div>
+                        <div class="stat-desc">Auto updates</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Demo Section -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Live Demo</h2>
+                <div class="badge badge-success gap-2">
+                    <baz-icon icon="playerPlay" size="14"></baz-icon>
+                    Interactive
+                </div>
+            </div>
+            
+            <div class="card bg-base-200 shadow-xl">
+                <div class="card-body">
+                    <baz-tab id="demoTabs" closable>
+                        <div tab-id="overview" title="Overview" icon-name="info">
+                            <div class="p-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="avatar placeholder">
+                                        <div class="bg-primary text-primary-content rounded-full w-16 h-16 flex items-center justify-center">
+                                            <baz-icon icon="info" size="32"></baz-icon>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="text-xl font-bold mb-3">Tab Component Overview</h3>
+                                        <p class="mb-4">Baz-Tab is a flexible and powerful tab component that supports dynamic tab management with a modern, accessible design.</p>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div class="flex items-center gap-2">
+                                                <baz-icon icon="check" size="18" stroke="#10b981"></baz-icon>
+                                                <span class="text-sm">Add/Remove tabs dynamically</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <baz-icon icon="check" size="18" stroke="#10b981"></baz-icon>
+                                                <span class="text-sm">Icon support for all tabs</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <baz-icon icon="check" size="18" stroke="#10b981"></baz-icon>
+                                                <span class="text-sm">Optional closable tabs</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <baz-icon icon="check" size="18" stroke="#10b981"></baz-icon>
+                                                <span class="text-sm">Reactive state updates</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div tab-id="features" title="Features" icon-name="zap">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-4">Key Features</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <div class="badge badge-primary badge-lg gap-2">
+                                        <baz-icon icon="layers" size="14"></baz-icon>
+                                        Dynamic Tabs
+                                    </div>
+                                    <div class="badge badge-secondary badge-lg gap-2">
+                                        <baz-icon icon="palette" size="14"></baz-icon>
+                                        Icon Support
+                                    </div>
+                                    <div class="badge badge-accent badge-lg gap-2">
+                                        <baz-icon icon="x" size="14"></baz-icon>
+                                        Closable
+                                    </div>
+                                    <div class="badge badge-info badge-lg gap-2">
+                                        <baz-icon icon="refresh" size="14"></baz-icon>
+                                        Reactive
+                                    </div>
+                                    <div class="badge badge-success badge-lg gap-2">
+                                        <baz-icon icon="code" size="14"></baz-icon>
+                                        Type Safe
+                                    </div>
+                                    <div class="badge badge-warning badge-lg gap-2">
+                                        <baz-icon icon="shield" size="14"></baz-icon>
+                                        Accessible
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div tab-id="code" title="Code" icon-name="code">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-3">Quick Start</h3>
+                                <div class="mockup-code">
+                                    <pre data-prefix="1"><code>&lt;baz-tab closable&gt;</code></pre>
+                                    <pre data-prefix="2"><code>  &lt;div tab-id="home" title="Home" icon-name="home"&gt;</code></pre>
+                                    <pre data-prefix="3"><code>    &lt;p&gt;Home content&lt;/p&gt;</code></pre>
+                                    <pre data-prefix="4"><code>  &lt;/div&gt;</code></pre>
+                                    <pre data-prefix="5"><code>  &lt;div tab-id="settings" title="Settings" icon-name="settings"&gt;</code></pre>
+                                    <pre data-prefix="6"><code>    &lt;p&gt;Settings content&lt;/p&gt;</code></pre>
+                                    <pre data-prefix="7"><code>  &lt;/div&gt;</code></pre>
+                                    <pre data-prefix="8"><code>&lt;/baz-tab&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </baz-tab>
+
+                    <div class="divider"></div>
+
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <button class="btn btn-primary btn-sm gap-2" onclick="addDemoTab()">
+                            <baz-icon icon="plus" size="16"></baz-icon>
+                            Add Tab
+                        </button>
+                        <button class="btn btn-secondary btn-sm gap-2" onclick="updateDemoTab()">
+                            <baz-icon icon="edit" size="16"></baz-icon>
+                            Update Tab
+                        </button>
+                        <button class="btn btn-accent btn-sm gap-2" onclick="addCodeTab()">
+                            <baz-icon icon="code" size="16"></baz-icon>
+                            Add Code Tab
+                        </button>
+                        <button class="btn btn-warning btn-sm gap-2" onclick="showTabInfo()">
+                            <baz-icon icon="info" size="16"></baz-icon>
+                            Tab Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Installation -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Installation</h2>
+                <div class="badge badge-ghost">npm package</div>
+            </div>
+            <div class="alert alert-info mb-4">
+                <baz-icon icon="info" size="20"></baz-icon>
+                <span>Install the Bazlama Web Component package to get started</span>
+            </div>
+            <div class="mockup-code">
+                <pre data-prefix="$"><code>npm install bazlama-web-component</code></pre>
+                <pre data-prefix=">" class="text-success"><code>import "bazlama-web-component/baz-tab"</code></pre>
+            </div>
+        </section>
+
+        <!-- Properties -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Properties & Attributes</h2>
+                <div class="badge badge-accent">API Reference</div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr>
+                            <th class="bg-base-300">Property</th>
+                            <th class="bg-base-300">Attribute</th>
+                            <th class="bg-base-300">Type</th>
+                            <th class="bg-base-300">Default</th>
+                            <th class="bg-base-300">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong class="text-accent" style="display: inline-block; min-width: 100px;">ActiveTabId</strong>
+                            </td>
+                            <td><code>active-tab-id</code></td>
+                            <td><span class="badge badge-outline badge-sm">string</span></td>
+                            <td><code>""</code></td>
+                            <td>Currently active tab ID</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong class="text-accent" style="display: inline-block; min-width: 100px;">Closable</strong>
+                            </td>
+                            <td><code>closable</code></td>
+                            <td><span class="badge badge-outline badge-sm">boolean</span></td>
+                            <td><code>false</code></td>
+                            <td>Enable close buttons on tabs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Methods -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Methods</h2>
+                <div class="badge badge-secondary">Public API</div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="card bg-base-200 shadow-md">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="avatar placeholder">
+                                    <div class="bg-primary text-primary-content rounded-lg w-10 h-10 flex items-center justify-center">
+                                        <baz-icon icon="plus" size="20"></baz-icon>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="card-title text-lg">addTab()</h3>
+                                    <p class="text-sm opacity-70">Adds a new tab to the component</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mockup-code text-sm mt-2">
+                            <pre data-prefix=">" class="text-warning"><code>addTab(tabId: string, title: string, content: string, iconName?: string, activate?: boolean): void</code></pre>
+                        </div>
+                        <div class="mt-3">
+                            <div class="badge badge-sm badge-ghost mb-2">Parameters</div>
+                            <div class="grid grid-cols-1 gap-2 text-sm">
+                                <div class="flex gap-2"><code class="badge badge-xs">tabId</code> <span>Unique identifier for the tab</span></div>
+                                <div class="flex gap-2"><code class="badge badge-xs">title</code> <span>Tab title displayed in the tab bar</span></div>
+                                <div class="flex gap-2"><code class="badge badge-xs">content</code> <span>HTML content for the tab body</span></div>
+                                <div class="flex gap-2"><code class="badge badge-xs badge-ghost">iconName</code> <span>Optional icon name from icon library</span></div>
+                                <div class="flex gap-2"><code class="badge badge-xs badge-ghost">activate</code> <span>Activate after adding (default: true)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-base-200 shadow-md">
+                    <div class="card-body">
+                        <div class="flex items-start gap-3">
+                            <div class="avatar placeholder">
+                                <div class="bg-error text-error-content rounded-lg w-10 h-10 flex items-center justify-center">
+                                    <baz-icon icon="trash" size="20"></baz-icon>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="card-title text-lg">removeTab()</h3>
+                                <p class="text-sm opacity-70 mb-2">Removes a tab from the component</p>
+                                <div class="mockup-code text-sm">
+                                    <pre data-prefix=">" class="text-warning"><code>removeTab(tabId: string): void</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-base-200 shadow-md">
+                    <div class="card-body">
+                        <div class="flex items-start gap-3">
+                            <div class="avatar placeholder">
+                                <div class="bg-secondary text-secondary-content rounded-lg w-10 h-10 flex items-center justify-center">
+                                    <baz-icon icon="edit" size="20"></baz-icon>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="card-title text-lg">updateTab()</h3>
+                                <p class="text-sm opacity-70 mb-2">Updates an existing tab's properties</p>
+                                <div class="mockup-code text-sm">
+                                    <pre data-prefix=">" class="text-warning"><code>updateTab(tabId: string, title?: string, content?: string, iconName?: string): void</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="card bg-base-200 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="flex items-center gap-2">
+                                <baz-icon icon="x" size="20" stroke="#ff6b6b"></baz-icon>
+                                <h4 class="font-bold">clearTabs()</h4>
+                            </div>
+                            <p class="text-xs opacity-70">Removes all tabs</p>
+                            <div class="mockup-code text-xs mt-2">
+                                <pre><code>clearTabs(): void</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-200 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="flex items-center gap-2">
+                                <baz-icon icon="list" size="20" stroke="#3b82f6"></baz-icon>
+                                <h4 class="font-bold">getTabCount()</h4>
+                            </div>
+                            <p class="text-xs opacity-70">Returns tab count</p>
+                            <div class="mockup-code text-xs mt-2">
+                                <pre><code>getTabCount(): number</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-200 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="flex items-center gap-2">
+                                <baz-icon icon="search" size="20" stroke="#10b981"></baz-icon>
+                                <h4 class="font-bold">hasTab()</h4>
+                            </div>
+                            <p class="text-xs opacity-70">Checks if tab exists</p>
+                            <div class="mockup-code text-xs mt-2">
+                                <pre><code>hasTab(tabId: string): boolean</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Usage Examples</h2>
+                <div class="badge badge-success gap-2">
+                    <baz-icon icon="code" size="14"></baz-icon>
+                    Code Samples
+                </div>
+            </div>
+            
+            <div role="tablist" class="tabs tabs-boxed mb-4 bg-base-200">
+                <button role="tab" class="tab tab-active" onclick="showExample('basic')">
+                    <baz-icon icon="file" size="16"></baz-icon>
+                    Basic
+                </button>
+                <button role="tab" class="tab" onclick="showExample('dynamic')">
+                    <baz-icon icon="refresh" size="16"></baz-icon>
+                    Dynamic
+                </button>
+                <button role="tab" class="tab" onclick="showExample('advanced')">
+                    <baz-icon icon="zap" size="16"></baz-icon>
+                    Advanced
+                </button>
+                <button role="tab" class="tab" onclick="showExample('events')">
+                    <baz-icon icon="bell" size="16"></baz-icon>
+                    Events
+                </button>
+            </div>
+
+            <div id="example-basic" class="example-content card bg-base-200 shadow-lg">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="fileCode" size="24" stroke="#3b82f6"></baz-icon>
+                        <h3 class="text-lg font-semibold">Basic Usage</h3>
+                    </div>
+                    <p class="text-sm opacity-70 mb-4">Simple tab component with static content</p>
+                    <div class="mockup-code">
+                        <pre data-prefix="1"><code>&lt;baz-tab&gt;</code></pre>
+                        <pre data-prefix="2"><code>  &lt;div tab-id="home" title="Home" icon-name="home"&gt;</code></pre>
+                        <pre data-prefix="3"><code>    &lt;div class="p-4"&gt;</code></pre>
+                        <pre data-prefix="4"><code>      &lt;h3&gt;Welcome Home&lt;/h3&gt;</code></pre>
+                        <pre data-prefix="5"><code>      &lt;p&gt;Content of first tab&lt;/p&gt;</code></pre>
+                        <pre data-prefix="6"><code>    &lt;/div&gt;</code></pre>
+                        <pre data-prefix="7"><code>  &lt;/div&gt;</code></pre>
+                        <pre data-prefix="8"><code>  &lt;div tab-id="about" title="About" icon-name="info"&gt;</code></pre>
+                        <pre data-prefix="9"><code>    &lt;div class="p-4"&gt;</code></pre>
+                        <pre data-prefix="10"><code>      &lt;h3&gt;About Us&lt;/h3&gt;</code></pre>
+                        <pre data-prefix="11"><code>      &lt;p&gt;Content of second tab&lt;/p&gt;</code></pre>
+                        <pre data-prefix="12"><code>    &lt;/div&gt;</code></pre>
+                        <pre data-prefix="13"><code>  &lt;/div&gt;</code></pre>
+                        <pre data-prefix="14"><code>&lt;/baz-tab&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="example-dynamic" class="example-content card bg-base-200 shadow-lg hidden">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="refresh" size="24" stroke="#10b981"></baz-icon>
+                        <h3 class="text-lg font-semibold">Dynamic Tab Management</h3>
+                    </div>
+                    <p class="text-sm opacity-70 mb-4">Add, update, and remove tabs programmatically</p>
+                    <div class="mockup-code">
+                        <pre data-prefix="1"><code>const tabComponent = document.querySelector('baz-tab');</code></pre>
+                        <pre data-prefix="2"><code></code></pre>
+                        <pre data-prefix="3" class="text-warning"><code>// Add a new tab with icon</code></pre>
+                        <pre data-prefix="4"><code>tabComponent.addTab(</code></pre>
+                        <pre data-prefix="5"><code>  'settings',</code></pre>
+                        <pre data-prefix="6"><code>  'Settings',</code></pre>
+                        <pre data-prefix="7"><code>  '&lt;div class="p-4"&gt;&lt;h3&gt;Settings&lt;/h3&gt;&lt;/div&gt;',</code></pre>
+                        <pre data-prefix="8"><code>  'settings',</code></pre>
+                        <pre data-prefix="9"><code>  true  // activate immediately</code></pre>
+                        <pre data-prefix="10"><code>);</code></pre>
+                        <pre data-prefix="11"><code></code></pre>
+                        <pre data-prefix="12" class="text-warning"><code>// Update existing tab</code></pre>
+                        <pre data-prefix="13"><code>tabComponent.updateTab(</code></pre>
+                        <pre data-prefix="14"><code>  'settings',</code></pre>
+                        <pre data-prefix="15"><code>  'App Settings',  // new title</code></pre>
+                        <pre data-prefix="16"><code>  '&lt;div&gt;Updated content&lt;/div&gt;',</code></pre>
+                        <pre data-prefix="17"><code>  'gear'  // new icon</code></pre>
+                        <pre data-prefix="18"><code>);</code></pre>
+                        <pre data-prefix="19"><code></code></pre>
+                        <pre data-prefix="20" class="text-warning"><code>// Remove a tab</code></pre>
+                        <pre data-prefix="21"><code>tabComponent.removeTab('settings');</code></pre>
+                        <pre data-prefix="22"><code></code></pre>
+                        <pre data-prefix="23" class="text-warning"><code>// Check if tab exists</code></pre>
+                        <pre data-prefix="24"><code>if (tabComponent.hasTab('settings')) {</code></pre>
+                        <pre data-prefix="25"><code>  console.log('Tab exists');</code></pre>
+                        <pre data-prefix="26"><code>}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="example-advanced" class="example-content card bg-base-200 shadow-lg hidden">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="zap" size="24" stroke="#f59e0b"></baz-icon>
+                        <h3 class="text-lg font-semibold">Advanced Features</h3>
+                    </div>
+                    <p class="text-sm opacity-70 mb-4">Closable tabs with initial active tab</p>
+                    <div class="mockup-code">
+                        <pre data-prefix="1"><code>&lt;baz-tab id="myTabs" closable active-tab-id="profile"&gt;</code></pre>
+                        <pre data-prefix="2"><code>  &lt;div tab-id="profile" title="Profile" icon-name="user"&gt;</code></pre>
+                        <pre data-prefix="3"><code>    &lt;div class="p-4"&gt;</code></pre>
+                        <pre data-prefix="4"><code>      &lt;h3&gt;User Profile&lt;/h3&gt;</code></pre>
+                        <pre data-prefix="5"><code>      &lt;div class="avatar"&gt;</code></pre>
+                        <pre data-prefix="6"><code>        &lt;div class="w-24 rounded-full"&gt;</code></pre>
+                        <pre data-prefix="7"><code>          &lt;img src="avatar.jpg" /&gt;</code></pre>
+                        <pre data-prefix="8"><code>        &lt;/div&gt;</code></pre>
+                        <pre data-prefix="9"><code>      &lt;/div&gt;</code></pre>
+                        <pre data-prefix="10"><code>    &lt;/div&gt;</code></pre>
+                        <pre data-prefix="11"><code>  &lt;/div&gt;</code></pre>
+                        <pre data-prefix="12"><code>  &lt;div tab-id="settings" title="Settings" icon-name="settings"&gt;</code></pre>
+                        <pre data-prefix="13"><code>    &lt;div class="p-4"&gt;</code></pre>
+                        <pre data-prefix="14"><code>      &lt;h3&gt;Settings&lt;/h3&gt;</code></pre>
+                        <pre data-prefix="15"><code>      &lt;!-- Settings form --&gt;</code></pre>
+                        <pre data-prefix="16"><code>    &lt;/div&gt;</code></pre>
+                        <pre data-prefix="17"><code>  &lt;/div&gt;</code></pre>
+                        <pre data-prefix="18"><code>  &lt;div tab-id="notifications" title="Notifications" icon-name="bell"&gt;</code></pre>
+                        <pre data-prefix="19"><code>    &lt;div class="p-4"&gt;</code></pre>
+                        <pre data-prefix="20"><code>      &lt;h3&gt;Notifications&lt;/h3&gt;</code></pre>
+                        <pre data-prefix="21"><code>      &lt;!-- Notifications list --&gt;</code></pre>
+                        <pre data-prefix="22"><code>    &lt;/div&gt;</code></pre>
+                        <pre data-prefix="23"><code>  &lt;/div&gt;</code></pre>
+                        <pre data-prefix="24"><code>&lt;/baz-tab&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="example-events" class="example-content card bg-base-200 shadow-lg hidden">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="bell" size="24" stroke="#ec4899"></baz-icon>
+                        <h3 class="text-lg font-semibold">Event Handling</h3>
+                    </div>
+                    <p class="text-sm opacity-70 mb-4">Listen to tab changes and property updates</p>
+                    <div class="mockup-code">
+                        <pre data-prefix="1"><code>const tabs = document.querySelector('#myTabs');</code></pre>
+                        <pre data-prefix="2"><code></code></pre>
+                        <pre data-prefix="3" class="text-warning"><code>// Listen to property changes</code></pre>
+                        <pre data-prefix="4"><code>tabs.addEventListener('property-changed', (e) =&gt; {</code></pre>
+                        <pre data-prefix="5"><code>  if (e.detail.propertyName === 'ActiveTabId') {</code></pre>
+                        <pre data-prefix="6"><code>    console.log('Active tab changed to:', e.detail.value);</code></pre>
+                        <pre data-prefix="7"><code>    </code></pre>
+                        <pre data-prefix="8" class="text-success"><code>    // Analytics tracking</code></pre>
+                        <pre data-prefix="9"><code>    trackTabView(e.detail.value);</code></pre>
+                        <pre data-prefix="10"><code>    </code></pre>
+                        <pre data-prefix="11" class="text-success"><code>    // Load content dynamically</code></pre>
+                        <pre data-prefix="12"><code>    loadTabContent(e.detail.value);</code></pre>
+                        <pre data-prefix="13"><code>  }</code></pre>
+                        <pre data-prefix="14"><code>});</code></pre>
+                        <pre data-prefix="15"><code></code></pre>
+                        <pre data-prefix="16" class="text-warning"><code>// Get current state</code></pre>
+                        <pre data-prefix="17"><code>console.log('Total tabs:', tabs.getTabCount());</code></pre>
+                        <pre data-prefix="18"><code>console.log('Active tab:', tabs.ActiveTabId);</code></pre>
+                        <pre data-prefix="19"><code></code></pre>
+                        <pre data-prefix="20" class="text-warning"><code>// Programmatic tab activation</code></pre>
+                        <pre data-prefix="21"><code>tabs.ActiveTabId = 'profile';</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Practices -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Best Practices</h2>
+                <div class="badge badge-info gap-2">
+                    <baz-icon icon="lightbulb" size="14"></baz-icon>
+                    Tips
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="alert alert-success">
+                    <baz-icon icon="check" size="24"></baz-icon>
+                    <div>
+                        <h4 class="font-bold">Use Unique Tab IDs</h4>
+                        <div class="text-sm">Always use unique, descriptive tab IDs for better debugging and maintenance</div>
+                    </div>
+                </div>
+                <div class="alert alert-success">
+                    <baz-icon icon="check" size="24"></baz-icon>
+                    <div>
+                        <h4 class="font-bold">Icons Enhance UX</h4>
+                        <div class="text-sm">Add icons to tabs for better visual identification and user experience</div>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    <baz-icon icon="info" size="24"></baz-icon>
+                    <div>
+                        <h4 class="font-bold">Lazy Load Content</h4>
+                        <div class="text-sm">For heavy content, load tab content only when the tab becomes active</div>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    <baz-icon icon="info" size="24"></baz-icon>
+                    <div>
+                        <h4 class="font-bold">Limit Tab Count</h4>
+                        <div class="text-sm">Keep the number of visible tabs reasonable (5-8 max) for better usability</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    let demoCounter = 1;
+    
+    function addDemoTab() {
+        const tabs = document.querySelector('#demoTabs');
+        const iconNames = ['rocket', 'zap', 'star', 'heart', 'gift'];
+        const randomIcon = iconNames[Math.floor(Math.random() * iconNames.length)];
+        
+        tabs.addTab(
+            `demo-${demoCounter}`, 
+            `Demo ${demoCounter}`, 
+            `
+            <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-16">
+                            <span class="text-2xl">${demoCounter}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Dynamic Tab ${demoCounter}</h3>
+                        <p class="text-sm opacity-70">Created at ${new Date().toLocaleTimeString()}</p>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-300">
+                    <div class="stat">
+                        <div class="stat-title">Tab Number</div>
+                        <div class="stat-value">${demoCounter}</div>
+                        <div class="stat-desc">Dynamically generated</div>
+                    </div>
+                </div>
+            </div>
+        `, randomIcon, true);
+        demoCounter++;
+    }
+
+    function updateDemoTab() {
+        const tabs = document.querySelector('#demoTabs');
+        tabs.updateTab('overview', 'Updated Overview', `
+            <div class="p-6">
+                <div class="alert alert-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div>
+                        <h3 class="font-bold">Content Updated!</h3>
+                        <div class="text-sm">Last update: ${new Date().toLocaleTimeString()}</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <p>This content was dynamically updated using the <code class="badge badge-sm">updateTab()</code> method.</p>
+                </div>
+            </div>
+        `, 'check');
+    }
+
+    function addCodeTab() {
+        const tabs = document.querySelector('#demoTabs');
+        tabs.addTab('dynamic-code', 'Code Example', `
+            <div class="p-6">
+                <h3 class="text-lg font-bold mb-3">Dynamic Code Example</h3>
+                <div class="mockup-code">
+                    <pre data-prefix="1"><code>function addNewTab() {</code></pre>
+                    <pre data-prefix="2"><code>  const tabs = document.querySelector('baz-tab');</code></pre>
+                    <pre data-prefix="3"><code>  tabs.addTab('new', 'New Tab', '&lt;p&gt;Content&lt;/p&gt;');</code></pre>
+                    <pre data-prefix="4"><code>}</code></pre>
+                </div>
+            </div>
+        `, 'code', true);
+    }
+
+    function showTabInfo() {
+        const tabs = document.querySelector('#demoTabs');
+        const count = tabs.getTabCount();
+        const activeTab = tabs.ActiveTabId;
+        
+        alert(`Tab Information:\n\nTotal Tabs: ${count}\nActive Tab: ${activeTab}\n\nYou can inspect the component using browser DevTools!`);
+    }
+
+    function showExample(type) {
+        document.querySelectorAll('.example-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`example-${type}`).classList.remove('hidden');
+        
+        document.querySelectorAll('.tabs button').forEach(tab => tab.classList.remove('tab-active'));
+        event.target.closest('button').classList.add('tab-active');
+    }
+</script>
+

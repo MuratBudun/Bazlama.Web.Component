@@ -1,6 +1,7 @@
 import BazAnimation from "../../baz-animation/BazAnimation"
 import { TGetPageContentEl } from "../types/TGetPageContentEl"
 import PageRoute from "./PageRoute"
+import { BasePage } from "./BasePage"
 
 declare global {
     interface Window {
@@ -8,13 +9,46 @@ declare global {
     }
 }
 
+/**
+ * Client-side router for single page applications.
+ * Manages navigation, route matching, and page lifecycle.
+ * Supports both function-based pages and Page Class Pattern.
+ * 
+ * @example
+ * ```typescript
+ * // Setup routes
+ * const rootRoute = new PageRoute("Home", "/", () => '<div>Home</div>')
+ * rootRoute.addRoute(new PageRoute("About", "about", AboutPage))
+ * 
+ * // Configure and initialize
+ * PageRouter.RootRoute = rootRoute
+ * PageRouter.initialize("#page-content")
+ * ```
+ */
 export default class PageRouter {
+    /** Link signature prefix for router links (e.g., "baz-router:/about") */
     public static linkSignature = "baz-router:"
+    
+    /** Root route containing all application routes */
     private static rootRoute: PageRoute = new PageRoute("Home", "/", () => "<h1>Home</h1>")
+    
+    /** 404 error route */
     private static route404: PageRoute = new PageRoute("404", "404", () => "<h1>404</h1>")
+    
+    /** Container element for page content */
     private static pageContentEl: HTMLElement = document.body
+    
+    /** Base path for the application (e.g., "/" or "/app") */
     private static basePath: string = "/"
+    
+    /** Current page instance (for Page Class Pattern) */
+    private static currentPageInstance: BasePage | null = null
 
+    /**
+     * Initializes the router
+     * @param elQuery - CSS selector for the page content container (default: "#page-content")
+     * @param basePath - Base path for the application (auto-detected if not provided)
+     */
     static initialize(elQuery: string = "#page-content", basePath?: string): void {
         this.pageContentEl = document.querySelector(elQuery) as HTMLElement
         this.basePath = basePath ?? this.detectBasePath()
@@ -37,10 +71,17 @@ export default class PageRouter {
         return "/"
     }
 
+    /**
+     * Gets the application base path
+     */
     public static get BasePath(): string {
         return this.basePath
     }
 
+    /**
+     * Sets the application base path
+     * @param value - Base path (trailing slash will be removed)
+     */
     public static set BasePath(value: string) {
         this.basePath = value.replace(/\/$/, "") || "/"
     }
@@ -68,19 +109,33 @@ export default class PageRouter {
         window.dispatchEvent(new CustomEvent("route-change"))
     }
 
+    /**
+     * Gets the root route
+     */
     public static get RootRoute(): PageRoute {
         return this.rootRoute
     }
 
+    /**
+     * Sets the root route
+     * @param value - Root route containing all application routes
+     */
     public static set RootRoute(value: PageRoute) {
         this.rootRoute = value
         this.fireRouteMapChange()
     }
 
+    /**
+     * Gets the 404 error route
+     */
     public static get Route404(): PageRoute {
         return this.route404
     }
 
+    /**
+     * Sets the 404 error route
+     * @param value - Route to display when no match is found
+     */
     public static set Route404(value: PageRoute) {
         this.route404 = value
     }
@@ -93,12 +148,20 @@ export default class PageRouter {
         this.pageContentEl = typeof pageContentEl === "function" ? pageContentEl() : pageContentEl
     }
 
+    /**
+     * Navigates to a route
+     * @param path - Route path (e.g., "/about" or "about")
+     */
     public static navigate(path: string): void {
         const fullPath = this.getFullPath(path || "/")
         history.pushState({}, "", fullPath)
         this.handleRouteChange()
     }
 
+    /**
+     * Gets the currently matched route
+     * @returns Current route or null if no match
+     */
     public static getCurrentRoute(): PageRoute | null {
         const pathname = this.getPathWithoutBase()
         const pathParts = pathname.split("/").filter(Boolean)
@@ -127,10 +190,31 @@ export default class PageRouter {
         const matchedRoute = this.rootRoute.match(pathParts)
 
         BazAnimation.animate(this.pageContentEl, "fadeOut", { duration: 0.2 }, ["standart"], () => {
+            // Destroy previous page instance
+            if (this.currentPageInstance?.destroy) {
+                this.currentPageInstance.destroy()
+            }
+            this.currentPageInstance = null
+
             if (matchedRoute) {
-                this.pageContentEl.innerHTML = matchedRoute.htmlContentFunc()
+                // Check if route uses Page Class pattern
+                if (matchedRoute.isPageClass(matchedRoute.content)) {
+                    // Create page instance
+                    const pageInstance = new matchedRoute.content(this.pageContentEl)
+                    this.currentPageInstance = pageInstance
+                    
+                    // Render and initialize
+                    this.pageContentEl.innerHTML = pageInstance.render()
+                    setTimeout(() => pageInstance.init(), 0)
+                } else {
+                    // Function-based page: just render HTML
+                    this.pageContentEl.innerHTML = matchedRoute.content()
+                }
             } else {
-                this.pageContentEl.innerHTML = this.route404.htmlContentFunc()
+                // 404 page
+                this.pageContentEl.innerHTML = this.route404.isPageClass(this.route404.content) 
+                    ? new this.route404.content(this.pageContentEl).render()
+                    : this.route404.content()
             }
             BazAnimation.animate(this.pageContentEl, "fadeIn")
         })

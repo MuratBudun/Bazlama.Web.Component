@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<div class="container mx-auto p-6 max-w-4xl">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center gap-4 mb-4">
+            <a href="baz-router:/" class="btn btn-circle btn-sm btn-ghost">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+            <div>
+                <h1 class="text-3xl font-bold">Router Examples</h1>
+                <p class="text-sm opacity-70">Params & Query String Examples</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Tabs -->
+    <div class="tabs tabs-boxed mb-6">
+        <button class="tab tab-active" data-example="function">Function-Based</button>
+        <button class="tab" data-example="class">Page Class</button>
+    </div>
+
+    <!-- Function-Based Example -->
+    <div id="example-function" class="example-content">
+        <div class="card bg-base-200 mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-accent">Function-Based Pages with Params</h2>
+                <p>Route content functions can receive context with params and query strings.</p>
+                
+                <div class="mockup-code mt-4">
+                    <pre data-prefix="1"><code>// Define route with context parameter</code></pre>
+                    <pre data-prefix="2"><code>const userRoute = new PageRoute("User", "user", (context) => {</code></pre>
+                    <pre data-prefix="3"><code>  const userId = context?.params?.id || 'unknown'</code></pre>
+                    <pre data-prefix="4"><code>  const tab = context?.query?.tab || 'profile'</code></pre>
+                    <pre data-prefix="5"><code>  </code></pre>
+                    <pre data-prefix="6"><code>  return \`&lt;div&gt;</code></pre>
+                    <pre data-prefix="7"><code>    &lt;h1&gt;User: \${userId}&lt;/h1&gt;</code></pre>
+                    <pre data-prefix="8"><code>    &lt;p&gt;Tab: \${tab}&lt;/p&gt;</code></pre>
+                    <pre data-prefix="9"><code>  &lt;/div&gt;\`</code></pre>
+                    <pre data-prefix="10"><code>})</code></pre>
+                </div>
+
+                <div class="alert alert-info mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold">Context Object</h3>
+                        <div class="text-sm">
+                            <code>context.params</code> - Path parameters (e.g., /user/:id)<br>
+                            <code>context.query</code> - Query parameters (e.g., ?tab=profile)<br>
+                            <code>context.route</code> - Current route object<br>
+                            <code>context.previousRoute</code> - Previous route (if any)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Class Example -->
+    <div id="example-class" class="example-content hidden">
+        <div class="card bg-base-200 mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-accent">Page Class with Params</h2>
+                <p>Page classes can accept params and query through constructor.</p>
+                
+                <div class="mockup-code mt-4">
+                    <pre data-prefix="1"><code>export class UserPage extends BasePage {</code></pre>
+                    <pre data-prefix="2"><code>  private userId: string</code></pre>
+                    <pre data-prefix="3"><code>  private params: Record&lt;string, string&gt;</code></pre>
+                    <pre data-prefix="4"><code>  private query: Record&lt;string, string&gt;</code></pre>
+                    <pre data-prefix="5"><code>  </code></pre>
+                    <pre data-prefix="6"><code>  constructor(</code></pre>
+                    <pre data-prefix="7"><code>    container: HTMLElement,</code></pre>
+                    <pre data-prefix="8"><code>    params?: Record&lt;string, string&gt;,</code></pre>
+                    <pre data-prefix="9"><code>    query?: Record&lt;string, string&gt;</code></pre>
+                    <pre data-prefix="10"><code>  ) {</code></pre>
+                    <pre data-prefix="11"><code>    super(container)</code></pre>
+                    <pre data-prefix="12"><code>    this.params = params || {}</code></pre>
+                    <pre data-prefix="13"><code>    this.query = query || {}</code></pre>
+                    <pre data-prefix="14"><code>    this.userId = params?.id || 'unknown'</code></pre>
+                    <pre data-prefix="15"><code>  }</code></pre>
+                    <pre data-prefix="16"><code>  </code></pre>
+                    <pre data-prefix="17"><code>  render(): string {</code></pre>
+                    <pre data-prefix="18"><code>    const tab = this.query.tab || 'profile'</code></pre>
+                    <pre data-prefix="19"><code>    return \`&lt;div&gt;</code></pre>
+                    <pre data-prefix="20"><code>      &lt;h1&gt;User: \${this.userId}&lt;/h1&gt;</code></pre>
+                    <pre data-prefix="21"><code>      &lt;p&gt;Tab: \${tab}&lt;/p&gt;</code></pre>
+                    <pre data-prefix="22"><code>    &lt;/div&gt;\`</code></pre>
+                    <pre data-prefix="23"><code>  }</code></pre>
+                    <pre data-prefix="24"><code>  </code></pre>
+                    <pre data-prefix="25"><code>  init(): void {</code></pre>
+                    <pre data-prefix="26"><code>    console.log('Params:', this.params)</code></pre>
+                    <pre data-prefix="27"><code>    console.log('Query:', this.query)</code></pre>
+                    <pre data-prefix="28"><code>  }</code></pre>
+                    <pre data-prefix="29"><code>}</code></pre>
+                </div>
+
+                <div class="alert alert-warning mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <div>
+                        <h3 class="font-bold">Note</h3>
+                        <div class="text-sm">
+                            Router needs to be updated to pass params and query to Page Class constructors.
+                            This is a planned feature for future implementation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usage Examples -->
+    <div class="card bg-base-300">
+        <div class="card-body">
+            <h2 class="card-title">Usage Examples</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                    <h3 class="font-bold mb-2">Path Parameters</h3>
+                    <div class="space-y-2">
+                        <code class="block bg-base-100 p-2 rounded">/user/123</code>
+                        <code class="block bg-base-100 p-2 rounded">/product/abc-xyz</code>
+                        <code class="block bg-base-100 p-2 rounded">/blog/2026/01/20</code>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold mb-2">Query Strings</h3>
+                    <div class="space-y-2">
+                        <code class="block bg-base-100 p-2 rounded">?tab=profile</code>
+                        <code class="block bg-base-100 p-2 rounded">?search=test&amp;page=2</code>
+                        <code class="block bg-base-100 p-2 rounded">?sort=date&amp;order=desc</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

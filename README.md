@@ -18,6 +18,7 @@ A lightweight, decorator-based TypeScript framework for building modern Web Comp
 Try out Bazlama Web Component with interactive examples:
 
 - **[Full Documentation & Interactive Samples](https://muratbudun.github.io/Bazlama.Web.Component/)** - Complete documentation with live examples
+- **[DaisyUI Component Library](https://muratbudun.github.io/Bazlama.Web.Component/sample-daisyui/)** - Modern UI components with DaisyUI and Router
 - **[Core Examples](https://muratbudun.github.io/Bazlama.Web.Component/sample-core/)** - Basic usage examples
 
 ## Installation

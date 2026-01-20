@@ -1,0 +1,972 @@
+<div class="p-6">
+    <div class="prose max-w-none">
+        <!-- Header Section -->
+        <div class="flex items-center gap-4 mb-4">
+            <h1 class="text-4xl font-bold m-0">Baz-Icon Component</h1>
+            <div class="badge badge-primary badge-lg">145+ Icons</div>
+        </div>
+        
+        <p class="text-lg opacity-80 mb-6">
+            Flexible and accessible icon component with 145+ pre-defined Tabler icons organized in categories.
+            Easily customize size, color, stroke width, and accessibility attributes.
+        </p>
+
+        <!-- Feature Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+            <div class="stats shadow bg-base-200">
+                <div class="stat place-items-center py-3">
+                    <div class="stat-figure text-primary">
+                        <baz-icon icon="layers" size="24"></baz-icon>
+                    </div>
+                    <div class="stat-value text-2xl">145+</div>
+                    <div class="stat-desc">Total Icons</div>
+                </div>
+            </div>
+            <div class="stats shadow bg-base-200">
+                <div class="stat place-items-center py-3">
+                    <div class="stat-figure text-secondary">
+                        <baz-icon icon="folder" size="24"></baz-icon>
+                    </div>
+                    <div class="stat-value text-2xl">5</div>
+                    <div class="stat-desc">Categories</div>
+                </div>
+            </div>
+            <div class="stats shadow bg-base-200">
+                <div class="stat place-items-center py-3">
+                    <div class="stat-figure text-accent">
+                        <baz-icon icon="palette" size="24"></baz-icon>
+                    </div>
+                    <div class="stat-value text-2xl">SVG</div>
+                    <div class="stat-desc">Vector Based</div>
+                </div>
+            </div>
+            <div class="stats shadow bg-base-200">
+                <div class="stat place-items-center py-3">
+                    <div class="stat-figure text-info">
+                        <baz-icon icon="zap" size="24"></baz-icon>
+                    </div>
+                    <div class="stat-value text-2xl">Fast</div>
+                    <div class="stat-desc">Lightweight</div>
+                </div>
+            </div>
+            <div class="stats shadow bg-base-200">
+                <div class="stat place-items-center py-3">
+                    <div class="stat-figure text-success">
+                        <baz-icon icon="shield" size="24"></baz-icon>
+                    </div>
+                    <div class="stat-value text-2xl">A11y</div>
+                    <div class="stat-desc">Accessible</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Live Demo Section -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Live Demo</h2>
+                <div class="badge badge-success gap-2">
+                    <baz-icon icon="playerPlay" size="14"></baz-icon>
+                    Interactive
+                </div>
+            </div>
+            
+            <!-- Basic Icons Demo -->
+            <div class="card bg-base-200 shadow-xl mb-4">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="star" size="24" stroke="#fbbf24"></baz-icon>
+                        <h3 class="card-title m-0">Popular Icons</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-6 items-center justify-center p-4">
+                        <div class="tooltip" data-tip="search">
+                            <baz-icon icon="search" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="settings">
+                            <baz-icon icon="settings" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="home">
+                            <baz-icon icon="home" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="code">
+                            <baz-icon icon="code" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="database">
+                            <baz-icon icon="database" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="rocket">
+                            <baz-icon icon="rocket" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="lightbulb">
+                            <baz-icon icon="lightbulb" size="32"></baz-icon>
+                        </div>
+                        <div class="tooltip" data-tip="bell">
+                            <baz-icon icon="bell" size="32"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Size Variations -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-3">
+                            <baz-icon icon="arrowsMaximize" size="20"></baz-icon>
+                            <h3 class="card-title text-lg m-0">Size Variations</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-6 items-end justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="rocket" size="16"></baz-icon>
+                                <span class="text-xs badge badge-ghost badge-sm">16px</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="rocket" size="24"></baz-icon>
+                                <span class="text-xs badge badge-ghost badge-sm">24px</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="rocket" size="32"></baz-icon>
+                                <span class="text-xs badge badge-ghost badge-sm">32px</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="rocket" size="48"></baz-icon>
+                                <span class="text-xs badge badge-ghost badge-sm">48px</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="rocket" size="64"></baz-icon>
+                                <span class="text-xs badge badge-ghost badge-sm">64px</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-3">
+                            <baz-icon icon="palette" size="20"></baz-icon>
+                            <h3 class="card-title text-lg m-0">Color Customization</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-4 items-center justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="lightbulb" stroke="#ef4444" size="40"></baz-icon>
+                                <span class="text-xs badge badge-error badge-sm">Red</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="lightbulb" stroke="#3b82f6" size="40"></baz-icon>
+                                <span class="text-xs badge badge-info badge-sm">Blue</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="lightbulb" stroke="#10b981" size="40"></baz-icon>
+                                <span class="text-xs badge badge-success badge-sm">Green</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="lightbulb" stroke="#f59e0b" size="40"></baz-icon>
+                                <span class="text-xs badge badge-warning badge-sm">Orange</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <baz-icon icon="lightbulb" stroke="#8b5cf6" size="40"></baz-icon>
+                                <span class="text-xs badge badge-secondary badge-sm">Purple</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stroke Width Demo -->
+            <div class="card bg-base-200 shadow-lg mb-4">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-3">
+                        <baz-icon icon="edit" size="20"></baz-icon>
+                        <h3 class="card-title text-lg m-0">Stroke Width Control</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-6 items-center justify-center">
+                        <div class="flex flex-col items-center gap-2">
+                            <baz-icon icon="heart" stroke="#ff6b6b" size="40" stroke-width="1"></baz-icon>
+                            <span class="text-xs badge badge-ghost badge-sm">Thin (1)</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <baz-icon icon="heart" stroke="#ff6b6b" size="40" stroke-width="2"></baz-icon>
+                            <span class="text-xs badge badge-ghost badge-sm">Regular (2)</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <baz-icon icon="heart" stroke="#ff6b6b" size="40" stroke-width="3"></baz-icon>
+                            <span class="text-xs badge badge-ghost badge-sm">Bold (3)</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <baz-icon icon="heart" stroke="#ff6b6b" size="40" stroke-width="4"></baz-icon>
+                            <span class="text-xs badge badge-ghost badge-sm">Extra Bold (4)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Showcase -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card bg-gradient-to-br from-blue-500/10 to-blue-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="arrowRight" size="20" stroke="#3b82f6"></baz-icon>
+                            <h4 class="font-bold text-sm">Arrows & Navigation</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="arrowUp" size="24"></baz-icon>
+                            <baz-icon icon="arrowDown" size="24"></baz-icon>
+                            <baz-icon icon="chevronLeft" size="24"></baz-icon>
+                            <baz-icon icon="chevronRight" size="24"></baz-icon>
+                            <baz-icon icon="arrowsMaximize" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-br from-green-500/10 to-green-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="fileCode" size="20" stroke="#10b981"></baz-icon>
+                            <h4 class="font-bold text-sm">Files & Folders</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="fileHtml" size="24"></baz-icon>
+                            <baz-icon icon="fileCss" size="24"></baz-icon>
+                            <baz-icon icon="fileJs" size="24"></baz-icon>
+                            <baz-icon icon="fileTs" size="24"></baz-icon>
+                            <baz-icon icon="folder" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-br from-purple-500/10 to-purple-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="settings" size="20" stroke="#8b5cf6"></baz-icon>
+                            <h4 class="font-bold text-sm">System & UI</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="settings" size="24"></baz-icon>
+                            <baz-icon icon="bell" size="24"></baz-icon>
+                            <baz-icon icon="home" size="24"></baz-icon>
+                            <baz-icon icon="menu" size="24"></baz-icon>
+                            <baz-icon icon="search" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-br from-pink-500/10 to-pink-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="playerPlay" size="20" stroke="#ec4899"></baz-icon>
+                            <h4 class="font-bold text-sm">Media & Player</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="playerPlay" size="24"></baz-icon>
+                            <baz-icon icon="playerPause" size="24"></baz-icon>
+                            <baz-icon icon="volume" size="24"></baz-icon>
+                            <baz-icon icon="camera" size="24"></baz-icon>
+                            <baz-icon icon="microphone" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-br from-orange-500/10 to-orange-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="code" size="20" stroke="#f59e0b"></baz-icon>
+                            <h4 class="font-bold text-sm">Development</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="code" size="24"></baz-icon>
+                            <baz-icon icon="terminal" size="24"></baz-icon>
+                            <baz-icon icon="git" size="24"></baz-icon>
+                            <baz-icon icon="bug" size="24"></baz-icon>
+                            <baz-icon icon="database" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 shadow-md">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="package" size="20" stroke="#06b6d4"></baz-icon>
+                            <h4 class="font-bold text-sm">Legacy Icons</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <baz-icon icon="rocket" size="24"></baz-icon>
+                            <baz-icon icon="lightbulb" size="24"></baz-icon>
+                            <baz-icon icon="palette" size="24"></baz-icon>
+                            <baz-icon icon="puzzle" size="24"></baz-icon>
+                            <baz-icon icon="shield" size="24"></baz-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Usage Examples -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Usage Examples</h2>
+                <div class="badge badge-info gap-2">
+                    <baz-icon icon="code" size="14"></baz-icon>
+                    Code Samples
+                </div>
+            </div>
+        
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Basic Usage -->
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="file" size="20" stroke="#3b82f6"></baz-icon>
+                            <h3 class="font-bold text-lg">Basic Usage</h3>
+                        </div>
+                        <div class="mockup-code text-sm">
+                            <pre data-prefix="1"><code>&lt;baz-icon icon="search"&gt;&lt;/baz-icon&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size -->
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="arrowsMaximize" size="20" stroke="#10b981"></baz-icon>
+                            <h3 class="font-bold text-lg">Size Customization</h3>
+                        </div>
+                        <div class="mockup-code text-sm">
+                            <pre data-prefix="1"><code>&lt;baz-icon icon="rocket" size="48"&gt;</code></pre>
+                            <pre data-prefix="2"><code>&lt;/baz-icon&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="palette" size="20" stroke="#f59e0b"></baz-icon>
+                            <h3 class="font-bold text-lg">Color & Stroke</h3>
+                        </div>
+                        <div class="mockup-code text-sm">
+                            <pre data-prefix="1"><code>&lt;baz-icon </code></pre>
+                            <pre data-prefix="2"><code>  icon="lightbulb" </code></pre>
+                            <pre data-prefix="3"><code>  stroke="#ef4444" </code></pre>
+                            <pre data-prefix="4"><code>  stroke-width="3"&gt;</code></pre>
+                            <pre data-prefix="5"><code>&lt;/baz-icon&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accessibility -->
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body">
+                        <div class="flex items-center gap-2 mb-2">
+                            <baz-icon icon="shield" size="20" stroke="#8b5cf6"></baz-icon>
+                            <h3 class="font-bold text-lg">Accessibility</h3>
+                        </div>
+                        <div class="mockup-code text-sm">
+                            <pre data-prefix="1"><code>&lt;baz-icon </code></pre>
+                            <pre data-prefix="2"><code>  icon="search" </code></pre>
+                            <pre data-prefix="3"><code>  role="img" </code></pre>
+                            <pre data-prefix="4"><code>  aria-label="Search"</code></pre>
+                            <pre data-prefix="5"><code>  aria-hidden="false"&gt;</code></pre>
+                            <pre data-prefix="6"><code>&lt;/baz-icon&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Properties -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Properties & Attributes</h2>
+                <div class="badge badge-accent">API Reference</div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th class="bg-base-300 w-32">Property</th>
+                            <th class="bg-base-300 w-40">Type</th>
+                            <th class="bg-base-300 w-32">Default</th>
+                            <th class="bg-base-300">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="text-accent">icon</strong></td>
+                            <td><code class="text-xs">string</code></td>
+                            <td><code>""</code></td>
+                            <td>Icon name from library (e.g., search, home, code)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">size</strong></td>
+                            <td><code class="text-xs">string | number</code></td>
+                            <td><code>"24"</code></td>
+                            <td>Icon size in pixels (width and height)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">stroke</strong></td>
+                            <td><code class="text-xs">string</code></td>
+                            <td><code>"currentColor"</code></td>
+                            <td>Icon stroke color (CSS color value)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">stroke-width</strong></td>
+                            <td><code class="text-xs">string | number</code></td>
+                            <td><code>"2"</code></td>
+                            <td>Stroke width (1-4 recommended)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">role</strong></td>
+                            <td><code class="text-xs">string</code></td>
+                            <td><code>"img"</code></td>
+                            <td>ARIA role attribute for accessibility</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">aria-label</strong></td>
+                            <td><code class="text-xs">string</code></td>
+                            <td><code>""</code></td>
+                            <td>Accessible label for screen readers</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-accent">aria-hidden</strong></td>
+                            <td><code class="text-xs">string</code></td>
+                            <td><code>"true"</code></td>
+                            <td>Hide icon from screen readers</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+                        <td>string</td>
+                        <td>"2"</td>
+                        <td>Stroke width</td>
+                    </tr>
+                    <tr>
+                        <td><code>role</code></td>
+                        <td>string</td>
+                        <td>"img"</td>
+                        <td>ARIA role attribute</td>
+                    </tr>
+                    <tr>
+                        <td><code>aria-label</code></td>
+                        <td>string</td>
+                        <td>""</td>
+                        <td>Label for accessibility</td>
+                    </tr>
+                    <tr>
+                        <td><code>aria-hidden</code></td>
+                        <td>string</td>
+                        <td>"true"</td>
+                        <td>Hide from screen readers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Icon Gallery by Category -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">Complete Icon Library</h2>
+                <div class="badge badge-primary">145+ Icons</div>
+            </div>
+
+            <div class="alert alert-info mb-4">
+                <baz-icon icon="info" size="24"></baz-icon>
+                <div>
+                    <h4 class="font-bold">Organized Icon Library</h4>
+                    <div class="text-sm">Icons are organized into 5 categories for easy discovery. Click any icon to copy its name.</div>
+                </div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div role="tablist" class="tabs tabs-boxed mb-4 bg-base-200">
+                <button role="tab" class="tab tab-active gap-2" data-category="arrows">
+                    <baz-icon icon="arrowRight" size="16"></baz-icon>
+                    Arrows
+                </button>
+                <button role="tab" class="tab gap-2" data-category="files">
+                    <baz-icon icon="folder" size="16"></baz-icon>
+                    Files
+                </button>
+                <button role="tab" class="tab gap-2" data-category="system">
+                    <baz-icon icon="settings" size="16"></baz-icon>
+                    System
+                </button>
+                <button role="tab" class="tab gap-2" data-category="media">
+                    <baz-icon icon="playerPlay" size="16"></baz-icon>
+                    Media
+                </button>
+                <button role="tab" class="tab gap-2" data-category="dev">
+                    <baz-icon icon="code" size="16"></baz-icon>
+                    Dev
+                </button>
+                <button role="tab" class="tab gap-2" data-category="legacy">
+                    <baz-icon icon="package" size="16"></baz-icon>
+                    Legacy
+                </button>
+            </div>
+
+            <!-- Arrows Category -->
+            <div id="category-arrows" class="icon-category">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="arrowUp">
+                        <baz-icon icon="arrowUp" size="28"></baz-icon>
+                        <span>arrowUp</span>
+                    </div>
+                    <div class="icon-item" data-icon="arrowDown">
+                        <baz-icon icon="arrowDown" size="28"></baz-icon>
+                        <span>arrowDown</span>
+                    </div>
+                    <div class="icon-item" data-icon="arrowLeft">
+                        <baz-icon icon="arrowLeft" size="28"></baz-icon>
+                        <span>arrowLeft</span>
+                    </div>
+                    <div class="icon-item" data-icon="arrowRight">
+                        <baz-icon icon="arrowRight" size="28"></baz-icon>
+                        <span>arrowRight</span>
+                    </div>
+                    <div class="icon-item" data-icon="chevronUp">
+                        <baz-icon icon="chevronUp" size="28"></baz-icon>
+                        <span>chevronUp</span>
+                    </div>
+                    <div class="icon-item" data-icon="chevronDown">
+                        <baz-icon icon="chevronDown" size="28"></baz-icon>
+                        <span>chevronDown</span>
+                    </div>
+                    <div class="icon-item" data-icon="chevronLeft">
+                        <baz-icon icon="chevronLeft" size="28"></baz-icon>
+                        <span>chevronLeft</span>
+                    </div>
+                    <div class="icon-item" data-icon="chevronRight">
+                        <baz-icon icon="chevronRight" size="28"></baz-icon>
+                        <span>chevronRight</span>
+                    </div>
+                    <div class="icon-item" data-icon="arrowsMaximize">
+                        <baz-icon icon="arrowsMaximize" size="28"></baz-icon>
+                        <span>maximize</span>
+                    </div>
+                    <div class="icon-item" data-icon="arrowsMinimize">
+                        <baz-icon icon="arrowsMinimize" size="28"></baz-icon>
+                        <span>minimize</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Files Category -->
+            <div id="category-files" class="icon-category hidden">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="file">
+                        <baz-icon icon="file" size="28"></baz-icon>
+                        <span>file</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileText">
+                        <baz-icon icon="fileText" size="28"></baz-icon>
+                        <span>fileText</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileCode">
+                        <baz-icon icon="fileCode" size="28"></baz-icon>
+                        <span>fileCode</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileHtml">
+                        <baz-icon icon="fileHtml" size="28"></baz-icon>
+                        <span>fileHtml</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileCss">
+                        <baz-icon icon="fileCss" size="28"></baz-icon>
+                        <span>fileCss</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileJs">
+                        <baz-icon icon="fileJs" size="28"></baz-icon>
+                        <span>fileJs</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileTs">
+                        <baz-icon icon="fileTs" size="28"></baz-icon>
+                        <span>fileTs</span>
+                    </div>
+                    <div class="icon-item" data-icon="fileJson">
+                        <baz-icon icon="fileJson" size="28"></baz-icon>
+                        <span>fileJson</span>
+                    </div>
+                    <div class="icon-item" data-icon="folder">
+                        <baz-icon icon="folder" size="28"></baz-icon>
+                        <span>folder</span>
+                    </div>
+                    <div class="icon-item" data-icon="folderOpen">
+                        <baz-icon icon="folderOpen" size="28"></baz-icon>
+                        <span>folderOpen</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Category -->
+            <div id="category-system" class="icon-category hidden">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="settings">
+                        <baz-icon icon="settings" size="28"></baz-icon>
+                        <span>settings</span>
+                    </div>
+                    <div class="icon-item" data-icon="search">
+                        <baz-icon icon="search" size="28"></baz-icon>
+                        <span>search</span>
+                    </div>
+                    <div class="icon-item" data-icon="bell">
+                        <baz-icon icon="bell" size="28"></baz-icon>
+                        <span>bell</span>
+                    </div>
+                    <div class="icon-item" data-icon="home">
+                        <baz-icon icon="home" size="28"></baz-icon>
+                        <span>home</span>
+                    </div>
+                    <div class="icon-item" data-icon="menu">
+                        <baz-icon icon="menu" size="28"></baz-icon>
+                        <span>menu</span>
+                    </div>
+                    <div class="icon-item" data-icon="x">
+                        <baz-icon icon="x" size="28"></baz-icon>
+                        <span>x</span>
+                    </div>
+                    <div class="icon-item" data-icon="plus">
+                        <baz-icon icon="plus" size="28"></baz-icon>
+                        <span>plus</span>
+                    </div>
+                    <div class="icon-item" data-icon="minus">
+                        <baz-icon icon="minus" size="28"></baz-icon>
+                        <span>minus</span>
+                    </div>
+                    <div class="icon-item" data-icon="check">
+                        <baz-icon icon="check" size="28"></baz-icon>
+                        <span>check</span>
+                    </div>
+                    <div class="icon-item" data-icon="trash">
+                        <baz-icon icon="trash" size="28"></baz-icon>
+                        <span>trash</span>
+                    </div>
+                    <div class="icon-item" data-icon="edit">
+                        <baz-icon icon="edit" size="28"></baz-icon>
+                        <span>edit</span>
+                    </div>
+                    <div class="icon-item" data-icon="copy">
+                        <baz-icon icon="copy" size="28"></baz-icon>
+                        <span>copy</span>
+                    </div>
+                    <div class="icon-item" data-icon="refresh">
+                        <baz-icon icon="refresh" size="28"></baz-icon>
+                        <span>refresh</span>
+                    </div>
+                    <div class="icon-item" data-icon="download">
+                        <baz-icon icon="download" size="28"></baz-icon>
+                        <span>download</span>
+                    </div>
+                    <div class="icon-item" data-icon="upload">
+                        <baz-icon icon="upload" size="28"></baz-icon>
+                        <span>upload</span>
+                    </div>
+                    <div class="icon-item" data-icon="link">
+                        <baz-icon icon="link" size="28"></baz-icon>
+                        <span>link</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Category -->
+            <div id="category-media" class="icon-category hidden">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="playerPlay">
+                        <baz-icon icon="playerPlay" size="28"></baz-icon>
+                        <span>playerPlay</span>
+                    </div>
+                    <div class="icon-item" data-icon="playerPause">
+                        <baz-icon icon="playerPause" size="28"></baz-icon>
+                        <span>playerPause</span>
+                    </div>
+                    <div class="icon-item" data-icon="playerStop">
+                        <baz-icon icon="playerStop" size="28"></baz-icon>
+                        <span>playerStop</span>
+                    </div>
+                    <div class="icon-item" data-icon="volume">
+                        <baz-icon icon="volume" size="28"></baz-icon>
+                        <span>volume</span>
+                    </div>
+                    <div class="icon-item" data-icon="volumeOff">
+                        <baz-icon icon="volumeOff" size="28"></baz-icon>
+                        <span>volumeOff</span>
+                    </div>
+                    <div class="icon-item" data-icon="microphone">
+                        <baz-icon icon="microphone" size="28"></baz-icon>
+                        <span>microphone</span>
+                    </div>
+                    <div class="icon-item" data-icon="camera">
+                        <baz-icon icon="camera" size="28"></baz-icon>
+                        <span>camera</span>
+                    </div>
+                    <div class="icon-item" data-icon="photo">
+                        <baz-icon icon="photo" size="28"></baz-icon>
+                        <span>photo</span>
+                    </div>
+                    <div class="icon-item" data-icon="video">
+                        <baz-icon icon="video" size="28"></baz-icon>
+                        <span>video</span>
+                    </div>
+                    <div class="icon-item" data-icon="music">
+                        <baz-icon icon="music" size="28"></baz-icon>
+                        <span>music</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dev Category -->
+            <div id="category-dev" class="icon-category hidden">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="code">
+                        <baz-icon icon="code" size="28"></baz-icon>
+                        <span>code</span>
+                    </div>
+                    <div class="icon-item" data-icon="terminal">
+                        <baz-icon icon="terminal" size="28"></baz-icon>
+                        <span>terminal</span>
+                    </div>
+                    <div class="icon-item" data-icon="bug">
+                        <baz-icon icon="bug" size="28"></baz-icon>
+                        <span>bug</span>
+                    </div>
+                    <div class="icon-item" data-icon="database">
+                        <baz-icon icon="database" size="28"></baz-icon>
+                        <span>database</span>
+                    </div>
+                    <div class="icon-item" data-icon="server">
+                        <baz-icon icon="server" size="28"></baz-icon>
+                        <span>server</span>
+                    </div>
+                    <div class="icon-item" data-icon="api">
+                        <baz-icon icon="api" size="28"></baz-icon>
+                        <span>api</span>
+                    </div>
+                    <div class="icon-item" data-icon="git">
+                        <baz-icon icon="git" size="28"></baz-icon>
+                        <span>git</span>
+                    </div>
+                    <div class="icon-item" data-icon="gitBranch">
+                        <baz-icon icon="gitBranch" size="28"></baz-icon>
+                        <span>gitBranch</span>
+                    </div>
+                    <div class="icon-item" data-icon="package">
+                        <baz-icon icon="package" size="28"></baz-icon>
+                        <span>package</span>
+                    </div>
+                    <div class="icon-item" data-icon="brackets">
+                        <baz-icon icon="brackets" size="28"></baz-icon>
+                        <span>brackets</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legacy Category -->
+            <div id="category-legacy" class="icon-category hidden">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-2">
+                    <div class="icon-item" data-icon="rocket">
+                        <baz-icon icon="rocket" size="28"></baz-icon>
+                        <span>rocket</span>
+                    </div>
+                    <div class="icon-item" data-icon="lightbulb">
+                        <baz-icon icon="lightbulb" size="28"></baz-icon>
+                        <span>lightbulb</span>
+                    </div>
+                    <div class="icon-item" data-icon="palette">
+                        <baz-icon icon="palette" size="28"></baz-icon>
+                        <span>palette</span>
+                    </div>
+                    <div class="icon-item" data-icon="shield">
+                        <baz-icon icon="shield" size="28"></baz-icon>
+                        <span>shield</span>
+                    </div>
+                    <div class="icon-item" data-icon="puzzle">
+                        <baz-icon icon="puzzle" size="28"></baz-icon>
+                        <span>puzzle</span>
+                    </div>
+                    <div class="icon-item" data-icon="layers">
+                        <baz-icon icon="layers" size="28"></baz-icon>
+                        <span>layers</span>
+                    </div>
+                    <div class="icon-item" data-icon="zap">
+                        <baz-icon icon="zap" size="28"></baz-icon>
+                        <span>zap</span>
+                    </div>
+                    <div class="icon-item" data-icon="tool">
+                        <baz-icon icon="tool" size="28"></baz-icon>
+                        <span>tool</span>
+                    </div>
+                    <div class="icon-item" data-icon="book">
+                        <baz-icon icon="book" size="28"></baz-icon>
+                        <span>book</span>
+                    </div>
+                    <div class="icon-item" data-icon="help">
+                        <baz-icon icon="help" size="28"></baz-icon>
+                        <span>help</span>
+                    </div>
+                    <div class="icon-item" data-icon="info">
+                        <baz-icon icon="info" size="28"></baz-icon>
+                        <span>info</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- TypeScript Example -->
+        <section class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <h2 class="text-2xl font-semibold m-0">TypeScript Integration</h2>
+                <div class="badge badge-secondary gap-2">
+                    <baz-icon icon="typescript" size="14"></baz-icon>
+                    Type Safe
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-lg">
+                <div class="card-body">
+                    <div class="mockup-code">
+                        <pre data-prefix="1" class="text-warning"><code>// Import the component</code></pre>
+                        <pre data-prefix="2"><code>import BazIcon from "./baz-ui/baz-icon/baz-icon"</code></pre>
+                        <pre data-prefix="3"><code></code></pre>
+                        <pre data-prefix="4" class="text-warning"><code>// Select the icon component</code></pre>
+                        <pre data-prefix="5"><code>const icon = document.querySelector('baz-icon') as BazIcon</code></pre>
+                        <pre data-prefix="6"><code></code></pre>
+                        <pre data-prefix="7" class="text-warning"><code>// Change icon dynamically</code></pre>
+                        <pre data-prefix="8"><code>icon.icon = "rocket"</code></pre>
+                        <pre data-prefix="9"><code></code></pre>
+                        <pre data-prefix="10" class="text-warning"><code>// Customize appearance</code></pre>
+                        <pre data-prefix="11"><code>icon.size = "48"</code></pre>
+                        <pre data-prefix="12"><code>icon.stroke = "#ef4444"</code></pre>
+                        <pre data-prefix="13"><code>icon.strokeWidth = "3"</code></pre>
+                        <pre data-prefix="14"><code></code></pre>
+                        <pre data-prefix="15" class="text-warning"><code>// Accessibility</code></pre>
+                        <pre data-prefix="16"><code>icon.ariaLabel = "Launch rocket"</code></pre>
+                        <pre data-prefix="17"><code>icon.ariaHidden = "false"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="alert alert-success">
+                <baz-icon icon="check" size="24"></baz-icon>
+                <div>
+                    <h4 class="font-bold">Tabler Icons</h4>
+                    <div class="text-sm">All icons are from the high-quality Tabler Icons library, ensuring consistent and professional design.</div>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <baz-icon icon="info" size="24"></baz-icon>
+                <div>
+                    <h4 class="font-bold">More Icons</h4>
+                    <div class="text-sm">See ICON-LIBRARY.md for the complete icon catalog with all 145+ icons and usage examples.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background-color: hsl(var(--b3));
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    gap: 0.5rem;
+}
+
+.icon-item:hover {
+    background-color: hsl(var(--b2));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.icon-item span {
+    font-size: 0.65rem;
+    text-align: center;
+    opacity: 0.7;
+    font-family: monospace;
+}
+
+.icon-item:active {
+    transform: translateY(0);
+}
+</style>
+
+<script>
+// Initialize icon page functionality
+function initIconPage() {
+    // Category tab handlers
+    const tabButtons = document.querySelectorAll('.tabs button[data-category]');
+    if (tabButtons.length === 0) {
+        console.warn('Icon page: No category tabs found');
+        return;
+    }
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.dataset.category;
+            
+            // Hide all categories
+            document.querySelectorAll('.icon-category').forEach(el => el.classList.add('hidden'));
+            
+            // Show selected category
+            const targetCategory = document.getElementById(`category-${category}`);
+            if (targetCategory) {
+                targetCategory.classList.remove('hidden');
+            }
+            
+            // Update tab active state
+            document.querySelectorAll('.tabs button').forEach(tab => tab.classList.remove('tab-active'));
+            this.classList.add('tab-active');
+        });
+    });
+
+    // Add click handlers to copy icon names
+    document.querySelectorAll('.icon-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const iconName = item.dataset.icon;
+            navigator.clipboard.writeText(iconName).then(() => {
+                // Show temporary toast
+                const toast = document.createElement('div');
+                toast.className = 'toast toast-top toast-center';
+                toast.innerHTML = `
+                    <div class="alert alert-success">
+                        <span>Copied: ${iconName}</span>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        });
+    });
+    
+    console.log('Icon page initialized:', tabButtons.length, 'tabs found');
+}
+
+// Run on DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initIconPage);
+} else {
+    // DOM already loaded (e.g., dynamically loaded content)
+    setTimeout(initIconPage, 100);
+}
+</script>
+

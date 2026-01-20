@@ -71,12 +71,24 @@ jobs:
         env:
           BASE_PATH: /Bazlama.Web.Component/sample-core
 
+      - name: Install sample-daisyui dependencies
+        run: npm install
+        working-directory: ./samples/sample-daisyui
+
+      - name: Build sample-daisyui
+        run: npm run build
+        working-directory: ./samples/sample-daisyui
+        env:
+          BASE_PATH: /Bazlama.Web.Component/sample-daisyui
+
       - name: Prepare deployment structure
         run: |
           mkdir -p ./deployment
           cp -r ./samples/sample/dist/* ./deployment/
           mkdir -p ./deployment/sample-core
           cp -r ./samples/sample-core/dist/* ./deployment/sample-core/
+          mkdir -p ./deployment/sample-daisyui
+          cp -r ./samples/sample-daisyui/dist/* ./deployment/sample-daisyui/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

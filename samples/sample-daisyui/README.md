@@ -1,16 +1,51 @@
-# Bazlama.Web.Component Sample
+# Bazlama Web Component - DaisyUI Sample
 
-For more information and examples, visit our [GitHub page.](https://github.com/MuratBudun/Bazlama.Web.Component)
+A modern component library showcase built with Bazlama Web Component framework, DaisyUI, and TailwindCSS. Features a custom router system with Page Class Pattern and comprehensive component documentation.
 
-## Install 
+## 🎯 Features
+
+- **Modern UI Components**: Tab, Icon, Modal, Textbox, Theme Switcher
+- **Custom Router**: Client-side routing with Page Class Pattern support
+- **Page Class Pattern**: Clean OOP approach for page lifecycle management
+- **DaisyUI Integration**: Beautiful, accessible UI components
+- **Icon Library**: 145+ Tabler Icons categorized and searchable
+- **Interactive Documentation**: Live demos and code examples
+- **TypeScript**: Full type safety throughout
+
+## 🚀 Quick Start
+
 ```bash
 git clone https://github.com/MuratBudun/Bazlama.Web.Component.git
-cd Bazlama.Web.Component
-cd sample
-npm i
+cd Bazlama.Web.Component/samples/sample-daisyui
+npm install
 npm run dev
 ```
-![TestWebComponentScreen01](https://github.com/user-attachments/assets/b8a7a668-d13b-444f-a2df-ca0ddbe12d23)
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## 📦 Project Structure
+
+```
+sample-daisyui/
+├── src/
+│   ├── baz-ui/              # UI Components
+│   │   ├── baz-router/      # Custom Router System
+│   │   │   └── classes/     # PageRouter, PageRoute, BasePage
+│   │   ├── baz-tab/         # Tab Component
+│   │   ├── baz-icon/        # Icon Component with 145+ icons
+│   │   ├── baz-modal/       # Modal Component
+│   │   ├── baz-textbox/     # Textbox Component
+│   │   └── index.ts         # Barrel export for all components
+│   ├── pages/               # Application Pages
+│   │   ├── icon/            # Icon page (IconPage class)
+│   │   ├── tab/             # Tab page (TabPage class)
+│   │   ├── examples/        # Router examples
+│   │   └── router.ts        # Route configuration
+│   └── main.ts              # Application entry
+└── package.json
+```
+
+For more information and examples, visit our [GitHub page](https://github.com/MuratBudun/Bazlama.Web.Component) or check the [live demo](https://muratbudun.github.io/Bazlama.Web.Component/sample-daisyui/).
 
 ### index.html
 ```html
