@@ -27,5 +27,5 @@ export function initializeRouter() {
     `)
 
     // Initialize router
-    PageRouter.initialize("#page-content")
+    PageRouter.initialize("#page-content", import.meta.env.BASE_URL)
 }
