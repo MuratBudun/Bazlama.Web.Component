@@ -3,26 +3,45 @@ import { BazlamaWebComponent, CustomElement, Property, EventAction, ShadowRootMo
 @CustomElement("baz-theme-switcher")
 export default class BazThemeSwitcher extends BazlamaWebComponent {
     @Property()
-    public CurrentTheme: string = "nord"
+    public CurrentTheme: string = this.getInitialTheme()
 
     @Property()
-    public Themes: string[] = ["nord", "abyss", "cupcake", "dracula", "sunset", "light", "dark", "retro", "cyberpunk", "valentine", "aqua"]
+    public Themes: string[] = this.getAvailableThemes()
 
     @Property()
     public ShowLabel: boolean = true
 
     constructor() {
         super(ShadowRootMode.None)
-        this.loadSavedTheme()
+        // Theme already applied by inline script in index.html
         this.InitBazlamaWebComponent()
     }
 
-    private loadSavedTheme() {
-        const savedTheme = localStorage.getItem("theme")
-        if (savedTheme) {
-            this.CurrentTheme = savedTheme
-            this.applyTheme(savedTheme)
-        }
+    private getInitialTheme(): string {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) return savedTheme;
+        
+        // No saved theme, use prefers-color-scheme
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        return prefersDark ? 'dark' : 'light';
+    }
+
+    private getAvailableThemes(): string[] {
+        // Try to parse themes from DaisyUI config (if available in CSS)
+        // For now, return a hardcoded list that matches index.css
+        // In future, this could parse the actual CSS config
+        return [
+            "light",
+            "dark", 
+            "cupcake",
+            "nord",
+            "sunset",
+            "dracula",
+            "retro",
+            "cyberpunk",
+            "valentine",
+            "aqua"
+        ];
     }
 
     private applyTheme(theme: string) {

@@ -5,6 +5,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bazlama DaisyUI Components</title>
+  
+  <!-- Load theme immediately to prevent flickering -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else {
+        // No saved theme, use prefers-color-scheme
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const defaultTheme = prefersDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', defaultTheme);
+      }
+    })();
+  </script>
+  
   <link href="./index.css" rel="stylesheet" />
   <script type="module" src="./src/main.ts"></script>
 </head>

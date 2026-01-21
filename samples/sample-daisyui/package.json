@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:basepath": "BASE_PATH=/my-app/ vite --host",
+    "dev:basepath": "cross-env BASE_PATH=/my-app/ vite",
     "build": "tsc && vite build",
-    "build:basepath": "BASE_PATH=/my-app/ tsc && BASE_PATH=/my-app/ vite build",
+    "build:basepath": "cross-env BASE_PATH=/my-app/ tsc && cross-env BASE_PATH=/my-app/ vite build",
     "preview": "vite preview",
-    "preview:basepath": "BASE_PATH=/my-app/ vite preview"
+    "preview:basepath": "cross-env BASE_PATH=/my-app/ vite preview"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@types/jsdom": "^27.0.0",
+    "cross-env": "^10.1.0",
     "daisyui": "^5.5.14",
     "jsdom": "^27.4.0",
     "typescript": "~5.7.2",

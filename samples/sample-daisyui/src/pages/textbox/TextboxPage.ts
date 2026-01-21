@@ -34,6 +34,19 @@ export class TextboxPage extends BasePage {
                                 placeholder="Enter password"
                                 type="password">
                             </baz-textbox>
+                            <baz-textbox 
+                                label="Full Features" 
+                                placeholder="All attributes set"
+                                size="lg"
+                                color="accent"
+                                label-alt-left="Left Helper,Left Helper,Left Helper,Left Helper,Left Helper,Left Helper"
+                                label-alt-right="Right Info,Right Info,Right Info,Right Info,Right Info,Right Info">
+                                <button class="btn btn-ghost btn-xs" data-action="clear">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>                                
+                            </baz-textbox>
                         </div>
                     </div>
                 </div>

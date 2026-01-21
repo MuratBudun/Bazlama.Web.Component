@@ -51,15 +51,15 @@ export class BazTextbox extends BazlamaWebComponent {
     @Attribute("size", true)
     public size: TSize = "md"
 
-    @ChangeHooks([useElementText("span[ref='label']")])
+    @ChangeHooks([useElementText("[ref='label']")])
     @Attribute("label", true)
     public label: string = ""
 
-    @ChangeHooks([useElementText("span[ref='label-alt-left']")])
+    @ChangeHooks([useElementText("[ref='label-alt-left']")])
     @Attribute("label-alt-left", true)
     public labelAltLeft: string = ""
 
-    @ChangeHooks([useElementText("span[ref='label-alt-right']")])
+    @ChangeHooks([useElementText("[ref='label-alt-right']")])
     @Attribute("label-alt-right", true)
     public labelAltRight: string = ""
 
