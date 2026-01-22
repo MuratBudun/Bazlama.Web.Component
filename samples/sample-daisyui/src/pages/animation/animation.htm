@@ -1,0 +1,468 @@
+<div class="max-w-6xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2">BazAnimation Utility</h1>
+        <p class="text-base-content/70">Web Animations API wrapper with 18+ built-in animations</p>
+    </div>
+
+    <!-- Configuration Controls - Sticky -->
+    <div class="card bg-base-200 shadow-xl mb-6 sticky top-4 z-10">
+        <div class="card-body py-4">
+            <div class="flex items-center justify-between gap-4 flex-wrap">
+                <h2 class="card-title text-lg">Quick Controls</h2>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <div class="form-control">
+                        <label class="label cursor-pointer gap-2 py-0">
+                            <span class="label-text text-sm">Enabled</span>
+                            <input type="checkbox" class="toggle toggle-sm toggle-primary" checked data-config="enabled" />
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer gap-2 py-0">
+                            <span class="label-text text-sm">Reduced Motion</span>
+                            <input type="checkbox" class="toggle toggle-sm toggle-primary" checked data-config="reduce-motion" />
+                        </label>
+                    </div>
+                    <div class="form-control min-w-48">
+                        <label class="label py-0 justify-start gap-2">
+                            <span class="label-text text-sm">Speed:</span>
+                            <span class="font-mono text-sm font-bold" data-display="speed">1.0x</span>
+                        </label>
+                        <input type="range" min="0.1" max="3" step="0.1" value="1" class="range range-primary range-xs" data-config="speed" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentation Tabs -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <div role="tablist" class="tabs tabs-bordered">
+                <input type="radio" name="doc_tabs" role="tab" class="tab" aria-label="Overview" checked />
+                <div role="tabpanel" class="tab-content pt-6">
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold mb-4">Overview</h3>
+                        <p>
+                            BazAnimation is a powerful animation utility built on top of the Web Animations API.
+                            It provides a clean, Promise-based interface for creating smooth animations with built-in
+                            accessibility support and performance optimization.
+                        </p>
+                        <h4>Key Features</h4>
+                        <ul>
+                            <li>18 built-in animations (fade, slide, zoom, bounce, shake, rotate, pulse, flash, flip)</li>
+                            <li>Promise-based async API for animation sequencing</li>
+                            <li>Parallel animation support</li>
+                            <li>Custom animation registration</li>
+                            <li>Reduced motion accessibility support</li>
+                            <li>Global playback speed control</li>
+                            <li>Callback support for animation completion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <input type="radio" name="doc_tabs" role="tab" class="tab" aria-label="Configuration API" />
+                <div role="tabpanel" class="tab-content pt-6">
+                    <h3 class="text-2xl font-bold mb-4">Configuration API</h3>
+                    <p class="text-sm text-base-content/70 mb-4">
+                        The controls above demonstrate the configuration API. 
+                        These settings affect all animations globally.
+                    </p>
+                    
+                    <div class="mockup-code text-xs">
+                        <pre data-prefix="1"><code>BazAnimation.configure({</code></pre>
+                        <pre data-prefix="2"><code>  enabled: true,        // Enable/disable all animations</code></pre>
+                        <pre data-prefix="3"><code>  playbackSpeed: 1.0,   // Speed multiplier (0.1 - 3.0)</code></pre>
+                        <pre data-prefix="4"><code>  reduceMotion: true    // Respect system preferences</code></pre>
+                        <pre data-prefix="5"><code>});</code></pre>
+                    </div>
+                </div>
+
+                <input type="radio" name="doc_tabs" role="tab" class="tab" aria-label="Accessibility" />
+                <div role="tabpanel" class="tab-content pt-6">
+                    <h3 class="text-2xl font-bold mb-4">Accessibility Support</h3>
+                    <div class="prose max-w-none">
+                        <p>
+                            BazAnimation respects the user's <code>prefers-reduced-motion</code> setting.
+                            When enabled, animations will be skipped automatically to prevent motion sickness
+                            and improve accessibility for users with vestibular disorders.
+                        </p>
+                        <p class="text-sm text-base-content/70">
+                            Try enabling "Reduce Motion" in your operating system's accessibility settings
+                            and see how animations are automatically disabled.
+                        </p>
+                    </div>
+                </div>
+
+                <input type="radio" name="doc_tabs" role="tab" class="tab" aria-label="API Reference" />
+                <div role="tabpanel" class="tab-content pt-6">
+                    <h3 class="text-2xl font-bold mb-4">API Reference</h3>
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Description</th>
+                                    <th>Returns</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-xs">animate(element, name, options?, libraries?, callback?)</td>
+                                    <td>Basic animation with callback support</td>
+                                    <td class="font-mono text-xs">Animation | null</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">animateAsync(element, name, options?, libraries?)</td>
+                                    <td>Promise-based animation</td>
+                                    <td class="font-mono text-xs">Promise&lt;void&gt;</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">sequence(element, animations)</td>
+                                    <td>Run animations sequentially</td>
+                                    <td class="font-mono text-xs">Promise&lt;void&gt;</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">parallel(element, animations)</td>
+                                    <td>Run animations simultaneously</td>
+                                    <td class="font-mono text-xs">Promise&lt;void&gt;</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">registerAnimation(name, pattern, library?)</td>
+                                    <td>Register custom animation</td>
+                                    <td class="font-mono text-xs">void</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">registerAnimations(animations, library?)</td>
+                                    <td>Register multiple animations</td>
+                                    <td class="font-mono text-xs">void</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">configure(config)</td>
+                                    <td>Set global configuration</td>
+                                    <td class="font-mono text-xs">void</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">getAvailableAnimations(library?)</td>
+                                    <td>List all animations in library</td>
+                                    <td class="font-mono text-xs">string[]</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-xs">hasAnimation(name, libraries?)</td>
+                                    <td>Check if animation exists</td>
+                                    <td class="font-mono text-xs">boolean</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fade Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Fade Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Opacity-based animations with optional directional movement</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="fade-in">
+                        fadeIn
+                    </button>
+                    <div class="h-16 bg-primary rounded flex items-center justify-center text-primary-content" data-target="fade-in">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="fade-out">
+                        fadeOut
+                    </button>
+                    <div class="h-16 bg-secondary rounded flex items-center justify-center text-secondary-content" data-target="fade-out">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="fade-in-up">
+                        fadeInUp
+                    </button>
+                    <div class="h-16 bg-accent rounded flex items-center justify-center text-accent-content" data-target="fade-in-up">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="fade-in-down">
+                        fadeInDown
+                    </button>
+                    <div class="h-16 bg-info rounded flex items-center justify-center text-info-content" data-target="fade-in-down">
+                        Box
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="mockup-code text-xs">
+                    <pre data-prefix="1"><code>BazAnimation.animate(element, 'fadeIn');</code></pre>
+                    <pre data-prefix="2"><code>BazAnimation.animate(element, 'fadeOut');</code></pre>
+                    <pre data-prefix="3"><code>BazAnimation.animate(element, 'fadeInUp', { duration: 500 });</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Slide Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Directional sliding animations</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="slide-in-left">
+                        slideInLeft
+                    </button>
+                    <div class="h-16 bg-success rounded flex items-center justify-center text-success-content" data-target="slide-in-left">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="slide-in-right">
+                        slideInRight
+                    </button>
+                    <div class="h-16 bg-warning rounded flex items-center justify-center text-warning-content" data-target="slide-in-right">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="slide-out-left">
+                        slideOutLeft
+                    </button>
+                    <div class="h-16 bg-error rounded flex items-center justify-center text-error-content" data-target="slide-out-left">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="slide-out-right">
+                        slideOutRight
+                    </button>
+                    <div class="h-16 bg-primary rounded flex items-center justify-center text-primary-content" data-target="slide-out-right">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scale Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Scale Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Zoom in/out effects with scaling</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="zoom-in">
+                        zoomIn
+                    </button>
+                    <div class="h-16 bg-secondary rounded flex items-center justify-center text-secondary-content" data-target="zoom-in">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="zoom-out">
+                        zoomOut
+                    </button>
+                    <div class="h-16 bg-accent rounded flex items-center justify-center text-accent-content" data-target="zoom-out">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bounce & Shake -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Bounce & Shake</h2>
+            <p class="text-sm text-base-content/70 mb-4">Attention-grabbing animations</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="bounce">
+                        bounce
+                    </button>
+                    <div class="h-16 bg-info rounded flex items-center justify-center text-info-content" data-target="bounce">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="shake">
+                        shake
+                    </button>
+                    <div class="h-16 bg-success rounded flex items-center justify-center text-success-content" data-target="shake">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rotate Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Rotate Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Rotation-based entrance and exit animations</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="rotate-in">
+                        rotateIn
+                    </button>
+                    <div class="h-16 bg-warning rounded flex items-center justify-center text-warning-content" data-target="rotate-in">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="rotate-out">
+                        rotateOut
+                    </button>
+                    <div class="h-16 bg-error rounded flex items-center justify-center text-error-content" data-target="rotate-out">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pulse & Flash -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Pulse & Flash</h2>
+            <p class="text-sm text-base-content/70 mb-4">Subtle attention effects</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="pulse">
+                        pulse
+                    </button>
+                    <div class="h-16 bg-primary rounded flex items-center justify-center text-primary-content" data-target="pulse">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="flash">
+                        flash
+                    </button>
+                    <div class="h-16 bg-secondary rounded flex items-center justify-center text-secondary-content" data-target="flash">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flip Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Flip Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">3D flip effects along X and Y axes</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="flip-x">
+                        flipX
+                    </button>
+                    <div class="h-16 bg-accent rounded flex items-center justify-center text-accent-content" data-target="flip-x">
+                        Box
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline btn-sm w-full mb-2" data-action="flip-y">
+                        flipY
+                    </button>
+                    <div class="h-16 bg-info rounded flex items-center justify-center text-info-content" data-target="flip-y">
+                        Box
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sequence Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Sequence Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Run multiple animations one after another</p>
+            
+            <button class="btn btn-primary mb-4" data-action="sequence">
+                Run Sequence
+            </button>
+            <div class="h-24 bg-gradient-to-r from-primary to-secondary rounded flex items-center justify-center text-primary-content text-lg font-bold" data-target="sequence">
+                Watch Me!
+            </div>
+
+            <div class="mt-4">
+                <div class="mockup-code text-xs">
+                    <pre data-prefix="1"><code>await BazAnimation.sequence(element, [</code></pre>
+                    <pre data-prefix="2"><code>  { name: 'fadeIn', options: { duration: 300 } },</code></pre>
+                    <pre data-prefix="3"><code>  { name: 'bounce', options: { duration: 500 } },</code></pre>
+                    <pre data-prefix="4"><code>  { name: 'pulse', options: { duration: 800 } }</code></pre>
+                    <pre data-prefix="5"><code>]);</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parallel Animations -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Parallel Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Run multiple animations simultaneously on the same element</p>
+            
+            <button class="btn btn-primary mb-4" data-action="parallel">
+                Run Parallel
+            </button>
+            <div class="h-24 bg-gradient-to-br from-success to-warning rounded flex items-center justify-center text-success-content text-lg font-bold" data-target="parallel">
+                Multiple Effects!
+            </div>
+
+            <div class="mt-4">
+                <div class="mockup-code text-xs">
+                    <pre data-prefix="1"><code>await BazAnimation.parallel(element, [</code></pre>
+                    <pre data-prefix="2"><code>  { name: 'fadeIn', options: { duration: 1000 } },</code></pre>
+                    <pre data-prefix="3"><code>  { name: 'bounce', options: { duration: 1000 } }</code></pre>
+                    <pre data-prefix="4"><code>]);</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Animation -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+            <h2 class="card-title">Custom Animations</h2>
+            <p class="text-sm text-base-content/70 mb-4">Register and use your own custom animations</p>
+            
+            <button class="btn btn-primary mb-4" data-action="custom">
+                Run Custom Animation
+            </button>
+            <div class="h-24 bg-gradient-to-r from-error to-warning rounded flex items-center justify-center text-error-content text-lg font-bold" data-target="custom">
+                Custom Effect!
+            </div>
+
+            <div class="mt-4">
+                <div class="mockup-code text-xs">
+                    <pre data-prefix="1"><code>BazAnimation.registerAnimation('rainbow', {</code></pre>
+                    <pre data-prefix="2"><code>  keyFrames: [</code></pre>
+                    <pre data-prefix="3"><code>    { filter: 'hue-rotate(0deg)' },</code></pre>
+                    <pre data-prefix="4"><code>    { filter: 'hue-rotate(360deg)' }</code></pre>
+                    <pre data-prefix="5"><code>  ],</code></pre>
+                    <pre data-prefix="6"><code>  options: { duration: 2000, iterations: 3 }</code></pre>
+                    <pre data-prefix="7"><code>}, 'custom');</code></pre>
+                    <pre data-prefix="8"><code></code></pre>
+                    <pre data-prefix="9"><code>BazAnimation.animate(element, 'rainbow', {}, ['custom']);</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

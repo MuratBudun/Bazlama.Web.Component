@@ -2,6 +2,7 @@ import BazAnimation from "../../baz-animation/BazAnimation"
 import { TGetPageContentEl } from "../types/TGetPageContentEl"
 import PageRoute from "./PageRoute"
 import { BasePage } from "./BasePage"
+import { LazyPageRoute } from "./LazyPageRoute"
 
 declare global {
     interface Window {
@@ -238,7 +239,7 @@ export default class PageRouter {
         return matchedRoutes.length > 0 ? matchedRoutes : [this.route404]
     }
 
-    public static handleRouteChange(): void {
+    public static async handleRouteChange(): Promise<void> {
         const pathname = this.getPathWithoutBase()
         const pathParts = ["/", ...pathname.split("/").filter(Boolean)]
         const matchedRoute = this.rootRoute.match(pathParts)
@@ -246,7 +247,7 @@ export default class PageRouter {
         // Parse query string
         const query = this.parseQueryString()
 
-        BazAnimation.animate(this.pageContentEl, "fadeOut", { duration: 0.2 }, ["standart"], () => {
+        BazAnimation.animate(this.pageContentEl, "fadeOut", { duration: 0.2 }, ["standard"], async () => {
             // Destroy previous page instance
             if (this.currentPageInstance?.destroy) {
                 this.currentPageInstance.destroy()
@@ -256,8 +257,12 @@ export default class PageRouter {
             if (matchedRoute) {
                 const params = matchedRoute.getParams()
                 
+                // Handle lazy-loaded routes
+                if (LazyPageRoute.isLazyRoute(matchedRoute)) {
+                    await this.handleLazyRoute(matchedRoute, params, query)
+                }
                 // Check if route uses Page Class pattern
-                if (matchedRoute.isPageClass(matchedRoute.content)) {
+                else if (matchedRoute.isPageClass(matchedRoute.content)) {
                     // Create page instance with params and query
                     const pageInstance = new matchedRoute.content(this.pageContentEl, params, query)
                     this.currentPageInstance = pageInstance
@@ -285,6 +290,52 @@ export default class PageRouter {
         this.fireRouteChange()
     }
 
+    /**
+     * Handles rendering of lazy-loaded routes
+     * @param route - LazyPageRoute instance
+     * @param params - URL parameters
+     * @param query - Query string parameters
+     */
+    private static async handleLazyRoute(
+        route: LazyPageRoute,
+        params: Record<string, string>,
+        query: Record<string, string>
+    ): Promise<void> {
+        try {
+            // Show loading state if provided
+            const loadingContent = route.getLoadingContent()
+            if (loadingContent && !route.isLoaded()) {
+                this.pageContentEl.innerHTML = loadingContent({
+                    route,
+                    params,
+                    query
+                })
+            }
+
+            // Load the module
+            const module = await route.load()
+            const PageClass = module.default
+
+            // Create and render page instance
+            const pageInstance = new PageClass(this.pageContentEl, params, query)
+            this.currentPageInstance = pageInstance
+            
+            this.pageContentEl.innerHTML = pageInstance.render()
+            setTimeout(() => pageInstance.init(), 0)
+        } catch (error) {
+            console.error("Failed to load lazy route:", error)
+            this.pageContentEl.innerHTML = `
+                <div class="flex items-center justify-center min-h-screen">
+                    <div class="text-center">
+                        <h1 class="text-4xl font-bold text-error mb-4">Failed to Load Page</h1>
+                        <p class="text-lg mb-6">The requested page could not be loaded.</p>
+                        <a href="baz-router:/" class="btn btn-primary">Go Home</a>
+                    </div>
+                </div>
+            `
+        }
+    }
+
     private static handlePopState(): void {
         console.log("popstate")
         this.handleRouteChange()
@@ -292,6 +343,9 @@ export default class PageRouter {
 
     private static initLinkClickHandler(): void {
         document.addEventListener("click", this.handleLinkClick.bind(this))
+        
+        // Setup preloading on hover for lazy routes
+        document.addEventListener("mouseover", this.handleLinkHover.bind(this))
     }
 
     private static handleLinkClick(event: Event): void {
@@ -303,6 +357,22 @@ export default class PageRouter {
             const fullPath = this.getFullPath(path)
             history.pushState({}, "", fullPath)
             this.handleRouteChange()
+        }
+    }
+
+    private static handleLinkHover(event: Event): void {
+        const target = event.target as HTMLAnchorElement
+
+        if (target.tagName === "A" && target.href.startsWith(this.linkSignature)) {
+            const path = target.href.replace(this.linkSignature, "")
+            const pathname = path.split("?")[0]
+            const pathParts = ["/", ...pathname.split("/").filter(Boolean)]
+            const matchedRoute = this.rootRoute.match(pathParts)
+
+            // Preload lazy route on hover if configured
+            if (matchedRoute && LazyPageRoute.isLazyRoute(matchedRoute) && matchedRoute.shouldPreload()) {
+                matchedRoute.preloadModule()
+            }
         }
     }
 }

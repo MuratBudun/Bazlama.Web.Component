@@ -250,100 +250,73 @@ if (confirmed) {
     init(): void {
         console.log("ModalPage initialized")
 
-        // Basic modal
-        this.querySelector('[data-action="show-basic"]')?.addEventListener("click", () => {
-            (document.getElementById("basic-modal") as any)?.showModal()
-        })
+        // Modal action handlers using event delegation
+        this.addDelegatedListener('click', '[data-action]', async (e) => {
+            const action = (e.target as HTMLElement).getAttribute('data-action');
+            
+            // Handle special actions
+            if (action === 'alert') {
+                await BazModal.alert(
+                    "Information",
+                    "This is a simple alert modal created with BazModal.alert()"
+                );
+                console.log("Alert closed");
+                return;
+            }
+            
+            if (action === 'confirm') {
+                const confirmed = await BazModal.confirm(
+                    "Confirm Action",
+                    "Do you want to proceed with this action?",
+                    "Yes, proceed",
+                    "Cancel"
+                );
+                
+                if (confirmed) {
+                    await BazModal.alert("Success", "Action confirmed!");
+                } else {
+                    await BazModal.alert("Cancelled", "Action was cancelled.");
+                }
+                return;
+            }
+            
+            // Handle show modal actions
+            const modalId = action?.replace('show-', '');
+            if (modalId) {
+                (document.getElementById(modalId) as any)?.showModal();
+            }
+        });
 
-        // Size modals
-        this.querySelector('[data-action="show-size-sm"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-sm") as any)?.showModal()
-        })
-        this.querySelector('[data-action="show-size-md"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-md") as any)?.showModal()
-        })
-        this.querySelector('[data-action="show-size-lg"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-lg") as any)?.showModal()
-        })
-        this.querySelector('[data-action="show-size-full"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-full") as any)?.showModal()
-        })
-
-        // Position modals
-        this.querySelector('[data-action="show-position-top"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-top") as any)?.showModal()
-        })
-        this.querySelector('[data-action="show-position-middle"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-middle") as any)?.showModal()
-        })
-        this.querySelector('[data-action="show-position-bottom"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-bottom") as any)?.showModal()
-        })
-
-        // Rich content modal
-        this.querySelector('[data-action="show-rich"]')?.addEventListener("click", () => {
-            (document.getElementById("modal-rich") as any)?.showModal()
-        })
-
-        // Close all modal buttons
-        this.querySelectorAll('[data-modal-close]').forEach(btn => {
-            btn.addEventListener("click", () => {
-                const modal = btn.closest('baz-modal') as any
-                modal?.close()
-            })
-        })
+        // Close buttons
+        this.addDelegatedListener('click', '[data-modal-close]', (e) => {
+            const modal = (e.target as HTMLElement).closest('baz-modal') as any;
+            modal?.close();
+        });
 
         // OK buttons
-        this.querySelectorAll('[data-modal-ok]').forEach(btn => {
-            btn.addEventListener("click", () => {
-                const modal = btn.closest('baz-modal') as any
-                modal?.close()
-                alert("OK clicked!")
-            })
-        })
-
-        // Static methods
-        this.querySelector('[data-action="alert"]')?.addEventListener("click", async () => {
-            await BazModal.alert(
-                "Information",
-                "This is a simple alert modal created with BazModal.alert()"
-            )
-            console.log("Alert closed")
-        })
-
-        this.querySelector('[data-action="confirm"]')?.addEventListener("click", async () => {
-            const confirmed = await BazModal.confirm(
-                "Confirm Action",
-                "Do you want to proceed with this action?",
-                "Yes, proceed",
-                "Cancel"
-            )
-            
-            if (confirmed) {
-                await BazModal.alert("Success", "Action confirmed!")
-            } else {
-                await BazModal.alert("Cancelled", "Action was cancelled.")
-            }
-        })
+        this.addDelegatedListener('click', '[data-modal-ok]', (e) => {
+            const modal = (e.target as HTMLElement).closest('baz-modal') as any;
+            modal?.close();
+            alert("OK clicked!");
+        });
 
         // Tab switching
-        this.querySelectorAll('[data-tab]').forEach(tab => {
-            tab.addEventListener("click", () => {
-                const tabName = tab.getAttribute('data-tab')
-                
-                // Update active tab
-                this.querySelectorAll('[data-tab]').forEach(t => t.classList.remove('tab-active'))
-                tab.classList.add('tab-active')
-                
-                // Show corresponding content
-                this.querySelectorAll('[data-content]').forEach(content => {
-                    if (content.getAttribute('data-content') === tabName) {
-                        content.classList.remove('hidden')
-                    } else {
-                        content.classList.add('hidden')
-                    }
-                })
-            })
-        })
+        this.addDelegatedListener('click', '[data-tab]', (e) => {
+            const tab = e.target as HTMLElement;
+            const tabName = tab.getAttribute('data-tab');
+            
+            // Update active tab
+            this.querySelectorAll('[data-tab]').forEach(t => t.classList.remove('tab-active'));
+            tab.classList.add('tab-active');
+            
+            // Show corresponding content
+            this.querySelectorAll('[data-content]').forEach(content => {
+                if (content.getAttribute('data-content') === tabName) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
     }
 }

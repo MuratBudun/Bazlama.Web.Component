@@ -145,29 +145,26 @@ export class ProductsPage extends BasePage {
             query: this.query
         })
 
-        // Change color button
-        this.querySelector('[data-action="change-color"]')?.addEventListener("click", () => {
-            const colors = ["red", "blue", "green", "yellow", "purple", "orange"]
-            const randomColor = colors[Math.floor(Math.random() * colors.length)]
-            const newUrl = `/products/${this.productId}?color=${randomColor}&size=${this.size}`
+        // Action handlers using event delegation
+        this.addDelegatedListener('click', '[data-action]', (e) => {
+            const action = (e.target as HTMLElement).getAttribute('data-action');
             
-            if (window.BazPageRouter) {
-                window.BazPageRouter.navigate(newUrl)
+            if (action === 'change-color') {
+                const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const newUrl = `/products/${this.productId}?color=${randomColor}&size=${this.size}`;
+                
+                if (window.BazPageRouter) {
+                    window.BazPageRouter.navigate(newUrl);
+                }
+            } else if (action === 'change-product') {
+                const randomId = Math.floor(Math.random() * 100) + 1;
+                const newUrl = `/products/${randomId}?color=${this.color}&size=${this.size}`;
+                
+                if (window.BazPageRouter) {
+                    window.BazPageRouter.navigate(newUrl);
+                }
             }
-        })
-
-        // Change product button
-        this.querySelector('[data-action="change-product"]')?.addEventListener("click", () => {
-            const randomId = Math.floor(Math.random() * 100) + 1
-            const newUrl = `/products/${randomId}?color=${this.color}&size=${this.size}`
-            
-            if (window.BazPageRouter) {
-                window.BazPageRouter.navigate(newUrl)
-            }
-        })
-    }
-
-    destroy(): void {
-        console.log("ProductsPage destroyed")
+        });
     }
 }
