@@ -1,7 +1,8 @@
-import PageRouter from "../baz-ui/baz-router/classes/PageRouter"
 import PageRoute from "../baz-ui/baz-router/classes/PageRoute"
+import type { INavigationItem } from "../baz-ui/baz-app/types"
 import homeHtml from "./home.htm?raw"
 import themeHtml from "./theme.htm?raw"
+import iconHtml from "./icon/icon.htm?raw"
 import { IconPage } from "./icon/IconPage"
 import { TabPage } from "./tab/TabPage"
 import { TextboxPage } from "./textbox/TextboxPage"
@@ -10,7 +11,7 @@ import { ExamplesPage } from "./examples/ExamplesPage"
 import { ProductsListPage } from "./examples/ProductsListPage"
 import { ProductsPage } from "./examples/ProductsPage"
 
-export function initializeRouter() {
+export function getRoutes() {
     // Setup routes
     const rootRoute = new PageRoute("Home", "/", () => homeHtml)
     rootRoute.addRoute(new PageRoute("Tab", "tab", TabPage))
@@ -18,6 +19,7 @@ export function initializeRouter() {
     rootRoute.addRoute(new PageRoute("Modal", "modal", ModalPage))
     rootRoute.addRoute(new PageRoute("Theme", "theme", () => themeHtml))
     rootRoute.addRoute(new PageRoute("Icon", "icon", IconPage))
+    rootRoute.addRoute(new PageRoute("Icon", "icon-s", () => iconHtml))
     rootRoute.addRoute(new PageRoute("Examples", "examples", ExamplesPage))
     
     // Products routes with nested dynamic route
@@ -25,9 +27,11 @@ export function initializeRouter() {
     productsRoute.addRoute(new PageRoute("Product Detail", ":id", ProductsPage))
     rootRoute.addRoute(productsRoute)
 
-    // Configure router
-    PageRouter.RootRoute = rootRoute
-    PageRouter.Route404 = new PageRoute("404", "404", () => `
+    return rootRoute
+}
+
+export function get404Route() {
+    return new PageRoute("404", "404", () => `
         <div class="flex items-center justify-center min-h-screen">
             <div class="text-center">
                 <h1 class="text-6xl font-bold text-error">404</h1>
@@ -36,7 +40,42 @@ export function initializeRouter() {
             </div>
         </div>
     `)
+}
 
-    // Initialize router
-    PageRouter.initialize("#page-content", import.meta.env.BASE_URL)
+export function getNavigationItems(): INavigationItem[] {
+    return [
+        {
+            type: 'group',
+            title: 'Getting Started',
+            items: [
+                { type: 'item', title: 'Home', path: '/', icon: 'home' }
+            ]
+        },
+        {
+            type: 'divider'
+        },
+        {
+            type: 'group',
+            title: 'Components',
+            items: [
+                { type: 'item', title: 'Tab', path: '/tab', icon: 'layout' },
+                { type: 'item', title: 'Textbox', path: '/textbox', icon: 'edit' },
+                { type: 'item', title: 'Modal', path: '/modal', icon: 'layout2' },
+                { type: 'item', title: 'Theme Switcher', path: '/theme', icon: 'colorSwatch' },
+                { type: 'item', title: 'Icon', path: '/icon', icon: 'icons' },
+                { type: 'item', title: 'Icon Html', path: '/icon-s', icon: 'icons' }
+            ]
+        },
+        {
+            type: 'divider'
+        },
+        {
+            type: 'group',
+            title: 'Examples',
+            items: [
+                { type: 'item', title: 'Router Examples', path: '/examples', icon: 'code' },
+                { type: 'item', title: 'Products (Params Demo)', path: '/products', icon: 'package' }
+            ]
+        }
+    ]
 }

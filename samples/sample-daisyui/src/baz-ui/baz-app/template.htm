@@ -1,0 +1,74 @@
+<div class="drawer lg:drawer-open">
+  <input id="drawer" type="checkbox" class="drawer-toggle" />
+  
+  <!-- Main Content -->
+  <div class="drawer-content flex flex-col">
+    <!-- Navbar -->
+    <div class="navbar bg-base-300 lg:hidden">
+      <div class="flex-none">
+        <label for="drawer" class="btn btn-square btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </label>
+      </div>
+      <div class="flex-1 px-2">
+        <span id="app-title" class="text-lg font-bold">Bazlama App</span>
+      </div>
+      <div class="flex-none" id="theme-switcher-container">
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+          </label>
+          <div tabindex="0" class="dropdown-content z-50 p-4 shadow-2xl bg-base-200 rounded-box w-64 mt-2">
+            <baz-theme-switcher show-label="true"></baz-theme-switcher>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content" class="flex-1 overflow-auto p-6">
+      <!-- Router content will be injected here -->
+    </div>
+  </div>
+  
+  <!-- Sidebar -->
+  <div class="drawer-side z-40">
+    <label for="drawer" class="drawer-overlay"></label>
+    <aside class="bg-base-200 w-80 min-h-screen flex flex-col">
+      <!-- Logo / Brand -->
+      <div class="p-4 flex items-center gap-3 border-b border-base-300">
+        <div id="logo-container" class="flex-none">
+          <div class="avatar placeholder">
+            <div class="bg-primary text-primary-content rounded-lg w-10 h-10 flex items-center justify-center">
+              <span class="text-xl font-bold">B</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h1 id="app-title-sidebar" class="text-xl font-bold">Bazlama App</h1>
+          <p class="text-xs opacity-70">DaisyUI Components</p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <ul id="nav-items" class="menu p-4 flex-1 w-full overflow-auto">
+        <!-- Navigation items will be injected here -->
+      </ul>
+
+      <!-- Theme Switcher (Desktop) -->
+      <div id="theme-switcher-container-desktop" class="p-4 border-t border-base-300 hidden lg:block">
+        <baz-theme-switcher show-label="true"></baz-theme-switcher>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-4 border-t border-base-300 text-center text-xs opacity-70">
+        <p>Powered by Bazlama Web Component</p>
+        <p class="mt-1">v1.0.0</p>
+      </div>
+    </aside>
+  </div>
+</div>

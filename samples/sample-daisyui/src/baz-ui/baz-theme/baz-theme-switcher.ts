@@ -1,4 +1,4 @@
-import { BazlamaWebComponent, CustomElement, Property, EventAction, ShadowRootMode } from "bazlama-web-component"
+import { BazlamaWebComponent, CustomElement, Property, EventAction, ShadowRootMode, Attribute, ChangeHooks, useElementText } from "bazlama-web-component"
 
 @CustomElement("baz-theme-switcher")
 export default class BazThemeSwitcher extends BazlamaWebComponent {
@@ -10,6 +10,13 @@ export default class BazThemeSwitcher extends BazlamaWebComponent {
 
     @Property()
     public ShowLabel: boolean = true
+
+    @ChangeHooks([
+        useElementText('span[ref="label"]')
+    ])
+    @Attribute("label", true)
+    @Property()
+    public Label: string = "Theme"
 
     constructor() {
         super(ShadowRootMode.None)
@@ -58,11 +65,11 @@ export default class BazThemeSwitcher extends BazlamaWebComponent {
     getRenderTemplate(): string {
         const labelHtml = this.ShowLabel ? `
             <label class="label">
-                <span class="label-text">
+                <span class="label-text flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
-                    Theme
+                    <span ref="label">${this.Label}</span>
                 </span>
             </label>
         ` : ''
@@ -72,7 +79,7 @@ export default class BazThemeSwitcher extends BazlamaWebComponent {
         ).join('')
 
         return `
-            <div class="form-control w-full">
+            <div class="form-control w-full flex flex-col gap-1">
                 ${labelHtml}
                 <select class="select select-bordered select-sm w-full">
                     ${optionsHtml}

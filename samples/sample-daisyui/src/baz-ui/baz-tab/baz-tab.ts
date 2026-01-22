@@ -181,7 +181,7 @@ export default class BazTab extends BazlamaWebComponent {
                 TAB_ID: tabId,
                 ICON_NAME: tab.IconName,
                 TITLE: tab.Title,
-                CLOSABLE: this.Closable ? "true" : ""
+                CLOSABLE: this.Closable
             })
         }).join('')
 
