@@ -77,7 +77,7 @@ export class BazApp extends BazlamaWebComponent {
 
         PageRouter.RootRoute = this.rootRoute
         PageRouter.Route404 = this.route404
-        PageRouter.initialize("#page-content")
+        PageRouter.initialize("#page-content", import.meta.env.BASE_URL)
         
         this.router = PageRouter
         this.updateNavigation()
