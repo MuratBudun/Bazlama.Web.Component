@@ -4,6 +4,7 @@
 
 import "./baz-app/baz-app"
 import "./baz-textbox/baz-textbox"
+import "./baz-input/baz-input"
 import "./baz-icon/baz-icon"
 import "./baz-modal/baz-modal"
 import "./baz-tab/baz-tab"

@@ -1,0 +1,584 @@
+<div class="container mx-auto p-6 max-w-6xl">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">BazInput Component</h1>
+    <p class="text-base-content/70 text-lg">
+      A versatile input component with fieldset structure, prefix, suffix, and programmatic button support. 
+      Fully theme-aware and compatible with all DaisyUI themes.
+    </p>
+  </div>
+
+  <!-- Interactive Playground -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">
+        <baz-icon icon="play" class="text-primary"></baz-icon>
+        Interactive Playground
+      </h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Preview -->
+        <div class="space-y-4">
+          <h3 class="font-semibold text-lg">Preview</h3>
+          <div class="bg-base-100 rounded-lg p-6 min-h-[250px] flex items-start justify-center border border-base-300">
+            <div class="w-full max-w-md">
+              <baz-input id="playground-input"
+                label="Website URL"
+                description="Enter your website address"
+                prefix="https://"
+                placeholder="example.com"
+                help-text="URL will be validated automatically"
+                size="lg">
+              </baz-input>
+            </div>
+          </div>
+          
+          <!-- Generated Code -->
+          <div class="space-y-2">
+            <h3 class="font-semibold text-lg flex items-center gap-2">
+              <baz-icon icon="code" class="text-secondary"></baz-icon>
+              Generated Code
+            </h3>
+            <div class="mockup-code text-sm overflow-x-auto">
+              <pre id="generated-code" class="px-4 whitespace-pre-wrap text-xs"></pre>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="space-y-4">
+          <h3 class="font-semibold text-lg">Options</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Label -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Label (Legend)</span>
+              </label>
+              <input type="text" id="ctrl-label" class="input input-bordered input-sm" value="Website URL" />
+            </div>
+            
+            <!-- Description -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Description</span>
+              </label>
+              <input type="text" id="ctrl-description" class="input input-bordered input-sm" value="Enter your website address" />
+            </div>
+            
+            <!-- Prefix -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Prefix</span>
+              </label>
+              <input type="text" id="ctrl-prefix" class="input input-bordered input-sm" value="https://" placeholder="e.g., https://, $, @" />
+            </div>
+            
+            <!-- Suffix -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Suffix</span>
+              </label>
+              <input type="text" id="ctrl-suffix" class="input input-bordered input-sm" value="" placeholder="e.g., .com, %, kg" />
+            </div>
+            
+            <!-- Placeholder -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Placeholder</span>
+              </label>
+              <input type="text" id="ctrl-placeholder" class="input input-bordered input-sm" value="example.com" />
+            </div>
+            
+            <!-- Help Text -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Help Text</span>
+              </label>
+              <input type="text" id="ctrl-help-text" class="input input-bordered input-sm" value="URL will be validated automatically" />
+            </div>
+            
+            <!-- Size -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Size</span>
+              </label>
+              <select id="ctrl-size" class="select select-bordered select-sm">
+                <option value="xs">Extra Small (xs) → btn-xs</option>
+                <option value="sm">Small (sm) → btn-xs</option>
+                <option value="md">Medium (md) → btn-sm</option>
+                <option value="lg" selected>Large (lg) → btn-md</option>
+              </select>
+            </div>
+            
+            <!-- Color -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Color</span>
+              </label>
+              <select id="ctrl-color" class="select select-bordered select-sm">
+                <option value="neutral">Neutral (default)</option>
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="accent">Accent</option>
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+                <option value="warning">Warning</option>
+                <option value="error">Error</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Button Configuration -->
+          <div class="divider">Action Buttons</div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Button 1 -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Button 1 Icon</span>
+              </label>
+              <select id="ctrl-btn1-icon" class="select select-bordered select-sm">
+                <option value="">None</option>
+                <option value="search" selected>Search</option>
+                <option value="clipboard">Clipboard</option>
+                <option value="eye">Eye</option>
+                <option value="x">X (Clear)</option>
+                <option value="refresh">Refresh</option>
+              </select>
+            </div>
+            
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Button 1 Color</span>
+              </label>
+              <select id="ctrl-btn1-color" class="select select-bordered select-sm">
+                <option value="ghost" selected>Ghost</option>
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="accent">Accent</option>
+              </select>
+            </div>
+            
+            <!-- Button 2 -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Button 2 Icon</span>
+              </label>
+              <select id="ctrl-btn2-icon" class="select select-bordered select-sm">
+                <option value="">None</option>
+                <option value="arrow-right" selected>Arrow Right</option>
+                <option value="check">Check</option>
+                <option value="send">Send</option>
+                <option value="plus">Plus</option>
+                <option value="download">Download</option>
+                <option value="edit">Edit</option>
+              </select>
+            </div>
+            
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Button 2 Color</span>
+              </label>
+              <select id="ctrl-btn2-color" class="select select-bordered select-sm">
+                <option value="ghost">Ghost</option>
+                <option value="primary" selected>Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="accent">Accent</option>
+                <option value="success">Success</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Checkboxes -->
+          <div class="flex flex-wrap gap-4 mt-4">
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" id="ctrl-disabled" class="checkbox checkbox-sm" />
+              <span class="label-text">Disabled</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" id="ctrl-readonly" class="checkbox checkbox-sm" />
+              <span class="label-text">Readonly</span>
+            </label>
+          </div>
+          
+          <!-- Copy Button -->
+          <div class="mt-6">
+            <button id="copy-code-btn" class="btn btn-primary btn-block">
+              <baz-icon icon="clipboard"></baz-icon>
+              Copy Code
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Examples -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Quick Examples</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- URL Input -->
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">URL Input with Prefix</h3>
+          <baz-input 
+            id="example-url"
+            label="Website URL"
+            description="Enter your website"
+            prefix="https://"
+            placeholder="example.com"
+            help-text="Without protocol"
+            size="lg">
+          </baz-input>
+        </div>
+
+        <!-- Email Input -->
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Email Input with Suffix</h3>
+          <baz-input 
+            id="example-email"
+            label="Email Address"
+            suffix="@gmail.com"
+            placeholder="username"
+            type="email"
+            size="lg">
+          </baz-input>
+        </div>
+
+        <!-- Currency Input -->
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Currency Input</h3>
+          <baz-input 
+            id="example-currency"
+            label="Price"
+            prefix="$"
+            suffix=".00"
+            placeholder="0"
+            type="number"
+            size="md">
+          </baz-input>
+        </div>
+
+        <!-- Search Input -->
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Search Input</h3>
+          <baz-input 
+            id="example-search"
+            placeholder="Search..."
+            color="primary"
+            size="md">
+          </baz-input>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Size Variants -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Size Variants</h2>
+      <p class="text-base-content/70 mb-4">Button size is automatically one level below input size (lg→md, md→sm, sm→xs, xs→xs)</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div>
+          <baz-input 
+            id="size-xs"
+            size="xs"
+            prefix="@"
+            placeholder="Extra Small">
+          </baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">size="xs" → btn-xs</span>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="size-sm"
+            size="sm"
+            prefix="@"
+            placeholder="Small">
+          </baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">size="sm" → btn-xs</span>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="size-md"
+            size="md"
+            prefix="@"
+            placeholder="Medium">
+          </baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">size="md" → btn-sm</span>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="size-lg"
+            size="lg"
+            prefix="@"
+            placeholder="Large">
+          </baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">size="lg" → btn-md</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Variants -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Color Variants</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div>
+          <baz-input id="color-primary" color="primary" prefix="#" placeholder="Primary"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="primary"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-secondary" color="secondary" prefix="#" placeholder="Secondary"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="secondary"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-accent" color="accent" prefix="#" placeholder="Accent"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="accent"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-neutral" color="neutral" prefix="#" placeholder="Neutral"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="neutral"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-info" color="info" prefix="ℹ" placeholder="Info"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="info"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-success" color="success" prefix="✓" placeholder="Success"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="success"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-warning" color="warning" prefix="⚠" placeholder="Warning"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="warning"</span>
+        </div>
+        
+        <div>
+          <baz-input id="color-error" color="error" prefix="✕" placeholder="Error"></baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">color="error"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- States -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">States</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <baz-input 
+            id="state-normal"
+            label="Normal State"
+            prefix="@"
+            placeholder="Enter text...">
+          </baz-input>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="state-disabled"
+            label="Disabled State"
+            prefix="@"
+            placeholder="Cannot edit"
+            disabled>
+          </baz-input>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="state-readonly"
+            label="Readonly State"
+            prefix="@"
+            value="readonly_value"
+            readonly>
+          </baz-input>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Programmatic Button API -->
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Programmatic Button API</h2>
+      
+      <div class="mockup-code mb-4">
+        <pre data-prefix="1"><code>// Get the input component</code></pre>
+        <pre data-prefix="2"><code>const input = document.querySelector('baz-input');</code></pre>
+        <pre data-prefix="3"><code></code></pre>
+        <pre data-prefix="4"><code>// Set buttons programmatically</code></pre>
+        <pre data-prefix="5"><code>input.setButtons([</code></pre>
+        <pre data-prefix="6"><code>  {</code></pre>
+        <pre data-prefix="7"><code>    name: 'search',</code></pre>
+        <pre data-prefix="8"><code>    icon: 'search',</code></pre>
+        <pre data-prefix="9"><code>    description: 'Search',</code></pre>
+        <pre data-prefix="10"><code>    color: 'ghost',</code></pre>
+        <pre data-prefix="11"><code>    onClick: (e) => console.log('Search clicked')</code></pre>
+        <pre data-prefix="12"><code>  },</code></pre>
+        <pre data-prefix="13"><code>  {</code></pre>
+        <pre data-prefix="14"><code>    name: 'submit',</code></pre>
+        <pre data-prefix="15"><code>    icon: 'arrow-right',</code></pre>
+        <pre data-prefix="16"><code>    description: 'Submit',</code></pre>
+        <pre data-prefix="17"><code>    color: 'primary',</code></pre>
+        <pre data-prefix="18"><code>    onClick: (e) => console.log('Submit clicked')</code></pre>
+        <pre data-prefix="19"><code>  }</code></pre>
+        <pre data-prefix="20"><code>]);</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attributes Table -->
+  <div class="card bg-base-200 shadow-lg">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Attributes</h2>
+      
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="badge badge-outline">value</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Input value (two-way bindable)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">label</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Legend text (hidden if empty)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">description</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Description text below label (hidden if empty)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">placeholder</code></td>
+              <td>string</td>
+              <td>"Type here..."</td>
+              <td>Placeholder text</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">prefix</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Text before input (hidden if empty)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">suffix</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Text after input (hidden if empty)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">help-text</code></td>
+              <td>string</td>
+              <td>""</td>
+              <td>Help text below input (hidden if empty)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">color</code></td>
+              <td>string</td>
+              <td>"neutral"</td>
+              <td>primary | secondary | accent | info | success | warning | error</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">size</code></td>
+              <td>string</td>
+              <td>"md"</td>
+              <td>xs | sm | md | lg (buttons are one size smaller)</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">type</code></td>
+              <td>string</td>
+              <td>"text"</td>
+              <td>HTML input type</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">disabled</code></td>
+              <td>boolean</td>
+              <td>false</td>
+              <td>Disables the input</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">readonly</code></td>
+              <td>boolean</td>
+              <td>false</td>
+              <td>Makes the input readonly</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <h3 class="text-xl font-semibold mt-6 mb-4">Button Interface (IBazInputButton)</h3>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="badge badge-outline">name</code></td>
+              <td>string</td>
+              <td>Yes</td>
+              <td>Unique button identifier</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">icon</code></td>
+              <td>string</td>
+              <td>Yes</td>
+              <td>Icon name for baz-icon</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">description</code></td>
+              <td>string</td>
+              <td>No</td>
+              <td>Tooltip text</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">color</code></td>
+              <td>string</td>
+              <td>No</td>
+              <td>ghost | primary | secondary | accent | etc.</td>
+            </tr>
+            <tr>
+              <td><code class="badge badge-outline">onClick</code></td>
+              <td>function</td>
+              <td>No</td>
+              <td>Click handler (event: MouseEvent) => void</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,99 +1,193 @@
 <div class="p-6">
-    <div class="prose max-w-none">
-        <h1 class="text-4xl font-bold mb-4">Welcome to Bazlama DaisyUI Components</h1>
-        
-        <div class="alert alert-info mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>This project combines the Bazlama Web Component framework with the DaisyUI component library.</span>
-        </div>
+    <!--    
+  <div class="flex flex-col gap-4 p-8 ">
 
-        <!-- Theme Switcher Demo -->
-        <div class="card bg-base-200 shadow-lg mb-6">
-            <div class="card-body">
-                <h2 class="card-title">Theme Switcher</h2>
-                <p>Try different DaisyUI themes with the dropdown below:</p>
-                <div class="w-full max-w-xs">
-                    <baz-theme-switcher></baz-theme-switcher>
-                </div>
-            </div>
-        </div>
+<label class="input">
+  <span class="label">https://</span>
+  <input type="text" placeholder="URL" />
+        <button class="btn btn-square btn-primary join-item">
+          <baz-icon icon="search"></baz-icon>
+        </button>
+        <button class="btn btn-square btn-secondary join-item">
+          <baz-icon icon="ellipsis-horizontal"></baz-icon>
+        </button>
 
-        <h2 class="text-2xl font-semibold mb-3">About the Project</h2>
-        <p class="mb-4">
-            This showcase project demonstrates how to build DaisyUI components using the Bazlama Web Component framework.
-        </p>
+</label>
 
-        <h2 class="text-2xl font-semibold mb-3">Available Components</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div class="card bg-base-200 shadow-md">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        <baz-icon icon="layout" size="24"></baz-icon>
-                        Baz-Tab
-                    </h3>
-                    <p>Advanced tab component with dynamic tab management</p>
-                    <div class="card-actions justify-end">
-                        <a href="baz-router:/tab" class="btn btn-primary btn-sm">Documentation →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-base-200 shadow-md">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        <baz-icon icon="textCursor" size="24"></baz-icon>
-                        Baz-Textbox
-                    </h3>
-                    <p>Advanced input component</p>
-                    <div class="card-actions justify-end">
-                        <a href="baz-router:/textbox" class="btn btn-primary btn-sm">Coming Soon →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-base-200 shadow-md">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        <baz-icon icon="layout2" size="24"></baz-icon>
-                        Baz-Modal
-                    </h3>
-                    <p>Modal dialog component</p>
-                    <div class="card-actions justify-end">
-                        <a href="#modal" class="btn btn-primary btn-sm">Coming Soon →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-base-200 shadow-md">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        <baz-icon icon="icons" size="24"></baz-icon>
-                        Baz-Icon
-                    </h3>
-                    <p>Icon component</p>
-                    <div class="card-actions justify-end">
-                        <a href="#icon" class="btn btn-primary btn-sm">Coming Soon →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="text-2xl font-semibold mb-3">Getting Started</h2>
-        <div class="mockup-code mb-4">
-            <pre data-prefix="$"><code>npm install bazlama-web-component</code></pre>
-            <pre data-prefix="$"><code>npm install daisyui</code></pre>
-        </div>
-
-        <h2 class="text-2xl font-semibold mb-3">Features</h2>
-        <ul class="list-disc list-inside space-y-2">
-            <li>Full compatibility with Web Component standards</li>
-            <li>TypeScript support</li>
-            <li>Decorator-based API</li>
-            <li>Built-in styling with DaisyUI</li>
-            <li>Reactive property and attribute management</li>
-            <li>Event handling system</li>
-        </ul>
+    <div class="form-control w-full max-w-md">
+      <label class="label">
+        <span class="label-text font-semibold">Search Query</span>
+      </label>
+      <p class="text-sm text-base-content/70 mb-2">Enter your search term to find relevant results</p>
+      <div class="join w-full focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-base-100 rounded-lg">
+        <input type="text" placeholder="Type to search..." class="input input-bordered join-item flex-1 focus:outline-none" />
+        <button class="btn btn-soft btn-info join-item">
+          <baz-icon icon="search"></baz-icon>
+        </button>
+        <button class="btn btn-soft btn-info join-item">
+          <baz-icon icon="ellipsis-horizontal"></baz-icon>
+        </button>
+      </div>
+      <div class="label">
+        <span class="label-text-alt text-base-content/60">Min 3 characters required</span>
+        <span class="label-text-alt text-base-content/60">Press Enter to search</span>
+      </div>
     </div>
+
+    <fieldset class="fieldset w-4/12 bg-slate-800">
+      <legend class="fieldset-legend">Page title</legend>
+      <div class="flex flex-row gap-2 items-center">
+        <input type="text" class="input w-full" placeholder="My awesome page" />
+        <div class="flex flex-row gap-1 items-center p-8">
+          <button class="btn btn-square btn-primary"><baz-icon icon="search"></baz-icon></button>
+          <button class="btn btn-square btn-primary"><baz-icon icon="search"></baz-icon></button>
+        </div>
+      </div>
+      <p class="label">You can edit page title later on from settings</p>
+    </fieldset>
+
+    <label class="form-control w-full flex flex-col gap-1 bg-slate-800">
+      <div ref="label-container" class="label">
+        <span ref="label" class="label-text font-semibold"></span>
+      </div>
+      <label
+        ref="input-border"
+        class="w-full group input input-bordered flex items-center pr-2 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2"
+      >
+        <input
+          type="text"
+          placeholder="Type here..."
+          class="grow placeholder-gray-400 dark:placeholder-gray-500 bg-transparent focus:outline-none"
+        />
+        <div class="w-2"></div>
+        <div
+          ref="button-container"
+          class="hidden items-center gap-1 group-hover:flex group-focus-within:flex"
+        >
+          <div class="bg-primary btn-primary"><baz-icon icon="search"></baz-icon></div>
+        </div>
+      </label>
+      <div ref="label-alt-container" class="label overflow-x-hidden flex justify-between w-full">
+        <p class="label">You can edit page title later on from settings</p>
+        <span ref="label-alt-left" class="label label-text-alt text-gray-500 flex-1 text-left"
+          >Left Info</span
+        >
+        <span ref="label-alt-right" class="label label-text-alt text-gray-500 flex-1 text-right"
+          >Right Info</span
+        >
+      </div>
+    </label>
+  </div>
+-->
+  <div class="prose max-w-none">
+    <h1 class="text-4xl font-bold mb-4">Welcome to Bazlama DaisyUI Components</h1>
+
+    <div class="alert alert-info mb-6">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        class="stroke-current shrink-0 w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        ></path>
+      </svg>
+      <span
+        >This project combines the Bazlama Web Component framework with the DaisyUI component
+        library.</span
+      >
+    </div>
+
+    <!-- Theme Switcher Demo -->
+    <div class="card bg-base-200 shadow-lg mb-6">
+      <div class="card-body">
+        <h2 class="card-title">Theme Switcher</h2>
+        <p>Try different DaisyUI themes with the dropdown below:</p>
+        <div class="w-full max-w-xs">
+          <baz-theme-switcher></baz-theme-switcher>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-semibold mb-3">About the Project</h2>
+    <p class="mb-4">
+      This showcase project demonstrates how to build DaisyUI components using the Bazlama Web
+      Component framework.
+    </p>
+
+    <h2 class="text-2xl font-semibold mb-3">Available Components</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="card bg-base-200 shadow-md">
+        <div class="card-body">
+          <h3 class="card-title">
+            <baz-icon icon="layout" size="24"></baz-icon>
+            Baz-Tab
+          </h3>
+          <p>Advanced tab component with dynamic tab management</p>
+          <div class="card-actions justify-end">
+            <a href="baz-router:/tab" class="btn btn-primary btn-sm">Documentation →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-200 shadow-md">
+        <div class="card-body">
+          <h3 class="card-title">
+            <baz-icon icon="textCursor" size="24"></baz-icon>
+            Baz-Textbox
+          </h3>
+          <p>Advanced input component</p>
+          <div class="card-actions justify-end">
+            <a href="baz-router:/textbox" class="btn btn-primary btn-sm">Coming Soon →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-200 shadow-md">
+        <div class="card-body">
+          <h3 class="card-title">
+            <baz-icon icon="layout2" size="24"></baz-icon>
+            Baz-Modal
+          </h3>
+          <p>Modal dialog component</p>
+          <div class="card-actions justify-end">
+            <a href="#modal" class="btn btn-primary btn-sm">Coming Soon →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-200 shadow-md">
+        <div class="card-body">
+          <h3 class="card-title">
+            <baz-icon icon="icons" size="24"></baz-icon>
+            Baz-Icon
+          </h3>
+          <p>Icon component</p>
+          <div class="card-actions justify-end">
+            <a href="#icon" class="btn btn-primary btn-sm">Coming Soon →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-semibold mb-3">Getting Started</h2>
+    <div class="mockup-code mb-4">
+      <pre data-prefix="$"><code>npm install bazlama-web-component</code></pre>
+      <pre data-prefix="$"><code>npm install daisyui</code></pre>
+    </div>
+
+    <h2 class="text-2xl font-semibold mb-3">Features</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li>Full compatibility with Web Component standards</li>
+      <li>TypeScript support</li>
+      <li>Decorator-based API</li>
+      <li>Built-in styling with DaisyUI</li>
+      <li>Reactive property and attribute management</li>
+      <li>Event handling system</li>
+    </ul>
+  </div>
 </div>

@@ -7,6 +7,7 @@ import iconHtml from "./icon/icon.htm?raw"
 import { IconPage } from "./icon/IconPage"
 import { TabPage } from "./tab/TabPage"
 import { TextboxPage } from "./textbox/TextboxPage"
+import { InputPage } from "./input/InputPage"
 import { ModalPage } from "./modal/ModalPage"
 import { AnimationPage } from "./animation/AnimationPage"
 import { ExamplesPage } from "./examples/ExamplesPage"
@@ -20,6 +21,7 @@ export function getRoutes() {
     // Eager-loaded routes (small, frequently used)
     rootRoute.addRoute(new PageRoute("Tab", "tab", TabPage))
     rootRoute.addRoute(new PageRoute("Textbox", "textbox", TextboxPage))
+    rootRoute.addRoute(new PageRoute("Input", "input", InputPage))
     rootRoute.addRoute(new PageRoute("Modal", "modal", ModalPage))
     rootRoute.addRoute(new PageRoute("Animation", "animation", AnimationPage))
     rootRoute.addRoute(new PageRoute("Theme", "theme", () => themeHtml))
@@ -91,6 +93,7 @@ export function getNavigationItems(): INavigationItem[] {
             items: [
                 { type: 'item', title: 'Tab', path: '/tab', icon: 'layout' },
                 { type: 'item', title: 'Textbox', path: '/textbox', icon: 'edit' },
+                { type: 'item', title: 'Input', path: '/input', icon: 'forms' },
                 { type: 'item', title: 'Modal', path: '/modal', icon: 'layout2' },
                 { type: 'item', title: 'Animation', path: '/animation', icon: 'sparkles' },
                 { type: 'item', title: 'Theme Switcher', path: '/theme', icon: 'colorSwatch' },

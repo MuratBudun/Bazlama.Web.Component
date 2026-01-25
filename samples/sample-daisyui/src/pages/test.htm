@@ -1,0 +1,93 @@
+<div class="p-8 space-y-8">
+  <!-- Tek bütün görünümlü input grubu -->
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">What is your name?</legend>
+    <p class="label">Description</p>
+
+    <label class="input input-lg w-4/12 overflow-hidden pr-0 pl-0">
+      <div class="bg-base-200 p-1 h-full flex flex-row items-center gap-1">
+        <span class="pl-1 text-base-content/70 font-mono text-sm">https://</span>
+      </div>
+      <input type="text" class="input-lg grow" placeholder="URL" />
+      <div class="pr-1 h-full flex flex-row items-center gap-1">
+        <button type="button" class="btn btn-ghost btn-md border-0">
+          <baz-icon icon="search"></baz-icon>
+        </button>
+        <button type="button" class="btn btn-primary btn-md">
+          <baz-icon icon="edit"></baz-icon>
+        </button>
+      </div>
+    </label>
+    <p class="label">Help Text</p>
+  </fieldset>
+
+  <!-- DaisyUI Theme-aware Input Group -->
+  <div class="form-control w-full max-w-lg">
+    <label class="label">
+      <span class="label-text font-semibold">Website URL</span>
+    </label>
+
+    <!-- Using DaisyUI's join for unified component -->
+    <div
+      class="join w-full focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary"
+    >
+      <!-- Prefix label -->
+      <span
+        class="join-item flex items-center px-3 bg-base-200 text-base-content/70 text-sm font-mono border border-base-300 select-none"
+      >
+        https://
+      </span>
+
+      <!-- Input -->
+      <input
+        type="text"
+        placeholder="example.com"
+        class="input input-bordered join-item grow focus:outline-none"
+      />
+
+      <!-- Buttons -->
+      <button type="button" class="btn btn-ghost join-item border border-base-300">
+        <baz-icon icon="clipboard"></baz-icon>
+      </button>
+      <button type="button" class="btn btn-primary join-item">
+        <baz-icon icon="arrow-right"></baz-icon>
+      </button>
+    </div>
+
+    <div class="label">
+      <span class="label-text-alt">Enter a valid URL without the protocol</span>
+    </div>
+  </div>
+
+  <!-- Alternative: Using join component (theme-aware) -->
+  <div class="form-control w-full max-w-lg">
+    <label class="label">
+      <span class="label-text font-semibold">API Endpoint</span>
+    </label>
+
+    <div
+      class="join w-full focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary"
+    >
+      <span
+        class="join-item flex items-center px-3 bg-base-200 text-base-content/70 text-sm font-mono border border-base-300"
+      >
+        https://
+      </span>
+      <input
+        type="text"
+        placeholder="api.example.com/v1"
+        class="input input-bordered join-item grow focus:outline-none focus:border-base-300"
+      />
+      <button class="btn btn-ghost join-item border border-base-300">
+        <baz-icon icon="clipboard"></baz-icon>
+      </button>
+      <button class="btn btn-primary join-item">
+        <baz-icon icon="arrow-right"></baz-icon>
+      </button>
+    </div>
+
+    <div class="label">
+      <span class="label-text-alt">Full API URL will be generated</span>
+    </div>
+  </div>
+</div>
