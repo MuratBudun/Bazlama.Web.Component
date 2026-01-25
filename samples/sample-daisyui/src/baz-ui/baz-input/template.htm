@@ -2,20 +2,21 @@
   <legend ref="label" class="fieldset-legend hidden"></legend>
   <p ref="description" class="label hidden"></p>
   
-  <label ref="input-border" class="input w-full overflow-hidden pr-0 pl-0">
+  <label ref="input-border" class="input w-full overflow-hidden gap-0 pr-0 pl-0">
     <div ref="prefix-container" class="bg-base-200 p-1 h-full flex flex-row items-center gap-1 hidden">
       <span ref="prefix" class="pl-1 text-base-content/70 font-mono text-sm"></span>
     </div>
+    <div ref="divider" class="w-2 h-full"></div>
     <input 
       ref="input"
       type="text" 
-      placeholder="Type here..." 
-      class="grow bg-transparent focus:outline-none" 
+      placeholder="" 
+      class="grow focus:outline-none" 
     />
     <div ref="suffix-container" class="bg-base-200 p-1 h-full flex flex-row items-center gap-1 hidden">
       <span ref="suffix" class="pr-1 text-base-content/70 font-mono text-sm"></span>
     </div>
-    <div ref="button-container" class="pr-1 h-full flex flex-row items-center gap-1"></div>
+    <div ref="button-container" class="h-full flex flex-row items-center gap-1"></div>
   </label>
   
   <p ref="help-text" class="label hidden"></p>

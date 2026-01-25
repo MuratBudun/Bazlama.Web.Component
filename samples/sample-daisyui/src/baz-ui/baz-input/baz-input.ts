@@ -1,16 +1,22 @@
 import {
   Attribute,
+  BazConvert,
   BazlamaWebComponent,
   ChangeHooks,
   CustomElement,
   FireEvent,
   ShadowRootMode,
+  useCustomHook,
   useElementAttribute,
   useElementInputValue,
   useElementText,
+  useSwitchClass,
+  useToggleClass,
 } from "bazlama-web-component";
 import type { TPropertyChangeHook } from "bazlama-web-component";
 import htmlTemplate from "./template.htm";
+import "../baz-icon/baz-icon";
+import BazIcon from "../baz-icon/baz-icon";
 
 type TColor =
   | "neutral"
@@ -50,49 +56,11 @@ const sizeMap: Record<TSize, string> = {
   xs: "xs",
 };
 
-/**
- * Hook to update size classes on input elements
- * Applies input-{size} to both wrapper and input element
- */
-const useSizeChange: TPropertyChangeHook = (component, value, _prop, oldValue) => {
-  const inputBorder = component.root?.querySelector("[ref='input-border']") as HTMLElement;
-  const inputElement = component.root?.querySelector("[ref='input']") as HTMLInputElement;
-
-  // Remove old size class
-  if (oldValue && oldValue !== value) {
-    inputBorder?.classList.remove(`input-${oldValue}`);
-    inputElement?.classList.remove(`input-${oldValue}`);
-  }
-
-  // Add new size class
-  if (value) {
-    inputBorder?.classList.add(`input-${value}`);
-    inputElement?.classList.add(`input-${value}`);
-  }
-
-  // Re-render buttons with new size
-  if (component instanceof BazInput) {
-    component.renderButtons();
-  }
-};
-
-/**
- * Hook to update color classes on input border
- * Applies input-{color} class (except for neutral)
- */
-const useColorChange: TPropertyChangeHook = (component, value, _prop, oldValue) => {
-  const inputBorder = component.root?.querySelector("[ref='input-border']") as HTMLElement;
-  if (!inputBorder) return;
-
-  // Remove old color class
-  if (oldValue && oldValue !== "neutral" && oldValue !== value) {
-    inputBorder.classList.remove(`input-${oldValue}`);
-  }
-
-  // Add new color class (except neutral - it's the default)
-  if (value && value !== "neutral") {
-    inputBorder.classList.add(`input-${value}`);
-  }
+const sizeMapIcon: Record<TSize, string> = {
+  lg: "24px",
+  md: "20px",
+  sm: "16px",
+  xs: "12px",
 };
 
 /**
@@ -103,11 +71,11 @@ const useColorChange: TPropertyChangeHook = (component, value, _prop, oldValue) 
  * - Description text
  * - Optional prefix text (e.g., "https://", "$", "@")
  * - Optional suffix text (e.g., ".com", "kg", "%")
- * - Action buttons with configuration
+ * - Action buttons with configuration (JSON attribute or unregistered custom elements)
  * - Help text
  * - Full DaisyUI theme support
  *
- * @example
+ * @example Basic usage
  * ```html
  * <baz-input
  *   label="Website URL"
@@ -117,6 +85,22 @@ const useColorChange: TPropertyChangeHook = (component, value, _prop, oldValue) 
  *   help-text="URL will be validated"
  *   color="primary"
  *   size="lg">
+ * </baz-input>
+ * ```
+ *
+ * @example With buttons (JSON attribute)
+ * ```html
+ * <baz-input
+ *   label="Search"
+ *   buttons='[{"name":"search","icon":"search","color":"primary"}]'>
+ * </baz-input>
+ * ```
+ *
+ * @example With buttons (unregistered custom elements)
+ * ```html
+ * <baz-input label="Search">
+ *   <input-button name="clear" icon="x" color="ghost" description="Clear"></input-button>
+ *   <input-button name="search" icon="search" color="primary"></input-button>
  * </baz-input>
  * ```
  *
@@ -131,33 +115,72 @@ export class BazInput extends BazlamaWebComponent {
 
   @ChangeHooks([useElementAttribute("input", "placeholder")])
   @Attribute("placeholder", true)
-  public placeholder = "Type here...";
+  public placeholder = "";
 
-  @ChangeHooks([useColorChange])
+  @ChangeHooks([
+    useSwitchClass("[ref='input-border']", "input-"),
+  ])
   @Attribute("color", true)
   public color: TColor = "neutral";
 
-  @ChangeHooks([useSizeChange])
+  @ChangeHooks([
+    useSwitchClass("[ref='input-border']", "input-"),
+    useSwitchClass("[ref='input']", "input-"),
+    useSwitchClass("[ref='prefix']", "text-"),
+    useSwitchClass("[ref='suffix']", "text-"),
+    useSwitchClass("[ref='button-container'] > button", "text-"),    
+    useCustomHook("[ref='button-container'] > button", (target, value, prop, oldValue) => {
+      const oldSize = sizeMap[oldValue as TSize] || "sm";
+      const newSize = sizeMap[value as TSize] || "sm";
+      target.classList.remove(`btn-${oldSize}`);
+      target.classList.add(`btn-${newSize}`);
+      if (target.firstElementChild && target.firstElementChild instanceof BazIcon) {
+        (target.firstElementChild as BazIcon).size = sizeMapIcon[value as TSize] || "16px";
+      }
+    }),
+  ])
   @Attribute("size", true)
   public size: TSize = "md";
 
-  @ChangeHooks([useElementText("[ref='label']")])
+  @ChangeHooks([
+    useToggleClass("[ref='prefix']", "font-mono", (value) => (value != null ? BazConvert.anyToBoolean(value) : false)),
+    useToggleClass("[ref='suffix']", "font-mono", (value) => (value != null ? BazConvert.anyToBoolean(value) : false))
+  ])
+  @Attribute("use-mono-font-for-prefix-suffix", false)
+  public useMonoFontForPrefixSuffix = false;
+  
+  @ChangeHooks([
+    useElementText("[ref='label']"),
+    useToggleClass("[ref='label']", "hidden", (value) => !value)
+  ])
   @Attribute("label", true)
   public label = "";
 
-  @ChangeHooks([useElementText("[ref='description']")])
+  @ChangeHooks([
+    useElementText("[ref='description']"),
+    useToggleClass("[ref='description']", "hidden", (value) => !value)
+  ])
   @Attribute("description", true)
   public description = "";
 
-  @ChangeHooks([useElementText("[ref='prefix']")])
+  @ChangeHooks([
+    useElementText("[ref='prefix']"),
+    useToggleClass("[ref='prefix-container']", "hidden", (value) => !value)
+  ])
   @Attribute("prefix", true)
   public prefix = "";
 
-  @ChangeHooks([useElementText("[ref='suffix']")])
+  @ChangeHooks([
+    useElementText("[ref='suffix']"),
+    useToggleClass("[ref='suffix-container']", "hidden", (value) => !value)
+  ])
   @Attribute("suffix", true)
   public suffix = "";
 
-  @ChangeHooks([useElementText("[ref='help-text']")])
+  @ChangeHooks([
+    useElementText("[ref='help-text']"),
+    useToggleClass("[ref='help-text']", "hidden", (value) => !value)
+  ])
   @Attribute("help-text", true)
   public helpText = "";
 
@@ -167,15 +190,75 @@ export class BazInput extends BazlamaWebComponent {
   @Attribute("readonly", false)
   public readonly = false;
 
+  @ChangeHooks([
+    useElementAttribute("input", "type"),
+  ])
   @Attribute("type", true)
   public type = "text";
+
+  @Attribute("buttons", true)
+  private _buttonsJson = "";
 
   /** Button configurations */
   private _buttons: IBazInputButton[] = [];
 
   constructor() {
     super(ShadowRootMode.None);
+    
+    // Parse buttons BEFORE template renders (to preserve child elements)
+    this.parseButtonsFromChildren();
+    
     this.InitBazlamaWebComponent();
+  }
+
+  /**
+   * Parse buttons from JSON attribute
+   */
+  private parseButtonsFromAttribute(): void {
+    if (!this._buttonsJson) return;
+    
+    try {
+      const parsed = JSON.parse(this._buttonsJson);
+      if (Array.isArray(parsed)) {
+        this._buttons = parsed;
+      }
+    } catch (error) {
+      console.error('Failed to parse buttons attribute:', error);
+    }
+  }
+
+  /**
+   * Parse buttons from unregistered <input-button> child elements
+   * Supports HTML declaration like:
+   * <baz-input>
+   *   <input-button name="clear" icon="x" color="ghost"></input-button>
+   * </baz-input>
+   */
+  private parseButtonsFromChildren(): void {
+    const buttonElements = this.querySelectorAll('input-button');
+    
+    if (buttonElements.length === 0) return;
+    
+    // Child buttons override JSON attribute
+    this._buttons = Array.from(buttonElements).map(btn => {
+      const result: IBazInputButton = {
+        name: btn.getAttribute('name') || '',
+        icon: btn.getAttribute('icon') || '',
+        color: (btn.getAttribute('color') as TColor | 'ghost') || 'primary',
+        description: btn.getAttribute('description') || undefined,
+      };
+      
+      // Support onclick attribute
+      const onclickAttr = btn.getAttribute('onclick');
+      if (onclickAttr) {
+        result.onClick = new Function('event', onclickAttr) as (event: MouseEvent) => void;
+      }
+      
+      return result;
+    });
+    
+    // Remove button elements from DOM (cleanup)
+    buttonElements.forEach(btn => btn.remove());
   }
 
   /**
@@ -232,17 +315,19 @@ export class BazInput extends BazlamaWebComponent {
       // Determine button class
       const colorClass =
         btn.color === "ghost" ? "btn-ghost border-0" : `btn-${btn.color || "primary"}`;
-      buttonEl.className = `btn ${colorClass} btn-${btnSize}`;
+      buttonEl.className = `btn btn-square ${colorClass} btn-${btnSize}`;
 
       // Add tooltip if description exists
       if (btn.description) {
         buttonEl.title = btn.description;
       }
 
-      // Create icon
-      const iconEl = document.createElement("baz-icon");
-      iconEl.setAttribute("icon", btn.icon);
-      buttonEl.appendChild(iconEl);
+      // Create icon programmatically
+      const icon = new BazIcon();
+      icon.icon = btn.icon;
+      // Map button size to icon size
+      icon.size = btnSize === "md" ? "20px" : btnSize === "sm" ? "16px" : "12px";
+      buttonEl.appendChild(icon);
 
       // Add click handler
       if (btn.onClick) {
@@ -254,80 +339,18 @@ export class BazInput extends BazlamaWebComponent {
 
     // Show/hide container
     buttonContainer.classList.toggle("hidden", this._buttons.length === 0);
+    if (!buttonContainer.classList.contains("hidden")) {
+      buttonContainer.classList.add("pr-1");
+    }
   }
 
   afterRender(): void {
-    const inputElement = this.root?.querySelector("[ref='input']") as HTMLInputElement;
-    const inputBorder = this.root?.querySelector("[ref='input-border']") as HTMLElement;
-    const prefixContainer = this.root?.querySelector("[ref='prefix-container']") as HTMLElement;
-    const suffixContainer = this.root?.querySelector("[ref='suffix-container']") as HTMLElement;
-    const labelElement = this.root?.querySelector("[ref='label']") as HTMLElement;
-    const descriptionElement = this.root?.querySelector("[ref='description']") as HTMLElement;
-    const helpTextElement = this.root?.querySelector("[ref='help-text']") as HTMLElement;
-    const buttonContainer = this.root?.querySelector("div[ref='button-container']") as HTMLElement;
-
-    // Apply size to input border (wrapper label)
-    if (this.size && inputBorder) {
-      inputBorder.classList.add(`input-${this.size}`);
+    // Parse buttons from JSON attribute (if child buttons weren't already parsed)
+    if (this._buttons.length === 0) {
+      this.parseButtonsFromAttribute();
     }
-
-    // Apply size to inner input element (same as input border)
-    if (this.size && inputElement) {
-      inputElement.classList.add(`input-${this.size}`);
-    }
-
-    // Apply color to input border
-    if (this.color && this.color !== "neutral" && inputBorder) {
-      inputBorder.classList.add(`input-${this.color}`);
-    }
-
-    // Apply disabled state
-    if (this.disabled && inputElement) {
-      inputElement.disabled = true;
-      inputBorder?.classList.add("input-disabled");
-    }
-
-    // Apply readonly state
-    if (this.readonly && inputElement) {
-      inputElement.readOnly = true;
-    }
-
-    // Set input type
-    if (inputElement) {
-      inputElement.type = this.type;
-    }
-
-    // Show/hide prefix
-    if (this.prefix && prefixContainer) {
-      prefixContainer.classList.remove("hidden");
-    }
-
-    // Show/hide suffix
-    if (this.suffix && suffixContainer) {
-      suffixContainer.classList.remove("hidden");
-    }
-
-    // Show/hide label
-    if (this.label && labelElement) {
-      labelElement.classList.remove("hidden");
-    }
-
-    // Show/hide description
-    if (this.description && descriptionElement) {
-      descriptionElement.classList.remove("hidden");
-    }
-
-    // Show/hide help text
-    if (this.helpText && helpTextElement) {
-      helpTextElement.classList.remove("hidden");
-    }
-
-    // Initial button container state
-    if (buttonContainer && this._buttons.length === 0) {
-      buttonContainer.classList.add("hidden");
-    }
-
-    // Render buttons (buttons use one size smaller)
+    
+    // Render buttons to DOM
     this.renderButtons();
   }
 }

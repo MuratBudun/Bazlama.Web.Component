@@ -1,4 +1,39 @@
 <div class="p-8 space-y-8">
+<fieldset class="fieldset w-6/12">
+  <legend ref="label" class="fieldset-legend hidden"></legend>
+  <p ref="description" class="label hidden"></p>
+  
+  <label ref="input-border" class="input w-full overflow-hidden gap-0 p-0">
+    <div ref="prefix-container" class="bg-base-200 p-1 h-full flex flex-row items-center">
+      <span ref="prefix" class="pl-1 text-base-content/70 font-mono text-sm">https</span>
+    </div>
+    <div ref="divider" class="bg-red-300 w-0.5 h-full"></div>
+    <input 
+      ref="input"
+      type="text" 
+      placeholder="" 
+      class="grow bg-base-300 focus:outline-none" 
+    />
+    <div ref="suffix-container" class="bg-base-200 p-1 h-full flex flex-row items-center gap-1">
+      <span ref="suffix" class="pr-1 text-base-content/70 font-mono text-sm"></span>
+    </div>
+    <div ref="button-container" class="bg-red-500 h-full flex flex-row items-center gap-1">
+        <button type="button" class="btn btn-ghost btn-md border-0">
+          <baz-icon icon="search"></baz-icon>
+        </button>
+        <button type="button" class="btn btn-primary btn-md">
+          <baz-icon icon="edit"></baz-icon>
+        </button>      
+    </div>
+  </label>
+  
+  <p ref="help-text" class="label hidden"></p>
+</fieldset>
+
+
+
+
+
   <!-- Tek bütün görünümlü input grubu -->
   <fieldset class="fieldset">
     <legend class="fieldset-legend">What is your name?</legend>

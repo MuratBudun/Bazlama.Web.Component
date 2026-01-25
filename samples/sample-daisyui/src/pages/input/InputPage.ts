@@ -26,6 +26,7 @@ export class InputPage extends BasePage {
     const ctrlColor = this.querySelector("#ctrl-color") as HTMLSelectElement;
     const ctrlDisabled = this.querySelector("#ctrl-disabled") as HTMLInputElement;
     const ctrlReadonly = this.querySelector("#ctrl-readonly") as HTMLInputElement;
+    const ctrlUseMonoFont = this.querySelector("#ctrl-use-mono-font") as HTMLInputElement;
     const copyCodeBtn = this.querySelector("#copy-code-btn") as HTMLButtonElement;
 
     // Button controls
@@ -50,6 +51,7 @@ export class InputPage extends BasePage {
       const color = ctrlColor?.value || "neutral";
       const disabled = ctrlDisabled?.checked || false;
       const readonly = ctrlReadonly?.checked || false;
+      const useMonoFont = ctrlUseMonoFont?.checked || false;
 
       // Button config
       const btn1Icon = ctrlBtn1Icon?.value || "";
@@ -79,6 +81,12 @@ export class InputPage extends BasePage {
         playgroundInput.removeAttribute("readonly");
       }
 
+      if (useMonoFont) {
+        playgroundInput.setAttribute("use-mono-font-for-prefix-suffix", "");
+      } else {
+        playgroundInput.removeAttribute("use-mono-font-for-prefix-suffix");
+      }
+
       // Build buttons array
       const buttons: IBazInputButton[] = [];
       if (btn1Icon) {
@@ -101,7 +109,7 @@ export class InputPage extends BasePage {
       }
 
       // Set buttons programmatically
-      playgroundInput.setButtons(buttons);
+      //playgroundInput.setButtons(buttons);
 
       // Generate code
       updateGeneratedCode();
@@ -120,6 +128,7 @@ export class InputPage extends BasePage {
       const color = ctrlColor?.value || "neutral";
       const disabled = ctrlDisabled?.checked || false;
       const readonly = ctrlReadonly?.checked || false;
+      const useMonoFont = ctrlUseMonoFont?.checked || false;
 
       // Button config
       const btn1Icon = ctrlBtn1Icon?.value || "";
@@ -139,6 +148,7 @@ export class InputPage extends BasePage {
       if (color !== "neutral") attrs.push(`color="${color}"`);
       if (disabled) attrs.push("disabled");
       if (readonly) attrs.push("readonly");
+      if (useMonoFont) attrs.push("use-mono-font-for-prefix-suffix");
 
       // Build buttons JS code
       let buttonsCode = "";
@@ -187,7 +197,7 @@ export class InputPage extends BasePage {
     });
 
     // Add change listeners to checkboxes
-    const checkboxes = [ctrlDisabled, ctrlReadonly];
+    const checkboxes = [ctrlDisabled, ctrlReadonly, ctrlUseMonoFont];
     checkboxes.forEach((checkbox) => {
       if (checkbox) {
         checkbox.addEventListener("change", updatePreview, { signal });

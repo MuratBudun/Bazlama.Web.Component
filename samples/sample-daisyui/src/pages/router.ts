@@ -1,7 +1,7 @@
 import PageRoute from "../baz-ui/baz-router/classes/PageRoute"
 import { LazyPageRoute } from "../baz-ui/baz-router/classes/LazyPageRoute"
 import type { INavigationItem } from "../baz-ui/baz-app/types"
-import homeHtml from "./home.htm?raw"
+import homeHtml from "./test.htm?raw"
 import themeHtml from "./theme.htm?raw"
 import iconHtml from "./icon/icon.htm?raw"
 import { IconPage } from "./icon/IconPage"

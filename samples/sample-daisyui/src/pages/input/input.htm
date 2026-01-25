@@ -1,4 +1,6 @@
 <div class="container mx-auto p-6 max-w-6xl">
+  <baz-icon icon="search"></baz-icon>
+
   <!-- Header -->
   <div class="mb-8">
     <h1 class="text-4xl font-bold mb-2">BazInput Component</h1>
@@ -29,6 +31,8 @@
                 placeholder="example.com"
                 help-text="URL will be validated automatically"
                 size="lg">
+                  <input-button name="clear" icon="x" color="ghost"></input-button>
+                  <input-button name="search" icon="search" color="primary"></input-button>
               </baz-input>
             </div>
           </div>
@@ -106,8 +110,8 @@
               <select id="ctrl-size" class="select select-bordered select-sm">
                 <option value="xs">Extra Small (xs) → btn-xs</option>
                 <option value="sm">Small (sm) → btn-xs</option>
-                <option value="md">Medium (md) → btn-sm</option>
-                <option value="lg" selected>Large (lg) → btn-md</option>
+                <option value="md" selected>Medium (md) → btn-sm</option>
+                <option value="lg">Large (lg) → btn-md</option>
               </select>
             </div>
             
@@ -142,7 +146,7 @@
                 <option value="">None</option>
                 <option value="search" selected>Search</option>
                 <option value="clipboard">Clipboard</option>
-                <option value="eye">Eye</option>
+                <option value="lockOpen">Eye</option>
                 <option value="x">X (Clear)</option>
                 <option value="refresh">Refresh</option>
               </select>
@@ -167,9 +171,9 @@
               </label>
               <select id="ctrl-btn2-icon" class="select select-bordered select-sm">
                 <option value="">None</option>
-                <option value="arrow-right" selected>Arrow Right</option>
+                <option value="arrowRight" selected>Arrow Right</option>
                 <option value="check">Check</option>
-                <option value="send">Send</option>
+                <option value="share">Send</option>
                 <option value="plus">Plus</option>
                 <option value="download">Download</option>
                 <option value="edit">Edit</option>
@@ -200,6 +204,10 @@
               <input type="checkbox" id="ctrl-readonly" class="checkbox checkbox-sm" />
               <span class="label-text">Readonly</span>
             </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" id="ctrl-use-mono-font" class="checkbox checkbox-sm" />
+              <span class="label-text">Use Mono Font (Prefix/Suffix)</span>
+            </label>
           </div>
           
           <!-- Copy Button -->
@@ -222,7 +230,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- URL Input -->
         <div class="space-y-2">
-          <h3 class="font-semibold text-sm text-base-content/70">URL Input with Prefix</h3>
+          <h3 class="font-semibold text-sm text-base-content/70">URL Input with Prefix & Mono Font</h3>
           <baz-input 
             id="example-url"
             label="Website URL"
@@ -230,26 +238,28 @@
             prefix="https://"
             placeholder="example.com"
             help-text="Without protocol"
+            use-mono-font-for-prefix-suffix
             size="lg">
           </baz-input>
         </div>
 
         <!-- Email Input -->
         <div class="space-y-2">
-          <h3 class="font-semibold text-sm text-base-content/70">Email Input with Suffix</h3>
+          <h3 class="font-semibold text-sm text-base-content/70">Email Input with Suffix & Mono Font</h3>
           <baz-input 
             id="example-email"
             label="Email Address"
             suffix="@gmail.com"
             placeholder="username"
             type="email"
+            use-mono-font-for-prefix-suffix
             size="lg">
           </baz-input>
         </div>
 
         <!-- Currency Input -->
         <div class="space-y-2">
-          <h3 class="font-semibold text-sm text-base-content/70">Currency Input</h3>
+          <h3 class="font-semibold text-sm text-base-content/70">Currency Input with Mono Font</h3>
           <baz-input 
             id="example-currency"
             label="Price"
@@ -257,19 +267,28 @@
             suffix=".00"
             placeholder="0"
             type="number"
+            use-mono-font-for-prefix-suffix
             size="md">
           </baz-input>
         </div>
 
-        <!-- Search Input -->
+        <!-- Search Input with HTML Buttons -->
         <div class="space-y-2">
-          <h3 class="font-semibold text-sm text-base-content/70">Search Input</h3>
+          <h3 class="font-semibold text-sm text-base-content/70">Search Input (HTML Buttons)</h3>
           <baz-input 
             id="example-search"
             placeholder="Search..."
             color="primary"
             size="md">
+            <input-button name="clear" icon="x" color="ghost" description="Clear"></input-button>
+            <input-button name="search" icon="search" color="primary" description="Search"></input-button>
           </baz-input>
+          <div class="mockup-code text-xs mt-2">
+            <pre><code>&lt;baz-input&gt;
+  &lt;input-button name="clear" icon="x" color="ghost"&gt;&lt;/input-button&gt;
+  &lt;input-button name="search" icon="search" color="primary"&gt;&lt;/input-button&gt;
+&lt;/baz-input&gt;</code></pre>
+          </div>
         </div>
       </div>
     </div>
