@@ -13,7 +13,6 @@ import {
   useSwitchClass,
   useToggleClass,
 } from "bazlama-web-component";
-import type { TPropertyChangeHook } from "bazlama-web-component";
 import htmlTemplate from "./template.htm";
 import "../baz-icon/baz-icon";
 import BazIcon from "../baz-icon/baz-icon";
@@ -129,7 +128,7 @@ export class BazInput extends BazlamaWebComponent {
     useSwitchClass("[ref='prefix']", "text-"),
     useSwitchClass("[ref='suffix']", "text-"),
     useSwitchClass("[ref='button-container'] > button", "text-"),    
-    useCustomHook("[ref='button-container'] > button", (target, value, prop, oldValue) => {
+    useCustomHook("[ref='button-container'] > button", (target, value, _prop, oldValue) => {
       const oldSize = sizeMap[oldValue as TSize] || "sm";
       const newSize = sizeMap[value as TSize] || "sm";
       target.classList.remove(`btn-${oldSize}`);

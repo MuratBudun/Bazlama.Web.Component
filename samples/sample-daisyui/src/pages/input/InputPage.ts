@@ -55,9 +55,9 @@ export class InputPage extends BasePage {
 
       // Button config
       const btn1Icon = ctrlBtn1Icon?.value || "";
-      const btn1Color = ctrlBtn1Color?.value || "ghost";
+      const btn1Color = (ctrlBtn1Color?.value || "ghost") as IBazInputButton["color"];
       const btn2Icon = ctrlBtn2Icon?.value || "";
-      const btn2Color = ctrlBtn2Color?.value || "primary";
+      const btn2Color = (ctrlBtn2Color?.value || "primary") as IBazInputButton["color"];
 
       // Update baz-input attributes
       playgroundInput.setAttribute("label", label);
@@ -132,9 +132,9 @@ export class InputPage extends BasePage {
 
       // Button config
       const btn1Icon = ctrlBtn1Icon?.value || "";
-      const btn1Color = ctrlBtn1Color?.value || "ghost";
+      const btn1Color = (ctrlBtn1Color?.value || "ghost") as IBazInputButton["color"];
       const btn2Icon = ctrlBtn2Icon?.value || "";
-      const btn2Color = ctrlBtn2Color?.value || "primary";
+      const btn2Color = (ctrlBtn2Color?.value || "primary") as IBazInputButton["color"];
 
       // Build HTML attributes
       let attrs: string[] = [];
