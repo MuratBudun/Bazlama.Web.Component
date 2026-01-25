@@ -1,7 +1,7 @@
 import PageRoute from "../baz-ui/baz-router/classes/PageRoute"
 import { LazyPageRoute } from "../baz-ui/baz-router/classes/LazyPageRoute"
 import type { INavigationItem } from "../baz-ui/baz-app/types"
-import homeHtml from "./test.htm?raw"
+import homeHtml from "./home.htm?raw"
 import themeHtml from "./theme.htm?raw"
 import iconHtml from "./icon/icon.htm?raw"
 import { IconPage } from "./icon/IconPage"
@@ -93,7 +93,7 @@ export function getNavigationItems(): INavigationItem[] {
             items: [
                 { type: 'item', title: 'Tab', path: '/tab', icon: 'layout' },
                 { type: 'item', title: 'Textbox', path: '/textbox', icon: 'edit' },
-                { type: 'item', title: 'Input', path: '/input', icon: 'forms' },
+                { type: 'item', title: 'Input', path: '/input', icon: 'terminal' },
                 { type: 'item', title: 'Modal', path: '/modal', icon: 'layout2' },
                 { type: 'item', title: 'Animation', path: '/animation', icon: 'sparkles' },
                 { type: 'item', title: 'Theme Switcher', path: '/theme', icon: 'colorSwatch' },

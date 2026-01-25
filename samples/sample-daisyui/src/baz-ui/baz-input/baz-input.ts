@@ -326,7 +326,7 @@ export class BazInput extends BazlamaWebComponent {
       const icon = new BazIcon();
       icon.icon = btn.icon;
       // Map button size to icon size
-      icon.size = btnSize === "md" ? "20px" : btnSize === "sm" ? "16px" : "12px";
+      icon.size = sizeMapIcon[this.size] || "16px";
       buttonEl.appendChild(icon);
 
       // Add click handler
