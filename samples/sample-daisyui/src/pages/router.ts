@@ -13,6 +13,7 @@ import { AnimationPage } from "./animation/AnimationPage"
 import { ExamplesPage } from "./examples/ExamplesPage"
 import { ProductsListPage } from "./examples/ProductsListPage"
 import { ProductsPage } from "./examples/ProductsPage"
+import { DataTablePage } from "./data-table/DataTablePage"
 
 export function getRoutes() {
     // Setup routes
@@ -24,6 +25,7 @@ export function getRoutes() {
     rootRoute.addRoute(new PageRoute("Input", "input", InputPage))
     rootRoute.addRoute(new PageRoute("Modal", "modal", ModalPage))
     rootRoute.addRoute(new PageRoute("Animation", "animation", AnimationPage))
+    rootRoute.addRoute(new PageRoute("Data Table", "data-table", DataTablePage))
     rootRoute.addRoute(new PageRoute("Theme", "theme", () => themeHtml))
     rootRoute.addRoute(new PageRoute("Icon", "icon", IconPage))
     rootRoute.addRoute(new PageRoute("Icon", "icon-s", () => iconHtml))
@@ -96,6 +98,7 @@ export function getNavigationItems(): INavigationItem[] {
                 { type: 'item', title: 'Input', path: '/input', icon: 'terminal' },
                 { type: 'item', title: 'Modal', path: '/modal', icon: 'layout2' },
                 { type: 'item', title: 'Animation', path: '/animation', icon: 'sparkles' },
+                { type: 'item', title: 'Data Table', path: '/data-table', icon: 'list' },
                 { type: 'item', title: 'Theme Switcher', path: '/theme', icon: 'colorSwatch' },
                 { type: 'item', title: 'Icon', path: '/icon', icon: 'icons' },
                 { type: 'item', title: 'Icon Html', path: '/icon-s', icon: 'icons' }

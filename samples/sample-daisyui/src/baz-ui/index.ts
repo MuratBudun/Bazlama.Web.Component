@@ -9,6 +9,7 @@ import "./baz-icon/baz-icon"
 import "./baz-modal/baz-modal"
 import "./baz-tab/baz-tab"
 import "./baz-theme/baz-theme-switcher"
+import "./baz-data-table/baz-data-table"
 
 // Re-export classes for programmatic usage if needed
 export { BazApp } from "./baz-app/baz-app"

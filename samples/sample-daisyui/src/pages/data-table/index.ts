@@ -1,0 +1,1 @@
+export { DataTablePage } from "./DataTablePage"

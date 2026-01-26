@@ -1,0 +1,181 @@
+<div ref="table-container" class="baz-data-table-container overflow-x-auto overflow-y-auto w-full relative">
+  <table ref="table" class="table table-fixed">
+    <!-- Table content rendered dynamically -->
+  </table>
+</div>
+
+<style>
+  .baz-data-table-container {
+    /* Enable horizontal scroll */
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: inherit;
+  }
+
+  .baz-data-table-container table {
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%; /* Ensure table takes full container width */
+  }
+
+  /* Cell overflow handling */
+  .baz-data-table-container table th,
+  .baz-data-table-container table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* Ensure padding doesn't mess up width calculations in fixed layout */
+    box-sizing: border-box; 
+  }
+
+  /* Header content overflow */
+  .baz-data-table-container table th > div {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .baz-data-table-container table th > div > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Zebra striping - manual implementation */
+  .baz-data-table-container table.table-zebra tbody tr:nth-child(even) {
+    background-color: oklch(var(--b2));
+  }
+  
+  .baz-data-table-container table.table-zebra tbody tr:nth-child(odd) {
+    background-color: oklch(var(--b1));
+  }
+
+  /* Sticky columns inherit row background for zebra */
+  .baz-data-table-container table.table-zebra tbody tr:nth-child(even) td.sticky-column {
+    background-color: oklch(var(--b2));
+  }
+  
+  .baz-data-table-container table.table-zebra tbody tr:nth-child(odd) td.sticky-column {
+    background-color: oklch(var(--b1));
+  }
+
+  /* Non-zebra sticky columns */
+  .baz-data-table-container table:not(.table-zebra) tbody td.sticky-column {
+    background-color: oklch(var(--b1));
+  }
+
+  /* Row hover - manual implementation */
+  .baz-data-table-container table.hover tbody tr:hover {
+    background-color: oklch(var(--b3)) !important;
+  }
+
+  /* Hover for sticky columns */
+  .baz-data-table-container table.hover tbody tr:hover td.sticky-column {
+    background-color: oklch(var(--b3)) !important;
+  }
+
+  /* Sticky column styling */
+  .sticky-column {
+    position: sticky !important;
+    z-index: 1;
+  }
+
+  thead .sticky-column {
+    z-index: 3 !important;
+    background-color: oklch(var(--b3)) !important;
+  }
+
+  /* Ensure header has proper background for sticky */
+  thead th {
+    background-color: oklch(var(--b3));
+    position: relative;
+  }
+
+  thead th.sticky-column {
+    background-color: oklch(var(--b3)) !important;
+  }
+  
+  /* Sticky cells in tbody */
+  tbody td.sticky-column {
+    z-index: 1;
+  }
+
+  /* Add shadow to sticky columns for visual separation */
+  .sticky-column::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -4px;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
+    pointer-events: none;
+  }
+
+  /* Resize handle */
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+    background: transparent;
+    z-index: 10;
+    transition: background-color 0.15s ease;
+  }
+
+  .resize-handle:hover {
+    background-color: oklch(var(--p) / 0.3);
+  }
+
+  /* Body cursor during resize */
+  body.resizing-column {
+    cursor: col-resize !important;
+    user-select: none !important;
+  }
+
+  body.resizing-column * {
+    cursor: col-resize !important;
+  }
+
+  /* Sort icon styling */
+  .sort-icon {
+    font-size: 0.7em;
+    vertical-align: middle;
+  }
+
+  /* Ensure proper z-index layering */
+  thead {
+    position: relative;
+    z-index: 2;
+  }
+
+  tbody {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Smooth scroll for container */
+  .baz-data-table-container {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar styling */
+  .baz-data-table-container::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .baz-data-table-container::-webkit-scrollbar-track {
+    background: oklch(var(--b2));
+    border-radius: 4px;
+  }
+
+  .baz-data-table-container::-webkit-scrollbar-thumb {
+    background: oklch(var(--bc) / 0.3);
+    border-radius: 4px;
+  }
+
+  .baz-data-table-container::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--bc) / 0.5);
+  }
+</style>

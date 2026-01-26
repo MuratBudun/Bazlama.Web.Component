@@ -1,0 +1,336 @@
+<div class="p-6 space-y-8">
+    <!-- Page Header -->
+    <div class="flex items-center gap-4">
+        <div class="p-3 bg-primary/10 rounded-xl">
+            <baz-icon name="heroicons:table-cells" size="32" class="text-primary"></baz-icon>
+        </div>
+        <div>
+            <h1 class="text-3xl font-bold">Data Table</h1>
+            <p class="text-base-content/60">A feature-rich data table with resizable columns, sorting, and sticky columns</p>
+        </div>
+    </div>
+
+    <!-- Interactive Playground -->
+    <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title flex items-center gap-2">
+                <baz-icon name="heroicons:beaker" size="24"></baz-icon>
+                Interactive Playground
+            </h2>
+            
+            <!-- Controls -->
+            <div class="flex flex-wrap gap-4 p-4 bg-base-100 rounded-lg mb-4">
+                <!-- Zebra -->
+                <label class="label cursor-pointer gap-2">
+                    <span class="label-text">Zebra</span>
+                    <input type="checkbox" id="zebraToggle" class="toggle toggle-primary toggle-sm" checked>
+                </label>
+                
+                <!-- Compact -->
+                <label class="label cursor-pointer gap-2">
+                    <span class="label-text">Compact</span>
+                    <input type="checkbox" id="compactToggle" class="toggle toggle-primary toggle-sm">
+                </label>
+                
+                <!-- Row Hover -->
+                <label class="label cursor-pointer gap-2">
+                    <span class="label-text">Row Hover</span>
+                    <input type="checkbox" id="hoverToggle" class="toggle toggle-primary toggle-sm" checked>
+                </label>
+                
+                <!-- Sticky Columns -->
+                <label class="label gap-2">
+                    <span class="label-text">Sticky Columns</span>
+                    <select id="stickyColumnsSelect" class="select select-bordered select-sm">
+                        <option value="0">None</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                    </select>
+                </label>
+                
+                <!-- Row Count -->
+                <label class="label gap-2">
+                    <span class="label-text">Rows</span>
+                    <select id="rowCountSelect" class="select select-bordered select-sm">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50" selected>50</option>
+                    </select>
+                </label>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="bg-base-100 rounded-lg p-2">
+                <baz-data-table 
+                    id="mainDataTable" 
+                    zebra 
+                    row-hover 
+                    sticky-columns="2"
+                    style="max-height: 500px;">
+                </baz-data-table>
+            </div>
+            
+            <p class="text-sm text-base-content/50 mt-2">
+                <baz-icon name="heroicons:information-circle" size="16" class="inline"></baz-icon>
+                Try resizing columns by dragging the column borders. Click on sortable columns to sort. Scroll horizontally to see sticky columns.
+            </p>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:arrows-pointing-out" size="20" class="text-primary"></baz-icon>
+                    Column Resize
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    Drag column borders to resize. Supports min/max width constraints.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:arrow-path" size="20" class="text-primary"></baz-icon>
+                    Sortable Columns
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    Click column headers to sort. Supports ascending and descending order.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:lock-closed" size="20" class="text-primary"></baz-icon>
+                    Sticky Columns
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    First N columns stay fixed while scrolling horizontally.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:paint-brush" size="20" class="text-primary"></baz-icon>
+                    Custom Renderers
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    Define custom HTML renderers for cell content like badges, icons, etc.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:squares-2x2" size="20" class="text-primary"></baz-icon>
+                    Zebra Striping
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    Alternating row colors for better readability.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card bg-base-100 shadow-md">
+            <div class="card-body">
+                <h3 class="card-title text-lg">
+                    <baz-icon name="heroicons:cursor-arrow-rays" size="20" class="text-primary"></baz-icon>
+                    Row Events
+                </h3>
+                <p class="text-sm text-base-content/70">
+                    Click events on rows with row data in event detail.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="space-y-6">
+        <h2 class="text-2xl font-bold flex items-center gap-2">
+            <baz-icon name="heroicons:code-bracket" size="24"></baz-icon>
+            Code Examples
+        </h2>
+        
+        <!-- Basic Usage -->
+        <div class="collapse collapse-arrow bg-base-200">
+            <input type="checkbox" checked>
+            <div class="collapse-title font-medium">
+                Basic Usage
+            </div>
+            <div class="collapse-content">
+                <pre class="bg-base-300 p-4 rounded-lg overflow-x-auto text-sm"><code id="basicUsageCode"></code></pre>
+            </div>
+        </div>
+        
+        <!-- Column Configuration -->
+        <div class="collapse collapse-arrow bg-base-200">
+            <input type="checkbox">
+            <div class="collapse-title font-medium">
+                Column Configuration (IDataTableColumn)
+            </div>
+            <div class="collapse-content">
+                <pre class="bg-base-300 p-4 rounded-lg overflow-x-auto text-sm"><code id="columnConfigCode"></code></pre>
+            </div>
+        </div>
+        
+        <!-- Events -->
+        <div class="collapse collapse-arrow bg-base-200">
+            <input type="checkbox">
+            <div class="collapse-title font-medium">
+                Event Handling
+            </div>
+            <div class="collapse-content">
+                <pre class="bg-base-300 p-4 rounded-lg overflow-x-auto text-sm"><code id="eventsCode"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attributes Table -->
+    <div class="card bg-base-200">
+        <div class="card-body">
+            <h2 class="card-title">
+                <baz-icon name="heroicons:cog-6-tooth" size="24"></baz-icon>
+                Attributes
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="badge badge-ghost">zebra</code></td>
+                            <td>boolean</td>
+                            <td>false</td>
+                            <td>Enable alternating row colors</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">compact</code></td>
+                            <td>boolean</td>
+                            <td>false</td>
+                            <td>Reduce row height for dense data</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">row-hover</code></td>
+                            <td>boolean</td>
+                            <td>false</td>
+                            <td>Highlight row on mouse hover</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">sticky-columns</code></td>
+                            <td>number</td>
+                            <td>0</td>
+                            <td>Number of columns to keep fixed on left</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Methods Table -->
+    <div class="card bg-base-200">
+        <div class="card-body">
+            <h2 class="card-title">
+                <baz-icon name="heroicons:command-line" size="24"></baz-icon>
+                Methods
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Parameters</th>
+                            <th>Returns</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="badge badge-ghost">setColumns()</code></td>
+                            <td>columns: IDataTableColumn[]</td>
+                            <td>void</td>
+                            <td>Set column definitions</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">getColumns()</code></td>
+                            <td>-</td>
+                            <td>IDataTableColumn[]</td>
+                            <td>Get current column definitions</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">setData()</code></td>
+                            <td>data: T[]</td>
+                            <td>void</td>
+                            <td>Set table data</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">getData()</code></td>
+                            <td>-</td>
+                            <td>T[]</td>
+                            <td>Get current table data</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">setSort()</code></td>
+                            <td>sort: IDataTableSort | null</td>
+                            <td>void</td>
+                            <td>Set sort state</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="card bg-base-200">
+        <div class="card-body">
+            <h2 class="card-title">
+                <baz-icon name="heroicons:bolt" size="24"></baz-icon>
+                Events
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Detail</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="badge badge-ghost">row-click</code></td>
+                            <td>{ row: T, index: number }</td>
+                            <td>Fired when a row is clicked</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">sort-change</code></td>
+                            <td>{ column: string, direction: 'asc' | 'desc' }</td>
+                            <td>Fired when sort state changes</td>
+                        </tr>
+                        <tr>
+                            <td><code class="badge badge-ghost">column-resize</code></td>
+                            <td>{ column: string, width: number }</td>
+                            <td>Fired when column is resized</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
