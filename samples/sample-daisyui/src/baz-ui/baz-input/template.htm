@@ -6,17 +6,13 @@
     <div ref="prefix-container" class="bg-base-200 p-1 h-full flex flex-row items-center gap-1 hidden">
       <span ref="prefix" class="pl-1 text-base-content/70 font-mono text-sm"></span>
     </div>
-    <div ref="divider" class="w-2 h-full"></div>
-    <input 
-      ref="input"
-      type="text" 
-      placeholder="" 
-      class="grow focus:outline-none" 
-    />
+    <div ref="input-container" class="bg-base-100 pr-1 pl-1 flex-grow h-full flex flex-row items-center">
+      <input ref="input" type="text" class="grow focus:outline-none" />
+    </div>
     <div ref="suffix-container" class="bg-base-200 p-1 h-full flex flex-row items-center gap-1 hidden">
       <span ref="suffix" class="pr-1 text-base-content/70 font-mono text-sm"></span>
     </div>
-    <div ref="button-container" class="h-full flex flex-row items-center gap-1"></div>
+    <div ref="button-container" class="bg-base-100 h-full flex flex-row items-center gap-1"></div>
   </label>
   
   <p ref="help-text" class="label hidden"></p>

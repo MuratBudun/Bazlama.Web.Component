@@ -29,8 +29,6 @@
                 placeholder="example.com"
                 help-text="URL will be validated automatically"
                 size="lg">
-                  <input-button name="clear" icon="x" color="ghost"></input-button>
-                  <input-button name="search" icon="search" color="primary"></input-button>
               </baz-input>
             </div>
           </div>
@@ -81,7 +79,7 @@
               <label class="label">
                 <span class="label-text font-medium">Suffix</span>
               </label>
-              <input type="text" id="ctrl-suffix" class="input input-bordered input-sm" value="" placeholder="e.g., .com, %, kg" />
+              <input type="text" id="ctrl-suffix" class="input input-bordered input-sm" value=".com" placeholder="e.g., .com, %, kg" />
             </div>
             
             <!-- Placeholder -->
@@ -110,6 +108,7 @@
                 <option value="sm">Small (sm) → btn-xs</option>
                 <option value="md" selected>Medium (md) → btn-sm</option>
                 <option value="lg">Large (lg) → btn-md</option>
+                <option value="xl">Extra Large (xl) → btn-lg</option>
               </select>
             </div>
             
@@ -169,9 +168,9 @@
               </label>
               <select id="ctrl-btn2-icon" class="select select-bordered select-sm">
                 <option value="">None</option>
-                <option value="arrowRight" selected>Arrow Right</option>
+                <option value="arrowRight">Arrow Right</option>
                 <option value="check">Check</option>
-                <option value="share">Send</option>
+                <option value="share" selected>Send</option>
                 <option value="plus">Plus</option>
                 <option value="download">Download</option>
                 <option value="edit">Edit</option>
@@ -236,7 +235,7 @@
             prefix="https://"
             placeholder="example.com"
             help-text="Without protocol"
-            use-mono-font-for-prefix-suffix
+            use-mono-font-for-prefix-suffix="true"
             size="lg">
           </baz-input>
         </div>
@@ -250,7 +249,7 @@
             suffix="@gmail.com"
             placeholder="username"
             type="email"
-            use-mono-font-for-prefix-suffix
+            use-mono-font-for-prefix-suffix="true"
             size="lg">
           </baz-input>
         </div>
@@ -265,7 +264,7 @@
             suffix=".00"
             placeholder="0"
             type="number"
-            use-mono-font-for-prefix-suffix
+            use-mono-font-for-prefix-suffix="true"
             size="md">
           </baz-input>
         </div>
@@ -296,9 +295,9 @@
   <div class="card bg-base-200 shadow-lg mb-8">
     <div class="card-body">
       <h2 class="card-title text-2xl mb-4">Size Variants</h2>
-      <p class="text-base-content/70 mb-4">Button size is automatically one level below input size (lg→md, md→sm, sm→xs, xs→xs)</p>
+      <p class="text-base-content/70 mb-4">Button size is automatically one level below input size (xl→lg, lg→md, md→sm, sm→xs, xs→xs)</p>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div>
           <baz-input 
             id="size-xs"
@@ -337,6 +336,16 @@
             placeholder="Large">
           </baz-input>
           <span class="text-xs text-base-content/50 mt-1 block">size="lg" → btn-md</span>
+        </div>
+        
+        <div>
+          <baz-input 
+            id="size-xl"
+            size="xl"
+            prefix="@"
+            placeholder="Extra Large">
+          </baz-input>
+          <span class="text-xs text-base-content/50 mt-1 block">size="xl" → btn-lg</span>
         </div>
       </div>
     </div>

@@ -5,11 +5,13 @@ import {
   ChangeHooks,
   CustomElement,
   FireEvent,
+  Property,
   ShadowRootMode,
   useCustomHook,
   useElementAttribute,
   useElementInputValue,
   useElementText,
+  useFunction,
   useSwitchClass,
   useToggleClass,
 } from "bazlama-web-component";
@@ -26,7 +28,7 @@ type TColor =
   | "success"
   | "warning"
   | "error";
-type TSize = "xs" | "sm" | "md" | "lg";
+type TSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 /**
  * Button configuration for BazInput action buttons
@@ -49,6 +51,7 @@ export interface IBazInputButton {
  * Input size is one level above button size
  */
 const sizeMap: Record<TSize, string> = {
+  xl: "lg",
   lg: "md",
   md: "sm",
   sm: "xs",
@@ -56,6 +59,7 @@ const sizeMap: Record<TSize, string> = {
 };
 
 const sizeMapIcon: Record<TSize, string> = {
+  xl: "28px",
   lg: "24px",
   md: "20px",
   sm: "16px",
@@ -127,7 +131,7 @@ export class BazInput extends BazlamaWebComponent {
     useSwitchClass("[ref='input']", "input-"),
     useSwitchClass("[ref='prefix']", "text-"),
     useSwitchClass("[ref='suffix']", "text-"),
-    useSwitchClass("[ref='button-container'] > button", "text-"),    
+    useSwitchClass("[ref='button-container'] > button", "abc-"),    
     useCustomHook("[ref='button-container'] > button", (target, value, _prop, oldValue) => {
       const oldSize = sizeMap[oldValue as TSize] || "sm";
       const newSize = sizeMap[value as TSize] || "sm";
@@ -145,7 +149,7 @@ export class BazInput extends BazlamaWebComponent {
     useToggleClass("[ref='prefix']", "font-mono", (value) => (value != null ? BazConvert.anyToBoolean(value) : false)),
     useToggleClass("[ref='suffix']", "font-mono", (value) => (value != null ? BazConvert.anyToBoolean(value) : false))
   ])
-  @Attribute("use-mono-font-for-prefix-suffix", false)
+  @Attribute("use-mono-font-for-prefix-suffix", true)
   public useMonoFontForPrefixSuffix = false;
   
   @ChangeHooks([
@@ -183,7 +187,16 @@ export class BazInput extends BazlamaWebComponent {
   @Attribute("help-text", true)
   public helpText = "";
 
-  @Attribute("disabled", false)
+  @ChangeHooks([
+    useFunction((component, value) => {
+      const isDisabled = BazConvert.anyToBoolean(value);
+      const inputEl = component.root?.querySelector("input");
+      if (inputEl) {
+        inputEl.disabled = isDisabled;
+      }
+    }),
+  ])
+  @Attribute("disabled", true)
   public disabled = false;
 
   @Attribute("readonly", false)
@@ -235,6 +248,9 @@ export class BazInput extends BazlamaWebComponent {
    */
   private parseButtonsFromChildren(): void {
     const buttonElements = this.querySelectorAll('input-button');
+    
+    // Always clear buttons array (even if no buttons found)
+    this._buttons = [];
     
     if (buttonElements.length === 0) return;
     

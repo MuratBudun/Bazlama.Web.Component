@@ -70,7 +70,7 @@ export class InputPage extends BasePage {
       playgroundInput.setAttribute("color", color);
 
       if (disabled) {
-        playgroundInput.setAttribute("disabled", "");
+        playgroundInput.setAttribute("disabled", "true");
       } else {
         playgroundInput.removeAttribute("disabled");
       }
@@ -82,34 +82,39 @@ export class InputPage extends BasePage {
       }
 
       if (useMonoFont) {
-        playgroundInput.setAttribute("use-mono-font-for-prefix-suffix", "");
+        playgroundInput.setAttribute("use-mono-font-for-prefix-suffix", "true");
       } else {
         playgroundInput.removeAttribute("use-mono-font-for-prefix-suffix");
       }
 
-      // Build buttons array
-      const buttons: IBazInputButton[] = [];
+      // Update buttons using HTML child elements
+      // Clear existing input-button elements
+      const existingButtons = playgroundInput.querySelectorAll('input-button');
+      existingButtons.forEach(btn => btn.remove());
+
+      // Add button 1 if icon selected
       if (btn1Icon) {
-        buttons.push({
-          name: "btn1",
-          icon: btn1Icon,
-          description: `${btn1Icon} button`,
-          color: btn1Color,
-          onClick: () => console.log(`Button 1 (${btn1Icon}) clicked`),
-        });
-      }
-      if (btn2Icon) {
-        buttons.push({
-          name: "btn2",
-          icon: btn2Icon,
-          description: `${btn2Icon} button`,
-          color: btn2Color,
-          onClick: () => console.log(`Button 2 (${btn2Icon}) clicked`),
-        });
+        const btn1 = document.createElement('input-button');
+        btn1.setAttribute('name', 'btn1');
+        btn1.setAttribute('icon', btn1Icon);
+        btn1.setAttribute('color', btn1Color);
+        btn1.setAttribute('description', `${btn1Icon} button`);
+        playgroundInput.appendChild(btn1);
       }
 
-      // Set buttons programmatically
-      //playgroundInput.setButtons(buttons);
+      // Add button 2 if icon selected
+      if (btn2Icon) {
+        const btn2 = document.createElement('input-button');
+        btn2.setAttribute('name', 'btn2');
+        btn2.setAttribute('icon', btn2Icon);
+        btn2.setAttribute('color', btn2Color);
+        btn2.setAttribute('description', `${btn2Icon} button`);
+        playgroundInput.appendChild(btn2);
+      }
+
+      // Re-parse buttons from children
+      (playgroundInput as any).parseButtonsFromChildren?.();
+      playgroundInput.renderButtons();
 
       // Generate code
       updateGeneratedCode();
@@ -148,24 +153,19 @@ export class InputPage extends BasePage {
       if (color !== "neutral") attrs.push(`color="${color}"`);
       if (disabled) attrs.push("disabled");
       if (readonly) attrs.push("readonly");
-      if (useMonoFont) attrs.push("use-mono-font-for-prefix-suffix");
+      if (useMonoFont) attrs.push("use-mono-font-for-prefix-suffix=\"true\"");
 
-      // Build buttons JS code
-      let buttonsCode = "";
-      if (btn1Icon || btn2Icon) {
-        buttonsCode = "\n\n// Set buttons programmatically\ninput.setButtons([";
-        const btnDefs: string[] = [];
-        if (btn1Icon) {
-          btnDefs.push(`\n  { name: 'btn1', icon: '${btn1Icon}', color: '${btn1Color}' }`);
-        }
-        if (btn2Icon) {
-          btnDefs.push(`\n  { name: 'btn2', icon: '${btn2Icon}', color: '${btn2Color}' }`);
-        }
-        buttonsCode += btnDefs.join(",") + "\n]);";
+      // Build button child elements
+      let buttonsHtml = "";
+      if (btn1Icon) {
+        buttonsHtml += `\n  <input-button name="btn1" icon="${btn1Icon}" color="${btn1Color}"></input-button>`;
+      }
+      if (btn2Icon) {
+        buttonsHtml += `\n  <input-button name="btn2" icon="${btn2Icon}" color="${btn2Color}"></input-button>`;
       }
 
-      const htmlCode = `<baz-input id="my-input"\n  ${attrs.join("\n  ")}>\n</baz-input>`;
-      const code = htmlCode + buttonsCode;
+      const htmlCode = `<baz-input id="my-input"\n  ${attrs.join("\n  ")}>${buttonsHtml}\n</baz-input>`;
+      const code = htmlCode;
 
       generatedCode.textContent = code;
     };
@@ -271,12 +271,12 @@ export class InputPage extends BasePage {
     }
 
     // Size variant inputs with buttons
-    const sizeInputs = ["size-xs", "size-sm", "size-md", "size-lg"];
+    const sizeInputs = ["size-xs", "size-sm", "size-md", "size-lg", "size-xl"];
     sizeInputs.forEach((id) => {
       const input = this.querySelector(`#${id}`) as BazInput;
       if (input) {
         input.setButtons([
-          { name: "action", icon: "arrow-right", color: "primary", description: "Action" },
+          { name: "action", icon: "arrowRight", color: "primary", description: "Action" },
         ]);
       }
     });
