@@ -143,7 +143,7 @@
                 <option value="">None</option>
                 <option value="search" selected>Search</option>
                 <option value="clipboard">Clipboard</option>
-                <option value="lockOpen">Eye</option>
+                <option value="eye">Eye</option>
                 <option value="x">X (Clear)</option>
                 <option value="refresh">Refresh</option>
               </select>
@@ -210,7 +210,7 @@
           <!-- Copy Button -->
           <div class="mt-6">
             <button id="copy-code-btn" class="btn btn-primary btn-block">
-              <baz-icon icon="clipboard"></baz-icon>
+              <baz-icon icon="copy"></baz-icon>
               Copy Code
             </button>
           </div>
@@ -243,9 +243,11 @@
         <!-- Email Input -->
         <div class="space-y-2">
           <h3 class="font-semibold text-sm text-base-content/70">Email Input with Suffix & Mono Font</h3>
+          
           <baz-input 
             id="example-email"
             label="Email Address"
+            description="Add your email"
             suffix="@gmail.com"
             placeholder="username"
             type="email"
@@ -274,6 +276,7 @@
           <h3 class="font-semibold text-sm text-base-content/70">Search Input (HTML Buttons)</h3>
           <baz-input 
             id="example-search"
+            description ="Search for items"
             placeholder="Search..."
             color="primary"
             size="md">
