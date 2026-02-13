@@ -1,0 +1,31 @@
+<div class="p-4 bg-base-200 rounded-lg">
+    <div class="grid grid-cols-1 lg:grid-cols-6 gap-3">
+        <baz-input label="Doküman Numarası:" size="sm" placeholder="SF-FS-003"></baz-input>
+        <baz-input label="Revizyon No:" size="sm" placeholder="2"></baz-input>
+        <baz-input label="Tarih/Saat:" size="sm" type="datetime-local"></baz-input>
+        <baz-input label="Hazırlayan:" size="sm" placeholder="Fatmanur Bayram">
+            <input-button name="search" icon="search" color="primary" description="Seç"></input-button>
+        </baz-input>
+        <baz-input label="Hazırlayan Bölüm:" size="sm" placeholder="Proje Yönetimi">
+            <input-button name="search" icon="search" color="primary" description="Seç"></input-button>
+        </baz-input>
+        <baz-input label="Geçerlilik Tarihi:" size="sm" type="date"></baz-input>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-6 gap-3 mt-4">
+        <baz-input label="Doküman Türü:" size="sm" placeholder="Fonksiyonel Spesifikasyon"></baz-input>
+        <baz-input label="Dokümanın Adı:" size="sm" class="lg:col-span-2" placeholder="QMex Farmakovijilans Modülü"></baz-input>
+        <baz-input label="Doküman Sahibi Bölüm:" size="sm" placeholder="Proje Yönetimi">
+            <input-button name="search" icon="search" color="primary" description="Seç"></input-button>
+        </baz-input>
+        <baz-input label="Dokümanın Adı (Diğer Dil):" size="sm" class="lg:col-span-2" placeholder="QMex Pharmacovigilance Module"></baz-input>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-6 gap-3 mt-4">
+        <baz-input label="İlk Yürürlük Tarihi:" size="sm" type="date"></baz-input>
+        <baz-input label="Yürürlük Tarihi:" size="sm" type="date"></baz-input>
+        <baz-input label="Orijinal Doküman:" size="sm" class="lg:col-span-4" placeholder="FS (Farmakovijilans Yönetimi)_SF.docx, FS (…)">
+            <input-button name="search" icon="search" color="primary" description="Seç"></input-button>
+        </baz-input>
+    </div>
+</div>

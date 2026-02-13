@@ -1,0 +1,139 @@
+<div class="container mx-auto p-6 max-w-6xl">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Textarea Component</h1>
+    <p class="text-base-content/70 text-lg">
+      DaisyUI textarea examples with live controls for size, color, and state.
+    </p>
+  </div>
+
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">
+        <baz-icon icon="play" class="text-primary"></baz-icon>
+        Interactive Playground
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="font-semibold text-lg">Preview</h3>
+          <div class="bg-base-100 rounded-lg p-6 min-h-[250px] flex items-start justify-center border border-base-300">
+            <div class="w-full max-w-md">
+              <textarea id="playground-textarea" class="textarea textarea-bordered w-full" rows="4" placeholder="Write a message..."></textarea>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="font-semibold text-lg flex items-center gap-2">
+              <baz-icon icon="code" class="text-secondary"></baz-icon>
+              Generated Code
+            </h3>
+            <div class="mockup-code text-sm overflow-x-auto">
+              <pre id="generated-code" class="px-4 whitespace-pre-wrap text-xs"></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="font-semibold text-lg">Options</h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Placeholder</span>
+              </label>
+              <input type="text" id="ctrl-placeholder" class="input input-bordered input-sm" value="Write a message..." />
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Rows</span>
+              </label>
+              <input type="number" id="ctrl-rows" class="input input-bordered input-sm" value="4" min="2" max="12" />
+            </div>
+
+            <div class="form-control sm:col-span-2">
+              <label class="label">
+                <span class="label-text font-medium">Value</span>
+              </label>
+              <input type="text" id="ctrl-value" class="input input-bordered input-sm" value="" placeholder="Set initial value" />
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Size</span>
+              </label>
+              <select id="ctrl-size" class="select select-bordered select-sm">
+                <option value="xs">Extra Small (xs)</option>
+                <option value="sm">Small (sm)</option>
+                <option value="md" selected>Medium (md)</option>
+                <option value="lg">Large (lg)</option>
+              </select>
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Color</span>
+              </label>
+              <select id="ctrl-color" class="select select-bordered select-sm">
+                <option value="neutral">Neutral (default)</option>
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="accent">Accent</option>
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+                <option value="warning">Warning</option>
+                <option value="error">Error</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4 mt-4">
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" id="ctrl-disabled" class="checkbox checkbox-sm" />
+              <span class="label-text">Disabled</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" id="ctrl-readonly" class="checkbox checkbox-sm" />
+              <span class="label-text">Readonly</span>
+            </label>
+          </div>
+
+          <div class="mt-6">
+            <button id="copy-code-btn" class="btn btn-primary btn-block">
+              <baz-icon icon="copy"></baz-icon>
+              Copy Code
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-base-200 shadow-lg mb-8">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4">Quick Examples</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Basic</h3>
+          <textarea class="textarea textarea-bordered w-full" rows="3" placeholder="Type here..."></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Primary</h3>
+          <textarea class="textarea textarea-bordered textarea-primary w-full" rows="3" placeholder="Primary textarea"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Large</h3>
+          <textarea class="textarea textarea-bordered textarea-lg w-full" rows="4" placeholder="Large textarea"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="font-semibold text-sm text-base-content/70">Disabled</h3>
+          <textarea class="textarea textarea-bordered w-full" rows="3" placeholder="Disabled" disabled></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

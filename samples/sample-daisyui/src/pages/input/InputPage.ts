@@ -327,7 +327,7 @@ export class InputPage extends BasePage {
     const emailInput = this.querySelector("#example-email") as BazInput;
     if (emailInput) {
       emailInput.setButtons([
-        { name: "send", icon: "send", color: "primary", description: "Send email" },
+        { name: "send", icon: "sendEmail", color: "primary", description: "Send email" },
       ]);
     }
 
@@ -343,8 +343,29 @@ export class InputPage extends BasePage {
     const searchInput = this.querySelector("#example-search") as BazInput;
     if (searchInput) {
       searchInput.setButtons([
-        { name: "clear", icon: "x", color: "ghost", description: "Clear" },
-        { name: "search", icon: "search", color: "primary", description: "Search" },
+        {
+          name: "clear",
+          icon: "x",
+          color: "ghost",
+          description: "Clear",
+          onClick: () => {
+            searchInput.value = "";
+          }
+        },
+        {
+          name: "search",
+          icon: "search",
+          color: "primary",
+          description: "Search",
+          onClick: () => {
+            const searchTerm = searchInput.value;
+            if (searchTerm.trim()) {
+              alert(`Searching for: "${searchTerm}"`);
+            } else {
+              alert("Please enter a search term");
+            }
+          }
+        },
       ]);
     }
 
