@@ -12,6 +12,7 @@ import type { IEventActionDefines } from "../event-action/types/IEventActionDefi
 import type { IEventActionMaps } from "../event-action/types/IEventActionMaps";
 import { bazlamaWarn } from "../helper/BazlamaError";
 import { clearSelectorCache } from "../helper/SelectorCache";
+import BazlamaMonitor from "../helper/BazlamaMonitor";
 import type { IBazlamaWebComponentStatic } from "./IBazlamaWebComponentStatic";
 import type { IPropertyChangeHandlers } from "../property/types/IPropertyChangeHandlers";
 import type { IPropertyDefines } from "../property/types/IPropertyDefines";
@@ -70,6 +71,11 @@ export default class BazlamaWebComponent extends HTMLElement {
   constructor(shadowMode: ShadowRootMode = ShadowRootMode.Closed) {
     super();
 
+    // Track component creation
+    if (__DEV__) {
+      BazlamaMonitor.trackComponentCreated(this);
+    }
+
     this.style.display = "block";
     this.root = this;
 
@@ -91,6 +97,9 @@ export default class BazlamaWebComponent extends HTMLElement {
   render(): void {
     if (this.isNoRenderedComponent) return;
 
+    // Track render start
+    const renderStartTime = __DEV__ ? BazlamaMonitor.trackRenderStart(this) : 0;
+
     // Clear selector cache before re-render since DOM will change
     clearSelectorCache(this);
 
@@ -106,6 +115,11 @@ export default class BazlamaWebComponent extends HTMLElement {
     this.CreateHtmlElementEventActions();
 
     this.afterRender();
+
+    // Track render end
+    if (__DEV__) {
+      BazlamaMonitor.trackRenderEnd(this, renderStartTime);
+    }
   }
 
   /**
@@ -185,7 +199,13 @@ export default class BazlamaWebComponent extends HTMLElement {
         const prop = constructor.PropertyDefines[key];
         if (prop instanceof PropertyDefine) {
           const value = prop.getValue(this);
-          prop.changeHooks.forEach((event) => event(this, value, prop, value));
+          prop.changeHooks.forEach((event) => {
+            // Track property callback
+            if (__DEV__) {
+              BazlamaMonitor.trackPropertyCallback(this);
+            }
+            event(this, value, prop, value);
+          });
         }
       }
     }
@@ -466,6 +486,11 @@ export default class BazlamaWebComponent extends HTMLElement {
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
     if (oldValue === newValue) return;
 
+    // Track attribute callback
+    if (__DEV__) {
+      BazlamaMonitor.trackAttributeCallback(this);
+    }
+
     const prop = this.getConstructor().GetPropertyDefineByAttributeName(name);
     if (!prop) return;
 
@@ -479,6 +504,12 @@ export default class BazlamaWebComponent extends HTMLElement {
   connectedCallback(): void {
     this.isDomConnected = true;
     this.isRendered = false;
+    
+    // Track component connected
+    if (__DEV__) {
+      BazlamaMonitor.trackComponentConnected(this);
+    }
+    
     this.InitBazlamaWebComponent();
     this.onConnected();
     this.render();
@@ -492,6 +523,12 @@ export default class BazlamaWebComponent extends HTMLElement {
     this.cleanupEventListeners();
     this.isDomConnected = false;
     this.isRendered = false;
+    
+    // Track component disconnected
+    if (__DEV__) {
+      BazlamaMonitor.trackComponentDisconnected(this);
+    }
+    
     this.onDisconnected();
   }
 

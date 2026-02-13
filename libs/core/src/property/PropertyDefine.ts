@@ -11,6 +11,7 @@ import type TPropertyChangeHook from "./types/TPropertyChangeHandler.ts";
 import type IPropertyDefineOption from "./types/IPropertyDefineOption.ts";
 import type { TPropertyValueTypeName, TPropertyValueType } from "./types/TPropertyValueType.ts";
 import BazConvert from "../helper/BazConvert.ts";
+import BazlamaMonitor from "../helper/BazlamaMonitor.ts";
 import type IPropertyEventDetail from "./types/IPropertyEventDetail.ts";
 
 /**
@@ -179,7 +180,14 @@ class PropertyDefine {
         break;
     }
 
-    this.changeHooks.forEach((event) => event(bazComponent, value, this, oldValue));
+    // Track property callback execution for each hook
+    this.changeHooks.forEach((event) => {
+      if (__DEV__) {
+        BazlamaMonitor.trackPropertyCallback(bazComponent);
+      }
+      event(bazComponent, value, this, oldValue);
+    });
+    
     if (
       this.isFireRenderOnChanged &&
       disableRenderRequest === false &&

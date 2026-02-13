@@ -6,6 +6,9 @@ import type { BazInput, IBazInputButton } from "../../baz-ui/baz-input";
  * BazInput component demo page
  */
 export class InputPage extends BasePage {
+  private debounceTimer: number | null = null;
+  private previousState: Record<string, string | boolean> = {};
+  
   render(): string {
     return inputHtml;
   }
@@ -59,62 +62,115 @@ export class InputPage extends BasePage {
       const btn2Icon = ctrlBtn2Icon?.value || "";
       const btn2Color = (ctrlBtn2Color?.value || "primary") as IBazInputButton["color"];
 
-      // Update baz-input attributes
-      playgroundInput.setAttribute("label", label);
-      playgroundInput.setAttribute("description", description);
-      playgroundInput.setAttribute("prefix", prefix);
-      playgroundInput.setAttribute("suffix", suffix);
-      playgroundInput.setAttribute("placeholder", placeholder);
-      playgroundInput.setAttribute("help-text", helpText);
-      playgroundInput.setAttribute("size", size);
-      playgroundInput.setAttribute("color", color);
+      // Create current state object
+      const currentState: Record<string, string | boolean> = {
+        label,
+        description,
+        prefix,
+        suffix,
+        placeholder,
+        helpText,
+        size,
+        color,
+        disabled,
+        readonly,
+        useMonoFont,
+        btn1Icon,
+        btn1Color: btn1Color || '',
+        btn2Icon,
+        btn2Color: btn2Color || '',
+      };
 
-      if (disabled) {
-        playgroundInput.setAttribute("disabled", "true");
-      } else {
-        playgroundInput.removeAttribute("disabled");
+      // Only update changed attributes
+      if (this.previousState.label !== label) {
+        playgroundInput.setAttribute("label", label);
+      }
+      if (this.previousState.description !== description) {
+        playgroundInput.setAttribute("description", description);
+      }
+      if (this.previousState.prefix !== prefix) {
+        playgroundInput.setAttribute("prefix", prefix);
+      }
+      if (this.previousState.suffix !== suffix) {
+        playgroundInput.setAttribute("suffix", suffix);
+      }
+      if (this.previousState.placeholder !== placeholder) {
+        playgroundInput.setAttribute("placeholder", placeholder);
+      }
+      if (this.previousState.helpText !== helpText) {
+        playgroundInput.setAttribute("help-text", helpText);
+      }
+      if (this.previousState.size !== size) {
+        playgroundInput.setAttribute("size", size);
+      }
+      if (this.previousState.color !== color) {
+        playgroundInput.setAttribute("color", color);
       }
 
-      if (readonly) {
-        playgroundInput.setAttribute("readonly", "");
-      } else {
-        playgroundInput.removeAttribute("readonly");
+      if (this.previousState.disabled !== disabled) {
+        if (disabled) {
+          playgroundInput.setAttribute("disabled", "true");
+        } else {
+          playgroundInput.removeAttribute("disabled");
+        }
       }
 
-      if (useMonoFont) {
-        playgroundInput.setAttribute("use-mono-font-for-prefix-suffix", "true");
-      } else {
-        playgroundInput.removeAttribute("use-mono-font-for-prefix-suffix");
+      if (this.previousState.readonly !== readonly) {
+        if (readonly) {
+          playgroundInput.setAttribute("readonly", "");
+        } else {
+          playgroundInput.removeAttribute("readonly");
+        }
       }
 
-      // Update buttons using HTML child elements
-      // Clear existing input-button elements
-      const existingButtons = playgroundInput.querySelectorAll('input-button');
-      existingButtons.forEach(btn => btn.remove());
-
-      // Add button 1 if icon selected
-      if (btn1Icon) {
-        const btn1 = document.createElement('input-button');
-        btn1.setAttribute('name', 'btn1');
-        btn1.setAttribute('icon', btn1Icon);
-        btn1.setAttribute('color', btn1Color);
-        btn1.setAttribute('description', `${btn1Icon} button`);
-        playgroundInput.appendChild(btn1);
+      if (this.previousState.useMonoFont !== useMonoFont) {
+        if (useMonoFont) {
+          playgroundInput.setAttribute("use-mono-font-for-prefix-suffix", "true");
+        } else {
+          playgroundInput.removeAttribute("use-mono-font-for-prefix-suffix");
+        }
       }
 
-      // Add button 2 if icon selected
-      if (btn2Icon) {
-        const btn2 = document.createElement('input-button');
-        btn2.setAttribute('name', 'btn2');
-        btn2.setAttribute('icon', btn2Icon);
-        btn2.setAttribute('color', btn2Color);
-        btn2.setAttribute('description', `${btn2Icon} button`);
-        playgroundInput.appendChild(btn2);
+      // Only update buttons if they changed
+      const buttonsChanged = 
+        this.previousState.btn1Icon !== btn1Icon ||
+        this.previousState.btn1Color !== btn1Color ||
+        this.previousState.btn2Icon !== btn2Icon ||
+        this.previousState.btn2Color !== btn2Color;
+
+      if (buttonsChanged) {
+        // Update buttons using HTML child elements
+        // Clear existing input-button elements
+        const existingButtons = playgroundInput.querySelectorAll('input-button');
+        existingButtons.forEach(btn => btn.remove());
+
+        // Add button 1 if icon selected
+        if (btn1Icon) {
+          const btn1 = document.createElement('input-button');
+          btn1.setAttribute('name', 'btn1');
+          btn1.setAttribute('icon', btn1Icon);
+          if (btn1Color) btn1.setAttribute('color', btn1Color);
+          btn1.setAttribute('description', `${btn1Icon} button`);
+          playgroundInput.appendChild(btn1);
+        }
+
+        // Add button 2 if icon selected
+        if (btn2Icon) {
+          const btn2 = document.createElement('input-button');
+          btn2.setAttribute('name', 'btn2');
+          btn2.setAttribute('icon', btn2Icon);
+          if (btn2Color) btn2.setAttribute('color', btn2Color);
+          btn2.setAttribute('description', `${btn2Icon} button`);
+          playgroundInput.appendChild(btn2);
+        }
+
+        // Re-parse buttons from children
+        (playgroundInput as any).parseButtonsFromChildren?.();
+        playgroundInput.renderButtons();
       }
 
-      // Re-parse buttons from children
-      (playgroundInput as any).parseButtonsFromChildren?.();
-      playgroundInput.renderButtons();
+      // Store current state for next comparison
+      this.previousState = currentState;
 
       // Generate code
       updateGeneratedCode();
@@ -170,10 +226,21 @@ export class InputPage extends BasePage {
       generatedCode.textContent = code;
     };
 
+    // Debounced version for text inputs
+    const debouncedUpdatePreview = () => {
+      if (this.debounceTimer !== null) {
+        clearTimeout(this.debounceTimer);
+      }
+      this.debounceTimer = window.setTimeout(() => {
+        updatePreview();
+        this.debounceTimer = null;
+      }, 150); // 150ms debounce
+    };
+
     // Get signal for cleanup
     const signal = this.getSignal();
 
-    // Add event listeners to all text input controls
+    // Add event listeners to all text input controls with debounce
     const textInputs = [
       ctrlLabel,
       ctrlDescription,
@@ -184,7 +251,7 @@ export class InputPage extends BasePage {
     ];
     textInputs.forEach((ctrl) => {
       if (ctrl) {
-        ctrl.addEventListener("input", updatePreview, { signal });
+        ctrl.addEventListener("input", debouncedUpdatePreview, { signal });
       }
     });
 
@@ -231,6 +298,17 @@ export class InputPage extends BasePage {
 
     // Initialize preview with initial button configuration
     updatePreview();
+  }
+
+  /**
+   * Cleanup method
+   */
+  destroy(): void {
+    if (this.debounceTimer !== null) {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = null;
+    }
+    super.destroy();
   }
 
   /**

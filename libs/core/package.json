@@ -39,6 +39,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/bazlama-web-component.es.js",
       "require": "./dist/bazlama-web-component.cjs.js"
+    },
+    "./dev": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bazlama-web-component.dev.es.js",
+      "require": "./dist/bazlama-web-component.dev.cjs.js"
     }
   },
   "files": [
@@ -47,7 +52,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "npm run build:prod && npm run build:dev",
+    "build:prod": "vite build --mode production",
+    "build:dev": "vite build --mode development",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

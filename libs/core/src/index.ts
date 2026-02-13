@@ -12,6 +12,8 @@ import {
   bazlamaLogError,
 } from "./helper/BazlamaError.ts";
 import { queryCached, clearSelectorCache, invalidateSelector } from "./helper/SelectorCache.ts";
+import BazlamaMonitor from "./helper/BazlamaMonitor.ts";
+import type { IComponentStats, IGlobalStats } from "./helper/BazlamaMonitor.ts";
 
 import { ShadowRootMode } from "./component/ShadowRootMode.ts";
 import BazlamaWebComponent from "./component/BazlamaWebComponent.ts";
@@ -66,6 +68,7 @@ export {
   BazConvert,
   BazGeneral,
   BazColor,
+  BazlamaMonitor,
 
   // Error classes
   BazlamaError,
@@ -130,4 +133,6 @@ export type {
   RGB,
   HSL,
   ColorStop,
+  IComponentStats,
+  IGlobalStats,
 };

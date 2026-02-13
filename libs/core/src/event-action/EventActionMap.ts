@@ -1,4 +1,5 @@
 import type BazlamaWebComponent from "../component/BazlamaWebComponent";
+import BazlamaMonitor from "../helper/BazlamaMonitor";
 import type { TEventActionMethod } from "./TEventActionMethod";
 
 /**
@@ -55,6 +56,10 @@ export default class EventActionMap {
     if (elements) {
       elements.forEach((element) => {
         const handler = (event: Event) => {
+          // Track event action execution
+          if (__DEV__) {
+            BazlamaMonitor.trackEventAction(bazComponent);
+          }
           this.actionMethod(this.name, element as HTMLElement, this.eventName, event);
         };
 

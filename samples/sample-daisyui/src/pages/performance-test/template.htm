@@ -1,0 +1,228 @@
+<div class="page-container">
+  <!-- Header -->
+  <div class="bg-warning/10 rounded-box p-8 mb-8">
+    <div class="flex items-center gap-4 mb-4">
+      <div class="text-5xl">⚡</div>
+      <div>
+        <h1 class="text-4xl font-bold mb-2">Performance Test Lab</h1>
+        <p class="text-base-content/70 text-lg">
+          Compare attribute vs property changes and their impact on rendering
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Component -->
+  <div class="card bg-base-100 shadow-xl mb-8">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Test Subject: baz-input</h2>
+      
+      <!-- The input component being tested -->
+      <div class="p-8 bg-base-200 rounded-box">
+        <baz-input
+          id="test-input"
+          label="Test Input"
+          placeholder="Type something..."
+          help-text="This input is being monitored"
+          size="md"
+          color="neutral">
+        </baz-input>
+      </div>
+
+      <!-- Current Statistics -->
+      <div class="stats stats-vertical lg:stats-horizontal shadow mt-6">
+        <div class="stat">
+          <div class="stat-title text-xs">Renders</div>
+          <div id="stat-renders" class="stat-value text-2xl text-primary">0</div>
+          <div class="stat-desc">Total render calls</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title text-xs">Avg Duration</div>
+          <div id="stat-avg-duration" class="stat-value text-2xl text-secondary">0ms</div>
+          <div class="stat-desc">Per render</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title text-xs">Total Duration</div>
+          <div id="stat-total-duration" class="stat-value text-2xl text-accent">0ms</div>
+          <div class="stat-desc">All renders combined</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title text-xs">Attribute Callbacks</div>
+          <div id="stat-attributes" class="stat-value text-2xl text-info">0</div>
+          <div class="stat-desc">attributeChangedCallback</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title text-xs">Property Callbacks</div>
+          <div id="stat-properties" class="stat-value text-2xl text-success">0</div>
+          <div class="stat-desc">Property change hooks</div>
+        </div>
+      </div>
+
+      <!-- Manual Render Button -->
+      <div class="flex justify-center mt-6">
+        <button id="btn-manual-render" class="btn btn-warning btn-wide gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Manual Render
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Control Panels -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Property Changes -->
+    <div class="card bg-gradient-to-br from-primary/10 to-primary/5 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          JavaScript Property Changes
+        </h2>
+        <p class="text-sm text-base-content/70 mb-4">
+          Direct property assignment: <code class="badge badge-sm">input.label = "..."</code>
+        </p>
+
+        <div class="space-y-2">
+          <button id="btn-prop-label" class="btn btn-primary btn-sm w-full">
+            Change Label Property
+          </button>
+          <button id="btn-prop-placeholder" class="btn btn-primary btn-sm w-full">
+            Change Placeholder Property
+          </button>
+          <button id="btn-prop-value" class="btn btn-primary btn-sm w-full">
+            Change Value Property
+          </button>
+          <button id="btn-prop-size" class="btn btn-primary btn-sm w-full">
+            Change Size Property
+          </button>
+          <button id="btn-prop-color" class="btn btn-primary btn-sm w-full">
+            Change Color Property
+          </button>
+        </div>
+
+        <div class="divider">Batch Operation</div>
+
+        <button id="btn-batch-props" class="btn btn-primary w-full">
+          🚀 Change 5 Properties at Once
+        </button>
+      </div>
+    </div>
+
+    <!-- Attribute Changes -->
+    <div class="card bg-gradient-to-br from-secondary/10 to-secondary/5 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title text-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          HTML Attribute Changes
+        </h2>
+        <p class="text-sm text-base-content/70 mb-4">
+          DOM attribute modification: <code class="badge badge-sm">input.setAttribute("label", "...")</code>
+        </p>
+
+        <div class="space-y-2">
+          <button id="btn-attr-label" class="btn btn-secondary btn-sm w-full">
+            Change Label Attribute
+          </button>
+          <button id="btn-attr-placeholder" class="btn btn-secondary btn-sm w-full">
+            Change Placeholder Attribute
+          </button>
+          <button id="btn-attr-value" class="btn btn-secondary btn-sm w-full">
+            Change Value Attribute
+          </button>
+          <button id="btn-attr-size" class="btn btn-secondary btn-sm w-full">
+            Change Size Attribute
+          </button>
+          <button id="btn-attr-color" class="btn btn-secondary btn-sm w-full">
+            Change Color Attribute
+          </button>
+        </div>
+
+        <div class="divider">Batch Operation</div>
+
+        <button id="btn-batch-attrs" class="btn btn-secondary w-full">
+          🚀 Change 5 Attributes at Once
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logs Table -->
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="card-title">Change Log</h2>
+        <div class="flex gap-2">
+          <button id="btn-reset-stats" class="btn btn-warning btn-sm">
+            Reset Stats
+          </button>
+          <button id="btn-clear-logs" class="btn btn-ghost btn-sm">
+            Clear Logs
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="table table-zebra table-sm">
+          <thead>
+            <tr>
+              <th class="w-24">Time</th>
+              <th>Action</th>
+              <th class="w-32">Method</th>
+              <th class="w-24 text-right">Duration</th>
+              <th class="w-20 text-right">Renders</th>
+              <th class="w-32 text-right">
+                <span class="text-secondary">Attr</span> / 
+                <span class="text-primary">Prop</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="logs-tbody">
+            <tr>
+              <td colspan="6" class="text-center text-base-content/50 py-8">
+                No logs yet. Click buttons above to test performance.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Information Panel -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+    <div class="alert alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div class="text-xs">
+        <h3 class="font-bold">Property Changes</h3>
+        <p>Direct assignment triggers property setters and change hooks immediately. More efficient for programmatic updates.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div class="text-xs">
+        <h3 class="font-bold">Attribute Changes</h3>
+        <p>Triggers <code>attributeChangedCallback</code> which then updates properties. Better for HTML/template sync but slightly slower.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+      <div class="text-xs">
+        <h3 class="font-bold">Manual Render</h3>
+        <p>Property/attribute changes update hooks but don't re-render DOM. Use Manual Render button to force a complete re-render.</p>
+      </div>
+    </div>
+  </div>
+</div>

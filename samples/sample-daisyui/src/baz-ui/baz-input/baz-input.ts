@@ -5,7 +5,6 @@ import {
   ChangeHooks,
   CustomElement,
   FireEvent,
-  Property,
   ShadowRootMode,
   useCustomHook,
   useElementAttribute,

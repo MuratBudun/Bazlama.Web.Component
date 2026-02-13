@@ -149,6 +149,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: parseInt(issueNumber),
-                body: `🎉 This issue has been resolved in version ${version}!\n\nInstall it via:\n\`\`\`bash\nnpm install bazlama-web-component@${version}\n\`\`\``
+                body: `This issue has been resolved in version ${version}!\n\nInstall it via:\n\`\`\`bash\nnpm install bazlama-web-component@${version}\n\`\`\``
               });
             }

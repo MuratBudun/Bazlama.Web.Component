@@ -26,6 +26,31 @@ Try out Bazlama Web Component with interactive examples:
 npm install bazlama-web-component
 ```
 
+### Development Build (with Performance Monitoring)
+
+For debugging and performance analysis, use the development build:
+
+```bash
+npm install bazlama-web-component
+```
+
+Then import from `/dev`:
+
+```typescript
+import { BazlamaWebComponent, BazlamaMonitor } from 'bazlama-web-component/dev';
+
+// Enable monitoring
+BazlamaMonitor.enabled = true;
+
+// Get performance statistics
+const stats = BazlamaMonitor.getGlobalStats();
+console.log('Total renders:', stats.totalRenders);
+```
+
+See [MONITORING.md](./MONITORING.md) for complete monitoring documentation.
+
+> **Note:** The development build includes performance monitoring tools and is ~10 KB larger. Use the standard import (without `/dev`) for production builds.
+
 ## TypeScript Configuration
 
 Enable decorators in your `tsconfig.json`:

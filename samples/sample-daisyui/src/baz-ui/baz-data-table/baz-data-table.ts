@@ -115,6 +115,9 @@ export class BazDataTable extends BazlamaWebComponent {
   private _boundMouseMove: ((e: MouseEvent) => void) | null = null;
   private _boundMouseUp: (() => void) | null = null;
 
+  /** Throttle timeout for resize operations */
+  private _resizeThrottleTimeout: number | null = null;
+
   constructor() {
     super(ShadowRootMode.None);
     this.InitBazlamaWebComponent();
@@ -274,7 +277,7 @@ export class BazDataTable extends BazlamaWebComponent {
       // Resize handle
       const resizeHandle = document.createElement("div");
       resizeHandle.className = "resize-handle";
-      resizeHandle.addEventListener("mousedown", (e) => this.startResize(e, index));
+      resizeHandle.addEventListener("mousedown", (e) => this.startResize(e, index), { passive: false });
       th.appendChild(resizeHandle);
 
       tr.appendChild(th);
@@ -282,9 +285,6 @@ export class BazDataTable extends BazlamaWebComponent {
 
     thead.appendChild(tr);
     table.appendChild(thead);
-
-    // Update sticky positions after render
-    requestAnimationFrame(() => this.updateStickyPositions());
   }
 
   /**
@@ -456,8 +456,14 @@ export class BazDataTable extends BazlamaWebComponent {
     }
 
     // Update sticky positions if this is a sticky column
+    // Throttled to reduce CPU usage during resize
     if (this._columns[this._resizing.columnIndex].sticky) {
-      this.updateStickyPositions();
+      if (!this._resizeThrottleTimeout) {
+        this._resizeThrottleTimeout = window.setTimeout(() => {
+          this.updateStickyPositions();
+          this._resizeThrottleTimeout = null;
+        }, 16); // ~60fps
+      }
     }
   }
 
@@ -516,6 +522,12 @@ export class BazDataTable extends BazlamaWebComponent {
     }
     if (this._boundMouseUp) {
       document.removeEventListener("mouseup", this._boundMouseUp);
+    }
+    
+    // Cleanup throttle timeout
+    if (this._resizeThrottleTimeout) {
+      clearTimeout(this._resizeThrottleTimeout);
+      this._resizeThrottleTimeout = null;
     }
 
     super.disconnectedCallback();
