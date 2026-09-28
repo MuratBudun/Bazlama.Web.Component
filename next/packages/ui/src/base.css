@@ -1,0 +1,7 @@
+@layer bazlama.base {
+  /* Parts toggled with [hidden] stay hidden even when a component rule sets display. */
+  [data-part][hidden],
+  bz-option[hidden] {
+    display: none !important;
+  }
+}

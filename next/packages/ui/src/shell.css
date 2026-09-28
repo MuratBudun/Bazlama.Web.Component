@@ -1,0 +1,209 @@
+@layer bazlama.components {
+  bz-shell {
+    --_start: var(--bz-shell-start-width, 15rem);
+    --_start-rail: var(--bz-shell-start-collapsed-width, 3.75rem);
+    --_end: var(--bz-shell-end-width, 20rem);
+    --_header-h: var(--bz-shell-header-h, 0px);
+    --_footer-h: 0px;
+    /* Where the side panels stick: below the header (classic) or at the top (sidebar). */
+    --_top: var(--_header-h);
+    --_areas:
+      "header header header"
+      "start content end"
+      "footer footer footer";
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: var(--bz-shell-areas, var(--_areas));
+    min-height: 100dvh;
+    color: var(--bz-color-fg);
+    background: var(--bz-color-bg);
+  }
+  bz-shell[variant="sidebar"] {
+    --_areas:
+      "start header end"
+      "start content end"
+      "start footer end";
+    --_top: 0px;
+  }
+  bz-shell[sticky-footer] {
+    --_footer-h: var(--bz-shell-footer-h, 0px);
+  }
+
+  bz-shell > [data-part="skip"] {
+    position: fixed;
+    top: var(--bz-space-2);
+    left: var(--bz-space-2);
+    z-index: 100;
+    padding: var(--bz-space-2) var(--bz-space-3);
+    font: 600 var(--bz-font-size) var(--bz-font-family);
+    color: var(--bz-color-primary-fg);
+    background: var(--bz-color-primary);
+    border: 0;
+    border-radius: var(--bz-radius);
+    transform: translateY(-200%);
+  }
+  bz-shell > [data-part="skip"]:focus {
+    transform: none;
+  }
+
+  bz-shell > [data-part="header"] {
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    min-width: 0;
+  }
+  bz-shell > [data-part="footer"] {
+    grid-area: footer;
+    min-width: 0;
+  }
+  bz-shell[sticky-footer] > [data-part="footer"] {
+    position: sticky;
+    bottom: 0;
+    z-index: 30;
+  }
+  bz-shell > [data-part="content"] {
+    grid-area: content;
+    min-width: 0;
+    outline: none;
+  }
+
+  /* Sides: the cell stretches over its rows, the panel inside sticks and scrolls. */
+  bz-shell > :is([data-part="start"], [data-part="end"]) {
+    min-width: 0;
+    box-sizing: border-box;
+    background: var(--bz-color-surface);
+    transition: width var(--bz-duration);
+  }
+  bz-shell > [data-part="start"] {
+    grid-area: start;
+    width: var(--_start);
+    border-inline-end: 1px solid var(--bz-color-border);
+  }
+  bz-shell > [data-part="end"] {
+    grid-area: end;
+    width: var(--_end);
+    border-inline-start: 1px solid var(--bz-color-border);
+  }
+  bz-shell > * > :is([data-part="start-panel"], [data-part="end-panel"]) {
+    position: sticky;
+    top: var(--_top);
+    box-sizing: border-box;
+    max-height: calc(100dvh - var(--_top) - var(--_footer-h));
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  bz-shell > * > [data-part="start-panel"] {
+    padding: var(--bz-space-2);
+  }
+  bz-shell[start-collapsed]:not([data-compact]) > [data-part="start"] {
+    width: var(--_start-rail);
+  }
+  bz-shell[start-collapsed]:not([data-compact]) > * > [data-part="start-panel"] {
+    overflow-x: hidden;
+  }
+  bz-shell[end-collapsed]:not([data-compact]) > [data-part="end"] {
+    display: none;
+  }
+  bz-shell > [data-part="backdrop"] {
+    display: none;
+  }
+
+  /* Compact: one column; the sides become drawers. */
+  bz-shell[data-compact] {
+    --_areas: "header" "content" "footer";
+    grid-template-columns: minmax(0, 1fr);
+  }
+  bz-shell[data-compact] > :is([data-part="start"], [data-part="end"]) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 60;
+    /* align-self: start would stop top/bottom from stretching a fixed box. */
+    align-self: stretch;
+    width: min(var(--_start), 85vw);
+    border: 0;
+    box-shadow: var(--bz-shadow-popup);
+    visibility: hidden;
+    /* Hidden only after sliding out; visible at once when opening, so focus can move in. */
+    transition:
+      transform 200ms,
+      visibility 0s 200ms;
+  }
+  bz-shell[data-compact] > [data-part="start"] {
+    inset-inline-start: 0;
+    transform: translateX(-105%);
+  }
+  bz-shell[data-compact] > [data-part="end"] {
+    inset-inline-end: 0;
+    width: min(var(--_end), 90vw);
+    transform: translateX(105%);
+  }
+  bz-shell[data-compact]:dir(rtl) > [data-part="start"] {
+    transform: translateX(105%);
+  }
+  bz-shell[data-compact]:dir(rtl) > [data-part="end"] {
+    transform: translateX(-105%);
+  }
+  bz-shell[data-compact][start-open] > [data-part="start"],
+  bz-shell[data-compact][end-open] > [data-part="end"] {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform 200ms,
+      visibility 0s;
+  }
+  bz-shell[data-compact] > * > :is([data-part="start-panel"], [data-part="end-panel"]) {
+    position: static;
+    max-height: 100%;
+    height: 100%;
+  }
+  bz-shell[data-compact] > [data-part="backdrop"] {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    background: var(--bz-shell-backdrop, rgb(15 20 30 / 0.4));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms;
+  }
+  bz-shell[data-compact][data-drawer] > [data-part="backdrop"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Toggle buttons for a side that is not there. */
+  bz-shell:not([data-has-start]) [data-shell-toggle="start"],
+  bz-shell:not([data-has-end]) [data-shell-toggle="end"] {
+    display: none;
+  }
+
+  bz-shell > [data-part="progress"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: 3px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  bz-shell > [data-part="progress"]::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: var(--bz-color-primary);
+    animation: bz-shell-progress 1s ease-in-out infinite;
+  }
+  @keyframes bz-shell-progress {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(260%);
+    }
+  }
+}

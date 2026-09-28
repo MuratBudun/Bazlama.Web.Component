@@ -1,0 +1,167 @@
+@layer bazlama.components {
+  [data-bz-toaster] {
+    position: fixed;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--bz-space-2);
+    width: min(var(--bz-toast-width, 22rem), calc(100vw - 2rem));
+    max-height: 100dvh;
+    margin: 0;
+    padding: var(--bz-space-4);
+    box-sizing: content-box;
+    overflow: visible;
+    border: 0;
+    background: none;
+    pointer-events: none;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+  }
+  [data-bz-toaster]:empty {
+    display: none;
+  }
+  [data-bz-toaster][data-placement^="top"] {
+    top: 0;
+  }
+  [data-bz-toaster][data-placement^="bottom"] {
+    bottom: 0;
+  }
+  [data-bz-toaster][data-placement$="left"] {
+    left: 0;
+  }
+  [data-bz-toaster][data-placement$="right"] {
+    right: 0;
+  }
+  [data-bz-toaster][data-placement$="center"] {
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  [data-bz-toaster] > [data-part="toast"] {
+    --_accent: var(--bz-color-primary);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--bz-space-3);
+    padding: var(--bz-space-3) var(--bz-space-2) var(--bz-space-3) var(--bz-space-3);
+    overflow: hidden;
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface);
+    border: 1px solid var(--bz-color-border);
+    border-left: 3px solid var(--_accent);
+    border-radius: var(--bz-radius);
+    box-shadow: var(--bz-shadow-popup);
+    pointer-events: auto;
+    transition:
+      opacity 200ms,
+      translate 200ms;
+  }
+  @starting-style {
+    [data-bz-toaster] > [data-part="toast"] {
+      opacity: 0;
+      translate: 0 0.75rem;
+    }
+    [data-bz-toaster][data-placement^="top"] > [data-part="toast"] {
+      translate: 0 -0.75rem;
+    }
+  }
+  [data-bz-toaster] > [data-part="toast"][data-leaving] {
+    opacity: 0;
+    translate: 1.5rem 0;
+  }
+  [data-bz-toaster] > [data-part="toast"][data-variant="success"] {
+    --_accent: var(--bz-color-success, #1f9d55);
+  }
+  [data-bz-toaster] > [data-part="toast"][data-variant="warning"] {
+    --_accent: var(--bz-color-warning, #d98e04);
+  }
+  [data-bz-toaster] > [data-part="toast"][data-variant="error"] {
+    --_accent: var(--bz-color-danger);
+  }
+
+  [data-bz-toaster] > [data-part="toast"] > [data-part="icon"] {
+    display: inline-flex;
+    padding-top: 0.15em;
+    font-size: 1.1rem;
+    color: var(--_accent);
+  }
+  [data-bz-toaster] > [data-part="toast"][data-loading] > [data-part="icon"]::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    box-sizing: border-box;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: bz-spin 0.7s linear infinite;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="content"] {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="content"] > [data-part="title"] {
+    font-weight: 600;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="content"] > [data-part="title"]:not([hidden]) + [data-part="message"] {
+    color: var(--bz-color-fg-muted);
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="action"] {
+    align-self: center;
+    padding: var(--bz-space-1) var(--bz-space-2);
+    font: inherit;
+    font-weight: 600;
+    color: var(--bz-color-primary);
+    background: none;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="action"]:hover {
+    background: var(--bz-color-primary-soft);
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="close"] {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    color: var(--bz-color-fg-muted);
+    background: none;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="close"][hidden] {
+    display: none;
+  }
+  [data-bz-toaster] > [data-part="toast"] > [data-part="close"]:hover {
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface-hover);
+  }
+  [data-bz-toaster] > [data-part="toast"] > :is([data-part="close"], [data-part="action"]):focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 1px;
+  }
+  /* Remaining time; the animation pauses with the timer. */
+  [data-bz-toaster] > [data-part="toast"] > [data-part="progress"] {
+    position: absolute;
+    inset: auto 0 0;
+    display: none;
+    height: 2px;
+    background: var(--_accent);
+    opacity: 0.5;
+    transform-origin: left;
+  }
+  [data-bz-toaster] > [data-part="toast"][data-timed] > [data-part="progress"] {
+    display: block;
+    animation: bz-toast-progress var(--bz-toast-duration) linear forwards;
+  }
+  [data-bz-toaster] > [data-part="toast"][data-paused] > [data-part="progress"] {
+    animation-play-state: paused;
+  }
+  @keyframes bz-toast-progress {
+    to {
+      transform: scaleX(0);
+    }
+  }
+}

@@ -1,0 +1,87 @@
+@layer bazlama.components {
+  bz-button {
+    --_bg: var(--bz-button-bg, var(--bz-color-surface));
+    --_bg-hover: var(--bz-button-bg-hover, var(--bz-color-surface-hover));
+    --_fg: var(--bz-button-fg, var(--bz-color-fg));
+    --_border: var(--bz-button-border, var(--bz-color-border));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--bz-space-2);
+    box-sizing: border-box;
+    height: var(--bz-control-height);
+    padding: 0 var(--bz-space-4);
+    font: 500 var(--bz-font-size) / 1 var(--bz-font-family);
+    color: var(--_fg);
+    background: var(--_bg);
+    border: 1px solid var(--_border);
+    border-radius: var(--bz-radius);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition:
+      background-color var(--bz-duration),
+      border-color var(--bz-duration),
+      opacity var(--bz-duration);
+  }
+  bz-button:hover {
+    background: var(--_bg-hover);
+  }
+  bz-button:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 2px;
+  }
+  bz-button[variant="primary"] {
+    --_bg: var(--bz-button-bg, var(--bz-color-primary));
+    --_bg-hover: var(--bz-button-bg-hover, var(--bz-color-primary-hover));
+    --_fg: var(--bz-button-fg, var(--bz-color-primary-fg));
+    --_border: transparent;
+  }
+  bz-button[variant="danger"] {
+    --_bg: var(--bz-color-danger);
+    --_bg-hover: var(--bz-color-danger-hover);
+    --_fg: var(--bz-color-danger-fg);
+    --_border: transparent;
+  }
+  bz-button[variant="ghost"] {
+    --_bg: transparent;
+    --_border: transparent;
+  }
+  bz-button[size="sm"] {
+    height: calc(var(--bz-control-height) * 0.8);
+    padding-inline: var(--bz-space-3);
+  }
+  bz-button[size="lg"] {
+    height: calc(var(--bz-control-height) * 1.2);
+    padding-inline: 1.25rem;
+    font-size: 1rem;
+  }
+  bz-button[aria-pressed="true"] {
+    --_bg: var(--bz-color-primary-soft);
+    --_border: var(--bz-color-primary);
+    --_fg: var(--bz-color-primary);
+  }
+  bz-button[aria-disabled="true"] {
+    --_bg-hover: var(--_bg);
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  bz-button[aria-busy="true"] {
+    cursor: progress;
+  }
+  bz-button[aria-busy="true"]::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    box-sizing: border-box;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: bz-spin 0.7s linear infinite;
+  }
+  @keyframes bz-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}

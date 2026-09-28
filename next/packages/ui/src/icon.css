@@ -1,0 +1,11 @@
+@layer bazlama.components {
+  .bz-icon {
+    flex-shrink: 0;
+    vertical-align: -0.125em;
+    stroke-width: var(--bz-icon-stroke-width, 2);
+  }
+  bz-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+}

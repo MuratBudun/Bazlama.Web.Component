@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Starts the dev server, opens the playground in Chrome and stops the server afterwards.
+      // Breakpoints work in next/packages/**/*.ts and next/playground/**/*.ts (Vite source maps).
+      "name": "Playground: Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5391/#debug",
+      "webRoot": "${workspaceFolder}/next/playground",
+      "preLaunchTask": "next: dev server",
+      "postDebugTask": "next: stop dev server",
+      "skipFiles": ["**/node_modules/**"]
+    },
+    {
+      "name": "Playground: Edge",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:5391/#debug",
+      "webRoot": "${workspaceFolder}/next/playground",
+      "preLaunchTask": "next: dev server",
+      "postDebugTask": "next: stop dev server",
+      "skipFiles": ["**/node_modules/**"]
+    },
+    {
+      // Use when `npm run dev` is already running in a terminal (the port is fixed, 5391).
+      "name": "Playground: Chrome (sunucu zaten açık)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5391/#debug",
+      "webRoot": "${workspaceFolder}/next/playground",
+      "skipFiles": ["**/node_modules/**"]
+    },
+    {
+      // Debugs the test file open in the editor (next/tests/*.test.ts).
+      "name": "Vitest: açık test dosyası",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/next",
+      "program": "${workspaceFolder}/next/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${fileBasenameNoExtension}", "--no-file-parallelism", "--testTimeout=0"],
+      "autoAttachChildProcesses": true,
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Vitest: tüm testler",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/next",
+      "program": "${workspaceFolder}/next/node_modules/vitest/vitest.mjs",
+      "args": ["run", "--no-file-parallelism", "--testTimeout=0"],
+      "autoAttachChildProcesses": true,
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

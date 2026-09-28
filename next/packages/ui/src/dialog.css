@@ -1,0 +1,140 @@
+@layer bazlama.components {
+  bz-dialog {
+    display: contents;
+  }
+  bz-dialog > [data-part="dialog"] {
+    --_width: var(--bz-dialog-width, 32rem);
+    box-sizing: border-box;
+    width: min(var(--_width), calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--bz-radius) * 1.5);
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface);
+    box-shadow: var(--bz-shadow-dialog, 0 24px 64px rgb(15 20 30 / 0.28), 0 4px 12px rgb(15 20 30 / 0.12));
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    overflow: hidden;
+    /* Open/close animation: the element stays rendered until the transition ends. */
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+    transition:
+      opacity var(--bz-dialog-duration, 180ms),
+      transform var(--bz-dialog-duration, 180ms),
+      overlay var(--bz-dialog-duration, 180ms) allow-discrete,
+      display var(--bz-dialog-duration, 180ms) allow-discrete;
+  }
+  bz-dialog > [data-part="dialog"][open] {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    bz-dialog > [data-part="dialog"][open] {
+      opacity: 0;
+      transform: translateY(0.75rem) scale(0.98);
+    }
+  }
+  bz-dialog > [data-part="dialog"]::backdrop {
+    background: var(--bz-dialog-backdrop, rgb(15 20 30 / 0.45));
+    opacity: 0;
+    transition:
+      opacity var(--bz-dialog-duration, 180ms),
+      overlay var(--bz-dialog-duration, 180ms) allow-discrete,
+      display var(--bz-dialog-duration, 180ms) allow-discrete;
+  }
+  bz-dialog > [data-part="dialog"][open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    bz-dialog > [data-part="dialog"][open]::backdrop {
+      opacity: 0;
+    }
+  }
+  /* Nested: upper levels dim less so the stack does not turn black. */
+  bz-dialog:not([data-depth="1"]) > [data-part="dialog"]::backdrop {
+    background: var(--bz-dialog-backdrop-nested, rgb(15 20 30 / 0.2));
+  }
+  bz-dialog[data-covered] > [data-part="dialog"] {
+    transform: scale(0.985);
+    filter: brightness(0.97);
+  }
+  bz-dialog[data-refused] > [data-part="dialog"] > [data-part="panel"] {
+    animation: bz-dialog-refuse 0.3s;
+  }
+  @keyframes bz-dialog-refuse {
+    30% {
+      transform: scale(1.02);
+    }
+  }
+
+  bz-dialog[size="sm"] {
+    --bz-dialog-width: 24rem;
+  }
+  bz-dialog[size="lg"] {
+    --bz-dialog-width: 48rem;
+  }
+  bz-dialog[size="xl"] {
+    --bz-dialog-width: 72rem;
+  }
+  bz-dialog[size="full"] > [data-part="dialog"] {
+    width: calc(100vw - 2rem);
+    height: calc(100dvh - 2rem);
+  }
+
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-3);
+    padding: var(--bz-space-4) var(--bz-space-4) 0 1.25rem;
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] > [data-part="title"] {
+    flex: 1;
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 650;
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] > [data-part="close"] {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin-left: auto;
+    padding: 0;
+    font-size: 1.1rem;
+    color: var(--bz-color-fg-muted);
+    background: none;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] > [data-part="close"]:hover {
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface-hover);
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] > [data-part="close"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 1px;
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="body"] {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: var(--bz-space-3) 1.25rem var(--bz-space-4);
+  }
+  bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="footer"] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--bz-space-2);
+    padding: var(--bz-space-3) 1.25rem var(--bz-space-4);
+    border-top: 1px solid var(--bz-color-border);
+    background: color-mix(in srgb, var(--bz-color-surface-hover) 50%, transparent);
+  }
+}

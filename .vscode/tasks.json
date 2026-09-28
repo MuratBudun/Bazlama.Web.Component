@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Playground dev server (http://localhost:5391). Used as preLaunchTask by the browser configs.
+      "label": "next: dev server",
+      "type": "npm",
+      "script": "dev",
+      "path": "next",
+      "isBackground": true,
+      "presentation": { "reveal": "silent", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": {
+          "activeBegins": true,
+          // Vite colors its output; these fragments survive the ANSI codes.
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in"
+        }
+      }
+    },
+    {
+      // Stops the dev server when a debug session ends (postDebugTask).
+      "label": "next: stop dev server",
+      "type": "shell",
+      "command": "echo ${input:terminateDevServer}",
+      "presentation": { "reveal": "never" },
+      "problemMatcher": []
+    },
+    {
+      "label": "next: test",
+      "type": "npm",
+      "script": "test",
+      "path": "next",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "next: typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "path": "next",
+      "group": "build",
+      "problemMatcher": ["$tsc"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminateDevServer",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "next: dev server"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+@layer bazlama.components {
+  /* ------------------------------------------------------------------ bz-header */
+  bz-header {
+    display: block;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+  }
+  bz-header > [data-part="bar"] {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-3);
+    min-height: var(--bz-header-height, 3.5rem);
+    padding: var(--bz-space-1) var(--bz-space-3);
+    box-sizing: border-box;
+    color: var(--bz-header-fg, var(--bz-color-fg));
+    background: var(--bz-header-bg, var(--bz-color-surface));
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  bz-header > [data-part="bar"] > [data-part="menu"] {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    font-size: 1.15rem;
+    color: inherit;
+    background: none;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  /* The menu button toggles a shell's start side: hidden when there is none. */
+  bz-header > [data-part="bar"] > [data-part="menu"][hidden],
+  bz-header:not(bz-shell[data-has-start] *) > [data-part="bar"] > [data-part="menu"] {
+    display: none;
+  }
+  bz-header > [data-part="bar"] > [data-part="menu"]:hover {
+    background: var(--bz-color-surface-hover);
+  }
+  bz-header > [data-part="bar"] > :is([data-part="menu"], [data-part="brand"]):focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 2px;
+  }
+  bz-header > [data-part="bar"] > [data-part="brand"] {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-2);
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--bz-radius-sm);
+  }
+  bz-header > [data-part="bar"] > [data-part="brand"] > [data-part="logo"] {
+    display: inline-flex;
+    height: var(--bz-header-logo-size, 2rem);
+    width: auto;
+    flex-shrink: 0;
+  }
+  bz-header > [data-part="bar"] > [data-part="brand"] > img[data-part="logo"][hidden] {
+    display: none;
+  }
+  bz-header > [data-part="bar"] > [data-part="brand"] > [data-part="titles"] {
+    display: grid;
+    min-width: 0;
+    line-height: 1.2;
+  }
+  bz-header [data-part="title"] {
+    overflow: hidden;
+    font-weight: 700;
+    font-size: 1.02rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  bz-header [data-part="subtitle"] {
+    overflow: hidden;
+    font-size: 0.78rem;
+    color: var(--bz-color-fg-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  bz-header > [data-part="bar"] > [data-part="center"] {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+  bz-header > [data-part="bar"] > [data-part="center"][hidden] {
+    display: none;
+  }
+  bz-header > [data-part="bar"] > [data-part="actions"] {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-1);
+    /* Actions and the user stay on the end side, with or without a center area. */
+    margin-inline-start: auto;
+  }
+  bz-header > [data-part="bar"] > [data-part="actions"][hidden] {
+    display: none;
+  }
+  bz-header > [data-part="bar"] > [data-part="actions"][hidden] + [data-part="user"] {
+    margin-inline-start: auto;
+  }
+  bz-header > [data-part="bar"] > [data-part="user"] {
+    display: flex;
+    align-items: center;
+  }
+  bz-header [data-part="user-button"] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bz-space-2);
+    height: auto;
+    padding-block: var(--bz-space-1);
+  }
+  bz-header [data-part="user-text"] {
+    display: grid;
+    line-height: 1.15;
+    text-align: start;
+  }
+  bz-header [data-part="user-name"] {
+    font-weight: 600;
+  }
+  bz-header [data-part="user-detail"] {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--bz-color-fg-muted);
+  }
+  /* Narrow screens: the subtitle and the user's text give way. */
+  @media (max-width: 640px) {
+    bz-header :is([data-part="subtitle"], [data-part="user-text"]) {
+      display: none;
+    }
+  }
+
+  /* ------------------------------------------------------------------ bz-footer */
+  bz-footer {
+    display: block;
+    font: 0.8rem / 1.4 var(--bz-font-family);
+  }
+  bz-footer > [data-part="bar"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--bz-space-2) var(--bz-space-4);
+    padding: var(--bz-space-2) var(--bz-space-4);
+    color: var(--bz-footer-fg, var(--bz-color-fg-muted));
+    background: var(--bz-footer-bg, var(--bz-color-surface));
+    border-top: 1px solid var(--bz-color-border);
+  }
+  bz-footer > [data-part="bar"] > :is([data-part="start"], [data-part="end"]) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--bz-space-3);
+  }
+
+  /* ------------------------------------------------------------------ bz-avatar */
+  bz-avatar {
+    --_size: 2rem;
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: var(--_size);
+    height: var(--_size);
+    font: 600 calc(var(--_size) * 0.4) / 1 var(--bz-font-family);
+    vertical-align: middle;
+  }
+  bz-avatar[size="sm"] {
+    --_size: 1.5rem;
+  }
+  bz-avatar[size="lg"] {
+    --_size: 3rem;
+  }
+  bz-avatar[size="xl"] {
+    --_size: 4.5rem;
+  }
+  bz-avatar > [data-part="image"],
+  bz-avatar > [data-part="initials"] {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--bz-avatar-radius, 50%);
+    object-fit: cover;
+  }
+  bz-avatar > [data-part="initials"] {
+    color: hsl(var(--bz-avatar-hue, 220) 55% 30%);
+    background: hsl(var(--bz-avatar-hue, 220) 65% 88%);
+    user-select: none;
+  }
+  bz-avatar > [data-part="status"] {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 28%;
+    height: 28%;
+    min-width: 6px;
+    min-height: 6px;
+    border: 2px solid var(--bz-color-surface);
+    border-radius: 50%;
+    background: var(--bz-color-fg-muted);
+  }
+  bz-avatar > [data-part="status"][hidden] {
+    display: none;
+  }
+  bz-avatar[status="online"] > [data-part="status"] {
+    background: var(--bz-color-success, #1f9d55);
+  }
+  bz-avatar[status="away"] > [data-part="status"] {
+    background: var(--bz-color-warning, #d98e04);
+  }
+  bz-avatar[status="busy"] > [data-part="status"] {
+    background: var(--bz-color-danger);
+  }
+}

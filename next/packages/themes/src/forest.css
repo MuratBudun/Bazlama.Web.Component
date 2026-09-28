@@ -1,0 +1,24 @@
+/* Brand theme: a theme can change shape and type, not only colors. */
+@layer bazlama.tokens {
+  [data-theme="forest"] {
+    color-scheme: light;
+    --bz-font-family: Georgia, "Times New Roman", serif;
+    --bz-radius: 999px;
+    --bz-radius-sm: 0.75rem;
+    --bz-control-height: 2.5rem;
+    --bz-color-bg: #f3f1ea;
+    --bz-color-surface: #fffdf7;
+    --bz-color-surface-hover: #efeadc;
+    --bz-color-fg: #1f2a1f;
+    --bz-color-fg-muted: #5b6a58;
+    --bz-color-border: #d5ccb6;
+    --bz-color-primary: #2e6b3a;
+    --bz-color-primary-hover: #245630;
+    --bz-color-primary-fg: #fffdf7;
+    --bz-color-primary-soft: #e0ecd9;
+    --bz-color-danger: #a8412a;
+    --bz-color-danger-hover: #8c3422;
+    --bz-color-danger-fg: #fffdf7;
+    --bz-color-focus: #2e6b3a;
+  }
+}

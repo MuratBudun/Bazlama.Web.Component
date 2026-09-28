@@ -1,0 +1,54 @@
+@layer bazlama.components {
+  [data-bz-tooltip] {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    max-width: min(var(--bz-tooltip-max-width, 18rem), calc(100vw - 1rem));
+    padding: var(--bz-space-1) var(--bz-space-2);
+    overflow: visible;
+    font: 0.8rem / 1.4 var(--bz-font-family);
+    color: var(--bz-tooltip-fg, #fff);
+    background: var(--bz-tooltip-bg, #1f242d);
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    box-shadow: 0 4px 14px rgb(15 20 30 / 0.2);
+    opacity: 0;
+    transition: opacity 120ms;
+  }
+  [data-bz-tooltip]:not([data-open]) {
+    display: none;
+  }
+  [data-bz-tooltip][data-open] {
+    opacity: 1;
+  }
+  @starting-style {
+    [data-bz-tooltip][data-open] {
+      opacity: 0;
+    }
+  }
+  /* Arrow: points at the trigger center (set by the positioning code). */
+  [data-bz-tooltip]::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+    rotate: 45deg;
+  }
+  [data-bz-tooltip][data-placement="top"]::before {
+    bottom: -4px;
+    left: calc(var(--bz-anchor-x) - 4px);
+  }
+  [data-bz-tooltip][data-placement="bottom"]::before {
+    top: -4px;
+    left: calc(var(--bz-anchor-x) - 4px);
+  }
+  [data-bz-tooltip][data-placement="left"]::before {
+    right: -4px;
+    top: calc(var(--bz-anchor-y) - 4px);
+  }
+  [data-bz-tooltip][data-placement="right"]::before {
+    left: -4px;
+    top: calc(var(--bz-anchor-y) - 4px);
+  }
+}

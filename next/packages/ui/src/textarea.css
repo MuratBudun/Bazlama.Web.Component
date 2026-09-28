@@ -1,0 +1,127 @@
+@layer bazlama.components {
+  bz-textarea {
+    display: grid;
+    gap: var(--bz-space-1);
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+  }
+  bz-textarea > [data-part="label"] {
+    font-weight: 500;
+  }
+  bz-textarea > [data-part="control"] {
+    position: relative;
+    display: flex;
+  }
+  bz-textarea [data-part="input"] {
+    --_line: calc(var(--bz-font-size) * var(--bz-line-height));
+    --_pad: var(--bz-space-2);
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    min-height: calc(var(--bz-textarea-rows, 3) * var(--_line) + 2 * var(--_pad) + 2px);
+    padding: var(--_pad) var(--bz-space-3);
+    font: inherit;
+    color: var(--bz-color-fg);
+    background: var(--bz-input-bg, var(--bz-color-surface));
+    border: 1px solid var(--bz-input-border, var(--bz-color-border));
+    border-radius: var(--bz-radius);
+    outline: 0;
+    resize: vertical;
+    transition:
+      border-color var(--bz-duration),
+      box-shadow var(--bz-duration);
+  }
+  bz-textarea[expandable] [data-part="input"] {
+    padding-inline-end: calc(var(--bz-space-3) + 1.6rem);
+  }
+  bz-textarea [data-part="input"]:focus {
+    border-color: var(--bz-color-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bz-color-focus) 22%, transparent);
+  }
+  bz-textarea [data-part="input"]::placeholder {
+    color: var(--bz-color-fg-muted);
+    opacity: 0.8;
+  }
+  bz-textarea[readonly] [data-part="input"] {
+    background: var(--bz-color-surface-hover);
+  }
+  bz-textarea[disabled] [data-part="input"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    resize: none;
+  }
+  bz-textarea[resize="none"] [data-part="input"] {
+    resize: none;
+  }
+  bz-textarea[resize="both"] [data-part="input"] {
+    resize: both;
+  }
+
+  /* Autosize: grows with the content between rows and max-rows. */
+  bz-textarea[autosize] [data-part="input"] {
+    field-sizing: content;
+    resize: none;
+    overflow-y: auto;
+    max-height: calc(var(--bz-textarea-max-rows, 1000) * var(--_line) + 2 * var(--_pad) + 2px);
+  }
+
+  bz-textarea [data-part="expand"] {
+    position: absolute;
+    inset-block-start: 4px;
+    inset-inline-end: 4px;
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    color: var(--bz-color-fg-muted);
+    background: transparent;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  bz-textarea [data-part="expand"]:hover {
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface-hover);
+  }
+  bz-textarea [data-part="expand"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+  }
+
+  bz-textarea > [data-part="footer"] {
+    display: flex;
+    gap: var(--bz-space-3);
+    font-size: 0.85em;
+    color: var(--bz-color-fg-muted);
+  }
+  bz-textarea [data-part="count"] {
+    margin-inline-start: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  bz-textarea > [data-part="error"] {
+    font-size: 0.85em;
+    color: var(--bz-color-danger);
+  }
+  bz-textarea[data-invalid] [data-part="input"] {
+    border-color: var(--bz-color-danger);
+  }
+
+  /* The expanded editor (dialog). */
+  bz-dialog[data-textarea-editor] [data-part="editor"] {
+    display: block;
+    width: 100%;
+    min-height: min(60vh, 32rem);
+    box-sizing: border-box;
+    padding: var(--bz-space-3);
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface);
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius);
+    resize: vertical;
+  }
+  bz-dialog[data-textarea-editor] [data-part="editor"]:focus {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: -1px;
+  }
+}

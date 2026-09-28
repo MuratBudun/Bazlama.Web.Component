@@ -1,0 +1,36 @@
+@layer bazlama.components {
+  bz-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-toolbar-gap, var(--bz-space-1));
+    min-width: 0;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+  }
+  bz-toolbar[wrap] {
+    flex-wrap: wrap;
+  }
+  bz-toolbar[orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  bz-toolbar > [role="group"] {
+    display: flex;
+    align-items: center;
+    gap: inherit;
+  }
+  bz-toolbar-separator {
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 1px;
+    margin: var(--bz-space-1) var(--bz-space-1);
+    background: var(--bz-color-border);
+  }
+  bz-toolbar[orientation="vertical"] bz-toolbar-separator {
+    width: auto;
+    height: 1px;
+  }
+  bz-toolbar-spacer {
+    flex: 1;
+  }
+}

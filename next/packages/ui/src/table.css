@@ -1,0 +1,91 @@
+@layer bazlama.components {
+  bz-table {
+    display: block;
+    max-height: var(--bz-table-max-height, none);
+    overflow: auto;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface);
+    border: 1px solid var(--bz-color-border);
+    border-radius: calc(var(--bz-radius-sm) * 2);
+  }
+  bz-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  bz-table caption {
+    caption-side: top;
+    padding: var(--bz-space-3) var(--bz-space-4);
+    font-weight: 600;
+    text-align: start;
+  }
+  bz-table :is(th, td) {
+    padding: var(--bz-space-2) var(--bz-space-3);
+    text-align: start;
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  bz-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--bz-table-header-bg, var(--bz-color-surface-hover));
+  }
+  bz-table [data-align="end"] {
+    text-align: end;
+  }
+  bz-table [data-align="center"] {
+    text-align: center;
+  }
+  bz-table [data-part="sort"] {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bz-space-1);
+    cursor: pointer;
+  }
+  bz-table [data-part="sort"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 2px;
+  }
+  bz-table [data-part="sort-indicator"]::after {
+    content: "\2195";
+    font-size: 0.85em;
+    color: var(--bz-color-fg-muted);
+  }
+  bz-table [aria-sort="ascending"] [data-part="sort-indicator"]::after {
+    content: "\25B2";
+    color: var(--bz-color-primary);
+  }
+  bz-table [aria-sort="descending"] [data-part="sort-indicator"]::after {
+    content: "\25BC";
+    color: var(--bz-color-primary);
+  }
+  bz-table tbody tr:hover {
+    background: var(--bz-color-surface-hover);
+  }
+  bz-table tr[aria-selected="true"] {
+    background: var(--bz-color-primary-soft);
+  }
+  bz-table [data-part="select"] {
+    width: 2.5rem;
+  }
+  bz-table [data-part="empty"] {
+    padding: var(--bz-space-4);
+    text-align: center;
+    color: var(--bz-color-fg-muted);
+  }
+}
+
+@layer bazlama.components {
+  /* Row navigation (activatable) */
+  bz-table [data-part="row"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: -2px;
+  }
+  bz-table[activatable] [data-part="row"] {
+    cursor: default;
+  }
+}

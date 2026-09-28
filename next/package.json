@@ -1,0 +1,23 @@
+{
+  "name": "bazlama-next",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Experimental redesign of Bazlama Web Component: core + headless + ui + themes",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "size": "node scripts/size.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "jsdom": "^29.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}

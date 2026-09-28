@@ -1,0 +1,4 @@
+{
+  // Vitest: run and debug single tests from the editor gutter / Testing view.
+  "recommendations": ["vitest.explorer"]
+}

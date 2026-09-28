@@ -1,0 +1,263 @@
+@layer bazlama.components {
+  bz-data-grid {
+    --_row-h: var(--bz-data-grid-row-height, 36px);
+    --_header-bg: var(--bz-data-grid-header-bg, var(--bz-color-surface-hover));
+    --_bg: var(--bz-color-surface);
+    --_border: var(--bz-color-border);
+    --bz-data-grid-pin-shadow-start: 6px 0 6px -4px rgb(0 0 0 / 0.18);
+    --bz-data-grid-pin-shadow-end: -6px 0 6px -4px rgb(0 0 0 / 0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: var(--bz-data-grid-max-height, 32rem);
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: var(--_bg);
+    border: 1px solid var(--_border);
+    border-radius: calc(var(--bz-radius-sm) * 2);
+    overflow: hidden;
+  }
+  bz-data-grid:dir(rtl) {
+    --bz-data-grid-pin-shadow-start: -6px 0 6px -4px rgb(0 0 0 / 0.18);
+    --bz-data-grid-pin-shadow-end: 6px 0 6px -4px rgb(0 0 0 / 0.18);
+  }
+  bz-data-grid > [data-part="scroller"] {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    outline: none;
+    overscroll-behavior: contain;
+  }
+  bz-data-grid > [data-part="scroller"]:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--bz-color-focus);
+  }
+  bz-data-grid [data-part="table"] {
+    width: var(--bz-data-grid-width, 100%);
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  /* Cells: one line, clipped with an ellipsis. Sticky cells need an opaque background. */
+  bz-data-grid :is(th, td) {
+    box-sizing: border-box;
+    padding: 0 var(--bz-space-3);
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: var(--_bg);
+    border-bottom: 1px solid var(--_border);
+  }
+  bz-data-grid tbody tr[data-part="row"] {
+    height: var(--_row-h);
+  }
+  bz-data-grid tbody tr[data-part="row"] > * {
+    background: var(--_row-bg, var(--_bg));
+  }
+  bz-data-grid tbody tr[data-part="row"]:hover {
+    --_row-bg: color-mix(in srgb, var(--bz-color-surface-hover) 100%, var(--_bg));
+  }
+  bz-data-grid tbody tr[aria-selected="true"] {
+    --_row-bg: color-mix(in srgb, var(--bz-color-primary) 12%, var(--_bg));
+  }
+  bz-data-grid tbody tr[data-part="row"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: -2px;
+  }
+  bz-data-grid tbody tr[data-part="spacer"] > td {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  bz-data-grid [data-align="end"] {
+    text-align: end;
+  }
+  bz-data-grid [data-align="center"] {
+    text-align: center;
+  }
+
+  /* Header */
+  bz-data-grid thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: var(--_row-h);
+    padding: 0;
+    font-weight: 600;
+    background: var(--_header-bg);
+    user-select: none;
+  }
+  bz-data-grid thead th[data-part="header-cell"] {
+    touch-action: none;
+  }
+  bz-data-grid [data-part="header-content"] {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-inline: var(--bz-space-3) 10px;
+  }
+  bz-data-grid th[data-align="end"] [data-part="header-content"] {
+    flex-direction: row-reverse;
+  }
+  bz-data-grid [data-part="header"] {
+    all: unset;
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--bz-space-1);
+    min-width: 0;
+    height: 100%;
+    cursor: pointer;
+  }
+  bz-data-grid th[data-align="end"] [data-part="header"] {
+    justify-content: flex-end;
+  }
+  bz-data-grid [data-part="header"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: -2px;
+    border-radius: var(--bz-radius-sm);
+  }
+  bz-data-grid [data-part="header-label"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  bz-data-grid [data-part="sort-indicator"]::after {
+    content: "\2195";
+    font-size: 0.8em;
+    color: var(--bz-color-fg-muted);
+    opacity: 0.6;
+  }
+  bz-data-grid [aria-sort="ascending"] [data-part="sort-indicator"]::after {
+    content: "\25B2";
+    color: var(--bz-color-primary);
+    opacity: 1;
+  }
+  bz-data-grid [aria-sort="descending"] [data-part="sort-indicator"]::after {
+    content: "\25BC";
+    color: var(--bz-color-primary);
+    opacity: 1;
+  }
+  bz-data-grid [data-part="menu"] {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    color: var(--bz-color-fg-muted);
+    background: transparent;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+    opacity: 0;
+  }
+  bz-data-grid th:is(:hover, :focus-within) [data-part="menu"],
+  bz-data-grid [data-part="menu"][aria-expanded="true"] {
+    opacity: 1;
+  }
+  bz-data-grid [data-part="menu"]:hover {
+    color: var(--bz-color-fg);
+    background: color-mix(in srgb, var(--bz-color-fg) 10%, transparent);
+  }
+  @media (hover: none) {
+    bz-data-grid [data-part="menu"] {
+      opacity: 1;
+    }
+  }
+
+  /* Resize handle: inside the header's end edge (cells clip overflow, the next header covers it). */
+  bz-data-grid [data-part="resize"] {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 1;
+    width: 8px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+  bz-data-grid [data-part="resize"]::after {
+    content: "";
+    position: absolute;
+    inset-block: 25%;
+    inset-inline-end: 0;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--_border);
+  }
+  bz-data-grid [data-part="resize"]:hover::after,
+  bz-data-grid[data-resizing] [data-part="resize"]:active::after {
+    inset-block: 0;
+    background: var(--bz-color-primary);
+  }
+  bz-data-grid[data-resizing],
+  bz-data-grid[data-resizing] * {
+    cursor: col-resize !important;
+  }
+
+  /* Reorder by dragging a header. */
+  bz-data-grid[data-dragging] thead th {
+    cursor: grabbing;
+  }
+  bz-data-grid th[data-drag-source] {
+    opacity: 0.55;
+  }
+  bz-data-grid [data-part="drop-indicator"] {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    width: 2px;
+    height: var(--_row-h);
+    background: var(--bz-color-primary);
+    pointer-events: none;
+  }
+
+  /* Selection column */
+  bz-data-grid :is(th, td)[data-part="select"] {
+    padding: 0;
+    text-align: center;
+  }
+  bz-data-grid [data-part="select"] input {
+    margin: 0;
+    vertical-align: middle;
+    accent-color: var(--bz-color-primary);
+  }
+
+  bz-data-grid [data-part="empty"] {
+    position: sticky;
+    inset-inline-start: 0;
+    padding: var(--bz-space-5, 1.5rem) var(--bz-space-4);
+    text-align: center;
+    color: var(--bz-color-fg-muted);
+  }
+
+  /* Loading: an indeterminate bar under the header. */
+  bz-data-grid[loading]::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: var(--_row-h);
+    z-index: 4;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--bz-color-primary), transparent) 0 0 / 40% 100% no-repeat;
+    animation: bz-data-grid-loading 1.1s linear infinite;
+  }
+  @keyframes bz-data-grid-loading {
+    from {
+      background-position: -40% 0;
+    }
+    to {
+      background-position: 140% 0;
+    }
+  }
+  bz-data-grid[loading] [data-part="table"] {
+    opacity: 0.7;
+  }
+
+  /* Columns button */
+  bz-data-grid-columns {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,109 @@
+@layer bazlama.components {
+  /* Up to --bz-form-columns columns, each at least --bz-form-min wide (fewer when narrow). */
+  bz-form-layout {
+    --_gap: var(--bz-form-gap, var(--bz-space-4));
+    --_cols: var(--bz-form-columns, 2);
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(min(100%, var(--bz-form-min, 14rem)), calc((100% - (var(--_cols) - 1) * var(--_gap)) / var(--_cols))), 1fr)
+    );
+    gap: var(--bz-form-row-gap, var(--bz-space-3)) var(--_gap);
+    align-items: start;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+  }
+  bz-form-layout > * {
+    min-width: 0;
+  }
+
+  /* A section: full row, its fields on the same columns (subgrid). */
+  bz-form-section {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    gap: inherit;
+    align-items: start;
+    padding-top: var(--bz-space-2);
+  }
+  bz-form-section + bz-form-section,
+  bz-form-layout > :not(bz-form-section) + bz-form-section {
+    margin-top: var(--bz-space-2);
+    border-top: 1px solid var(--bz-color-border);
+    padding-top: var(--bz-space-4);
+  }
+  bz-form-section > * {
+    min-width: 0;
+  }
+  bz-form-section > [data-part="header"] {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--bz-space-1) var(--bz-space-3);
+  }
+  bz-form-section > [data-part="header"] > [data-part="heading"] {
+    font-size: 1.05em;
+    font-weight: 600;
+  }
+  bz-form-section > [data-part="header"] > [data-part="description"] {
+    flex-basis: 100%;
+    order: 2;
+    font-size: 0.9em;
+    color: var(--bz-color-fg-muted);
+  }
+  bz-form-section > [data-part="header"] > [slot="actions"] {
+    margin-inline-start: auto;
+  }
+
+  bz-form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--bz-space-2);
+    padding-top: var(--bz-space-2);
+  }
+  bz-form-actions[align="start"] {
+    justify-content: flex-start;
+  }
+  bz-form-actions[align="between"] {
+    justify-content: space-between;
+  }
+
+  /* Labels beside the fields. */
+  bz-form-layout[label-position="start"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) {
+    grid-template-columns: var(--bz-form-label-width, 10rem) minmax(0, 1fr);
+    column-gap: var(--bz-space-3);
+  }
+  bz-form-layout[label-position="start"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) > * {
+    grid-column: 2;
+  }
+  bz-form-layout[label-position="start"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) > [data-part="label"] {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: start;
+    padding-top: calc((var(--bz-control-height) - 1lh) / 2);
+    text-align: end;
+  }
+  bz-form-layout[label-position="start"] bz-radio-group > [data-part="label"] {
+    padding-top: 0;
+  }
+  bz-form-layout[label-position="start"] :is(bz-checkbox, bz-switch) {
+    padding-inline-start: calc(var(--bz-form-label-width, 10rem) + var(--bz-space-3));
+  }
+  bz-form-layout[label-position="start"][data-columns="1"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  bz-form-layout[label-position="start"][data-columns="1"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) > * {
+    grid-column: 1;
+  }
+  bz-form-layout[label-position="start"][data-columns="1"] :is(bz-input, bz-textarea, bz-combobox, bz-lookup, bz-radio-group) > [data-part="label"] {
+    grid-row: auto;
+    padding-top: 0;
+    text-align: start;
+  }
+  bz-form-layout[label-position="start"][data-columns="1"] :is(bz-checkbox, bz-switch) {
+    padding-inline-start: 0;
+  }
+}

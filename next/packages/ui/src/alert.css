@@ -1,0 +1,80 @@
+@layer bazlama.components {
+  bz-alert {
+    --_tone: var(--bz-color-info, var(--bz-color-primary));
+    display: flex;
+    align-items: flex-start;
+    gap: var(--bz-space-3);
+    padding: var(--bz-space-3) var(--bz-space-3) var(--bz-space-3) var(--bz-space-4);
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: color-mix(in srgb, var(--_tone) 9%, var(--bz-color-surface));
+    border: 1px solid color-mix(in srgb, var(--_tone) 28%, transparent);
+    border-inline-start: 4px solid var(--_tone);
+    border-radius: var(--bz-radius);
+  }
+  bz-alert[hidden] {
+    display: none;
+  }
+  bz-alert[variant="success"] {
+    --_tone: var(--bz-color-success, #1f9d55);
+  }
+  bz-alert[variant="warning"] {
+    --_tone: var(--bz-color-warning, #d98e04);
+  }
+  bz-alert[variant="danger"] {
+    --_tone: var(--bz-color-danger);
+  }
+  bz-alert > [data-part="icon"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding-top: 0.1em;
+    font-size: 1.15em;
+    color: var(--_tone);
+  }
+  bz-alert > [data-part="icon"][hidden] {
+    display: none;
+  }
+  bz-alert > [data-part="body"] {
+    display: grid;
+    flex: 1;
+    gap: var(--bz-space-1);
+    min-width: 0;
+  }
+  bz-alert > [data-part="body"] > [data-part="heading"] {
+    font-weight: 650;
+  }
+  bz-alert > [data-part="body"] > [data-part="heading"][hidden] {
+    display: none;
+  }
+  bz-alert > [data-part="body"] > [data-part="actions"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--bz-space-2);
+    margin-top: var(--bz-space-1);
+  }
+  bz-alert > [data-part="close"] {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: calc(-1 * var(--bz-space-1)) calc(-1 * var(--bz-space-1)) 0 0;
+    padding: 0;
+    color: var(--bz-color-fg-muted);
+    background: none;
+    border: 0;
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+  }
+  bz-alert > [data-part="close"][hidden] {
+    display: none;
+  }
+  bz-alert > [data-part="close"]:hover {
+    color: var(--bz-color-fg);
+    background: color-mix(in srgb, var(--_tone) 14%, transparent);
+  }
+  bz-alert > [data-part="close"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 1px;
+  }
+}

@@ -1,0 +1,62 @@
+@layer bazlama.components {
+  bz-panel {
+    display: block;
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: var(--bz-panel-bg, var(--bz-color-surface));
+    border: 1px solid var(--bz-panel-border, var(--bz-color-border));
+    border-radius: var(--bz-panel-radius, calc(var(--bz-radius-sm) * 2));
+    overflow: hidden;
+  }
+  bz-panel > [data-part="header"] {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-2);
+    padding: var(--bz-space-3) var(--bz-space-4);
+  }
+  bz-panel > [data-part="header"] > [data-part="title"] {
+    flex: 1;
+    font-weight: 600;
+  }
+  bz-panel > [data-part="header"] > [data-part="trigger"] {
+    all: unset;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-2);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  bz-panel > [data-part="header"] > [data-part="trigger"]::before {
+    content: "";
+    width: 0.45em;
+    height: 0.45em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--bz-duration);
+  }
+  bz-panel[open] > [data-part="header"] > [data-part="trigger"]::before {
+    transform: rotate(45deg);
+  }
+  bz-panel > [data-part="header"] > [data-part="trigger"]:focus-visible {
+    outline: 2px solid var(--bz-color-focus);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  bz-panel > [data-part="header"] > [data-part="actions"] {
+    display: flex;
+    gap: var(--bz-space-2);
+  }
+  bz-panel > [data-part="content"] {
+    padding: 0 var(--bz-space-4) var(--bz-space-4);
+  }
+  bz-panel > [data-part="footer"] {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--bz-space-2);
+    padding: var(--bz-space-3) var(--bz-space-4);
+    border-top: 1px solid var(--bz-color-border);
+    background: var(--bz-color-surface-hover);
+  }
+}

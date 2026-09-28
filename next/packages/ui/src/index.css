@@ -1,0 +1,32 @@
+/*
+ * Bazlama UI: styles for the headless elements. Everything lives in cascade layers, so any
+ * unlayered CSS of the application wins without specificity tricks.
+ * Customize with semantic tokens (--bz-color-primary ...) or component tokens (--bz-button-bg ...).
+ */
+@layer bazlama.tokens, bazlama.base, bazlama.components;
+@import url("./base.css");
+@import url("./button.css");
+@import url("./input.css");
+@import url("./textarea.css");
+@import url("./checkbox.css");
+@import url("./lookup.css");
+@import url("./form-layout.css");
+@import url("./panel.css");
+@import url("./list.css");
+@import url("./combobox.css");
+@import url("./table.css");
+@import url("./data-grid.css");
+@import url("./pagination.css");
+@import url("./toolbar.css");
+@import url("./icon.css");
+@import url("./tree.css");
+@import url("./dialog.css");
+@import url("./tabs.css");
+@import url("./accordion.css");
+@import url("./alert.css");
+@import url("./badge.css");
+@import url("./toast.css");
+@import url("./tooltip.css");
+@import url("./menu.css");
+@import url("./shell.css");
+@import url("./header.css");

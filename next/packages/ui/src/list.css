@@ -1,0 +1,47 @@
+@layer bazlama.components {
+  bz-list {
+    display: block;
+    box-sizing: border-box;
+    max-height: var(--bz-list-max-height, 16rem);
+    overflow: auto;
+    padding: var(--bz-space-1);
+    font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+    color: var(--bz-color-fg);
+    background: var(--bz-color-surface);
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-sm);
+    outline: none;
+  }
+  bz-list:focus-visible {
+    border-color: var(--bz-color-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bz-color-focus) 22%, transparent);
+  }
+  bz-list[disabled] {
+    opacity: 0.6;
+  }
+  bz-option {
+    display: flex;
+    align-items: center;
+    gap: var(--bz-space-2);
+    padding: var(--bz-space-2) var(--bz-space-3);
+    border-radius: var(--bz-radius-sm);
+    cursor: pointer;
+    user-select: none;
+  }
+  bz-option[data-active] {
+    background: var(--bz-color-surface-hover);
+  }
+  bz-option[aria-selected="true"] {
+    color: var(--bz-color-primary);
+    font-weight: 500;
+    background: var(--bz-color-primary-soft);
+  }
+  bz-option[aria-selected="true"]::after {
+    content: "\2713";
+    margin-inline-start: auto;
+  }
+  bz-option[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

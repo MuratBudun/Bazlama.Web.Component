@@ -1,0 +1,34 @@
+/* Default (light) theme. Semantic tokens only; components read them with fallbacks. */
+@layer bazlama.tokens {
+  :root,
+  [data-theme="light"] {
+    color-scheme: light;
+    --bz-font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --bz-font-size: 0.875rem;
+    --bz-line-height: 1.5;
+    --bz-radius: 0.5rem;
+    --bz-radius-sm: 0.375rem;
+    --bz-space-1: 0.25rem;
+    --bz-space-2: 0.5rem;
+    --bz-space-3: 0.75rem;
+    --bz-space-4: 1rem;
+    --bz-control-height: 2.25rem;
+    --bz-duration: 150ms;
+
+    --bz-color-bg: #f6f7f9;
+    --bz-color-surface: #ffffff;
+    --bz-color-surface-hover: #f0f2f5;
+    --bz-color-fg: #1a1d23;
+    --bz-color-fg-muted: #5d6470;
+    --bz-color-border: #d8dce2;
+    --bz-color-primary: #2f5bea;
+    --bz-color-primary-hover: #2449c4;
+    --bz-color-primary-fg: #ffffff;
+    --bz-color-primary-soft: #e8eefd;
+    --bz-color-danger: #cf2f3b;
+    --bz-color-danger-hover: #b0242f;
+    --bz-color-danger-fg: #ffffff;
+    --bz-color-focus: #2f5bea;
+    --bz-shadow-popup: 0 10px 28px rgb(15 20 30 / 0.12), 0 2px 6px rgb(15 20 30 / 0.08);
+  }
+}
