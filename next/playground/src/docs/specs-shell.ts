@@ -5,7 +5,7 @@ import type { UsageSpec } from "./usage"
 export const shellUsage: UsageSpec = {
   tag: "bz-shell",
   html: `
-<bz-shell variant="classic" breakpoint="720">
+<bz-shell variant="classic" breakpoint="720" resizable>
   <bz-header slot="header" title="Uygulama" subtitle="Örnek"></bz-header>
   <nav slot="start"><a href="#pano">Pano</a><br /><a href="#rapor">Raporlar</a></nav>
   <p>İçerik (zorunlu tek bölge)</p>
@@ -39,7 +39,9 @@ b.addEventListener("click", () => shell.toggle("start"))
 output.append(b)`,
   template: `
 html\`
-  <bz-shell variant="classic" .busy=\${router.pending} @toggle=\${(e) => savePreference(e.detail)}>
+  <bz-shell variant="classic" .busy=\${router.pending} @toggle=\${(e) => savePreference(e.detail)}
+    resizable .startWidth=\${prefs.start} .endWidth=\${prefs.end}
+    @resize=\${(e) => savePreference(e.detail)}>
     <bz-header slot="header" title="Demo ERP" href="/" user-name=\${user.name}>…</bz-header>
     <nav slot="start"><bz-tree selection="leaf" .items=\${menu} .value=\${section}></bz-tree></nav>
     <bz-outlet></bz-outlet>
@@ -52,15 +54,25 @@ html\`
 html\`<bz-button data-shell-toggle="end">Detaylar</bz-button>\``,
   props: [
     { name: "variant", type: '"classic" | "sidebar"', default: '"classic"', desc: "classic: header/footer tam genişlik. sidebar: kenarlar tam yükseklik. Yansıtılır." },
+    { name: "scrollMode", attr: "scroll-mode", type: '"content" | "page"', default: '"content"', desc: "content: uygulama çerçevesi; shell ekran (--bz-shell-height) kadar, sadece içerik ve kenar panelleri kayar, header/footer yerinde durur. İçerik [data-scroll-container]: router kaydırma konumunu onda saklar/geri yükler. page: belge kayar, header ve paneller yapışkan. Yansıtılır." },
     { name: "breakpoint", type: "number (px)", default: "960", desc: "Shell'in kendi genişliği bunun altındaysa kenarlar çekmeceye dönüşür." },
     { name: "startCollapsed", type: "boolean", default: "false", desc: "Geniş modda sol kenar dar bir şerit (ör. sadece ikonlar)." },
     { name: "endCollapsed", type: "boolean", default: "false", desc: "Geniş modda sağ kenar gizli." },
     { name: "startOpen / endOpen", attr: "start-open, end-open", type: "boolean", default: "false", desc: "Dar modda çekmece açık mı (aynı anda biri)." },
     { name: "busy", type: "boolean", default: "false", desc: "Üstte ilerleme çubuğu (ör. router.pending)." },
+    { name: "resizable", type: "boolean", default: "false", desc: "Geniş modda kenarların iç kenarında ayırıcı: sürükle; odaklanınca ←/→ (Shift: 64 px), Home/End, Enter veya çift tık varsayılana döner. En küçüğün çok altına sürüklemek kenarı daraltır. Yansıtılır." },
+    { name: "startWidth / endWidth", attr: "start-width, end-width", type: "number (px)", default: "0", desc: "Kenar genişlikleri; 0: CSS varsayılanı (--bz-shell-start-width 15rem / --bz-shell-end-width 20rem). Kaydedip geri verin." },
+    { name: "minSideWidth / maxSideWidth", attr: "min-side-width, max-side-width", type: "number (px)", default: "160 / 640", desc: "Sürükleme sınırları; içerik için en az 320 px bırakılır." },
+    { name: "resizeLabel", type: "string", default: '"Resize panel"', desc: "Ayırıcının erişilebilir adı." },
+    { name: "persist", type: "string", desc: "Saklama anahtarı (isteğe bağlı): kenar genişlikleri ve daraltma durumu localStorage[\"bz-shell:<anahtar>\"] içinde saklanır, açılışta geri gelir (başlangıç özniteliklerinin önüne geçer, genişlikler sınırlara kısılır). Yoksa hiçbir şey saklanmaz; sunucuda saklamak için resize / toggle olaylarını kullanın." },
     { name: "skipLabel", type: "string", default: '"Skip to content"', desc: "İçeriğe geç düğmesi." },
-    { name: "sticky-footer", attr: "sticky-footer", type: "boolean (CSS)", desc: "Footer ekranın altına yapışır; yan paneller onun üstünde biter." },
+    { name: "sticky-footer", attr: "sticky-footer", type: "boolean (CSS)", desc: "scroll-mode=page: footer ekranın altına yapışır; yan paneller onun üstünde biter." },
+    { name: "data-shell-fill (içerikteki bir öğe)", attr: "data-shell-fill", type: "boolean (CSS)", desc: "scroll-mode=content: öğe içeriğin kalan yüksekliğini doldurur (ör. bz-data-grid). Aradaki öğeler :has() ile flex sütun olur; --bz-shell-fill-min-height (12rem)." },
   ],
-  events: [{ name: "toggle", detail: "{ side, open, compact }", desc: "Bir kenar açılıp kapanınca (düğme, Esc, örtü, bağlantı veya metot)." }],
+  events: [
+    { name: "toggle", detail: "{ side, open, compact }", desc: "Bir kenar açılıp kapanınca (düğme, Esc, örtü, bağlantı, sürükleyerek daraltma veya metot)." },
+    { name: "resize", detail: "{ side, width }", desc: "Kullanıcı genişliği değiştirince (bırakınca / tuşla). width null: varsayılana döndü. Kabarcıklanmaz." },
+  ],
   api: [
     { name: 'data-shell-toggle="start|end"', desc: "Shell içindeki herhangi bir düğmeyi o kenarın aç/kapat düğmesi yapar; aria-expanded/aria-controls shell tarafından güncellenir." },
     { name: "shell.toggle(side) / open(side) / close(side)", desc: "Programatik kontrol; side: \"start\" | \"end\"." },

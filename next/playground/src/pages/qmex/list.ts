@@ -1,5 +1,5 @@
 import { computed, html, repeat, signal } from "@bazlama/core"
-import { dialogs, icon, toast, type Column, type ColumnState, type DataGridElement, type GridColumn, type TabsElement } from "@bazlama/headless"
+import { dialogs, icon, toast, type Column, type DataGridElement, type GridColumn, type TabsElement } from "@bazlama/headless"
 import { DATA_GRID_TR } from "../data-grid"
 import { DEPARTMENTS, DOC_KINDS, DOCUMENTS, type DocRow } from "./data"
 import { documentForm, type FormHandle } from "./form"
@@ -27,8 +27,7 @@ const COLUMNS: GridColumn<DocRow>[] = [
   { key: "authority", header: "İşlem Yetkilisi", width: 140 },
   { key: "status", header: "Durum", width: 150, pinned: "end", sortable: true, format: (v) => statusTag(String(v)) },
 ]
-/** The user's column layout, kept for the session (an app would save it per user). */
-const columnState = signal<ColumnState[]>([])
+
 
 interface OpenForm {
   row: DocRow
@@ -127,12 +126,12 @@ export function documentList(title: string) {
     </bz-toolbar>
     <div class="qx-grid">
       <bz-data-grid
+        data-shell-fill
         label=${title}
         row-height="32"
         .labels=${DATA_GRID_TR}
         .columns=${COLUMNS}
-        .columnState=${columnState}
-        @columns-change=${(e: CustomEvent<{ state: ColumnState[] }>) => columnState.set(e.detail.state)}
+        persist="qmex-documents"
         .rows=${visible}
         .selection=${computed(() => (selected() ? [selected()!.id] : []))}
         selectable

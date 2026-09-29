@@ -83,11 +83,13 @@ html\`
     { name: "selectable / selection", attr: "selectable, —", type: "boolean / unknown[]", desc: "Onay kutusu sütunu (başa sabit) ve seçili anahtarlar." },
     { name: "sort / sortMode", attr: "—, sort-mode", type: 'Sort / "client" | "manual"', desc: "Sıralama; manual: sadece olay (sunucu sıralar)." },
     { name: "label / loading", attr: "label, loading", type: "string / boolean", desc: "Erişilebilir ad; yükleniyor çubuğu (aria-busy)." },
+    { name: "highlightPinned", attr: "highlight-pinned", type: "boolean", default: "false", desc: "Sabit (pinned) sütunlar hafif tonlu arka plan alır; renk --bz-data-grid-pinned-bg. Üzerine gelme ve seçim rengi tonun önüne geçer. Yansıtılır." },
     { name: "labels", attr: false, type: "Partial<DataGridLabels>", desc: "Menü ve erişilebilirlik metinleri." },
+    { name: "persist", type: "string", desc: "Saklama anahtarı (isteğe bağlı): sütun düzeni ve sıralama localStorage[\"bz-data-grid:<anahtar>\"] içinde saklanır; açılışta geri yüklenir, columns-change (reason: \"restore\") ve sort olayları gelir. Yoksa hiçbir şey saklanmaz." },
     { name: "bz-data-grid-columns: for", attr: "for", type: "string", desc: "\"Sütunlar\" düğmesinin bağlı olduğu grid id'si (yoksa en yakın grid)." },
   ],
   events: [
-    { name: "columns-change", detail: "{ state, reason, key }", desc: "reason: resize | hide | show | pin | reorder | reset. Kabarcıklanmaz." },
+    { name: "columns-change", detail: "{ state, reason, key }", desc: "reason: resize | hide | show | pin | reorder | reset | restore (persist'ten yüklendi). Kabarcıklanmaz." },
     { name: "sort", detail: "{ sort }", desc: "Başlık veya menüden. Kabarcıklanmaz." },
     { name: "selection-change", detail: "{ selection }", desc: "Kabarcıklanmaz." },
     { name: "row-click / row-activate", detail: "{ row, key } / { row, key, via }", desc: "row-activate: çift tık veya Enter. Kabarcıklanır." },
@@ -106,7 +108,7 @@ html\`
   ],
   hooks: [
     "[loading]", "[data-virtual]", "[data-scrolled-start] / [data-scrolled-end] (sabit sütun gölgesi)", "th[data-pinned]",
-    "[data-resizing] / [data-dragging]", "--bz-data-grid-row-height", "--bz-data-grid-max-height", "--bz-data-grid-header-bg",
+    "[data-resizing] / [data-dragging]", "[highlight-pinned]", "--bz-data-grid-row-height", "--bz-data-grid-max-height", "--bz-data-grid-header-bg", "--bz-data-grid-pinned-bg",
   ],
   notes: [
     "Başlık klavyesi: Enter sıralar, Alt+↓ sütun menüsü, Alt+←/→ sütunu taşır, Shift+←/→ genişlik ±10 px (Ctrl ile ±50). Tutamaçta çift tık: sığdır.",

@@ -102,6 +102,15 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+  /*
+   * Line-height 1 centers the font's line box, whose ascent and descent differ (e.g. 14 / 3 px):
+   * the letters sit ~2px low. Trimming the box to the cap height centers the letters themselves.
+   */
+  @supports (text-box: trim-both cap alphabetic) {
+    bz-chip > [data-part="label"] {
+      text-box: trim-both cap alphabetic;
+    }
+  }
   bz-chip > [data-part="icon"] {
     display: inline-flex;
     color: var(--_tone);

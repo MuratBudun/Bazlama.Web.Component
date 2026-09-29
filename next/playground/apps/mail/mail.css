@@ -1,0 +1,132 @@
+bz-shell {
+  --bz-shell-start-width: 16rem;
+  --bz-shell-end-width: 34rem;
+}
+.mail-nav {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  padding: 0.25rem;
+}
+.mail-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--bz-color-primary);
+}
+.mail-compose {
+  justify-self: stretch;
+}
+.mail-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+}
+.mail-labels > span {
+  flex-basis: 100%;
+}
+.mail-search {
+  width: min(34rem, 100%);
+}
+
+/* Message list: fills the content (data-shell-fill), scrolls on its own. */
+.mail-list-page {
+  padding: 0.75rem 1rem 1rem;
+}
+.mail-list-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.25rem 0.5rem;
+}
+.mail-list-head h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.mail-list {
+  --bz-list-max-height: none;
+  padding: 0.25rem;
+}
+.mail-list bz-option {
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--bz-color-border) 60%, transparent);
+  border-radius: var(--bz-radius-sm);
+}
+.mail-list bz-option::after {
+  display: none;
+}
+.mail-list bz-option[aria-selected="true"] {
+  font-weight: inherit;
+  color: inherit;
+}
+.mail-item {
+  display: grid;
+  flex: 1;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.mail-item-top {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.mail-from,
+.mail-subject,
+.mail-preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+bz-option[data-unread] .mail-from,
+bz-option[data-unread] .mail-subject {
+  font-weight: 700;
+}
+bz-option[data-unread]::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin: 0.8rem -0.45rem 0 -0.2rem;
+  border-radius: 50%;
+  background: var(--bz-color-primary);
+}
+.mail-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+/* Reading pane (the shell's end side). */
+.mail-reader {
+  height: 100%;
+}
+.mail-reader-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  height: 100%;
+  min-height: 12rem;
+  text-align: center;
+}
+.mail-read {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.5rem 1.25rem 1.5rem;
+}
+.mail-read h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.3rem;
+}
+.mail-sender {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.mail-body {
+  line-height: 1.65;
+  white-space: pre-wrap;
+}

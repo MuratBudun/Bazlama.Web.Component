@@ -9,6 +9,8 @@ export interface TreeItem {
   icon?: string
   /** Renders the row as a link. */
   href?: string
+  /** Link target, e.g. "_blank" (a new tab; gets rel="noopener"). */
+  target?: string
   badge?: string | number
   disabled?: boolean
   children?: TreeItem[]
@@ -50,6 +52,8 @@ export function collectIds(items: readonly TreeItem[], onlyParents = true): stri
  *
  * - `value`: selected id. `selection`: "single" (any item), "leaf" (menus: parents only
  *   toggle), "none". Fires `select` and, on click/Enter, `activate` (for navigation).
+ *   Clicking a link item (`href`) does not change `value`: the page it opens sets it (so a
+ *   refused navigation leaves the selection where it was).
  * - `expanded`: ids of open items (property). Fires `toggle`.
  * - `checkable`: tri-state checkboxes; `checked` holds the checked leaf ids. Fires `check`.
  * - `filter`: shows matching items with their ancestors (accent/case-insensitive).
@@ -210,7 +214,9 @@ export const Tree = define("bz-tree", {
     }
     const activate = (item: TreeItem) => {
       if (item.disabled) return
-      select(item)
+      // A link item is selected by the page it leads to (set `value` from the route): the
+      // navigation may be refused (e.g. unsaved changes), and then the tree must not move.
+      if (!item.href) select(item)
       ctx.emit("activate", { id: item.id, item })
     }
 
@@ -381,6 +387,8 @@ export const Tree = define("bz-tree", {
             data-id=${item.id}
             id=${domId(item.id)}
             href=${item.href}
+            target=${item.target ?? null}
+            rel=${item.target === "_blank" ? "noopener" : null}
             aria-disabled=${item.disabled ? "true" : null}
             @click=${(e: MouseEvent) => onRowClick(e, item)}
             ref=${sync}

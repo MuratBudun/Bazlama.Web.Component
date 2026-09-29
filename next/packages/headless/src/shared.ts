@@ -125,3 +125,27 @@ export function observeOptions(host: Element): { version: Signal<number>; discon
   })
   return { version, disconnect: () => observer.disconnect() }
 }
+
+/**
+ * Opt-in persistence (`persist="key"` on a component): JSON in localStorage under
+ * `<component>:<key>`. Storage may be unavailable (private mode, blocked): then nothing is
+ * saved and nothing breaks. Callers validate what they read back.
+ */
+export function loadPersisted(component: string, key: string): unknown {
+  if (!key) return undefined
+  try {
+    const raw = localStorage.getItem(`${component}:${key}`)
+    return raw ? (JSON.parse(raw) as unknown) : undefined
+  } catch {
+    return undefined
+  }
+}
+
+export function savePersisted(component: string, key: string, value: unknown): void {
+  if (!key) return
+  try {
+    localStorage.setItem(`${component}:${key}`, JSON.stringify(value))
+  } catch {
+    /* storage unavailable */
+  }
+}

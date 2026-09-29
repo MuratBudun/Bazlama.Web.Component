@@ -60,6 +60,10 @@
   bz-data-grid tbody tr[data-part="row"]:hover {
     --_row-bg: color-mix(in srgb, var(--bz-color-surface-hover) 100%, var(--_bg));
   }
+  /* highlight-pinned: a tint for the pinned columns (hover and selection still show over it). */
+  bz-data-grid[highlight-pinned] {
+    --_pin-bg: var(--bz-data-grid-pinned-bg, color-mix(in srgb, var(--bz-color-primary) 5%, var(--bz-color-surface)));
+  }
   bz-data-grid tbody tr[aria-selected="true"] {
     --_row-bg: color-mix(in srgb, var(--bz-color-primary) 12%, var(--_bg));
   }

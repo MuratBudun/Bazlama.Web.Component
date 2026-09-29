@@ -1,6 +1,7 @@
 import { computed, define, effect, flush, html, onCleanup, prop, render, repeat, root, signal, TemplateResult, uid, untrack } from "@bazlama/core"
 import { hasIcon, icon } from "../icon"
 import { openMenu, type MenuItemData } from "../menu"
+import { loadPersisted, savePersisted } from "../shared"
 import { compareValues, type Row, type Sort } from "../table"
 import {
   clampWidth,
@@ -60,7 +61,7 @@ export const DATA_GRID_LABELS: DataGridLabels = {
 /** Where a menu opens: an element or a viewport point. */
 export type Anchor = Element | { x: number; y: number }
 
-export type ColumnsChangeReason = "resize" | "hide" | "show" | "pin" | "reorder" | "reset"
+export type ColumnsChangeReason = "resize" | "hide" | "show" | "pin" | "reorder" | "reset" | "restore"
 
 /** Width of the selection column. */
 const SELECT_WIDTH = 40
@@ -123,6 +124,10 @@ interface Controller {
  * - Sorting, selection (`selectable`, `.selection`), `row-click`, `row-activate` (double click,
  *   Enter) as in bz-table. Rows are one tab stop: ↑/↓, PageUp/PageDown, Home/End, Space.
  *
+ * - `persist="key"` (opt-in): the column state and the sort are saved in localStorage under
+ *   `bz-data-grid:<key>` and restored on load (then `columns-change` fires with reason
+ *   "restore" and `sort` fires, so bound app state can follow).
+ *
  * Methods: openColumnsMenu(anchor), resetColumns(), autosizeColumn(key), scrollToIndex(i),
  * getColumnState(), rowFromElement(el).
  * Events (own state, not bubbling): sort, selection-change, columns-change. Bubbling: row-click,
@@ -131,7 +136,8 @@ interface Controller {
  * Anatomy: [data-part=scroller|table|head|header-cell|header|sort-indicator|menu|resize|body|
  * row|cell|select|spacer|empty]. Styling hooks: [loading], [data-scrolled-start],
  * [data-scrolled-end], [data-virtual], th[aria-sort], tr[aria-selected], [data-pinned],
- * [data-dragging], [data-resizing], --bz-data-grid-row-height, --bz-data-grid-max-height.
+ * [data-dragging], [data-resizing], [highlight-pinned], --bz-data-grid-row-height,
+ * --bz-data-grid-max-height, --bz-data-grid-pinned-bg.
  */
 const DataGridBase = define("bz-data-grid", {
   props: {
@@ -150,6 +156,10 @@ const DataGridBase = define("bz-data-grid", {
     overscan: prop.number(6),
     loading: prop.boolean(false, { reflect: true }),
     labels: prop.object<Partial<DataGridLabels>>({}),
+    /** Storage key: save and restore the column state and sort (localStorage `bz-data-grid:<key>`). */
+    persist: prop.string(),
+    /** Tints the pinned columns (`--bz-data-grid-pinned-bg`). */
+    highlightPinned: prop.boolean(false, { reflect: true }),
   },
   setup(props, ctx) {
     const { host } = ctx
@@ -215,6 +225,44 @@ const DataGridBase = define("bz-data-grid", {
       return true
     }
     const resetColumns = () => commit(toState(resolveColumns(props.columns.peek(), [])), "reset")
+
+    // ------------------------------------------------------------------ persistence (opt-in)
+    /** Key whose saved state has been loaded; saving waits for it (no overwriting a new key). */
+    let loadedKey = ""
+    const validState = (s: unknown): s is ColumnState =>
+      !!s &&
+      typeof s === "object" &&
+      typeof (s as ColumnState).key === "string" &&
+      ["width", "order"].every((k) => {
+        const v = (s as unknown as Record<string, unknown>)[k]
+        return v === undefined || (typeof v === "number" && Number.isFinite(v))
+      })
+    const validSort = (s: unknown): s is Sort =>
+      s === null || (!!s && typeof s === "object" && typeof (s as { key: unknown }).key === "string" && ["asc", "desc"].includes((s as { dir: string }).dir))
+    effect(() => {
+      const key = props.persist()
+      if (!key || key === loadedKey) return
+      loadedKey = key
+      const saved = loadPersisted("bz-data-grid", key) as { columns?: unknown; sort?: unknown } | undefined
+      if (!saved || typeof saved !== "object") return
+      untrack(() => {
+        if (Array.isArray(saved.columns)) {
+          const state = saved.columns.filter(validState)
+          props.columnState.set(state)
+          ctx.emit("columns-change", { state, reason: "restore" }, { bubbles: false })
+        }
+        if ("sort" in saved && validSort(saved.sort)) {
+          props.sort.set(saved.sort)
+          ctx.emit("sort", { sort: saved.sort }, { bubbles: false })
+        }
+      })
+    })
+    effect(() => {
+      const columns = props.columnState()
+      const sort = props.sort()
+      const key = props.persist()
+      if (key && key === loadedKey) savePersisted("bz-data-grid", key, { columns, sort })
+    })
 
     // ------------------------------------------------------------------ rows
     const selected = computed(() => new Set(props.selection()))
@@ -340,7 +388,7 @@ const DataGridBase = define("bz-data-grid", {
         if (cell.pinned !== "start") return
         const n = `nth-child(${i + 1})`
         rules.push(`${head(n)}, ${bodyCell(n)} { position: sticky; inset-inline-start: ${offset}px; }`)
-        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; }`)
+        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
         offset += cell.width
         lastStart = i + 1
       })
@@ -354,7 +402,7 @@ const DataGridBase = define("bz-data-grid", {
         if (cells[i].pinned !== "end") break
         const n = `nth-last-child(${k})`
         rules.push(`${head(n)}, ${bodyCell(n)} { position: sticky; inset-inline-end: ${offset}px; }`)
-        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; }`)
+        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
         offset += cells[i].width
         firstEnd = k
       }
@@ -966,31 +1014,37 @@ export interface DataGridElement extends InstanceType<typeof DataGridBase> {
 type WithGrid = HTMLElement & { _grid?: Controller }
 Object.defineProperties(DataGridBase.prototype, {
   openColumnsMenu: {
+    configurable: true,
     value(this: WithGrid, anchor: Anchor) {
       return this._grid?.openColumnsMenu(anchor) ?? Promise.resolve()
     },
   },
   resetColumns: {
+    configurable: true,
     value(this: WithGrid) {
       this._grid?.resetColumns()
     },
   },
   autosizeColumn: {
+    configurable: true,
     value(this: WithGrid, key: string) {
       this._grid?.autosizeColumn(key)
     },
   },
   scrollToIndex: {
+    configurable: true,
     value(this: WithGrid, index: number) {
       this._grid?.scrollToIndex(index)
     },
   },
   getColumnState: {
+    configurable: true,
     value(this: WithGrid) {
       return this._grid?.columnState() ?? []
     },
   },
   rowFromElement: {
+    configurable: true,
     value(this: WithGrid, el: Element) {
       return this._grid?.rowFromElement(el)
     },

@@ -82,7 +82,7 @@ function qmexApp() {
     if (await dialogs.confirm({ heading: "Çıkış", message: "Oturumu kapatmak istiyor musunuz?", confirmText: "Çıkış yap" })) toast.info("Çıkış yapıldı (mockup).")
   }
 
-  return html`<bz-shell class="qx-shell" breakpoint="900" skip-label="İçeriğe geç" sticky-footer>
+  return html`<bz-shell class="qx-shell" breakpoint="900" skip-label="İçeriğe geç" resizable resize-label="Menü genişliği">
     <bz-header slot="header" class="qx-header" title="Doküman Yönetimi" user-name="Test User 10" user-detail="Firma - Varsayılan" menu-label="Menü"
       @select=${(e: CustomEvent<{ value: string }>) => (e.detail.value === "logout" ? void logout() : toast.info(`${e.detail.value} (mockup)`))}>
       <span slot="logo" class="qx-logo">QMex</span>

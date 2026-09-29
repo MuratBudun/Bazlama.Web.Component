@@ -148,6 +148,212 @@ describe("bz-shell", () => {
   })
 })
 
+describe("shell demo source (playground)", () => {
+  it("writes only non-default attributes and the generated HTML builds the same shell", async () => {
+    const { shellHtml, shellJs, shellTemplate } = await import("../playground/src/pages/shell-code")
+    const base = { variant: "classic" as const, scrollMode: "content" as const, resizable: false, persist: false, stickyFooter: false, fill: false, regions: { header: true, start: true, end: true, footer: true } }
+    const plain = shellHtml(base)
+    const firstLine = (code: string) => code.split("\n")[0]
+    expect(firstLine(plain)).toBe('<bz-shell breakpoint="720">')
+    expect(plain).not.toContain("<script>")
+
+    const custom = { ...base, variant: "sidebar" as const, resizable: true, persist: true, fill: true, regions: { ...base.regions, footer: false } }
+    const src = shellHtml(custom)
+    expect(firstLine(src)).toBe('<bz-shell variant="sidebar" breakpoint="720" resizable persist="erp-shell">')
+    expect(src).toContain("data-shell-fill")
+    expect(src).not.toContain("bz-footer")
+    // persist replaces the hand-written storage script
+    expect(src).not.toContain("<script>")
+    expect(shellJs({ ...custom, persist: false })).toContain('shell.addEventListener("resize"')
+    // sticky-footer and fill depend on the scroll mode.
+    const page = shellHtml({ ...custom, scrollMode: "page", stickyFooter: true })
+    expect(firstLine(page)).toContain('scroll-mode="page" sticky-footer')
+    expect(page).not.toContain("data-shell-fill")
+
+    document.body.innerHTML = src.split("<script>")[0]
+    flush()
+    const shell = document.querySelector("bz-shell")!
+    expect(shell.variant).toBe("sidebar")
+    expect(shell.resizable).toBe(true)
+    expect(shell.querySelector("[data-part=start-resizer]")).not.toBeNull()
+    expect(shell.querySelector(":scope > [data-part=footer]")).toBeNull()
+    expect(shell.querySelector(":scope > main bz-data-grid[data-shell-fill]")).not.toBeNull()
+
+    expect(shellJs(custom)).toContain('shell.variant = "sidebar"')
+    expect(shellJs(custom)).toContain("shell.breakpoint = 720")
+    expect(shellJs(custom)).toContain("shell.resizable = true")
+    expect(shellTemplate(custom)).toContain('persist="erp-shell"')
+    expect(shellTemplate({ ...custom, persist: false })).toContain("@resize=${saveWidth}")
+  })
+})
+
+describe("bz-shell persist", () => {
+  it("opt-in: saves widths and collapsed states under bz-shell:<key>, restores (clamped) on load", () => {
+    localStorage.clear()
+    document.body.innerHTML = `<bz-shell resizable><nav slot="start">m</nav><p>x</p></bz-shell>`
+    flush()
+    const plain = document.querySelector("bz-shell")!
+    plain.startWidth = 300
+    flush()
+    expect(localStorage.length).toBe(0)
+
+    document.body.innerHTML = `<bz-shell resizable persist="erp"><nav slot="start">m</nav><p>x</p><aside slot="end">d</aside></bz-shell>`
+    flush()
+    const shell = document.querySelector("bz-shell")!
+    shell.startWidth = 320
+    shell.endCollapsed = true
+    flush()
+    expect(JSON.parse(localStorage.getItem("bz-shell:erp")!)).toEqual({ startWidth: 320, endWidth: 0, startCollapsed: false, endCollapsed: true })
+
+    // A new page load: saved values win over the initial attributes; widths are clamped.
+    localStorage.setItem("bz-shell:erp", JSON.stringify({ startWidth: 9999, endWidth: "bad", startCollapsed: true }))
+    document.body.innerHTML = `<bz-shell resizable persist="erp" start-width="200" end-width="250"><nav slot="start">m</nav><p>x</p><aside slot="end">d</aside></bz-shell>`
+    flush()
+    const again = document.querySelector("bz-shell")!
+    expect(again.startWidth).toBe(640)
+    expect(again.endWidth).toBe(250)
+    expect(again.startCollapsed).toBe(true)
+    expect(again.style.getPropertyValue("--bz-shell-start-width")).toBe("640px")
+
+    // Broken JSON is ignored.
+    localStorage.setItem("bz-shell:broken", "{nope")
+    document.body.innerHTML = `<bz-shell persist="broken" start-width="210"><nav slot="start">m</nav><p>x</p></bz-shell>`
+    flush()
+    expect(document.querySelector("bz-shell")!.startWidth).toBe(210)
+  })
+})
+
+describe("bz-shell scroll", () => {
+  it("content (default): the main is the scroll container; page: the document scrolls", () => {
+    document.body.innerHTML = `<bz-shell><p>içerik</p></bz-shell><bz-shell scroll-mode="page"><p>sayfa</p></bz-shell>`
+    flush()
+    const [app, page] = document.querySelectorAll("bz-shell")
+    expect(app.getAttribute("scroll-mode")).toBe("content")
+    expect(app.querySelector(":scope > main")!.hasAttribute("data-scroll-container")).toBe(true)
+    expect(page.querySelector(":scope > main")!.hasAttribute("data-scroll-container")).toBe(false)
+    app.scrollMode = "page"
+    flush()
+    expect(app.querySelector(":scope > main")!.hasAttribute("data-scroll-container")).toBe(false)
+  })
+})
+
+describe("bz-shell resizing", () => {
+  /** Shell 1200 px wide; sides as wide as their CSS variable says (default 240 / 320). */
+  function mountSized(attrs = "resizable", width = 1200) {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+      const shell = this.closest("bz-shell") as HTMLElement | null
+      const side = this.dataset.part === "start" || this.dataset.part === "end" ? this.dataset.part : null
+      let w = 0
+      if (this.localName === "bz-shell") w = width
+      else if (side && shell) {
+        const collapsed = shell.hasAttribute(`${side}-collapsed`)
+        const v = parseFloat(shell.style.getPropertyValue(`--bz-shell-${side}-width`))
+        w = collapsed ? (side === "start" ? 60 : 0) : Number.isNaN(v) ? (side === "start" ? 240 : 320) : v
+      }
+      return { width: w, height: 0, top: 0, left: 0, right: w, bottom: 0, x: 0, y: 0 } as DOMRect
+    })
+    document.body.innerHTML = `<bz-shell ${attrs}>
+      <nav slot="start">menü</nav><p>içerik</p><aside slot="end">detay</aside>
+    </bz-shell>`
+    flush()
+    const shell = document.querySelector("bz-shell")!
+    const handle = (side: string) => shell.querySelector<HTMLElement>(`[data-part=${side}-resizer]`)!
+    const events: unknown[] = []
+    shell.addEventListener("resize", (e) => events.push((e as unknown as CustomEvent).detail))
+    const key = (el: Element, k: string, init: KeyboardEventInit = {}) =>
+      el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true, cancelable: true, ...init }))
+    return { shell, handle, events, key }
+  }
+  const pointer = (el: Element, type: string, x: number) =>
+    el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, clientX: x, button: 0 }))
+
+  it("separators only with `resizable`; they are labelled, focusable and describe the width", () => {
+    const plain = mountSized("")
+    expect(plain.handle("start")).toBeNull()
+    const { shell, handle } = mountSized()
+    const h = handle("start")
+    expect(h.getAttribute("role")).toBe("separator")
+    expect(h.getAttribute("aria-orientation")).toBe("vertical")
+    expect(h.getAttribute("aria-controls")).toBe(shell.querySelector("[data-part=start]")!.id)
+    expect(h.tabIndex).toBe(0)
+    h.dispatchEvent(new FocusEvent("focus"))
+    expect(h.getAttribute("aria-valuenow")).toBe("240")
+    expect(h.getAttribute("aria-valuemin")).toBe("160")
+    // Room for the content: 1200 − end (320) − 320 = 560 (below max-side-width 640).
+    expect(h.getAttribute("aria-valuemax")).toBe("560")
+  })
+
+  it("keyboard: arrows (Shift: bigger), Home/End, Enter resets; end side moves the other way", () => {
+    const { shell, handle, events, key } = mountSized()
+    key(handle("start"), "ArrowRight")
+    flush()
+    expect(shell.startWidth).toBe(256)
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("256px")
+    key(handle("start"), "ArrowLeft", { shiftKey: true })
+    key(handle("start"), "Home")
+    flush()
+    expect(shell.startWidth).toBe(160)
+    key(handle("start"), "End")
+    flush()
+    expect(shell.startWidth).toBe(560)
+    key(handle("start"), "Enter")
+    flush()
+    expect(shell.startWidth).toBe(0)
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("")
+    // End side: → moves the separator right, the panel gets narrower.
+    key(handle("end"), "ArrowRight")
+    flush()
+    expect(shell.endWidth).toBe(304)
+    expect(events).toEqual([
+      { side: "start", width: 256 },
+      { side: "start", width: 192 },
+      { side: "start", width: 160 },
+      { side: "start", width: 560 },
+      { side: "start", width: null },
+      { side: "end", width: 304 },
+    ])
+  })
+
+  it("drag: live width, clamped, committed on release; far below the minimum collapses", () => {
+    const { shell, handle, events } = mountSized()
+    const h = handle("start")
+    pointer(h, "pointerdown", 240)
+    pointer(h, "pointermove", 300)
+    expect(shell.getAttribute("data-resizing")).toBe("start")
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("300px")
+    expect(events).toEqual([])
+    pointer(h, "pointermove", 2000)
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("560px")
+    pointer(h, "pointerup", 2000)
+    flush()
+    expect(shell.hasAttribute("data-resizing")).toBe(false)
+    expect(shell.startWidth).toBe(560)
+    expect(events).toEqual([{ side: "start", width: 560 }])
+
+    const toggles: unknown[] = []
+    shell.addEventListener("toggle", (e) => toggles.push((e as unknown as CustomEvent).detail))
+    pointer(h, "pointerdown", 560)
+    pointer(h, "pointermove", 20)
+    expect(shell.hasAttribute("data-resize-collapse")).toBe(true)
+    pointer(h, "pointerup", 20)
+    flush()
+    expect(shell.hasAttribute("start-collapsed")).toBe(true)
+    // The saved width stays for when it is expanded again.
+    expect(shell.startWidth).toBe(560)
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("560px")
+    expect(toggles).toEqual([{ side: "start", open: false, compact: false }])
+  })
+
+  it("restores saved widths from attributes; compact mode ignores drags", () => {
+    const { shell, handle } = mountSized('resizable start-width="300" end-width="280" breakpoint="1600"')
+    expect(shell.style.getPropertyValue("--bz-shell-start-width")).toBe("300px")
+    expect(shell.style.getPropertyValue("--bz-shell-end-width")).toBe("280px")
+    expect(shell.hasAttribute("data-compact")).toBe(true)
+    pointer(handle("start"), "pointerdown", 300)
+    expect(shell.hasAttribute("data-resizing")).toBe(false)
+  })
+})
+
 describe("bz-header / bz-footer", () => {
   it("renders brand, actions and a user menu", () => {
     document.body.innerHTML = `

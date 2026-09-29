@@ -110,6 +110,114 @@
     display: none;
   }
 
+  /* scroll-mode="content" (default): an app frame. Only the content and the side panels scroll. */
+  bz-shell:not([scroll-mode="page"]) {
+    --_top: 0px;
+    --_footer-h: 0px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: var(--bz-shell-height, 100dvh);
+    min-height: 0;
+    overflow: hidden;
+  }
+  bz-shell:not([scroll-mode="page"]) > [data-part="header"],
+  bz-shell:not([scroll-mode="page"]) > [data-part="footer"] {
+    position: relative;
+  }
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+  bz-shell:not([scroll-mode="page"]):not([data-compact]) > :is([data-part="start"], [data-part="end"]) {
+    min-height: 0;
+  }
+  bz-shell:not([scroll-mode="page"]) > * > :is([data-part="start-panel"], [data-part="end-panel"]) {
+    position: static;
+    height: 100%;
+    max-height: none;
+  }
+
+  /*
+   * data-shell-fill: the element takes the content's remaining height. Every element between
+   * the content and it (found with :has) becomes a flex column; its other children keep their
+   * size. Hidden elements (e.g. inactive tab panels) are left alone, and a fill inside a nested
+   * shell belongs to that shell: the chain stops at a nested bz-shell.
+   */
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])),
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not([hidden], bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) {
+    display: flex;
+    flex-direction: column;
+  }
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not([hidden], bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])),
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not(bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])) {
+    flex-shrink: 0;
+  }
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill]:not([hidden]) {
+    flex: 1 1 auto;
+    min-height: var(--bz-shell-fill-min-height, 12rem);
+    /* A data grid (or anything with a max height) may grow. */
+    --bz-data-grid-max-height: none;
+    max-height: none;
+  }
+
+  /* Resizing the sides (wide mode): a separator on the inner edge. */
+  bz-shell:not([data-compact]) > :is([data-part="start"], [data-part="end"]) {
+    position: relative;
+  }
+  bz-shell > * > :is([data-part="start-resizer"], [data-part="end-resizer"]) {
+    position: absolute;
+    inset-block: 0;
+    z-index: 5;
+    width: 9px;
+    cursor: col-resize;
+    touch-action: none;
+    outline: none;
+  }
+  bz-shell > * > [data-part="start-resizer"] {
+    inset-inline-end: -5px;
+  }
+  bz-shell > * > [data-part="end-resizer"] {
+    inset-inline-start: -5px;
+  }
+  bz-shell > * > :is([data-part="start-resizer"], [data-part="end-resizer"])::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 3px;
+    width: 3px;
+    background: transparent;
+    transition: background-color var(--bz-duration) 0.15s;
+  }
+  bz-shell > * > :is([data-part="start-resizer"], [data-part="end-resizer"]):is(:hover, :focus-visible)::after,
+  bz-shell[data-resizing="start"] > * > [data-part="start-resizer"]::after,
+  bz-shell[data-resizing="end"] > * > [data-part="end-resizer"]::after {
+    background: var(--bz-color-primary);
+  }
+  bz-shell > * > :is([data-part="start-resizer"], [data-part="end-resizer"]):focus-visible::after {
+    background: var(--bz-color-focus);
+  }
+  bz-shell[data-compact] > * > :is([data-part="start-resizer"], [data-part="end-resizer"]),
+  bz-shell[start-collapsed] > * > [data-part="start-resizer"],
+  bz-shell[end-collapsed] > * > [data-part="end-resizer"] {
+    display: none;
+  }
+  bz-shell[data-resizing] {
+    cursor: col-resize;
+    user-select: none;
+  }
+  bz-shell[data-resizing] > :is([data-part="start"], [data-part="end"]) {
+    transition: none;
+  }
+  bz-shell[data-resizing="start"][data-resize-collapse] > [data-part="start"],
+  bz-shell[data-resizing="end"][data-resize-collapse] > [data-part="end"] {
+    opacity: 0.55;
+  }
+
   /* Compact: one column; the sides become drawers. */
   bz-shell[data-compact] {
     --_areas: "header" "content" "footer";

@@ -16,5 +16,17 @@ export default defineConfig({
   // Fixed port: 5173 is used by another local project.
   server: { port: 5391, strictPort: true, fs: { allow: [r(".")] } },
   preview: { port: 5392, strictPort: true },
-  build: { outDir: r("./dist"), emptyOutDir: true },
+  build: {
+    outDir: r("./dist"),
+    emptyOutDir: true,
+    // The playground and the demo apps (each its own page).
+    rollupOptions: {
+      input: {
+        playground: r("./playground/index.html"),
+        crm: r("./playground/apps/crm/index.html"),
+        mail: r("./playground/apps/mail/index.html"),
+        docs: r("./playground/apps/docs/index.html"),
+      },
+    },
+  },
 })

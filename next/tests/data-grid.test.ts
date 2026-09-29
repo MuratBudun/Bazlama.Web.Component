@@ -216,6 +216,56 @@ describe("bz-data-grid", () => {
     expect(events).toEqual([])
   })
 
+  it("persist: saves column state and sort under bz-data-grid:<key>, restores with events", async () => {
+    localStorage.clear()
+    const { grid } = await mount(5, 'persist="docs"')
+    key(grid.querySelector<HTMLElement>('th[data-key="dept"] [data-part=header]')!, "ArrowRight", { shiftKey: true })
+    grid.querySelector<HTMLElement>('th[data-key="name"] [data-part=header]')!.click()
+    flush()
+    const saved = JSON.parse(localStorage.getItem("bz-data-grid:docs")!)
+    expect(saved.columns.find((c: { key: string }) => c.key === "dept").width).toBe(170)
+    expect(saved.sort).toEqual({ key: "name", dir: "asc" })
+
+    // Next load: restored before the first paint, events let bound app state follow.
+    document.body.replaceChildren()
+    const events: string[] = []
+    const g = document.createElement("bz-data-grid") as DataGridElement
+    g.setAttribute("persist", "docs")
+    g.addEventListener("columns-change", (e) => events.push(`columns:${(e as CustomEvent).detail.reason}`))
+    g.addEventListener("sort", (e) => events.push(`sort:${(e as CustomEvent).detail.sort.key}`))
+    g.columns = COLUMNS
+    g.rows = rows(5)
+    document.body.append(g)
+    flush()
+    await tick()
+    flush()
+    expect(events).toEqual(["columns:restore", "sort:name"])
+    expect(g.getColumnState().find((c) => c.key === "dept")!.width).toBe(170)
+    expect(g.querySelector('th[data-key="name"]')!.getAttribute("aria-sort")).toBe("ascending")
+
+    // Invalid entries are dropped.
+    localStorage.setItem("bz-data-grid:bad", JSON.stringify({ columns: [{ key: 1 }, { key: "dept", width: "x" }, { key: "no", width: 90 }], sort: { key: "no", dir: "up" } }))
+    document.body.replaceChildren()
+    const b = document.createElement("bz-data-grid") as DataGridElement
+    b.setAttribute("persist", "bad")
+    b.columns = COLUMNS
+    document.body.append(b)
+    flush()
+    expect(b.columnState).toEqual([{ key: "no", width: 90 }])
+    expect(b.sort).toBe(null)
+  })
+
+  it("highlight-pinned: an optional tint on pinned cells, under hover/selection", async () => {
+    const { grid } = await mount(3, "highlight-pinned")
+    expect(grid.highlightPinned).toBe(true)
+    const css = grid.querySelector("style")!.textContent!
+    // Pinned body cells use the row state first, then the pinned tint.
+    expect(css).toContain("background: var(--_row-bg, var(--_pin-bg, var(--_bg)))")
+    grid.highlightPinned = false
+    flush()
+    expect(grid.hasAttribute("highlight-pinned")).toBe(false)
+  })
+
   it("empty slot and labels", async () => {
     document.body.innerHTML = `<bz-data-grid><span slot="empty">Kayıt yok</span></bz-data-grid>`
     flush()

@@ -39,6 +39,6 @@ export const ADEQUACY: Adequacy[] = [
   { feature: "İkon düğmelerde ipucu", used: "data-tooltip", status: "ok", note: "" },
   { feature: "Durum etiketi (Yürürlüğe Alma, Hazırlanıyor…)", used: "bz-badge variant", status: "ok", note: "" },
   { feature: "Boş durum (Gösterilebilecek veri yok)", used: "bz-table empty slotu + CSS", status: "partial", note: "Genel bz-empty-state yok." },
-  { feature: "Menü ile içerik arası sürüklenebilir ayırıcı", used: "—", status: "missing", note: "QMEX'te daraltma tutamacı var; bz-shell'de genişlik sürükleme yok (daraltma var)." },
+  { feature: "Menü ile içerik arası sürüklenebilir ayırıcı", used: "bz-shell resizable", status: "ok", note: "Sürükle / klavye; en küçüğün altına sürükleyince menü daralır. Liste grid'i data-shell-fill ile kalan yüksekliği doldurur, sadece içerik kayar." },
   { feature: "Excel'e aktarma", used: "toast (mockup)", status: "missing", note: "UI kütüphanesinin konusu değil; uygulama/servis tarafı." },
 ]

@@ -3,9 +3,10 @@
   [data-theme="forest"] {
     color-scheme: light;
     --bz-font-family: Georgia, "Times New Roman", serif;
-    --bz-radius: 999px;
-    --bz-radius-sm: 0.75rem;
-    --bz-control-height: 2.5rem;
+    /* Softer than the default, not pill-shaped: the radius also rounds panels, alerts and dialogs. */
+    --bz-radius: 0.625rem;
+    --bz-radius-sm: 0.375rem;
+    --bz-control-height: 2.4rem;
     --bz-color-bg: #f3f1ea;
     --bz-color-surface: #fffdf7;
     --bz-color-surface-hover: #efeadc;

@@ -197,7 +197,7 @@ describe("router", () => {
     expect(await router!.navigate("/")).toBe(false) // the new page instance guards again
   })
 
-  it("back/forward: cancelable traversal is prepared then re-issued; refused non-cancelable goes back", async () => {
+  it("back/forward commit at once and are prepared after; a refused guard goes back", async () => {
     let block = false
     router = createRouter({ routes: [{ path: "/", page: Home }, { path: "/c/:id", page: Customer }] })
     router.beforeLeave(() => !block)
@@ -210,11 +210,64 @@ describe("router", () => {
     expect(location.pathname).toBe("/c/1")
     expect(text()).toBe("Müşteri 1sekme=-")
 
-    nav.cancelableTraversals = false
     block = true
     router.back() // "/" → refused: return to /c/1
     await settle()
     expect(location.pathname).toBe("/c/1")
+  })
+
+  it("scroll container: new page at the top, back/forward restore, same-page replace keeps", async () => {
+    sessionStorage.clear()
+    router = createRouter({ routes: [{ path: "/", page: Home }, { path: "/c/:id", page: Customer }] })
+    document.body.innerHTML = `<div id="box" data-scroll-container><bz-outlet></bz-outlet></div>`
+    const box = document.getElementById("box")!
+    await router.start()
+    await settle()
+    box.scrollTop = 500
+    await router.navigate("/c/1")
+    await settle()
+    expect(box.scrollTop).toBe(0)
+    box.scrollTop = 120
+    // A query change on the same page (replace) keeps the place.
+    await router.navigate({ path: "/c/1", query: { tab: "orders" } }, { replace: true })
+    await settle()
+    expect(box.scrollTop).toBe(120)
+    router.back()
+    await settle()
+    expect(location.pathname).toBe("/")
+    expect(box.scrollTop).toBe(500)
+    router.forward()
+    await settle()
+    expect(location.pathname).toBe("/c/1")
+    expect(box.scrollTop).toBe(120)
+    // Positions survive in sessionStorage (for reloads).
+    expect(JSON.parse(sessionStorage.getItem("bz-router-scroll")!).length).toBeGreaterThan(0)
+  })
+
+  it("scroll container: #id scrolls to the element inside; no container → the browser's job", async () => {
+    router = createRouter({ routes: [{ path: "/", page: Home }, { path: "/c/:id", page: definePage({ setup: () => html`<h1>x</h1><p id="notes">notlar</p>` }) }] })
+    document.body.innerHTML = `<div id="box" data-scroll-container><bz-outlet></bz-outlet></div>`
+    const box = document.getElementById("box")!
+    await router.start()
+    await settle()
+    const seen: string[] = []
+    Element.prototype.scrollIntoView = function (this: Element) {
+      seen.push(this.id)
+    }
+    box.scrollTop = 300
+    await router.navigate({ path: "/c/2", hash: "notes" })
+    await settle()
+    expect(seen).toEqual(["notes"])
+
+    router.stop()
+    router = createRouter({ routes: [{ path: "/", page: Home }], scrollElement: null })
+    document.body.innerHTML = `<div id="box2" data-scroll-container><bz-outlet></bz-outlet></div>`
+    const box2 = document.getElementById("box2")!
+    await router.start()
+    box2.scrollTop = 200
+    await router.navigate("/?x=1")
+    await settle()
+    expect(box2.scrollTop).toBe(200)
   })
 
   it("not found, error page, redirect route", async () => {
@@ -279,6 +332,19 @@ describe("router", () => {
     await settle()
     expect(location.hash).toBe("#/customers/4")
     expect(text()).toBe("Müşteri 4sekme=-")
+  })
+
+  it("hash mode without base: links use the document's path; other pages are not intercepted", async () => {
+    history.replaceState(null, "", "/apps/crm/#/customers/1")
+    nav = installFakeNavigation()
+    await start([{ path: "/customers/:id", page: Customer }], { mode: "hash" })
+    expect(router!.href("/customers/2")).toBe("/apps/crm/#/customers/2")
+    expect(text()).toBe("Müşteri 1sekme=-")
+    // A link back to the playground (another document) is the browser's.
+    await nav.navigate("/").finished.catch(() => {})
+    await settle()
+    expect(location.pathname).toBe("/")
+    expect(text()).toBe("Müşteri 1sekme=-")
   })
 
   it("isActive and href with base", async () => {

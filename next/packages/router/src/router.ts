@@ -10,10 +10,16 @@ import type { PageDef } from "./page"
  *   enter guards, lazy imports and page `load()`s, and only then re-issues it with the
  *   prepared result: the URL changes when the new page is ready, a refused guard leaves
  *   everything untouched, and a newer navigation cancels an older one (AbortSignal).
- * - Non-cancelable traversals (e.g. several back presses without user activation) are
- *   intercepted and prepared after the URL changed; a refusal goes back to the old entry.
- * - Scroll restoration and fragment scrolling are left to the browser ("after-transition");
- *   focus moves to the new page's heading and the title is announced.
+ * - Back/forward (traversals) are not canceled: the URL changes at once and the page is
+ *   prepared afterwards; a refusal goes back to the old entry. (Chrome rejects re-issuing a
+ *   canceled traversal.)
+ * - Scrolling: when the page scrolls inside an element (an app frame such as
+ *   <bz-shell scroll-mode="content">, found as the outlet's `[data-scroll-container]` ancestor, or
+ *   `scrollElement`), the router does what the browser does for the document: a new page
+ *   starts at the top, back/forward and reload return to the saved position (per history
+ *   entry, kept in sessionStorage), `#id` scrolls to the element, and a same-page replace
+ *   (e.g. a query change) keeps the position. Otherwise the browser handles the document.
+ * - Focus moves to the new page's heading and the title is announced.
  */
 
 export type PageSource = PageDef<any> | string | (() => Promise<PageDef<any> | string | { default: PageDef<any> | string }>)
@@ -61,7 +67,15 @@ export interface RouterOptions {
   notFound?: PageSource
   /** Move focus to the new page's heading after navigation (default true). */
   focus?: boolean
+  /**
+   * The element the pages scroll in. Default: the top outlet's `[data-scroll-container]`
+   * ancestor (e.g. <bz-shell scroll-mode="content">'s <main>); none → the document (browser).
+   */
+  scrollElement?: Element | (() => Element | null) | null
 }
+
+/** How the current page was reached ("initial": the router started on it). */
+type NavigationKind = "push" | "replace" | "reload" | "traverse" | "initial"
 
 export interface NavigateTarget {
   path?: string
@@ -193,8 +207,13 @@ export function createRouter(options: RouterOptions): Router {
   }
   const queryOf = (url: URL) => new URLSearchParams(mode === "hash" ? (url.hash.split("?")[1] ?? "") : url.search)
   const hashOf = (url: URL) => (mode === "hash" ? "" : url.hash.slice(1))
+  // Hash mode serves one document: only its own path is in scope (links to other pages of the
+  // site are left to the browser). `base`, when given, names that path; else the current one.
+  const documentPath = (path: string) => normalizePath(path.replace(/\/index\.html$/i, "")).toLowerCase()
+  const hashDocument = mode === "hash" ? documentPath(options.base ?? location.pathname) : ""
   const inScope = (url: URL) =>
-    url.origin === location.origin && (mode === "hash" || base === "/" || url.pathname.toLowerCase().startsWith(base.toLowerCase()))
+    url.origin === location.origin &&
+    (mode === "hash" ? documentPath(url.pathname) === hashDocument : base === "/" || url.pathname.toLowerCase().startsWith(base.toLowerCase()))
 
   const href = (to: string | NavigateTarget): string => {
     let path: string
@@ -217,7 +236,7 @@ export function createRouter(options: RouterOptions): Router {
       hash = to.hash?.replace(/^#/, "") ?? ""
     }
     path = normalizePath(path)
-    if (mode === "hash") return `${base === "/" ? "/" : `${base}/`}#${path}${search ? `?${search}` : ""}`
+    if (mode === "hash") return `${hashDocument === "/" ? "/" : `${hashDocument}/`}#${path}${search ? `?${search}` : ""}`
     return `${base === "/" ? "" : base}${path}${search ? `?${search}` : ""}${hash ? `#${hash}` : ""}`
   }
 
@@ -311,10 +330,60 @@ export function createRouter(options: RouterOptions): Router {
     }
   }
 
-  const apply = (next: RouterState, focus: boolean) => {
+  // ------------------------------------------------------------------ scrolling (inner container)
+  const SCROLL_KEY = "bz-router-scroll"
+  const entryKey = () => (typeof navigation === "undefined" ? undefined : navigation.currentEntry?.key)
+  const positions = new Map<string, number>(
+    (() => {
+      try {
+        return JSON.parse(sessionStorage.getItem(SCROLL_KEY) ?? "[]") as [string, number][]
+      } catch {
+        return []
+      }
+    })()
+  )
+  const scrollBox = (): Element | null => {
+    const option = options.scrollElement
+    if (option !== undefined) return typeof option === "function" ? option() : option
+    return document.querySelector("bz-outlet[data-depth=\"0\"]")?.closest("[data-scroll-container]") ?? null
+  }
+  const saveScroll = () => {
+    const el = scrollBox()
+    const key = entryKey()
+    if (!el || !key) return
+    positions.set(key, el.scrollTop)
+    // Keep the most recent entries only.
+    while (positions.size > 100) positions.delete(positions.keys().next().value!)
+    try {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify([...positions]))
+    } catch {
+      /* storage unavailable */
+    }
+  }
+  const restoreScroll = (next: RouterState, from: RouterState | null, type: NavigationKind) => {
+    const el = scrollBox()
+    if (!el) return
+    const key = entryKey()
+    if (type === "traverse" || type === "reload" || type === "initial") {
+      const saved = key !== undefined ? positions.get(key) : undefined
+      if (saved !== undefined) return void (el.scrollTop = saved)
+      if (type !== "traverse") return
+    }
+    if (next.hash) {
+      const target = document.getElementById(decodeURIComponent(next.hash.replace(/^#/, "")))
+      if (target && el.contains(target)) return target.scrollIntoView({ block: "start" })
+    }
+    // A same-page replace (query/filter change) keeps the reader's place.
+    const samePage = !!from && from.matched.length === next.matched.length && from.matched.every((r, i) => r === next.matched[i])
+    if (type === "replace" && samePage) return
+    el.scrollTop = 0
+  }
+
+  const apply = (next: RouterState, focus: boolean, type: NavigationKind = "push") => {
     const from = current.peek()
     current.set(next)
     flush()
+    restoreScroll(next, from, type)
     const last = next.matched.at(-1)
     const page = last ? next.pages.get(last) : undefined
     const titleSource =
@@ -348,6 +417,8 @@ export function createRouter(options: RouterOptions): Router {
     if (!e.canIntercept || e.downloadRequest !== null || e.formData) return
     const url = new URL(e.destination.url)
     if (!inScope(url)) return
+    // Leaving the current entry (or re-issuing the same navigation): remember its position.
+    saveScroll()
     // Path mode: fragment-only changes are the browser's (scroll to #id).
     if (mode === "path" && e.hashChange) return
     const info = e.info as { [PREPARED]?: Prepared } | undefined
@@ -355,31 +426,32 @@ export function createRouter(options: RouterOptions): Router {
 
     if (prepared) {
       if (prepared.token !== token) return e.preventDefault()
-      e.intercept({ focusReset: "manual", scroll: "after-transition", handler: async () => apply(prepared.state, true) })
+      const type = e.navigationType
+      e.intercept({ focusReset: "manual", scroll: "after-transition", handler: async () => apply(prepared.state, true, type) })
       return
     }
 
     const state = e.destination.getState()
     const isReload = e.navigationType === "reload"
-    if (e.cancelable) {
+    // Back/forward are never canceled and re-issued: Chrome rejects re-issuing a canceled
+    // traversal (traverseTo: "Invalid key"), so the buttons did nothing. They commit at once and
+    // are prepared afterwards (a refused guard goes back), like non-cancelable traversals.
+    if (e.cancelable && e.navigationType !== "traverse") {
       e.preventDefault()
       const type = e.navigationType
-      const key = e.destination.key
       void prepare(url, state, isReload).then(
         (outcome) => {
           if (outcome.kind === "stale") return
           if (outcome.kind === "cancel") return settle(false)
           if (outcome.kind === "redirect") return quiet(nav().navigate(href(outcome.to), { history: "replace" }))
           const payload = { [PREPARED]: { state: outcome.state, token } satisfies Prepared }
-          if (type === "traverse" && key) quiet(nav().traverseTo(key, { info: payload }))
-          else
-            quiet(
-              nav().navigate(url.href, {
-                history: type === "push" && url.href !== location.href ? "push" : "replace",
-                state,
-                info: payload,
-              })
-            )
+          quiet(
+            nav().navigate(url.href, {
+              history: type === "push" && url.href !== location.href ? "push" : "replace",
+              state,
+              info: payload,
+            })
+          )
         },
         (error) => {
           settle(false)
@@ -396,7 +468,7 @@ export function createRouter(options: RouterOptions): Router {
       scroll: "after-transition",
       handler: async () => {
         const outcome = await prepare(url, state, isReload)
-        if (outcome.kind === "ok") apply(outcome.state, true)
+        if (outcome.kind === "ok") apply(outcome.state, true, e.navigationType)
         else if (outcome.kind === "redirect") quiet(nav().navigate(href(outcome.to), { history: "replace" }))
         else if (outcome.kind === "cancel" && fromKey) quiet(nav().traverseTo(fromKey))
       },
@@ -474,9 +546,11 @@ export function createRouter(options: RouterOptions): Router {
       started = true
       activeRouter.set(router)
       nav().addEventListener("navigate", onNavigate)
+      addEventListener("pagehide", saveScroll)
       const url = new URL(location.href)
       const outcome = await prepare(url, nav().currentEntry?.getState())
-      if (outcome.kind === "ok") apply(outcome.state, false)
+      // The entry key survives a reload: a saved position comes back; a new tab has none.
+      if (outcome.kind === "ok") apply(outcome.state, false, "initial")
       else if (outcome.kind === "redirect") await router.navigate(outcome.to, { replace: true })
     },
     stop() {
@@ -484,6 +558,7 @@ export function createRouter(options: RouterOptions): Router {
       started = false
       controller?.abort()
       nav().removeEventListener("navigate", onNavigate)
+      removeEventListener("pagehide", saveScroll)
       if (activeRouter.peek() === router) activeRouter.set(null)
     },
   }

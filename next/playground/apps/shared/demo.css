@@ -1,0 +1,98 @@
+/* Shared styles of the demo apps (app code, not the library). */
+html,
+body {
+  margin: 0;
+}
+body {
+  font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+  color: var(--bz-color-fg);
+  background: var(--bz-color-bg);
+}
+.page {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 2rem;
+}
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.page-head h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+.page-head .spacer,
+.spacer {
+  flex: 1;
+}
+.muted {
+  color: var(--bz-color-fg-muted);
+}
+.small {
+  font-size: 0.85em;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.stack {
+  display: grid;
+  gap: 0.75rem;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+.card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  background: var(--bz-color-surface);
+  border: 1px solid var(--bz-color-border);
+  border-radius: calc(var(--bz-radius-sm) * 2);
+}
+.card .value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.feed {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.feed li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: start;
+  padding: 0.5rem;
+  border-radius: var(--bz-radius);
+}
+.feed li:hover {
+  background: var(--bz-color-surface-hover);
+}
+.demo-link {
+  color: inherit;
+}
+/* A collapsed start side is an icon rail: hide the tree's labels. */
+bz-shell[start-collapsed]:not([data-compact]) bz-tree :is([data-part="label"], [data-part="badge"], [data-part="toggle"]) {
+  display: none;
+}
+bz-shell[start-collapsed]:not([data-compact]) bz-tree [data-part="item"] {
+  justify-content: center;
+  padding-inline: 0;
+}

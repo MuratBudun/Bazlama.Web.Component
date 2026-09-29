@@ -99,14 +99,8 @@ const COLUMNS: GridColumn<Doc>[] = [
   },
 ]
 
-const STORAGE_KEY = "bz-playground-data-grid"
-const load = (): ColumnState[] => {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]") as ColumnState[]
-  } catch {
-    return []
-  }
-}
+/** The grid saves its column state and sort itself (persist="playground-docs"). */
+const PERSIST_KEY = "playground-docs"
 
 export default {
   id: "data-grid",
@@ -121,10 +115,11 @@ export default {
       queueMicrotask(() => logEntry("data-grid", "rows", `${count().toLocaleString("tr-TR")} satır ${Math.round(performance.now() - t)} ms`))
       return r
     })
-    const columnState = signal<ColumnState[]>(load())
+    const columnState = signal<ColumnState[]>([])
     const sort = signal<Sort>(null)
     const selection = signal<unknown[]>([])
     const loading = signal(false)
+    const tint = signal(true)
     const reload = () => {
       loading.set(true)
       setTimeout(() => loading.set(false), 900)
@@ -143,6 +138,7 @@ export default {
           </bz-radio-group>
           <bz-toolbar-separator></bz-toolbar-separator>
           <bz-button size="sm" variant="ghost" @click=${reload}>Yenile (loading)</bz-button>
+          <bz-switch .checked=${tint} @change=${(e: CustomEvent<{ checked: boolean }>) => tint.set(e.detail.checked)}>Sabit sütunları renklendir</bz-switch>
           <bz-toolbar-spacer></bz-toolbar-spacer>
           <span class="muted small">${() => (selection().length ? `${selection().length} seçili · ` : "")}${() => rows().length.toLocaleString("tr-TR")} satır</span>
           <bz-data-grid-columns for="demo-grid">Sütunlar</bz-data-grid-columns>
@@ -159,13 +155,10 @@ export default {
           .sort=${sort}
           .selection=${selection}
           ?loading=${loading}
+          ?highlight-pinned=${tint}
+          persist=${PERSIST_KEY}
           @columns-change=${(e: CustomEvent<{ state: ColumnState[]; reason: string; key?: string }>) => {
             columnState.set(e.detail.state)
-            try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(e.detail.state))
-            } catch {
-              /* private mode */
-            }
             logEntry("data-grid", "columns-change", `${e.detail.reason} ${e.detail.key ?? ""}`)
           }}
           @sort=${(e: CustomEvent<{ sort: Sort }>) => sort.set(e.detail.sort)}
@@ -175,19 +168,21 @@ export default {
         ></bz-data-grid>
         <p class="note">
           Başlık kenarını sürükleyin (çift tık: sığdır), başlığı sürükleyip taşıyın, ⋮ menüsünden sabitleyin / gizleyin. Klavyede başlıkta Alt+↓
-          menü, Alt+←/→ taşı, Shift+←/→ genişlik. Düzen tarayıcıda saklanır; "Sütunlar ▸ Varsayılana dön" sıfırlar.
+          menü, Alt+←/→ taşı, Shift+←/→ genişlik. Düzen ve sıralama <code>persist="playground-docs"</code> ile tarayıcıda saklanır
+          (<code>localStorage["bz-data-grid:playground-docs"]</code>); "Sütunlar ▸ Varsayılana dön" sıfırlar.
         </p>
         <div class="row">
           <bz-button size="sm" @click=${() => (document.getElementById("demo-grid") as HTMLElement & { scrollToIndex(i: number): void }).scrollToIndex(Math.floor(count() / 2))}>
             Ortadaki satıra git
           </bz-button>
           <bz-button size="sm" @click=${() => {
+            columnState.set([])
+            sort.set(null)
             try {
-              localStorage.removeItem(STORAGE_KEY)
+              localStorage.removeItem(`bz-data-grid:${PERSIST_KEY}`)
             } catch {
               /* private mode */
             }
-            columnState.set([])
             toast("Sütun düzeni sıfırlandı")
           }}>
             Kayıtlı düzeni sil

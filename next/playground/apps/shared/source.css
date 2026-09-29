@@ -1,0 +1,58 @@
+/* Source viewer (source.ts): loaded by the viewer itself, also used in the playground. */
+bz-dialog.source-viewer [data-part="body"] {
+  padding: 0;
+}
+.source-layout {
+  display: grid;
+  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  height: min(75vh, 48rem);
+}
+.source-layout > bz-tree {
+  overflow: auto;
+  padding: 0.5rem;
+  border-inline-end: 1px solid var(--bz-color-border);
+}
+.source-file {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+}
+.source-file-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--bz-color-border);
+}
+.source-code {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  overflow: auto;
+  font: 0.8rem/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+  tab-size: 2;
+  background: color-mix(in srgb, var(--bz-color-fg) 4%, var(--bz-color-surface));
+}
+.tok-comment {
+  color: var(--bz-color-fg-muted);
+  font-style: italic;
+}
+.tok-string {
+  color: color-mix(in srgb, #1f9d55 80%, var(--bz-color-fg));
+}
+.tok-keyword {
+  color: var(--bz-color-primary);
+  font-weight: 600;
+}
+.tok-number {
+  color: color-mix(in srgb, #d98e04 85%, var(--bz-color-fg));
+}
+@media (max-width: 720px) {
+  .source-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 10rem minmax(0, 1fr);
+  }
+  .source-layout > bz-tree {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+}

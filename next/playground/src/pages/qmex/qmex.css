@@ -62,11 +62,8 @@
 
 /* Accordion menu: fills the side panel; the open section scrolls. */
 .qx-shell > [data-part="start"] > [data-part="start-panel"] {
-  height: calc(var(--frame-h) - var(--_top) - var(--_footer-h) - 2px);
-  padding: 0;
-}
-.qx-shell[data-compact] > [data-part="start"] > [data-part="start-panel"] {
   height: 100%;
+  padding: 0;
 }
 .qx-nav {
   height: 100%;

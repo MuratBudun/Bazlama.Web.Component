@@ -41,6 +41,7 @@ import { pageRoute } from "./pages/page"
 import shellPage from "./pages/shell"
 import avatarPage from "./pages/avatar"
 import qmexPage from "./pages/qmex"
+import demoAppsPage, { demoNav } from "./pages/demo-apps"
 
 interface Page {
   id: string
@@ -56,7 +57,7 @@ defineIcons(icons)
 Object.assign(dialogs.labels, { ok: "Tamam", cancel: "Vazgeç", close: "Kapat" })
 Object.assign(toast.labels, { close: "Kapat", region: "Bildirimler" })
 
-const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, formLayoutPage, panel, list, table, dataGridPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, qmexPage, debug]
+const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, formLayoutPage, panel, list, table, dataGridPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
 const pageIcons: Record<string, string> = {
   "core-signals": "refresh",
   "core-template": "code",
@@ -91,6 +92,7 @@ const pageIcons: Record<string, string> = {
   shell: "dashboard",
   avatar: "user",
   qmex: "file-text",
+  "demo-apps": "box",
 }
 const groupIcons: Record<string, string> = { Core: "layers", "Bileşenler": "dashboard", Navigasyon: "external-link", Demo: "box", "Araçlar": "settings" }
 const groups = [...new Set(pages.map((p) => p.group ?? "Bileşenler"))]
@@ -102,6 +104,8 @@ const extraNav: Record<string, TreeItem[]> = {
     { id: "page", label: "Page", icon: "file-text", href: "/page" },
     { id: "router", label: "Router", icon: "external-link", href: "/router" },
   ],
+  // The demo apps are separate pages: they open in a new tab.
+  Demo: demoNav(),
 }
 const navItems: TreeItem[] = groups.map((group) => ({
   id: `group:${group}`,
@@ -183,7 +187,8 @@ effect(() => {
 })
 
 const app = html`
-  <bz-shell skip-label="İçeriğe geç" .busy=${router.pending} data-wide=${() => wide() || null} end-collapsed=${() => (wide() ? "" : null)}>
+  <bz-shell skip-label="İçeriğe geç" .busy=${router.pending} data-wide=${() => wide() || null} end-collapsed=${() => (wide() ? "" : null)}
+    resizable resize-label="Paneli boyutlandır" persist="playground">
     <bz-header slot="header" title="Bazlama next" subtitle="core · headless · ui · themes · router" href="/" menu-label="Menü">
       <bz-icon slot="logo" name="layers" size="28" class="accent"></bz-icon>
       <label class="field">
