@@ -7,7 +7,10 @@
 @import url("./base.css");
 @import url("./button.css");
 @import url("./input.css");
+@import url("./password.css");
 @import url("./textarea.css");
+@import url("./file-upload.css");
+@import url("./login.css");
 @import url("./checkbox.css");
 @import url("./lookup.css");
 @import url("./form-layout.css");

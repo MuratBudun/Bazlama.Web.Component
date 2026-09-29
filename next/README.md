@@ -8,7 +8,8 @@ packages/headless   bz-button, bz-input, bz-panel, bz-list/bz-option, bz-combobo
                     bz-tree, bz-icon + icon() / defineIcons() (SVG sprite),
                     bz-dialog + dialogs.open/confirm/alert (modal yığını),
                     bz-tabs/bz-tab-list/bz-tab/bz-tab-panel, toast(), data-tooltip + tooltip(),
-                    bz-menu/bz-menu-item/-separator/-group, openMenu(), contextMenu(), place()
+                    bz-menu/bz-menu-item/-separator/-group, openMenu(), contextMenu(), place(),
+                    bz-password, bz-login (2FA adımlı giriş kartı), bz-file-upload
 packages/icons      çizgi ikon seti (veri; import edilen ikonlar pakete girer)
 packages/ui         headless elemanlar için CSS (@layer bazlama.*), JS yok
 packages/themes     sadece token dosyaları: light, dark, forest
@@ -86,7 +87,8 @@ Ayarlar repo kökündeki `.vscode/` klasöründe (`launch.json`, `tasks.json`). 
 | 4f | `bz-alert`, `bz-badge`, `bz-chip`; `bz-table` row-activate (çift tık / Enter) ve satırlarda klavye gezinmesi | ✅ |
 | 4g | `bz-checkbox`, `bz-switch`, `bz-radio-group`, `bz-textarea` (autosize, büyük editör), `bz-lookup`, `bz-pagination`, `bz-toolbar`, `bz-form-layout` | ✅ |
 | 4h | `bz-data-grid`: sütun genişliği (sürükle / klavye / sığdır), gizleme, başa-sona sabitleme, sürükleyerek sıralama, `columnState`; dikey virtual scroll; `bz-data-grid-columns` | ✅ |
-| 5b | Toolbar taşma menüsü, tarih ve sayı alanı, dosya alanı; grid'de değişken satır yüksekliği, hücre düzenleme, gruplama | |
+| 5b | Toolbar taşma menüsü, tarih ve sayı alanı; grid'de değişken satır yüksekliği, hücre düzenleme, gruplama | |
+| 5c | `bz-password` (göster/gizle, Caps Lock, güç), `bz-login` (2FA adımı), `bz-file-upload` (sürükle-bırak, ilerleme, tekrar dene) | ✅ |
 | 6 | Sayfalama, boş durum, mobil uyumluluk fazı | |
 
 **İkonlar:** Tek bir sprite içinde sadece kullanılan ikonlar `<symbol>` olarak durur; her kullanım `<svg><use>` kopyasıdır. `icon()` önbellekteki bir örneği klonlar; tablo/ağaç gibi sık yerlerde `<bz-icon>` yerine bunu kullanın. Tanımlanmadan kullanılan ikon, tanımlanınca kendiliğinden görünür. Shadow root içinde `<use>` sprite'a ulaşamaz; orada `icon(name, { inline: true })` kullanılır.
@@ -145,6 +147,14 @@ Uygulamaları yazarken bulunan kütüphane düzeltmeleri:
 **Seçim kontrolleri:** `bz-checkbox`, `bz-switch` (role=switch) ve `bz-radio-group` native input sarar. Form verisi, `required` doğrulaması, reset, Space tuşu, radyolarda ok tuşları ve tek sekme durağı tarayıcıdan gelir. Göstergede ayrı span yok: native input `appearance: none` ile çizilir. İçteki native `change` host'ta **capture** fazında durdurulur (yoksa host'u dinleyen de alırdı) ve yerine `change` { checked, value } / { value } yayınlanır. Radyolar gruptan sonra render olur: `defaultChecked` bir input ilk görüldüğünde yazılır. Reset değeri `checked` yerine `defaultChecked`'ten okunur, çünkü bekleyen mutation bildirimi eski değeri geri yazabiliyordu. Mutation gözlenen efektlerde attribute'lar sadece değişince yazılır; aynı değeri yazmak bile yeni bir kayıt üretip döngüye sokuyordu.
 
 **Textarea:** `autosize` = CSS `field-sizing: content` (+ `max-rows` ile `max-height`); destek yoksa `scrollHeight` ölçülür. `expandable` metni `dialogs.open` ile büyük bir editörde açar (Ctrl+Shift+Enter). Uygula, textarea'dan `input` + `change` yayınlar, yani yazmakla aynı yol.
+
+**Parola:** `bz-password` alanın görünümünü `bz-input` ile paylaşır (CSS'te aynı kural kümesi); farkı göster/gizle düğmesi, Caps Lock uyarısı ve güç göstergesidir. Göster/gizle yalnızca native input'un `type`'ını değiştirir, bu yüzden değer, odak, imleç konumu ve parola yöneticisinin alanı tanıması korunur; düğme `tabindex="-1"`'dir, Tab sırası alanın kendisi olsun diye. Caps Lock durumu klavye olaylarının `getModifierState`'inden okunur (ayrı bir API yok) ve sadece alan odaktayken gösterilir. `passwordStrength()` dışa aktarılır: uzunluk + karakter çeşidine bakan 0-4 arası kaba bir ipucu, politika değil.
+
+**Login:** `bz-login` kimlik doğrulaması yapmaz; `submit` olayını yayar, `loading` / `error` / `step`'i uygulama yönetir. Alanlar gerçek `bz-input`/`bz-password`/`bz-checkbox` ve gerçek bir `<form>` içindedir: Enter gönderir, `required` native doğrulanır, parola yöneticileri formu tanır. İçteki native `submit` host'ta durdurulur, dışarı sadece detaylı CustomEvent çıkar. İkinci adım (`step="code"`) aynı kartta açılır; kod alanı `autocomplete="one-time-code"` ve tamamlanınca formu kendiliğinden gönderir (`no-auto-submit` kapatır), yeniden gönderme sayacı adıma girildiğinde başlar.
+
+**Dosya alanı:** `bz-file-upload`'ın iki modu var. `url`/`uploader` yoksa sadece toplar ve doğrular; dosyalar `ElementInternals.setFormValue(FormData)` ile formun değeri olur, sıradan bir form gönderimiyle giderler. `url` (ya da kendi `uploader` fonksiyonunuz) verilirse dosyaları tek tek kendisi gönderir ve form değerine **yazmaz**, yoksa aynı dosya iki kez giderdi. Gönderim fetch ile değil XHR ile yapılır: gövdeyi akıtmadan gerçek yükleme ilerlemesini yalnızca XHR bildirir; iptal `AbortController` ile, tekrar deneme dosya bazında. Liste satırları `repeat()` ile anahtarlı ve her dosyanın durumu/ilerlemesi **kendi signal'ıdır**, böylece ilerleme tiki tüm satırı değil sadece çubuğu günceller. Bırakma alanı bir `<button>`: Enter/Space seçiciyi açar, sürükle-bırak aynı elemanda çalışır; `dragleave` titremesin diye giriş/çıkış sayılır.
+
+**Varsayılanı açık olan bayraklar:** `prop.boolean(true, …)` kullanılmaz. Attribute'ta HTML semantiği geçerli (varlık = true), bu yüzden varsayılanı `true` olan bir bayrak markup'tan kapatılamaz. Bunun yerine kapalı durum adlandırılır: `hide-toggle`, `hide-caps-warning`, `hide-remember`, `hide-forgot`, `no-auto-submit`, `manual` (mevcut `hide-close`, `hide-zero` ile aynı çizgi).
 
 **Lookup:** form-associated (ElementInternals); değer anahtar, alan metni gösterir. Seçici sırası: `pick()` → `items` (ağaç + filtre) → `rows`/`columns` (tablo + arama). Tetikleyici `mousedown`'da odağı almaz; dialog odağı açıldığı alana geri verir.
 

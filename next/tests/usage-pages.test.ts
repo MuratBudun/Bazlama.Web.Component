@@ -26,7 +26,7 @@ const settle = async () => {
   }
 }
 
-it.each(["button", "input", "panel", "list", "combobox", "table", "icon", "tree", "dialog", "tabs", "accordion", "alert", "badge", "checkbox", "switch", "radio", "textarea", "lookup", "pagination", "toolbar", "form-layout", "data-grid", "menu", "context-menu", "toast", "tooltip", "shell", "avatar"])("%s: usage section", async (id) => {
+it.each(["button", "input", "password", "file-upload", "login", "panel", "list", "combobox", "table", "icon", "tree", "dialog", "tabs", "accordion", "alert", "badge", "checkbox", "switch", "radio", "textarea", "lookup", "pagination", "toolbar", "form-layout", "data-grid", "menu", "context-menu", "toast", "tooltip", "shell", "avatar"])("%s: usage section", async (id) => {
   vi.spyOn(console, "warn").mockImplementation(() => {})
   const page = (await import(`../playground/src/pages/${id}.ts`)).default
   const container = document.body.appendChild(document.createElement("div"))

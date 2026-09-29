@@ -85,8 +85,13 @@
     display: flex;
     flex-direction: column;
     max-height: inherit;
-    height: 100%;
     box-sizing: border-box;
+  }
+  /* `height: 100%` only where the dialog has a definite height: against the content-sized
+     dialog WebKit resolves the percentage to 0, which collapses the whole box (backdrop
+     visible, dialog not). */
+  bz-dialog[size="full"] > [data-part="dialog"] > [data-part="panel"] {
+    height: 100%;
   }
   bz-dialog > [data-part="dialog"] > [data-part="panel"] > [data-part="header"] {
     display: flex;

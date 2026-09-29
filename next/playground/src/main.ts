@@ -24,6 +24,9 @@ import iconPage from "./pages/icon"
 import tree from "./pages/tree"
 import combobox from "./pages/combobox"
 import input from "./pages/input"
+import passwordPage from "./pages/password"
+import fileUploadPage from "./pages/file-upload"
+import loginPage from "./pages/login"
 import textareaPage from "./pages/textarea"
 import checkboxPage from "./pages/checkbox"
 import switchPage from "./pages/switch"
@@ -57,13 +60,16 @@ defineIcons(icons)
 Object.assign(dialogs.labels, { ok: "Tamam", cancel: "Vazgeç", close: "Kapat" })
 Object.assign(toast.labels, { close: "Kapat", region: "Bildirimler" })
 
-const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, formLayoutPage, panel, list, table, dataGridPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
+const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, passwordPage, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, fileUploadPage, loginPage, formLayoutPage, panel, list, table, dataGridPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
 const pageIcons: Record<string, string> = {
   "core-signals": "refresh",
   "core-template": "code",
   "core-component": "box",
   button: "cursor-click",
   input: "edit",
+  password: "lock",
+  "file-upload": "upload",
+  login: "user",
   textarea: "file-text",
   checkbox: "check",
   switch: "settings",

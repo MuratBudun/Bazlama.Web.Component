@@ -425,3 +425,90 @@ html\`
   hooks: ["[label-position]", "[data-columns] (o anki sütun sayısı)", "--bz-form-gap", "--bz-form-row-gap"],
   notes: ["Düzen CSS grid (auto-fill + minmax); JS sadece o anki sütun sayısını ölçüp span'leri kısar."],
 }
+
+export const fileUploadUsage: UsageSpec = {
+  tag: "bz-file-upload",
+  html: `
+<form>
+  <bz-file-upload name="ekler" label="Ekler" multiple preview
+    accept=".pdf,.png,.jpg" max-size="5242880" max-files="5"
+    hint="Sürükleyip bırakın ya da seçin. Form gönderilince dosyalar formla birlikte gider."></bz-file-upload>
+</form>`,
+  js: `
+// Kendi taşıyıcısı: gerçek bir sunucu yerine sahte bir yükleyici (ilerleme + hata + tekrar dene)
+const el = document.createElement("bz-file-upload")
+el.label = "Belgeler"
+el.multiple = true
+el.maxSize = 5 * 1024 * 1024
+el.labels = { prompt: "Dosyaları buraya sürükleyin", browse: "Dosya seçin", drop: "Bırakın",
+  remove: "Kaldır", retry: "Tekrar dene", uploading: "Yükleniyor", done: "Yüklendi",
+  failed: "Başarısız", tooLarge: "{name} {max} sınırını aşıyor.", networkError: "Yükleme başarısız." }
+
+let n = 0
+el.uploader = (file, { onProgress, signal }) =>
+  new Promise((resolve, reject) => {
+    let done = 0
+    const timer = setInterval(() => {
+      done += 0.15
+      onProgress(Math.min(1, done))
+      if (done < 1) return
+      clearInterval(timer)
+      // Her ikinci dosya hata versin ki "tekrar dene" görülebilsin.
+      if (++n % 2 === 0) reject(new Error("Sunucu 500 döndü"))
+      else resolve({ id: n })
+    }, 200)
+    signal.addEventListener("abort", () => clearInterval(timer))
+  })
+
+el.addEventListener("add", (e) => log("eklendi", e.detail.files.map((f) => f.name).join(", ")))
+el.addEventListener("reject", (e) => log("reddedildi", e.detail.message))
+el.addEventListener("upload-success", (e) => log("yüklendi", e.detail.file.name))
+el.addEventListener("upload-error", (e) => log("hata", e.detail.error))
+output.append(el)`,
+  template: `
+html\`
+  <bz-file-upload label="Ekler" multiple accept="image/*" max-size=\${5 * 1024 * 1024}
+    url="/api/upload" field-name="file" .headers=\${{ Authorization: \\\`Bearer \\\${token()}\\\` }}
+    @change=\${(e) => files.set(e.detail.files)}>
+  </bz-file-upload>
+\``,
+  props: [
+    { name: "name", type: "string", desc: "Form alan adı. Bileşen kendi yüklemiyorsa dosyalar bu adla form değerine (ElementInternals) yazılır." },
+    { name: "label / hint", attr: "label, hint", type: "string", desc: "Etiket ve yardım metni." },
+    { name: "accept", type: "string", desc: 'Native accept sözdizimi: ".pdf,.docx" veya "image/*".' },
+    { name: "multiple", type: "boolean", default: "false", desc: "Çoklu seçim; kapalıyken yeni seçim eskisinin yerine geçer." },
+    { name: "maxSize", attr: "max-size", type: "number", default: "0", desc: "Bayt cinsinden üst sınır; 0 sınırsız." },
+    { name: "maxFiles", attr: "max-files", type: "number", default: "0", desc: "En çok dosya sayısı; 0 sınırsız." },
+    { name: "preview", type: "boolean", default: "false", desc: "Görseller için küçük resim (object URL; kaldırınca serbest bırakılır)." },
+    { name: "url / method / fieldName / headers / withCredentials", attr: "url, method, field-name, with-credentials", type: "string / string / string / object / boolean", default: '· "POST" · "file" · {} · false', desc: "url verilirse bileşen dosyaları XHR ile tek tek gönderir (gerçek ilerleme, iptal, tekrar dene)." },
+    { name: "uploader", attr: false, type: "(file, { onProgress, signal }) => Promise", desc: "Kendi taşıyıcınız; url yerine geçer." },
+    { name: "manual", type: "boolean", default: "false", desc: "Dosya eklenince başlamaz; upload() bekler." },
+    { name: "required", type: "boolean", default: "false", desc: "En az bir dosya (ElementInternals ile form doğrulaması)." },
+    { name: "disabled", type: "boolean", default: "false", desc: "Yansıtılır; seçim ve bırakma çalışmaz." },
+    { name: "error", type: "string", desc: "Alanın altındaki hata; reddedilen dosyada kendiliğinden dolar." },
+    { name: "labels", attr: false, type: "Partial<FileUploadLabels>", desc: "Metinler; {name}, {max}, {n} yer tutucuları doldurulur." },
+  ],
+  events: [
+    { name: "add", detail: "{ files: UploadFile[] }", desc: "Doğrulamadan geçen dosyalar eklendi." },
+    { name: "reject", detail: "{ file, reason, message }", desc: 'reason: "accept" | "size" | "count".' },
+    { name: "change", detail: "{ files: UploadFile[] }", desc: "Liste her değiştiğinde (ekleme, kaldırma, yükleme bitişi)." },
+    { name: "remove", detail: "{ file }", desc: "Bir dosya listeden çıkarıldı (yükleniyorsa iptal edilir)." },
+    { name: "upload-progress / upload-success / upload-error", detail: "{ file, progress } · { file, response } · { file, error }", desc: "Yalnızca url/uploader modunda." },
+    { name: "complete", detail: "{ files }", desc: "Başlatılan yüklemelerin hepsi bitti." },
+  ],
+  api: [
+    { name: "files", desc: "Geçerli liste (UploadFile[]: id, file, name, size, type, status, progress, error, response)." },
+    { name: "addFiles(files)", desc: "Seçilmiş gibi ekler: doğrular, add/reject yayar, gerekiyorsa yüklemeyi başlatır." },
+    { name: "upload()", desc: "Bekleyen ve hatalı dosyaları gönderir (manual modu)." },
+    { name: "retry(id) / removeFile(id) / clear()", desc: "Tek dosyayı tekrar dener, listeden çıkarır, listeyi boşaltır." },
+    { name: "formatBytes(n) / matchesAccept(file, accept)", desc: "Bileşenin kullandığı yardımcılar; dışa aktarılır." },
+  ],
+  parts: [{ name: "label / dropzone / icon / prompt / browse / constraints / list / item / thumb / meta / name / size / item-error / progress / bar / status / retry / item-remove / hint / error", desc: "Parçalar." }],
+  hooks: ["[data-dragover]", '[data-part="item"][data-status="pending|uploading|done|error"]', "[data-invalid]", "[disabled]", "--bz-upload-progress-width"],
+  notes: [
+    "İki mod var: url/uploader yoksa bileşen sadece toplar ve doğrular, dosyalar formun değeri olur; url/uploader varsa dosyaları kendisi gönderir ve form değerine yazmaz (aynı dosya iki kez gitmesin).",
+    "Yükleme fetch ile değil XHR ile yapılır: gövdeyi akıtmadan gerçek yükleme ilerlemesini yalnızca XHR bildirir.",
+    "Bırakma alanı bir <button>: Enter/Space dosya seçiciyi açar, sürükle-bırak aynı elemanda çalışır.",
+    "Şablonda fonksiyon alan bir özellik `.uploader=${() => fn}` diye verilir: bağlamadaki her fonksiyon değeri reaktif sayılır, dönen değer özelliğe yazılır.",
+  ],
+}
