@@ -102,11 +102,11 @@ html\`
 export const radioUsage: UsageSpec = {
   tag: "bz-radio-group · bz-radio",
   html: `
-<bz-radio-group label="Doküman türü" name="kind" value="form" required>
-  <bz-radio value="form">Form</bz-radio>
-  <bz-radio value="proc" hint="Süreç tanımı">Prosedür</bz-radio>
-  <bz-radio value="inst">Talimat</bz-radio>
-  <bz-radio value="ext" disabled>Dış kaynaklı</bz-radio>
+<bz-radio-group label="Belge türü" name="kind" value="offer" required>
+  <bz-radio value="offer">Teklif</bz-radio>
+  <bz-radio value="order" hint="Onaylanmış alım">Sipariş</bz-radio>
+  <bz-radio value="invoice">Fatura</bz-radio>
+  <bz-radio value="waybill" disabled>İrsaliye</bz-radio>
 </bz-radio-group>
 
 <bz-radio-group label="Öncelik" orientation="horizontal" value="normal">
@@ -198,13 +198,13 @@ html\`
 export const lookupUsage: UsageSpec = {
   tag: "bz-lookup",
   html: `
-<bz-lookup id="dept" label="Hazırlayan Bölüm" name="dept" required clearable
+<bz-lookup id="dept" label="Bölüm" name="dept" required clearable
   selection="leaf" placeholder="Seçmek için Enter / F4"></bz-lookup>
 <script>
   dept.items = [
-    { id: "gm", label: "Genel Müdürlük", children: [
-      { id: "kk", label: "Kalite Kontrol Müdürlüğü" },
-      { id: "ur", label: "Üretim Müdürlüğü" },
+    { id: "gm", label: "Genel Merkez", children: [
+      { id: "kk", label: "Satış" },
+      { id: "ur", label: "Finans" },
     ] },
   ]
 </script>`,
@@ -213,23 +213,23 @@ export const lookupUsage: UsageSpec = {
     el.items = [
       {
         id: "gm",
-        label: "Genel Müdürlük",
+        label: "Genel Merkez",
         children: [
-          { id: "kk", label: "Kalite Kontrol Müdürlüğü" },
-          { id: "ur", label: "Üretim Müdürlüğü" },
+          { id: "kk", label: "Satış" },
+          { id: "ur", label: "Finans" },
         ],
       },
     ]
   },
   js: `
 const doc = document.createElement("bz-lookup")
-doc.label = "İlişkili doküman"
+doc.label = "İlişkili belge"
 doc.clearable = true
-doc.columns = [{ key: "no", header: "Doküman No" }, { key: "name", header: "Adı" }]
+doc.columns = [{ key: "no", header: "Belge No" }, { key: "name", header: "Adı" }]
 doc.rows = [
-  { id: 8, no: "FRM-008", name: "Doküman Formu" },
-  { id: 7, no: "FRM-007", name: "Değişiklik İsteği" },
-  { id: 1, no: "PRS-001", name: "Doküman Kontrol Prosedürü" },
+  { id: 8, no: "SZL-2026-014", name: "Hizmet sözleşmesi" },
+  { id: 7, no: "SZL-2026-007", name: "Bakım sözleşmesi" },
+  { id: 1, no: "TKL-2026-101", name: "Fiyat teklifi" },
 ]
 doc.displayKey = "no"
 doc.labels = { select: "Seç", clear: "Temizle", search: "Ara", ok: "Seç", cancel: "Vazgeç", empty: "Sonuç yok" }
@@ -237,7 +237,7 @@ doc.addEventListener("change", (e) => log("change", e.detail.value, e.detail.tex
 output.append(doc)`,
   template: `
 html\`
-  <bz-lookup label="Doküman Sahibi Bölüm" required .items=\${DEPARTMENTS} selection="leaf"
+  <bz-lookup label="Sorumlu Bölüm" required .items=\${DEPARTMENTS} selection="leaf"
     .value=\${ownerDept} @change=\${(e) => ownerDept.set(e.detail.value)}></bz-lookup>
 
   <bz-lookup label="Personel" .pick=\${async () => {
@@ -317,7 +317,7 @@ html\`
 export const toolbarUsage: UsageSpec = {
   tag: "bz-toolbar",
   html: `
-<bz-toolbar label="Doküman işlemleri">
+<bz-toolbar label="Kayıt işlemleri">
   <bz-button size="sm" variant="ghost">Yenile</bz-button>
   <bz-button size="sm" variant="ghost">Görüntüle</bz-button>
   <bz-button size="sm" variant="ghost" disabled>Sil</bz-button>
@@ -372,15 +372,15 @@ export const formLayoutUsage: UsageSpec = {
   html: `
 <form>
   <bz-form-layout columns="3" min-column-width="12rem">
-    <bz-input label="Doküman No" value="FRM-008" readonly></bz-input>
-    <bz-input label="Revizyon" value="0" readonly></bz-input>
-    <bz-input label="Tarih" type="date"></bz-input>
-    <bz-input label="Dokümanın Adı" required data-span="2"></bz-input>
-    <bz-combobox label="Tür"><bz-option>Form</bz-option><bz-option>Prosedür</bz-option></bz-combobox>
+    <bz-input label="Proje No" value="PRJ-2026-014" readonly></bz-input>
+    <bz-input label="Sürüm" value="1" readonly></bz-input>
+    <bz-input label="Başlangıç" type="date"></bz-input>
+    <bz-input label="Proje adı" required data-span="2"></bz-input>
+    <bz-combobox label="Tür"><bz-option>Müşteri projesi</bz-option><bz-option>İç proje</bz-option></bz-combobox>
 
-    <bz-form-section heading="Dağıtım" description="Yürürlüğe girince bilgilendirilecekler">
-      <bz-switch>Elektronik dağıtım</bz-switch>
-      <bz-checkbox>Basılı kopya</bz-checkbox>
+    <bz-form-section heading="Bildirimler" description="Proje durumu değişince bilgilendirilecekler">
+      <bz-switch>E-posta bildirimi</bz-switch>
+      <bz-checkbox>Haftalık rapor</bz-checkbox>
       <bz-textarea label="Not" data-span="full" rows="2"></bz-textarea>
     </bz-form-section>
 

@@ -9,34 +9,34 @@ export const dataGridUsage: UsageSpec = {
   <bz-toolbar-spacer></bz-toolbar-spacer>
   <bz-data-grid-columns for="forms">Sütunlar</bz-data-grid-columns>
 </bz-toolbar>
-<bz-data-grid id="forms" label="Formlar" selectable style="--bz-data-grid-max-height: 16rem"></bz-data-grid>
+<bz-data-grid id="forms" label="Belgeler" selectable style="--bz-data-grid-max-height: 16rem"></bz-data-grid>
 <script>
   forms.columns = [
-    { key: "no", header: "Doküman No", width: 120, pinned: "start", sortable: true },
+    { key: "no", header: "Belge No", width: 120, pinned: "start", sortable: true },
     { key: "name", header: "Adı", width: 220, flex: true, sortable: true },
     { key: "dept", header: "Bölüm", width: 180 },
-    { key: "rev", header: "Rev.", width: 70, align: "end" },
+    { key: "rev", header: "Sürüm", width: 70, align: "end" },
     { key: "status", header: "Durum", width: 130, pinned: "end" },
   ]
-  forms.rows = Array.from({ length: 5000 }, (_, i) => ({ id: i + 1, no: "FRM-" + (i + 1), … }))
+  forms.rows = Array.from({ length: 5000 }, (_, i) => ({ id: i + 1, no: "BLG-" + (i + 1), … }))
 </script>`,
   preview: (root) => {
     const grid = root.querySelector("bz-data-grid") as HTMLElement & { columns: unknown; rows: unknown }
     grid.columns = [
-      { key: "no", header: "Doküman No", width: 120, pinned: "start", sortable: true },
+      { key: "no", header: "Belge No", width: 120, pinned: "start", sortable: true },
       { key: "name", header: "Adı", width: 220, flex: true, sortable: true },
       { key: "dept", header: "Bölüm", width: 180 },
-      { key: "rev", header: "Rev.", width: 70, align: "end" },
+      { key: "rev", header: "Sürüm", width: 70, align: "end" },
       { key: "status", header: "Durum", width: 130, pinned: "end" },
     ]
-    const depts = ["Kalite Kontrol", "Üretim", "Depo", "Satın Alma", "İnsan Kaynakları"]
+    const depts = ["Satış", "Finans", "Pazarlama", "Satın Alma", "İnsan Kaynakları"]
     grid.rows = Array.from({ length: 5000 }, (_, i) => ({
       id: i + 1,
-      no: `FRM-${String(i + 1).padStart(4, "0")}`,
-      name: `Form ${i + 1}`,
+      no: `BLG-${String(i + 1).padStart(4, "0")}`,
+      name: `Belge ${i + 1}`,
       dept: depts[i % depts.length],
       rev: i % 7,
-      status: i % 3 ? "Yürürlükte" : "Hazırlanıyor",
+      status: i % 3 ? "Yayında" : "Taslak",
     }))
   },
   js: `
@@ -60,11 +60,11 @@ grid.addEventListener("row-activate", (e) => log("row-activate", e.detail.key))
 output.append(grid)`,
   template: `
 html\`
-  <bz-toolbar label="Doküman listesi">
+  <bz-toolbar label="Belge listesi">
     <bz-toolbar-spacer></bz-toolbar-spacer>
     <bz-data-grid-columns for="docs">Sütunlar</bz-data-grid-columns>
   </bz-toolbar>
-  <bz-data-grid id="docs" label="Dokümanlar" selectable
+  <bz-data-grid id="docs" label="Belgeler" selectable
     .columns=\${COLUMNS} .rows=\${rows} .labels=\${DATA_GRID_TR}
     .columnState=\${columnState} @columns-change=\${(e) => save(e.detail.state)}
     .sort=\${sort} @sort=\${(e) => sort.set(e.detail.sort)}

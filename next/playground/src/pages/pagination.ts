@@ -18,7 +18,7 @@ export const PAGINATION_TR: Partial<PaginationLabels> = {
   empty: "Gösterilebilecek veri yok",
 }
 
-const ROWS = Array.from({ length: 137 }, (_, i) => ({ id: i + 1, no: `FRM-${String(i + 1).padStart(3, "0")}`, name: `Form ${i + 1}` }))
+const ROWS = Array.from({ length: 137 }, (_, i) => ({ id: i + 1, no: `SPR-${String(i + 1).padStart(3, "0")}`, name: `Sipariş ${i + 1}` }))
 
 export default {
   id: "pagination",
@@ -47,7 +47,7 @@ export default {
       </section>
 
       <section class="demo">
-        <h2>Kompakt + tablo (QMEX tarzı)</h2>
+        <h2>Kompakt + tablo (masaüstü uygulaması tarzı)</h2>
         <div class="stack-sm">
           <bz-input placeholder="Ada göre filtrele (ör. 1)" .value=${query}
             @input=${(e: Event) => (query.set((e.currentTarget as HTMLInputElement).value), page.set(1))}></bz-input>

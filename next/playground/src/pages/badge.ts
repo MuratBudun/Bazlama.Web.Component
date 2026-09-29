@@ -6,11 +6,11 @@ import { logEntry } from "../log"
 
 const VARIANTS = ["neutral", "primary", "info", "success", "warning", "danger"] as const
 const STATUSES: [string, (typeof VARIANTS)[number]][] = [
-  ["Hazırlanıyor", "warning"],
-  ["Onay Bekliyor", "info"],
-  ["Yürürlük Onayında", "primary"],
-  ["Yürürlüğe Alma", "danger"],
-  ["Yürürlükte", "success"],
+  ["Taslak", "warning"],
+  ["İncelemede", "info"],
+  ["Onaylandı", "primary"],
+  ["Reddedildi", "danger"],
+  ["Yayında", "success"],
   ["İptal", "neutral"],
 ]
 
@@ -26,8 +26,8 @@ export default {
     const tagInput = signal("")
     const filters = [
       ["all", "Tümü"],
-      ["form", "Doküman Formu (16)"],
-      ["dcr", "Değişiklik İsteği (2)"],
+      ["invoice", "Fatura (16)"],
+      ["offer", "Teklif (2)"],
     ]
     const addTag = () => {
       const t = tagInput.peek().trim()

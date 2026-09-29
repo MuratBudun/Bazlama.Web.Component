@@ -189,7 +189,7 @@ const section = signal("docs")
 
 html\`
   <bz-accordion fill always-open .value=\${section} @change=\${(e) => section.set(e.detail.value)}>
-    <bz-accordion-item value="docs" heading="Dokümanlar">\${menuTree}</bz-accordion-item>
+    <bz-accordion-item value="docs" heading="Satış">\${menuTree}</bz-accordion-item>
     <bz-accordion-item value="params">
       <span slot="header">\${icon("settings")} Parametreler</span>
       <bz-button slot="actions" size="sm" variant="ghost" aria-label="Ekle">+</bz-button>

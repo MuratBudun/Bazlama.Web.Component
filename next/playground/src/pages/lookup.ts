@@ -9,21 +9,21 @@ export const LOOKUP_TR = { select: "Seç", clear: "Temizle", search: "Ara", ok: 
 const DEPARTMENTS: TreeItem[] = [
   {
     id: "gm",
-    label: "Genel Müdürlük",
+    label: "Genel Merkez",
     children: [
-      { id: "kk", label: "Kalite Kontrol Müdürlüğü", children: [{ id: "kk-lab", label: "Laboratuvar" }, { id: "kk-giris", label: "Giriş Kontrol" }] },
-      { id: "ur", label: "Üretim Müdürlüğü" },
+      { id: "kk", label: "Satış", children: [{ id: "kk-lab", label: "Kurumsal Satış" }, { id: "kk-giris", label: "Bayi Satış" }] },
+      { id: "ur", label: "Finans" },
       { id: "sa", label: "Satın Alma Müdürlüğü" },
       { id: "ik", label: "İnsan Kaynakları" },
     ],
   },
 ]
 const DOCS = [
-  { id: 8, no: "FRM-008", name: "Doküman Formu", status: "Yürürlükte" },
-  { id: 7, no: "FRM-007", name: "Değişiklik İsteği Formu", status: "Yürürlükte" },
-  { id: 1, no: "PRS-001", name: "Doküman Kontrol Prosedürü", status: "Hazırlanıyor" },
-  { id: 2, no: "TLM-014", name: "Kalibrasyon Talimatı", status: "Onay Bekliyor" },
-  { id: 3, no: "FRM-021", name: "Eğitim Katılım Formu", status: "Yürürlükte" },
+  { id: 8, no: "SZL-2026-014", name: "Hizmet sözleşmesi", status: "Yayında" },
+  { id: 7, no: "SZL-2026-007", name: "Bakım sözleşmesi", status: "Yayında" },
+  { id: 1, no: "TKL-2026-101", name: "Fiyat teklifi", status: "Taslak" },
+  { id: 2, no: "SPR-2026-044", name: "Satın alma siparişi", status: "İncelemede" },
+  { id: 3, no: "FTR-2026-210", name: "Proforma fatura", status: "Yayında" },
 ]
 const USERS = ["Ada Yılmaz", "Ekin Demir", "Deniz Kaya", "Test User 10"]
 
@@ -53,7 +53,7 @@ export default {
       <section class="demo">
         <h2>Ağaçtan seçim</h2>
         <div class="stack-sm" style="max-width: 28rem">
-          <bz-lookup label="Hazırlayan Bölüm" required clearable selection="leaf" .items=${DEPARTMENTS} .labels=${LOOKUP_TR}
+          <bz-lookup label="Bölüm" required clearable selection="leaf" .items=${DEPARTMENTS} .labels=${LOOKUP_TR}
             ?readonly=${readonly} .value=${dept} @change=${(e: CustomEvent<{ value: string }>) => (dept.set(e.detail.value), log("bölüm")(e))}
             hint="Enter / F4 / Alt+↓ açar; seçicide yazarak filtreleyin."></bz-lookup>
           <div class="row">
@@ -66,8 +66,8 @@ export default {
       <section class="demo">
         <h2>Tablodan seçim</h2>
         <div class="stack-sm" style="max-width: 28rem">
-          <bz-lookup label="İlişkili doküman" clearable dialog-size="lg" display-key="no" .labels=${LOOKUP_TR}
-            .columns=${[{ key: "no", header: "Doküman No", width: "8rem" }, { key: "name", header: "Adı" }, { key: "status", header: "Durum" }]}
+          <bz-lookup label="İlişkili belge" clearable dialog-size="lg" display-key="no" .labels=${LOOKUP_TR}
+            .columns=${[{ key: "no", header: "Belge No", width: "9rem" }, { key: "name", header: "Adı" }, { key: "status", header: "Durum" }]}
             .rows=${DOCS} .value=${doc} @change=${(e: CustomEvent<{ value: string; text: string }>) => {
               doc.set(e.detail.value)
               if (e.detail.value) toast(`${e.detail.text} seçildi`)
@@ -88,7 +88,7 @@ export default {
       <section class="demo">
         <h2>Formda</h2>
         <form class="stack-sm" style="max-width: 28rem" @submit=${(e: SubmitEvent) => (e.preventDefault(), toast.success(JSON.stringify([...new FormData(e.target as HTMLFormElement)])))}>
-          <bz-lookup name="owner" label="Doküman Sahibi Bölüm" required .items=${DEPARTMENTS} .labels=${LOOKUP_TR}></bz-lookup>
+          <bz-lookup name="owner" label="Sorumlu Bölüm" required .items=${DEPARTMENTS} .labels=${LOOKUP_TR}></bz-lookup>
           <div class="row"><bz-button type="submit" variant="primary">Gönder</bz-button><bz-button type="reset">Sıfırla</bz-button></div>
         </form>
       </section>

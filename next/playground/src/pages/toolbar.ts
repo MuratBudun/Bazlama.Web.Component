@@ -16,13 +16,13 @@ export default {
 
       <section class="demo">
         <h2>Tablo araç çubuğu</h2>
-        <bz-toolbar label="Doküman işlemleri" class="toolbar-demo">
+        <bz-toolbar label="Kayıt işlemleri" class="toolbar-demo">
           <bz-button size="sm" variant="ghost" aria-label="Yenile" data-tooltip="Yenile" @click=${() => toast.info("Yenilendi")}>${icon("refresh")}</bz-button>
           <bz-button size="sm" variant="ghost" ?disabled=${() => !hasSelection()}>${icon("edit")} Görüntüle</bz-button>
           <bz-menu @select=${(e: CustomEvent<{ value: string }>) => toast(`${e.detail.value} eklenecek`)}>
             <bz-button slot="trigger" size="sm" variant="ghost">${icon("plus")} Ekle ▾</bz-button>
-            <bz-menu-item value="Form">Form</bz-menu-item>
-            <bz-menu-item value="Prosedür">Prosedür</bz-menu-item>
+            <bz-menu-item value="Teklif">Teklif</bz-menu-item>
+            <bz-menu-item value="Sipariş">Sipariş</bz-menu-item>
           </bz-menu>
           <bz-button size="sm" variant="ghost" ?disabled=${() => !hasSelection()}>${icon("trash")} Seçileni Sil</bz-button>
           <bz-toolbar-separator></bz-toolbar-separator>

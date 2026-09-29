@@ -1179,3 +1179,35 @@ bz-shell[start-collapsed]:not([data-compact]) bz-tree [data-part="item"] {
   background: var(--bz-color-primary);
   border-radius: var(--bz-radius);
 }
+
+/* ---------------------------------------------------------------- card page (app launcher) */
+.card-home {
+  display: grid;
+  gap: 0.75rem;
+}
+.card-home-head {
+  align-items: flex-start;
+}
+.card-home-greet {
+  font-size: 1.1rem;
+}
+.card-home-search {
+  width: min(20rem, 100%);
+}
+.card-kbd {
+  display: inline-flex;
+  gap: 0.2rem;
+  font-size: 0.75em;
+}
+.card-kbd kbd {
+  padding: 0 0.3rem;
+  border: 1px solid var(--bz-color-border);
+  border-radius: 4px;
+}
+.card-home-label {
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bz-color-fg-muted);
+}

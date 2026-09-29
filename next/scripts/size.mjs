@@ -37,6 +37,7 @@ const entries = [
   ["  lookup + tree + table + dialog + core", "packages/headless/src/lookup.ts"],
   ["  form-layout + core", "packages/headless/src/form-layout.ts"],
   ["  data-grid + menu + icon + core", "packages/headless/src/data-grid/grid.ts"],
+  ["  card + card-list + icon + core", "packages/headless/src/card.ts"],
   ["  toast + dialog + icon + core", "packages/headless/src/toast.ts"],
   ["  tooltip + position + core", "packages/headless/src/tooltip.ts"],
   ["  menu + dialog + icon + core", "packages/headless/src/menu.ts"],

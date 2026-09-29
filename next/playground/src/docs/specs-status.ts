@@ -5,7 +5,7 @@ import type { UsageSpec } from "./usage"
 export const alertUsage: UsageSpec = {
   tag: "bz-alert",
   html: `
-<bz-alert variant="info" heading="Bilgi">Bu doküman 20.07.2029 tarihine kadar geçerli.</bz-alert>
+<bz-alert variant="info" heading="Bilgi">Bu teklif 20.07.2029 tarihine kadar geçerli.</bz-alert>
 <bz-alert variant="success">Kayıt güncellendi.</bz-alert>
 <bz-alert variant="warning" heading="Bekleyen işler" dismissible>
   Bu sayfada 7 günden uzun süredir bekleyen 18 iş var.
@@ -18,7 +18,7 @@ a.variant = "danger"
 a.heading = "Doğrulama hatası"
 a.dismissible = true
 a.live = "assertive"          // sonradan eklenen hata: ekran okuyucu hemen okur
-a.textContent = "Dokümanın Adı boş olamaz."
+a.textContent = "Proje adı boş olamaz."
 a.addEventListener("dismiss", (e) => log("dismiss"))
 output.append(a)
 
@@ -61,12 +61,12 @@ export const badgeUsage: UsageSpec = {
   tag: "bz-badge · bz-chip",
   html: `
 <bz-badge>Taslak</bz-badge>
-<bz-badge variant="success">Yürürlükte</bz-badge>
+<bz-badge variant="success">Yayında</bz-badge>
 <bz-badge variant="danger" count="128" max="99" label="128 bekleyen iş" solid></bz-badge>
 <bz-badge variant="success" dot label="Çevrimiçi"></bz-badge>
 
-<bz-chip selectable selected>Doküman Formu</bz-chip>
-<bz-chip selectable>Değişiklik İsteği</bz-chip>
+<bz-chip selectable selected>Fatura</bz-chip>
+<bz-chip selectable>Teklif</bz-chip>
 <bz-chip removable icon="tag">Kalite</bz-chip>
 <bz-chip variant="warning">Statik etiket</bz-chip>`,
   js: `

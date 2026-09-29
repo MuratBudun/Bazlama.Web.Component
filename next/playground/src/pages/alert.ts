@@ -18,7 +18,7 @@ export default {
       <section class="demo">
         <h2>Varyantlar</h2>
         <div class="stack-sm">
-          <bz-alert variant="info" heading="Bilgi">Bu doküman 20.07.2029 tarihine kadar geçerlidir.</bz-alert>
+          <bz-alert variant="info" heading="Bilgi">Bu teklif 20.07.2029 tarihine kadar geçerlidir.</bz-alert>
           <bz-alert variant="success">Kayıt güncellendi.</bz-alert>
           <bz-alert variant="warning" heading="Bekleyen işler">Bu sayfada 7 günden uzun süredir bekleyen 18 iş var.</bz-alert>
           <bz-alert variant="danger" heading="Yetki yok">Bu adımda işlem yapma yetkiniz bulunmuyor.</bz-alert>
@@ -29,7 +29,7 @@ export default {
         <h2>Eylemler, özel ikon, kapatma</h2>
         <div class="stack-sm">
           <bz-alert variant="warning" icon="clock" dismissible @dismiss=${log("onay süresi")}>
-            Yürürlük onayı için kalan süre: <strong>3 gün</strong>.
+            Teklifin geçerlilik süresi: <strong>3 gün</strong>.
             <bz-button slot="actions" size="sm" variant="primary">Onaya gönder</bz-button>
             <bz-button slot="actions" size="sm" variant="ghost">Hatırlat</bz-button>
           </bz-alert>

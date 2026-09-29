@@ -5,9 +5,9 @@ import { usage } from "../docs/usage"
 import { log } from "../log"
 
 const KINDS = [
-  { id: "form", label: "Form", hint: "Doldurulan belge" },
-  { id: "proc", label: "Prosedür", hint: "Süreç tanımı" },
-  { id: "inst", label: "Talimat", hint: "Adım adım iş tarifi" },
+  { id: "offer", label: "Teklif", hint: "Müşteriye fiyat önerisi" },
+  { id: "order", label: "Sipariş", hint: "Onaylanmış alım" },
+  { id: "invoice", label: "Fatura", hint: "Ödeme belgesi" },
 ]
 
 export default {
@@ -16,7 +16,7 @@ export default {
   description:
     "bz-radio-group + bz-radio: native radyolar (aynı name). Ok tuşları, tek sekme durağı ve required doğrulaması tarayıcıdan; grup etiketi, yatay dizilim ve change { value } bileşenden.",
   render() {
-    const kind = signal("form")
+    const kind = signal("offer")
     const priority = signal("normal")
     return html`
       ${usage(radioUsage)}
@@ -24,13 +24,13 @@ export default {
       <section class="demo">
         <h2>Kontrollü grup</h2>
         <div class="stack-sm">
-          <bz-radio-group label="Doküman türü" .value=${kind} @change=${(e: CustomEvent<{ value: string }>) => kind.set(e.detail.value)}>
+          <bz-radio-group label="Belge türü" .value=${kind} @change=${(e: CustomEvent<{ value: string }>) => kind.set(e.detail.value)}>
             ${KINDS.map((k) => html`<bz-radio value=${k.id} hint=${k.hint}>${k.label}</bz-radio>`)}
-            <bz-radio value="ext" disabled>Dış kaynaklı (yetki yok)</bz-radio>
+            <bz-radio value="ext" disabled>İrsaliye (yetki yok)</bz-radio>
           </bz-radio-group>
           <div class="row">
             <span class="muted small">Seçili: <code>${kind}</code></span>
-            <bz-button size="sm" @click=${() => kind.set("inst")}>Dışarıdan: Talimat</bz-button>
+            <bz-button size="sm" @click=${() => kind.set("invoice")}>Dışarıdan: Fatura</bz-button>
           </div>
         </div>
       </section>

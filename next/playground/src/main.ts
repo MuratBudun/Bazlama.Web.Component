@@ -36,6 +36,7 @@ import formLayoutPage from "./pages/form-layout"
 import paginationPage from "./pages/pagination"
 import toolbarPage from "./pages/toolbar"
 import dataGridPage from "./pages/data-grid"
+import cardPage from "./pages/card"
 import list from "./pages/list"
 import panel from "./pages/panel"
 import table from "./pages/table"
@@ -60,7 +61,7 @@ defineIcons(icons)
 Object.assign(dialogs.labels, { ok: "Tamam", cancel: "Vazgeç", close: "Kapat" })
 Object.assign(toast.labels, { close: "Kapat", region: "Bildirimler" })
 
-const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, passwordPage, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, fileUploadPage, loginPage, formLayoutPage, panel, list, table, dataGridPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
+const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, passwordPage, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, fileUploadPage, loginPage, formLayoutPage, panel, list, table, dataGridPage, cardPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
 const pageIcons: Record<string, string> = {
   "core-signals": "refresh",
   "core-template": "code",
@@ -78,6 +79,7 @@ const pageIcons: Record<string, string> = {
   "form-layout": "dashboard",
   pagination: "chevrons-right",
   "data-grid": "database",
+  card: "dashboard",
   toolbar: "more-horizontal",
   panel: "layers",
   list: "list",

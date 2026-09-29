@@ -31,7 +31,9 @@ export function execute(
   log: (...args: unknown[]) => void,
   name = "bazlama-example"
 ): Cleanup {
-  const fn = new Function("scope", "output", "log", "tag", `"use strict";\nconst { ${names} } = scope;\n${code}\n//# sourceURL=${name}.js`)
+  // The example runs in an inner block: its own declarations may shadow the scope's names
+  // (e.g. an example defining its own "Card" next to the library's Card export).
+  const fn = new Function("scope", "output", "log", "tag", `"use strict";\nconst { ${names} } = scope;\n{\n${code}\n}\n//# sourceURL=${name}.js`)
   let dispose: Cleanup = () => {}
   try {
     root((d) => {

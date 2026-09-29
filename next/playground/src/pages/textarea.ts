@@ -6,13 +6,13 @@ import { log } from "../log"
 
 const TR = { expand: "Genişlet", apply: "Uygula", cancel: "Vazgeç", close: "Kapat" }
 const LONG = `1. AMAÇ
-Bu prosedürün amacı, kalite yönetim sistemi kapsamındaki dokümanların hazırlanması, onaylanması, yayınlanması, dağıtımı ve değişikliklerinin kontrol altında tutulmasıdır.
+Bu projenin amacı, kurumsal web sitesinin yeni tasarımla yeniden yayınlanması ve içerik yönetiminin kolaylaştırılmasıdır.
 
 2. KAPSAM
-Tüm birimlerin hazırladığı prosedür, talimat, form ve dış kaynaklı dokümanları kapsar.
+Ana sayfa, ürün sayfaları, blog ve iletişim formunu kapsar; mobil uygulama bu projenin dışındadır.
 
 3. SORUMLULUKLAR
-Doküman sahibi bölüm yöneticisi içerikten; dokümantasyon sorumlusu yayın ve dağıtımdan sorumludur.`
+Proje yöneticisi takvim ve bütçeden; tasarım ekibi arayüzden; yazılım ekibi geliştirme ve yayından sorumludur.`
 
 export default {
   id: "textarea",

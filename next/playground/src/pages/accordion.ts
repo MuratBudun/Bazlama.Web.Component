@@ -6,13 +6,13 @@ import { log } from "../log"
 
 const MENU: Record<string, TreeItem[]> = {
   docs: [
-    { id: "drafts", label: "Taslaklar", icon: "folder", children: [{ id: "d1", label: "Doküman No" }, { id: "d2", label: "Doküman Türü" }, { id: "d3", label: "Hazırlayan" }] },
-    { id: "live", label: "Yürürlüktekiler", icon: "folder", children: [{ id: "l1", label: "Doküman No" }, { id: "l2", label: "Yürürlük Tarihi" }] },
-    { id: "archive", label: "Arşiv", icon: "file" },
-    { id: "cancelled", label: "İptal Edilenler", icon: "file" },
+    { id: "offers", label: "Teklifler", icon: "folder", children: [{ id: "o1", label: "Açık teklifler" }, { id: "o2", label: "Onay bekleyenler" }, { id: "o3", label: "Kaybedilenler" }] },
+    { id: "orders", label: "Siparişler", icon: "folder", children: [{ id: "s1", label: "Bu ay" }, { id: "s2", label: "Teslim bekleyenler" }] },
+    { id: "invoices", label: "Faturalar", icon: "file" },
+    { id: "returns", label: "İadeler", icon: "file" },
   ],
-  params: ["Doküman Türü", "Çıktı Türü", "Revizyon Nedeni", "Diğer Parametreler"].map((l, i) => ({ id: `p${i}`, label: l, icon: "settings" })),
-  maint: ["İş Aktarımı", "İşlem Yetkilisi Değişikliği", "Zamanlanmış Görev Yöneticisi"].map((l, i) => ({ id: `m${i}`, label: l, icon: "refresh" })),
+  params: ["Ürün grupları", "Fiyat listeleri", "Vergi oranları", "Diğer ayarlar"].map((l, i) => ({ id: `p${i}`, label: l, icon: "settings" })),
+  maint: ["Toplu güncelleme", "Sorumlu değişikliği", "Zamanlanmış görevler"].map((l, i) => ({ id: `m${i}`, label: l, icon: "refresh" })),
 }
 
 export default {
@@ -58,9 +58,9 @@ export default {
             <bz-accordion-item value="status" heading="Durum">
               <bz-button slot="actions" size="sm" variant="ghost" aria-label="Durum filtresini temizle" data-tooltip="Temizle" @click=${() => toast("Durum filtresi temizlendi.")}>${icon("x")}</bz-button>
               <bz-list label="Durum" multiple value="draft">
-                <bz-option value="draft">Hazırlanıyor</bz-option>
-                <bz-option value="wait">Onay bekliyor</bz-option>
-                <bz-option value="live">Yürürlükte</bz-option>
+                <bz-option value="draft">Taslak</bz-option>
+                <bz-option value="wait">İncelemede</bz-option>
+                <bz-option value="live">Yayında</bz-option>
               </bz-list>
             </bz-accordion-item>
             <bz-accordion-item value="date" heading="Tarih">
@@ -88,8 +88,8 @@ export default {
         <h2>fill: kenar menüsü</h2>
         <div class="accordion-fill-demo">
           <bz-accordion fill always-open value="docs" @change=${log("menü")}>
-            <bz-accordion-item value="docs" heading="Dokümanlar">
-              <bz-tree label="Dokümanlar" selection="leaf" .items=${MENU.docs} .expanded=${["drafts"]}></bz-tree>
+            <bz-accordion-item value="docs" heading="Satış">
+              <bz-tree label="Satış" selection="leaf" .items=${MENU.docs} .expanded=${["offers"]}></bz-tree>
             </bz-accordion-item>
             <bz-accordion-item value="params" heading="Parametreler">
               <bz-tree label="Parametreler" selection="leaf" .items=${MENU.params}></bz-tree>
@@ -100,7 +100,7 @@ export default {
           </bz-accordion>
           <p class="muted small">
             <code>fill</code>: açık bölüm kalan yüksekliği alır ve kendi kayar; kapalı başlıklar alta dizilir. <code>always-open</code>: bir bölüm hep açık.
-            QMEX mockup'ının sol menüsü böyle.
+            Masaüstü uygulamalarındaki bölümlü kenar menüsü gibi.
           </p>
         </div>
       </section>
