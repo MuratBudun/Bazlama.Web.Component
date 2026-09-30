@@ -5,7 +5,9 @@ import "../../../packages/ui/src/index.css"
 import "./demo.css"
 
 /** Every demo app starts here: icons, the theme on <html>, bazlama's CSS. */
-export function boot(theme: "light" | "dark" | "forest") {
+export type DemoTheme = "light" | "dark" | "forest" | "modern" | "modern-dark"
+
+export function boot(theme: DemoTheme) {
   defineIcons(icons)
   document.documentElement.dataset.theme = theme
 }

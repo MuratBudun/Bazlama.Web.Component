@@ -12,7 +12,7 @@ packages/headless   bz-button, bz-input, bz-panel, bz-list/bz-option, bz-combobo
                     bz-password, bz-login (2FA adımlı giriş kartı), bz-file-upload
 packages/icons      çizgi ikon seti (veri; import edilen ikonlar pakete girer)
 packages/ui         headless elemanlar için CSS (@layer bazlama.*), JS yok
-packages/themes     sadece token dosyaları: light, dark, forest
+packages/themes     sadece token dosyaları: light, dark, forest, modern, modern-dark, density (compact)
 playground          Core dokümanı (Reaktivite, Şablon, Bileşen) + bileşen sayfaları, tema değiştirici,
                     "UI CSS" anahtarı, olay günlüğü, tablo performans paneli
 tests               vitest + jsdom (core, headless ve doküman sayfaları)
@@ -67,6 +67,10 @@ Ayarlar repo kökündeki `.vscode/` klasöründe (`launch.json`, `tasks.json`). 
 - **Light DOM + `data-part` anatomisi:** Headless bileşenler stil içermez. Durum ARIA ve attribute'larla dışarı verilir (`[aria-selected]`, `[open]`, `[data-invalid]`…). Böylece Tailwind veya herhangi bir CSS doğrudan uygulanabilir. Slot'lar light DOM'da taklit edilir (`ctx.slot()`).
 - **Form:** `bz-input` gerçek bir `<input name>` render eder, yani doğrulama, reset ve autofill native çalışır. `bz-list`, `bz-combobox` ve `bz-button` ise ElementInternals kullanır.
 - **Stil:** `ui` katmanı saf CSS'tir. Tema = token dosyası. Her şey `@layer` içinde olduğundan uygulamanın layer dışı CSS'i her zaman kazanır. Varyant ve boyut (`variant`, `size`) sadece CSS'te tanımlıdır.
+
+**Modern tema (`data-theme="modern"` / `"modern-dark"`):** Kurumsal ekranlar için nötr, sade görünüm: soğuk griler, ince kenarlık + çok hafif gölge, renk sadece eylem ve durumlarda, tablolarda hizalı rakamlar, sadece sıralı sütunda ok, 12px durum rozetleri, ince kaydırma çubukları, dialog arkasında hafif bulanıklık. Font: Inter (kuruluysa) → Segoe UI Variable → system-ui; font yüklenmez (sıfır bağımlılık). Bileşen CSS'i yeni token'ları varsayılanlı okur, diğer temalar değişmez: `--bz-color-border-strong` / `-hover` (kontrol kenarlıkları), `--bz-shadow-control` / `-surface`, `--bz-radius-lg`, `--bz-font-numeric`, `--bz-table-header-weight` / `-size` / `-fg`, `--bz-sort-idle-opacity`, `--bz-tab-selected-weight`, `--bz-badge-font-size` / `-weight` / `-padding` / `-radius` / `-ring`, `--bz-card-shadow`, `--bz-panel-shadow`, `--bz-dialog-backdrop-filter`, `--bz-shadow-button-solid` (birincil/tehlike butonunda üst parlama), `--bz-button-press-scale` (basınca küçülme), `--bz-tree-selected-weight`, `--bz-toast-accent-width` / `-color` (renkli yan şerit yerine ince kenarlık), `--bz-menu-danger-focus-bg` / `-fg`.
+
+**Yoğunluk (`data-density="compact"`):** `<html>`'e ya da herhangi bir kaba (grid sayfası, yan panel) verilir, her temayla çalışır: 30px kontroller, 13px yazı, sık tablo/grid satırları (30px), menü ve seçim satırları küçülür. Grid'in `row-height`'ı verilmezse satır yüksekliği bu token'dan okunur ve tema/yoğunluk değişince yeniden ölçülür (sanal kaydırma doğru kalır). Playground başlığındaki "Sıkı" ve CRM Ayarlar'daki "Sıkı yerleşim" bunu açar.
 
 ## Faz 1: iş uygulaması bileşenleri
 

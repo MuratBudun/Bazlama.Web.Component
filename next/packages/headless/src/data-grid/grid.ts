@@ -119,7 +119,9 @@ interface Controller {
  *   header edge, Shift+←/→, double click = autosize), hides, pins and reorders (drag a header,
  *   Alt+←/→) them; the column menu (⋮, Alt+↓) has it all. Changes go to `.columnState` and fire
  *   `columns-change` { state, reason, key } — save and restore that state in the app.
- * - Rows: fixed height (`row-height`, px). Vertical virtual scrolling (`virtual`: "auto" above
+ * - Rows: fixed height: `row-height` (px), or when it is 0 (default) the CSS token
+ *   `--bz-data-grid-row-height` (theme, data-density; measured again when rows resize).
+ *   Vertical virtual scrolling (`virtual`: "auto" above
  *   `virtual-threshold` rows | "on" | "off") renders only what is on screen.
  * - Sorting, selection (`selectable`, `.selection`), `row-click`, `row-activate` (double click,
  *   Enter) as in bz-table. Rows are one tab stop: ↑/↓, PageUp/PageDown, Home/End, Space.
@@ -152,7 +154,8 @@ const DataGridBase = define("bz-data-grid", {
     label: prop.string(),
     virtual: prop.string<"auto" | "on" | "off">("auto"),
     virtualThreshold: prop.number(200),
-    rowHeight: prop.number(36),
+    /** px; 0 = from CSS (--bz-data-grid-row-height, set by the theme or data-density). */
+    rowHeight: prop.number(0),
     overscan: prop.number(6),
     loading: prop.boolean(false, { reflect: true }),
     labels: prop.object<Partial<DataGridLabels>>({}),
@@ -292,13 +295,21 @@ const DataGridBase = define("bz-data-grid", {
       const mode = props.virtual()
       return mode === "on" || (mode === "auto" && props.rows().length > props.virtualThreshold())
     })
-    const rowHeight = computed(() => Math.max(16, props.rowHeight() || 36))
+    /** Row height from CSS when no row-height is given (the virtual range needs it in px). */
+    const cssRowHeight = signal(36)
+    const readRowHeight = () => {
+      const px = parseFloat(getComputedStyle(host).getPropertyValue("--_row-h"))
+      if (px > 0 && px !== cssRowHeight.peek()) cssRowHeight.set(px)
+    }
+    const rowHeight = computed(() => Math.max(16, props.rowHeight() > 0 ? props.rowHeight() : cssRowHeight()))
     const range = signal<RowRange>({ start: 0, end: 0 })
     /** Key of the row holding the tab stop. */
     const activeKey = signal<unknown>(undefined)
 
     effect(() => {
-      host.style.setProperty("--bz-data-grid-row-height", `${rowHeight()}px`)
+      // An explicit row-height wins over the theme; otherwise the CSS token decides.
+      if (props.rowHeight() > 0) host.style.setProperty("--bz-data-grid-row-height", `${rowHeight()}px`)
+      else host.style.removeProperty("--bz-data-grid-row-height")
       host.toggleAttribute("data-virtual", isVirtual())
     })
 
@@ -914,6 +925,7 @@ const DataGridBase = define("bz-data-grid", {
         const key = activeKey()
         if (!indexOfKey().has(key)) untrack(() => activeKey.set(rows.length ? keyOf(rows[0]) : undefined))
       })
+      readRowHeight()
       if (typeof ResizeObserver !== "undefined") {
         let lastWidth = -1
         const ro = new ResizeObserver(() => {
@@ -923,6 +935,10 @@ const DataGridBase = define("bz-data-grid", {
           updateScrollFlags()
         })
         ro.observe(scroller)
+        // A theme or density change resizes the rows (and so the table): read the token again.
+        const rowsRo = new ResizeObserver(() => readRowHeight())
+        rowsRo.observe(table)
+        onCleanup(() => rowsRo.disconnect())
         onCleanup(() => ro.disconnect())
       }
       updateRange()

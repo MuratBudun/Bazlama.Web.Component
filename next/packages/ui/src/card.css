@@ -17,7 +17,8 @@
     color: var(--bz-color-fg);
     background: var(--bz-card-bg, color-mix(in srgb, var(--bz-color-fg) 3%, var(--bz-color-surface)));
     border: 1px solid var(--bz-card-border, transparent);
-    border-radius: calc(var(--bz-radius-sm) * 2);
+    border-radius: var(--bz-radius-lg, calc(var(--bz-radius-sm) * 2));
+    box-shadow: var(--bz-card-shadow, none);
     transition:
       background-color var(--bz-duration),
       border-color var(--bz-duration),

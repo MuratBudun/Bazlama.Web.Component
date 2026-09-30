@@ -9,7 +9,7 @@
     max-height: calc(100dvh - 2rem);
     padding: 0;
     border: 0;
-    border-radius: calc(var(--bz-radius) * 1.5);
+    border-radius: var(--bz-radius-lg, calc(var(--bz-radius) * 1.5));
     color: var(--bz-color-fg);
     background: var(--bz-color-surface);
     box-shadow: var(--bz-shadow-dialog, 0 24px 64px rgb(15 20 30 / 0.28), 0 4px 12px rgb(15 20 30 / 0.12));
@@ -36,6 +36,7 @@
   }
   bz-dialog > [data-part="dialog"]::backdrop {
     background: var(--bz-dialog-backdrop, rgb(15 20 30 / 0.45));
+    backdrop-filter: var(--bz-dialog-backdrop-filter, none);
     opacity: 0;
     transition:
       opacity var(--bz-dialog-duration, 180ms),

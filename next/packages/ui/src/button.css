@@ -3,7 +3,8 @@
     --_bg: var(--bz-button-bg, var(--bz-color-surface));
     --_bg-hover: var(--bz-button-bg-hover, var(--bz-color-surface-hover));
     --_fg: var(--bz-button-fg, var(--bz-color-fg));
-    --_border: var(--bz-button-border, var(--bz-color-border));
+    --_border: var(--bz-button-border, var(--bz-color-border-strong, var(--bz-color-border)));
+    --_shadow: var(--bz-shadow-control, none);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -16,16 +17,23 @@
     background: var(--_bg);
     border: 1px solid var(--_border);
     border-radius: var(--bz-radius);
+    box-shadow: var(--_shadow);
     cursor: pointer;
     user-select: none;
     white-space: nowrap;
     transition:
       background-color var(--bz-duration),
       border-color var(--bz-duration),
+      box-shadow var(--bz-duration),
+      scale var(--bz-duration),
       opacity var(--bz-duration);
   }
   bz-button:hover {
     background: var(--_bg-hover);
+  }
+  /* A small press response (modern theme); none by default. */
+  bz-button:active:not([aria-disabled="true"], [aria-busy="true"]) {
+    scale: var(--bz-button-press-scale, 1);
   }
   bz-button:focus-visible {
     outline: 2px solid var(--bz-color-focus);
@@ -36,16 +44,19 @@
     --_bg-hover: var(--bz-button-bg-hover, var(--bz-color-primary-hover));
     --_fg: var(--bz-button-fg, var(--bz-color-primary-fg));
     --_border: transparent;
+    --_shadow: var(--bz-shadow-button-solid, var(--bz-shadow-control, none));
   }
   bz-button[variant="danger"] {
     --_bg: var(--bz-color-danger);
     --_bg-hover: var(--bz-color-danger-hover);
     --_fg: var(--bz-color-danger-fg);
     --_border: transparent;
+    --_shadow: var(--bz-shadow-button-solid, var(--bz-shadow-control, none));
   }
   bz-button[variant="ghost"] {
     --_bg: transparent;
     --_border: transparent;
+    --_shadow: none;
   }
   bz-button[size="sm"] {
     height: calc(var(--bz-control-height) * 0.8);

@@ -21,11 +21,15 @@
     padding: 0 var(--bz-space-3);
     color: var(--bz-color-fg-muted);
     background: var(--bz-input-bg, var(--bz-color-surface));
-    border: 1px solid var(--bz-input-border, var(--bz-color-border));
+    border: 1px solid var(--bz-input-border, var(--bz-color-border-strong, var(--bz-color-border)));
     border-radius: var(--bz-radius);
+    box-shadow: var(--bz-shadow-control, none);
     transition:
       border-color var(--bz-duration),
       box-shadow var(--bz-duration);
+  }
+  :is(bz-input, bz-password, bz-combobox) [data-part="control"]:hover {
+    border-color: var(--bz-input-border-hover, var(--bz-color-border-hover, var(--bz-input-border, var(--bz-color-border-strong, var(--bz-color-border)))));
   }
   :is(bz-input, bz-password, bz-combobox) [data-part="control"]:focus-within {
     border-color: var(--bz-color-focus);

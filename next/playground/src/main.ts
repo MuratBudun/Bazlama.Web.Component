@@ -146,6 +146,7 @@ const persist = (key: string, value: string) => {
 
 const theme = signal(stored("bz-theme", "light"))
 const uiEnabled = signal(stored("bz-ui", "on") === "on")
+const compact = signal(stored("bz-density", "") === "compact")
 // Every playground page is a route: /button, /dialog, …
 const routes: RouteRecord[] = [
   { path: "/", redirect: `/${pages[0].id}` },
@@ -190,6 +191,11 @@ effect(() => {
   persist("bz-theme", theme())
 })
 effect(() => {
+  if (compact()) document.documentElement.dataset.density = "compact"
+  else delete document.documentElement.dataset.density
+  persist("bz-density", compact() ? "compact" : "")
+})
+effect(() => {
   uiStyle.disabled = !uiEnabled()
   persist("bz-ui", uiEnabled() ? "on" : "off")
 })
@@ -205,7 +211,13 @@ const app = html`
           <option value="light">Açık</option>
           <option value="dark">Koyu</option>
           <option value="forest">Forest (marka)</option>
+          <option value="modern">Modern</option>
+          <option value="modern-dark">Modern koyu</option>
         </select>
+      </label>
+      <label class="field" title='data-density="compact": daha küçük kontroller ve sık satırlar'>
+        <input type="checkbox" .checked=${compact} @change=${(e: Event) => compact.set((e.target as HTMLInputElement).checked)} />
+        Sıkı
       </label>
       <label class="field" title="Kapatınca bileşenler headless (stilsiz) görünür">
         <input type="checkbox" .checked=${uiEnabled} @change=${(e: Event) => uiEnabled.set((e.target as HTMLInputElement).checked)} />

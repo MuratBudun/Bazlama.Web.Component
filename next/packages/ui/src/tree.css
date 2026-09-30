@@ -34,7 +34,7 @@
   }
   bz-tree [data-part="item"][aria-selected="true"] {
     color: var(--bz-color-primary);
-    font-weight: 600;
+    font-weight: var(--bz-tree-selected-weight, 600);
     background: var(--bz-color-primary-soft);
   }
   bz-tree [data-part="item"][aria-disabled="true"] {

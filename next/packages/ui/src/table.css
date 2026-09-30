@@ -7,7 +7,9 @@
     color: var(--bz-color-fg);
     background: var(--bz-color-surface);
     border: 1px solid var(--bz-color-border);
-    border-radius: calc(var(--bz-radius-sm) * 2);
+    border-radius: var(--bz-radius-lg, calc(var(--bz-radius-sm) * 2));
+    box-shadow: var(--bz-shadow-surface, none);
+    font-variant-numeric: var(--bz-font-numeric, normal);
   }
   bz-table table {
     width: 100%;
@@ -21,7 +23,7 @@
     text-align: start;
   }
   bz-table :is(th, td) {
-    padding: var(--bz-space-2) var(--bz-space-3);
+    padding: var(--bz-table-cell-padding-block, var(--bz-space-2)) var(--bz-space-3);
     text-align: start;
     border-bottom: 1px solid var(--bz-color-border);
   }
@@ -29,7 +31,9 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    font-weight: 600;
+    font-weight: var(--bz-table-header-weight, 600);
+    font-size: var(--bz-table-header-size, 1em);
+    color: var(--bz-table-header-fg, currentColor);
     white-space: nowrap;
     background: var(--bz-table-header-bg, var(--bz-color-surface-hover));
   }
@@ -54,6 +58,12 @@
     content: "\2195";
     font-size: 0.85em;
     color: var(--bz-color-fg-muted);
+    opacity: var(--bz-sort-idle-opacity, 1);
+    transition: opacity var(--bz-duration);
+  }
+  bz-table th:is(:hover, :focus-within) [data-part="sort-indicator"]::after,
+  bz-table :is([aria-sort="ascending"], [aria-sort="descending"]) [data-part="sort-indicator"]::after {
+    opacity: 1;
   }
   bz-table [aria-sort="ascending"] [data-part="sort-indicator"]::after {
     content: "\25B2";

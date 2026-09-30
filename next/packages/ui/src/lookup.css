@@ -19,8 +19,9 @@
     padding: 0 2px 0 var(--bz-space-3);
     color: var(--bz-color-fg-muted);
     background: var(--bz-input-bg, var(--bz-color-surface));
-    border: 1px solid var(--bz-input-border, var(--bz-color-border));
+    border: 1px solid var(--bz-input-border, var(--bz-color-border-strong, var(--bz-color-border)));
     border-radius: var(--bz-radius);
+    box-shadow: var(--bz-shadow-control, none);
     transition:
       border-color var(--bz-duration),
       box-shadow var(--bz-duration);
@@ -98,8 +99,9 @@
     font: inherit;
     color: var(--bz-color-fg);
     background: var(--bz-input-bg, var(--bz-color-surface));
-    border: 1px solid var(--bz-input-border, var(--bz-color-border));
+    border: 1px solid var(--bz-input-border, var(--bz-color-border-strong, var(--bz-color-border)));
     border-radius: var(--bz-radius);
+    box-shadow: var(--bz-shadow-control, none);
   }
   bz-dialog[data-lookup-picker] [data-part="search"]:focus {
     outline: 2px solid var(--bz-color-focus);

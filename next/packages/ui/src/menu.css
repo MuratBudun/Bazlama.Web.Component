@@ -48,7 +48,7 @@
     display: flex;
     align-items: center;
     gap: var(--bz-space-2);
-    min-height: 2rem;
+    min-height: var(--bz-menu-item-height, 2rem);
     padding: 0 var(--bz-space-2);
     border-radius: var(--bz-radius-sm);
     white-space: nowrap;
@@ -71,8 +71,8 @@
     color: var(--bz-color-danger);
   }
   bz-menu-item[variant="danger"]:focus {
-    color: var(--bz-color-danger-fg);
-    background: var(--bz-color-danger);
+    color: var(--bz-menu-danger-focus-fg, var(--bz-color-danger-fg));
+    background: var(--bz-menu-danger-focus-bg, var(--bz-color-danger));
   }
   bz-menu-item > [data-part="label"] {
     flex: 1;

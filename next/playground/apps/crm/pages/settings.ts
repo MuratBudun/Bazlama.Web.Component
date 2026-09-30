@@ -1,12 +1,14 @@
 import { html, signal } from "@bazlama/core"
 import { dialogs, icon, toast } from "@bazlama/headless"
 import { definePage } from "@bazlama/router"
+import type { DemoTheme } from "../../shared/boot"
 
+const THEMES: DemoTheme[] = ["light", "dark", "forest", "modern", "modern-dark"]
 export const THEME_KEY = "ada-crm:theme"
-export const savedTheme = (): "light" | "dark" | "forest" => {
+export const savedTheme = (): DemoTheme => {
   try {
     const t = localStorage.getItem(THEME_KEY)
-    return t === "dark" || t === "forest" ? t : "light"
+    return THEMES.includes(t as DemoTheme) ? (t as DemoTheme) : "light"
   } catch {
     return "light"
   }
@@ -20,9 +22,9 @@ export default definePage({
       mail: signal(true),
       push: signal(false),
       weekly: signal(true),
-      compact: signal(false),
+      compact: signal(document.documentElement.dataset.density === "compact"),
     }
-    const setTheme = (t: "light" | "dark" | "forest") => {
+    const setTheme = (t: DemoTheme) => {
       theme.set(t)
       document.documentElement.dataset.theme = t
       try {
@@ -75,14 +77,17 @@ export default definePage({
 
           <bz-form-section heading="Görünüm">
             <bz-radio-group label="Tema" orientation="horizontal" .value=${theme}
-              @change=${(e: CustomEvent<{ value: "light" | "dark" | "forest" }>) => setTheme(e.detail.value)}>
+              @change=${(e: CustomEvent<{ value: DemoTheme }>) => setTheme(e.detail.value)}>
               <bz-radio value="light">Açık</bz-radio>
               <bz-radio value="dark">Koyu</bz-radio>
               <bz-radio value="forest">Forest</bz-radio>
+              <bz-radio value="modern">Modern</bz-radio>
+              <bz-radio value="modern-dark">Modern koyu</bz-radio>
             </bz-radio-group>
             <bz-checkbox .checked=${prefs.compact} @change=${(e: CustomEvent<{ checked: boolean }>) => {
               prefs.compact.set(e.detail.checked)
-              document.documentElement.style.setProperty("--bz-control-height", e.detail.checked ? "1.9rem" : "")
+              if (e.detail.checked) document.documentElement.dataset.density = "compact"
+              else delete document.documentElement.dataset.density
             }}>Sıkı yerleşim (daha küçük kontroller)</bz-checkbox>
           </bz-form-section>
 

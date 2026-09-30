@@ -1,0 +1,128 @@
+/*
+ * Modern theme: neutral and quiet, for dense business screens. Cool greys, hairline borders
+ * with a faint shadow instead of heavy frames, colour only for actions and status, tabular
+ * figures in tables. Everything is tokens: the component CSS falls back to the default look
+ * when a token is not set.
+ */
+@layer bazlama.tokens {
+  [data-theme="modern"],
+  [data-theme="modern-dark"] {
+    --bz-font-family: "Inter var", Inter, "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    --bz-font-size: 0.875rem;
+    --bz-line-height: 1.5;
+    --bz-font-numeric: tabular-nums;
+    --bz-radius: 0.5rem;
+    --bz-radius-sm: 0.375rem;
+    --bz-radius-lg: 0.75rem;
+    --bz-control-height: 2.25rem;
+    --bz-duration: 120ms;
+
+    /* Tables and grids: a quiet header, the column names in the muted colour. */
+    --bz-table-header-weight: 500;
+    --bz-table-header-size: 0.8125rem;
+    --bz-data-grid-row-height: 38px;
+    /* highlight-pinned: a neutral tint rather than the primary colour. */
+    --bz-data-grid-pinned-bg: color-mix(in srgb, var(--bz-color-fg) 2.5%, var(--bz-color-surface));
+
+    /* Buttons: a faint top highlight on solid buttons, a small press response. */
+    --bz-button-press-scale: 0.98;
+    --bz-tree-selected-weight: 500;
+    /* Toasts: the icon carries the colour, no side stripe. */
+    --bz-toast-accent-width: 1px;
+    --bz-toast-accent-color: var(--bz-color-border);
+    /* Danger menu items: a soft tint on focus instead of a solid red row. */
+    --bz-menu-danger-focus-bg: color-mix(in srgb, var(--bz-color-danger) 12%, var(--bz-color-surface));
+    --bz-menu-danger-focus-fg: var(--bz-color-danger);
+
+    /* Sort arrows only on the sorted column (and on hover); the selected tab keeps its width. */
+    --bz-sort-idle-opacity: 0;
+    --bz-tab-selected-weight: 500;
+
+    /* Status badges: a readable size (not relative to a small cell font), a hairline ring. */
+    --bz-badge-font-size: 0.75rem;
+    --bz-badge-weight: 500;
+    --bz-badge-padding: 0.0625rem 0.5rem;
+    --bz-badge-radius: 0.375rem;
+    --bz-badge-ring: 22%;
+
+    /* Cards and panels: white surface, hairline border, faint shadow. */
+    --bz-card-bg: var(--bz-color-surface);
+    --bz-card-border: var(--bz-color-border);
+    --bz-card-shadow: var(--bz-shadow-surface);
+  }
+
+  [data-theme="modern"] {
+    color-scheme: light;
+    /* Thin, quiet scrollbars (inherited by every scroller). */
+    scrollbar-color: #d4d4d8 transparent;
+    --bz-color-bg: #f7f7f8;
+    --bz-color-surface: #ffffff;
+    --bz-color-surface-hover: #f4f4f5;
+    --bz-color-fg: #18181b;
+    --bz-color-fg-muted: #5f5f68;
+    --bz-color-border: #e4e4e7;
+    --bz-color-border-strong: #d4d4d8;
+    --bz-color-border-hover: #a1a1aa;
+    --bz-color-primary: #2563eb;
+    --bz-color-primary-hover: #1d4ed8;
+    --bz-color-primary-fg: #ffffff;
+    --bz-color-primary-soft: #eef3fe;
+    --bz-color-danger: #dc2626;
+    --bz-color-danger-hover: #b91c1c;
+    --bz-color-danger-fg: #ffffff;
+    --bz-color-success: #15803d;
+    --bz-color-warning: #b45309;
+    --bz-color-info: #0369a1;
+    --bz-color-focus: #2563eb;
+
+    --bz-table-header-bg: #fafafa;
+    --bz-table-header-fg: var(--bz-color-fg-muted);
+    --bz-data-grid-header-bg: #fafafa;
+    --bz-tooltip-bg: #18181b;
+
+    --bz-shadow-control: 0 1px 2px rgb(24 24 27 / 0.05);
+    --bz-shadow-button-solid: 0 1px 2px rgb(24 24 27 / 0.15), inset 0 1px 0 rgb(255 255 255 / 0.14);
+    --bz-shadow-surface: 0 1px 2px rgb(24 24 27 / 0.04), 0 1px 3px rgb(24 24 27 / 0.04);
+    --bz-shadow-popup: 0 12px 32px -4px rgb(24 24 27 / 0.12), 0 4px 8px -2px rgb(24 24 27 / 0.06);
+    --bz-shadow-dialog: 0 24px 56px -12px rgb(24 24 27 / 0.3), 0 0 0 1px rgb(24 24 27 / 0.05);
+    --bz-dialog-backdrop: rgb(24 24 27 / 0.4);
+    --bz-dialog-backdrop-filter: blur(2px);
+  }
+
+  [data-theme="modern-dark"] {
+    color-scheme: dark;
+    scrollbar-color: #3f3f46 transparent;
+    --bz-color-bg: #0b0b0d;
+    --bz-color-surface: #141417;
+    --bz-color-surface-hover: #1f1f23;
+    --bz-color-fg: #f4f4f5;
+    --bz-color-fg-muted: #a1a1aa;
+    --bz-color-border: #27272a;
+    --bz-color-border-strong: #34343a;
+    --bz-color-border-hover: #52525b;
+    --bz-color-primary: #6ea0ff;
+    --bz-color-primary-hover: #8fb5ff;
+    --bz-color-primary-fg: #08111f;
+    --bz-color-primary-soft: #172238;
+    --bz-color-danger: #f87171;
+    --bz-color-danger-hover: #fca5a5;
+    --bz-color-danger-fg: #1c0a0a;
+    --bz-color-success: #4ade80;
+    --bz-color-warning: #fbbf24;
+    --bz-color-info: #38bdf8;
+    --bz-color-focus: #6ea0ff;
+
+    --bz-table-header-bg: #18181b;
+    --bz-table-header-fg: var(--bz-color-fg-muted);
+    --bz-data-grid-header-bg: #18181b;
+    --bz-tooltip-bg: #2a2a30;
+
+    --bz-shadow-control: 0 1px 2px rgb(0 0 0 / 0.4);
+    --bz-shadow-button-solid: 0 1px 2px rgb(0 0 0 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.2);
+    --bz-shadow-surface: 0 1px 2px rgb(0 0 0 / 0.3);
+    --bz-shadow-popup: 0 16px 40px -6px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.04);
+    --bz-shadow-dialog: 0 28px 64px -12px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.06);
+    --bz-dialog-backdrop: rgb(0 0 0 / 0.55);
+    --bz-dialog-backdrop-filter: blur(2px);
+  }
+}

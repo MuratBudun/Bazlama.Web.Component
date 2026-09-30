@@ -70,7 +70,7 @@
   }
   bz-tabs > [role="tablist"] > bz-tab[aria-selected="true"] {
     color: var(--bz-color-primary);
-    font-weight: 600;
+    font-weight: var(--bz-tab-selected-weight, 600);
   }
   bz-tabs > [role="tablist"] > bz-tab[aria-selected="true"]::after {
     content: "";

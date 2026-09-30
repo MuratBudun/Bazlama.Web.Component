@@ -1,0 +1,17 @@
+/*
+ * Density: data-density="compact" on <html> or on any container (a grid page, a side panel)
+ * makes controls and rows smaller, for data-heavy screens. Works with every theme; it comes
+ * after the themes so it wins on the same element.
+ */
+@layer bazlama.tokens {
+  [data-density="compact"] {
+    --bz-font-size: 0.8125rem;
+    --bz-control-height: 1.875rem;
+    --bz-space-3: 0.625rem;
+    --bz-space-4: 0.875rem;
+    --bz-data-grid-row-height: 30px;
+    --bz-table-cell-padding-block: 0.3125rem;
+    --bz-choice-padding-block: 0.125rem;
+    --bz-menu-item-height: 1.75rem;
+  }
+}

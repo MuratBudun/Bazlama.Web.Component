@@ -5,7 +5,8 @@
     color: var(--bz-color-fg);
     background: var(--bz-panel-bg, var(--bz-color-surface));
     border: 1px solid var(--bz-panel-border, var(--bz-color-border));
-    border-radius: var(--bz-panel-radius, calc(var(--bz-radius-sm) * 2));
+    border-radius: var(--bz-panel-radius, var(--bz-radius-lg, calc(var(--bz-radius-sm) * 2)));
+    box-shadow: var(--bz-panel-shadow, var(--bz-shadow-surface, none));
     overflow: hidden;
   }
   bz-panel > [data-part="header"] {

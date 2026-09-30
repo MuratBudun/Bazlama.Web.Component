@@ -47,7 +47,7 @@
     color: var(--bz-color-fg);
     background: var(--bz-color-surface);
     border: 1px solid var(--bz-color-border);
-    border-left: 3px solid var(--_accent);
+    border-left: var(--bz-toast-accent-width, 3px) solid var(--bz-toast-accent-color, var(--_accent));
     border-radius: var(--bz-radius);
     box-shadow: var(--bz-shadow-popup);
     pointer-events: auto;

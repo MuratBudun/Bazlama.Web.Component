@@ -15,7 +15,9 @@
     color: var(--bz-color-fg);
     background: var(--_bg);
     border: 1px solid var(--_border);
-    border-radius: calc(var(--bz-radius-sm) * 2);
+    border-radius: var(--bz-radius-lg, calc(var(--bz-radius-sm) * 2));
+    box-shadow: var(--bz-shadow-surface, none);
+    font-variant-numeric: var(--bz-font-numeric, normal);
     overflow: hidden;
   }
   bz-data-grid:dir(rtl) {
@@ -90,7 +92,9 @@
     z-index: 2;
     height: var(--_row-h);
     padding: 0;
-    font-weight: 600;
+    font-weight: var(--bz-table-header-weight, 600);
+    font-size: var(--bz-table-header-size, 1em);
+    color: var(--bz-table-header-fg, currentColor);
     background: var(--_header-bg);
     user-select: none;
   }
@@ -132,6 +136,11 @@
     content: "\2195";
     font-size: 0.8em;
     color: var(--bz-color-fg-muted);
+    opacity: var(--bz-sort-idle-opacity, 0.6);
+    transition: opacity var(--bz-duration);
+  }
+  /* An idle indicator hidden by the theme still shows while the header is pointed at / focused. */
+  bz-data-grid th:is(:hover, :focus-within):not([aria-sort="ascending"], [aria-sort="descending"]) [data-part="sort-indicator"]::after {
     opacity: 0.6;
   }
   bz-data-grid [aria-sort="ascending"] [data-part="sort-indicator"]::after {
