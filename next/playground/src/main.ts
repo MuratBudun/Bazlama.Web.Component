@@ -46,6 +46,7 @@ import shellPage from "./pages/shell"
 import avatarPage from "./pages/avatar"
 import qmexPage from "./pages/qmex"
 import demoAppsPage, { demoNav } from "./pages/demo-apps"
+import themeEditorPage from "./pages/theme-editor"
 
 interface Page {
   id: string
@@ -61,7 +62,7 @@ defineIcons(icons)
 Object.assign(dialogs.labels, { ok: "Tamam", cancel: "Vazgeç", close: "Kapat" })
 Object.assign(toast.labels, { close: "Kapat", region: "Bildirimler" })
 
-const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, passwordPage, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, fileUploadPage, loginPage, formLayoutPage, panel, list, table, dataGridPage, cardPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, debug]
+const pages: Page[] = [coreSignals, coreTemplate, coreComponent, button, input, passwordPage, textareaPage, checkboxPage, switchPage, radioPage, combobox, lookupPage, fileUploadPage, loginPage, formLayoutPage, panel, list, table, dataGridPage, cardPage, paginationPage, toolbarPage, iconPage, tree, dialog, tabs, accordionPage, alertPage, badgePage, menuPage, contextMenuPage, toastPage, tooltipPage, avatarPage, shellPage, demoAppsPage, qmexPage, themeEditorPage, debug]
 const pageIcons: Record<string, string> = {
   "core-signals": "refresh",
   "core-template": "code",
@@ -101,6 +102,7 @@ const pageIcons: Record<string, string> = {
   avatar: "user",
   qmex: "file-text",
   "demo-apps": "box",
+  "theme-editor": "palette",
 }
 const groupIcons: Record<string, string> = { Core: "layers", "Bileşenler": "dashboard", Navigasyon: "external-link", Demo: "box", "Araçlar": "settings" }
 const groups = [...new Set(pages.map((p) => p.group ?? "Bileşenler"))]

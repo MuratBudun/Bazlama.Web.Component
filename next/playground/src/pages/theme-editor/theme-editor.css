@@ -1,0 +1,255 @@
+/* Theme editor page: settings on the left, preview / contrast / CSS / tokens on the right. */
+
+.te {
+  display: grid;
+  grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+/* Filling the page (wide screens): two columns that scroll on their own, like a sidebar. */
+.te[data-shell-fill] {
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+}
+.te[data-shell-fill] > .te-controls {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+/* The bar and the tab strip stay; the open tab panel scrolls (bz-tabs[fill]). */
+.te[data-shell-fill] > .te-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.te[data-shell-fill] > .te-controls {
+  /* Room for the scrollbar next to the setting cards. */
+  padding-inline-end: 0.25rem;
+}
+@media (max-width: 900px) {
+  .te {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Settings */
+.te-controls {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+.te-controls section {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--bz-color-surface);
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius-lg, 0.75rem);
+}
+.te-controls h3 {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--bz-color-fg-muted);
+}
+.te-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.te-muted {
+  color: var(--bz-color-fg-muted);
+}
+.te-muted.small,
+.te-controls .small {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+.te-color {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+}
+.te-color input[type="color"],
+.te-token-value input[type="color"] {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.15rem;
+  background: var(--bz-color-surface);
+  border: 1px solid var(--bz-color-border-strong, var(--bz-color-border));
+  border-radius: var(--bz-radius-sm);
+  cursor: pointer;
+}
+/* Aligns the swatch with the input (below the label). */
+.te-color input[type="color"] {
+  margin-top: calc(1lh + 0.25rem);
+}
+.te-range {
+  display: grid;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+.te-range span {
+  display: flex;
+  justify-content: space-between;
+}
+.te-range output {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--bz-color-fg-muted);
+}
+.te-range input {
+  width: 100%;
+  accent-color: var(--bz-color-primary);
+}
+
+/* Main column */
+.te-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  min-width: 0;
+}
+.te-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1.5rem;
+}
+.te-frame {
+  margin-inline: auto;
+  transition: max-width 200ms;
+}
+
+/* The preview: the theme's own background and text colour. */
+.te-preview {
+  padding: 1rem;
+  color: var(--bz-color-fg);
+  background: var(--bz-color-bg);
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius-lg, 0.75rem);
+  font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
+  container: te-preview / inline-size;
+}
+.te-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.875rem;
+}
+.te-screen-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.te-screen-head h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.25em;
+}
+.te-spacer {
+  flex: 1;
+}
+.te-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.te-search {
+  flex: 0 1 18rem;
+}
+.te-grid-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  gap: 1rem;
+  align-items: start;
+}
+/* The preview reacts to its own width (Tam / Tablet / Telefon), not the window's. */
+@container te-preview (max-width: 60rem) {
+  .te-grid-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.te-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.875rem;
+  min-width: 0;
+}
+.te-col bz-data-grid {
+  --bz-data-grid-max-height: none;
+}
+.te-col bz-pagination {
+  margin-top: 0.5rem;
+}
+.te-alerts {
+  display: grid;
+  gap: 0.5rem;
+}
+.te-form-body {
+  display: grid;
+  gap: 0.75rem;
+}
+.te-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Contrast, CSS and tokens tabs */
+.te-swatch {
+  display: inline-block;
+  min-width: 3rem;
+  padding: 0.15rem 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius-sm);
+}
+.te-num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.te-code {
+  max-height: 32rem;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  font: 0.8125rem / 1.5 ui-monospace, "Cascadia Code", Consolas, monospace;
+  background: var(--bz-color-surface);
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius);
+}
+.te-css {
+  display: grid;
+  gap: 0.75rem;
+}
+.te-token-value {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.te-token-value input[type="color"] {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.te-token-input {
+  flex: 1;
+  min-width: 12rem;
+  padding: 0.25rem 0.5rem;
+  font: 0.8125rem ui-monospace, Consolas, monospace;
+  color: var(--bz-color-fg);
+  background: var(--bz-color-surface);
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius-sm);
+}
+.te-fixed {
+  color: var(--bz-color-primary);
+}

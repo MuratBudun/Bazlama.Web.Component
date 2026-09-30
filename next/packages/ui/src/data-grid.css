@@ -10,6 +10,12 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+    /* The grid takes its container's width and scrolls sideways; the column widths must not
+       widen the containers above it (tabs, grid cells) on a narrow screen. With the size
+       contained it has no content width, so it is given the full width (also in a flex row). */
+    contain: inline-size;
+    box-sizing: border-box;
+    width: 100%;
     max-height: var(--bz-data-grid-max-height, 32rem);
     font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
     color: var(--bz-color-fg);

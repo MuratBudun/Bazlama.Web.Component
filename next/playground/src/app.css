@@ -53,6 +53,13 @@ pre code {
   padding: 1.5rem 2rem 4rem;
   max-width: 64rem;
 }
+/* A page whose root fills the shell (data-shell-fill, e.g. the theme editor): the shell's
+   flex chain, which this unlayered rule would otherwise override. */
+.content:has(> [data-shell-fill]) {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
 .content h1 {
   margin: 0 0 0.25rem;
 }
