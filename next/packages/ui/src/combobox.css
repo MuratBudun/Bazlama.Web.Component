@@ -4,11 +4,18 @@
   }
   bz-combobox [data-part="trigger"] {
     all: unset;
+    position: relative;
     display: grid;
     place-items: center;
     width: 1.25rem;
     height: 1.25rem;
     cursor: pointer;
+  }
+  /* A larger invisible hit area (the arrow is small): --bz-hit-slop, bigger on touch screens. */
+  bz-combobox [data-part="trigger"]::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--bz-hit-slop, 0.25rem));
   }
   bz-combobox [data-part="trigger"]::before {
     content: "";

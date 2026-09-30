@@ -82,6 +82,30 @@ describe("bz-data-grid", () => {
     expect(bodyRows(grid)[0].querySelectorAll("td")[1].title).toBe("Form 20")
   })
 
+  it("suspends pinning when the pinned columns would cover a narrow grid", async () => {
+    const { grid, scroller } = await mount(5)
+    const sticky = () => grid.querySelector("style")!.textContent!.includes("position: sticky")
+    // Pinned: 100 (no) + 120 (status) = 220px.
+    Object.defineProperty(scroller, "clientWidth", { configurable: true, value: 300 })
+    grid.pinLimit = 0.61 // a prop change re-runs the layout with the mocked width
+    flush()
+    expect(grid.hasAttribute("data-pins-suspended")).toBe(true)
+    expect(sticky()).toBe(false)
+    // The column state keeps the pins.
+    expect(grid.getColumnState().filter((s) => s.pinned).map((s) => s.key)).toEqual(["no", "status"])
+    // Wide enough again: pinned.
+    Object.defineProperty(scroller, "clientWidth", { configurable: true, value: 1000 })
+    grid.pinLimit = 0.6
+    flush()
+    expect(grid.hasAttribute("data-pins-suspended")).toBe(false)
+    expect(sticky()).toBe(true)
+    // 0 turns the limit off.
+    Object.defineProperty(scroller, "clientWidth", { configurable: true, value: 300 })
+    grid.pinLimit = 0
+    flush()
+    expect(grid.hasAttribute("data-pins-suspended")).toBe(false)
+  })
+
   it("sorts from the header and keeps row DOM on re-sort", async () => {
     const { grid } = await mount(5)
     const events: unknown[] = []

@@ -378,6 +378,34 @@ describe("bz-header / bz-footer", () => {
     expect(header.querySelector("bz-avatar")!.getAttribute("aria-hidden")).toBe("true")
   })
 
+  it("opens the center area from the narrow-screen toggle and closes it with Escape", async () => {
+    document.body.innerHTML = `
+      <bz-header title="Demo" center-label="Ara"><input id="q" slot="center" type="search" /></bz-header>
+      <bz-header id="plain" title="Boş"></bz-header>`
+    flush()
+    const header = document.querySelector("bz-header")!
+    const toggle = header.querySelector<HTMLButtonElement>("[data-part=center-toggle]")!
+    const center = header.querySelector<HTMLElement>("[data-part=center]")!
+    expect(toggle.hidden).toBe(false)
+    expect(toggle.getAttribute("aria-label")).toBe("Ara")
+    expect(toggle.getAttribute("aria-controls")).toBe(center.id)
+    expect(toggle.getAttribute("aria-expanded")).toBe("false")
+
+    toggle.click()
+    flush()
+    await Promise.resolve()
+    expect(header.hasAttribute("data-center-open")).toBe(true)
+    expect(toggle.getAttribute("aria-expanded")).toBe("true")
+    expect(document.activeElement?.id).toBe("q")
+
+    center.querySelector("input")!.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+    flush()
+    expect(header.hasAttribute("data-center-open")).toBe(false)
+    expect(document.activeElement).toBe(toggle)
+    // No center area: no toggle.
+    expect(document.querySelector<HTMLButtonElement>("#plain [data-part=center-toggle]")!.hidden).toBe(true)
+  })
+
   it("footer has start and end areas", () => {
     document.body.innerHTML = `<bz-footer>© 2026 <span slot="end">v1</span></bz-footer>`
     flush()

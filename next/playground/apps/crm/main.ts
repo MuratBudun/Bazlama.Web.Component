@@ -50,7 +50,7 @@ const search = signal("")
 
 const app = html`
   <bz-shell resizable persist="ada-crm" resize-label="Paneli boyutlandır" skip-label="İçeriğe geç" end-collapsed .busy=${router.pending}>
-    <bz-header slot="header" title="Ada CRM" subtitle="Satış ve müşteri yönetimi" href=${router.href("/pano")} menu-label="Menü"
+    <bz-header slot="header" title="Ada CRM" subtitle="Satış ve müşteri yönetimi" href=${router.href("/pano")} menu-label="Menü" center-label="Müşteri ara"
       user-name="Ada Yılmaz" user-detail="Satış Müdürü" user-label="Kullanıcı menüsü"
       @select=${(e: CustomEvent<{ value: string }>) => {
         if (e.detail.value === "settings") void router.navigate("/ayarlar")

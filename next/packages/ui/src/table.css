@@ -48,6 +48,9 @@
     display: inline-flex;
     align-items: center;
     gap: var(--bz-space-1);
+    /* Taller to tap, same layout. */
+    padding-block: var(--bz-space-2);
+    margin-block: calc(-1 * var(--bz-space-2));
     cursor: pointer;
   }
   bz-table [data-part="sort"]:focus-visible {
@@ -60,6 +63,12 @@
     color: var(--bz-color-fg-muted);
     opacity: var(--bz-sort-idle-opacity, 1);
     transition: opacity var(--bz-duration);
+  }
+  /* No hover on touch screens: the idle arrows stay visible there. */
+  @media (hover: none) {
+    bz-table [data-part="sort-indicator"]::after {
+      opacity: max(var(--bz-sort-idle-opacity, 1), 0.6);
+    }
   }
   bz-table th:is(:hover, :focus-within) [data-part="sort-indicator"]::after,
   bz-table :is([aria-sort="ascending"], [aria-sort="descending"]) [data-part="sort-indicator"]::after {
@@ -79,8 +88,17 @@
   bz-table tr[aria-selected="true"] {
     background: var(--bz-color-primary-soft);
   }
+  /* The whole cell selects (headless); a 16px box is easier to see and hit than 13px. */
   bz-table [data-part="select"] {
     width: 2.5rem;
+    cursor: pointer;
+  }
+  bz-table [data-part="select"] input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    vertical-align: middle;
+    accent-color: var(--bz-color-primary);
   }
   bz-table [data-part="empty"] {
     padding: var(--bz-space-4);

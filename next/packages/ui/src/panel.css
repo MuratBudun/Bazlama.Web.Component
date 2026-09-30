@@ -25,6 +25,9 @@
     display: flex;
     align-items: center;
     gap: var(--bz-space-2);
+    /* Taller to tap, same layout: the padding is taken back by the margin. */
+    padding-block: var(--bz-space-2);
+    margin-block: calc(-1 * var(--bz-space-2));
     font-weight: 600;
     cursor: pointer;
   }

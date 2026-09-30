@@ -145,6 +145,11 @@
     opacity: var(--bz-sort-idle-opacity, 0.6);
     transition: opacity var(--bz-duration);
   }
+  @media (hover: none) {
+    bz-data-grid [data-part="sort-indicator"]::after {
+      opacity: max(var(--bz-sort-idle-opacity, 0.6), 0.6);
+    }
+  }
   /* An idle indicator hidden by the theme still shows while the header is pointed at / focused. */
   bz-data-grid th:is(:hover, :focus-within):not([aria-sort="ascending"], [aria-sort="descending"]) [data-part="sort-indicator"]::after {
     opacity: 0.6;
@@ -237,8 +242,11 @@
   bz-data-grid :is(th, td)[data-part="select"] {
     padding: 0;
     text-align: center;
+    cursor: pointer;
   }
   bz-data-grid [data-part="select"] input {
+    width: 1rem;
+    height: 1rem;
     margin: 0;
     vertical-align: middle;
     accent-color: var(--bz-color-primary);

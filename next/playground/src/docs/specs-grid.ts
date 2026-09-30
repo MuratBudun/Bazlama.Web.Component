@@ -77,6 +77,7 @@ html\`
     { name: "columns", attr: false, type: "GridColumn[]", desc: "Sütun tanımları: key, header, width (px, 150), minWidth/maxWidth, flex, pinned (\"start\" | \"end\"), hidden, sortable, align, format, compare, resizable/hideable/reorderable." },
     { name: "columnState", attr: false, type: "ColumnState[]", desc: "Kullanıcının düzeni: { key, width, hidden, pinned, order }. Kaydedip geri verin; [] tanımlara döner." },
     { name: "rows / rowKey", attr: "—, row-key", type: 'Row[] / string', default: '[] / "id"', desc: "Veri ve satır anahtarı." },
+    { name: "pinLimit", attr: "pin-limit", type: "number (0–1)", default: "0.6", desc: "Sabit sütunlar görünen genişliğin bu oranını aşarsa (telefon, dar panel) sabitleme askıya alınır ([data-pins-suspended]); sütun durumu korunur, genişleyince geri gelir. 0: hiç askıya alma." },
     { name: "rowHeight", attr: "row-height", type: "number (px)", default: "0", desc: "Sabit satır yüksekliği. 0: CSS'teki --bz-data-grid-row-height (tema, data-density; varsayılan 36px) okunur ve satırlar yeniden boyutlanınca tekrar ölçülür." },
     { name: "virtual", type: '"auto" | "on" | "off"', default: '"auto"', desc: "Dikey virtual scroll; auto: virtual-threshold (200) satırın üstünde." },
     { name: "overscan", type: "number", default: "6", desc: "Görünen alanın üstünde/altında fazladan çizilen satır." },

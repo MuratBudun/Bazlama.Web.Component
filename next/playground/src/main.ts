@@ -202,6 +202,14 @@ effect(() => {
   persist("bz-ui", uiEnabled() ? "on" : "off")
 })
 
+const THEMES: [string, string][] = [
+  ["light", "Açık"],
+  ["dark", "Koyu"],
+  ["forest", "Forest (marka)"],
+  ["modern", "Modern"],
+  ["modern-dark", "Modern koyu"],
+]
+
 const app = html`
   <bz-shell skip-label="İçeriğe geç" .busy=${router.pending} data-wide=${() => wide() || null} end-collapsed=${() => (wide() ? "" : null)}
     resizable resize-label="Paneli boyutlandır" persist="playground">
@@ -210,11 +218,7 @@ const app = html`
       <label class="field">
         Tema
         <select .value=${theme} @change=${(e: Event) => theme.set((e.target as HTMLSelectElement).value)}>
-          <option value="light">Açık</option>
-          <option value="dark">Koyu</option>
-          <option value="forest">Forest (marka)</option>
-          <option value="modern">Modern</option>
-          <option value="modern-dark">Modern koyu</option>
+          ${THEMES.map(([value, label]) => html`<option value=${value}>${label}</option>`)}
         </select>
       </label>
       <label class="field" title='data-density="compact": daha küçük kontroller ve sık satırlar'>
@@ -225,6 +229,22 @@ const app = html`
         <input type="checkbox" .checked=${uiEnabled} @change=${(e: Event) => uiEnabled.set((e.target as HTMLInputElement).checked)} />
         UI CSS
       </label>
+      <!-- Narrow screens: the settings above move into this menu (app.css). -->
+      <bz-menu class="header-settings" placement="bottom-end" label="Görünüm"
+        @select=${(e: CustomEvent<{ value: string; checked: boolean }>) => {
+          const { value, checked } = e.detail
+          if (value.startsWith("theme:")) theme.set(value.slice(6))
+          else if (value === "compact") compact.set(checked)
+          else if (value === "ui") uiEnabled.set(checked)
+        }}>
+        <bz-button slot="trigger" variant="ghost" size="sm" aria-label="Görünüm ayarları" data-tooltip="Görünüm ayarları">${icon("settings")}</bz-button>
+        <bz-menu-group label="Tema">
+          ${THEMES.map(([value, label]) => html`<bz-menu-item type="radio" name="theme" value=${`theme:${value}`} .checked=${() => theme() === value}>${label}</bz-menu-item>`)}
+        </bz-menu-group>
+        <bz-menu-separator></bz-menu-separator>
+        <bz-menu-item type="checkbox" value="compact" .checked=${compact}>Sıkı (data-density)</bz-menu-item>
+        <bz-menu-item type="checkbox" value="ui" .checked=${uiEnabled}>UI CSS</bz-menu-item>
+      </bz-menu>
       <bz-button variant="ghost" size="sm" data-shell-toggle="end" data-tooltip="Olay günlüğü" aria-label="Olay günlüğü">${icon("list")}</bz-button>
     </bz-header>
     <nav slot="start" aria-label="Sayfalar">

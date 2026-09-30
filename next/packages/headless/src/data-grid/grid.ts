@@ -119,6 +119,9 @@ interface Controller {
  *   header edge, Shift+←/→, double click = autosize), hides, pins and reorders (drag a header,
  *   Alt+←/→) them; the column menu (⋮, Alt+↓) has it all. Changes go to `.columnState` and fire
  *   `columns-change` { state, reason, key } — save and restore that state in the app.
+ * - Narrow grids: when the pinned columns would take more than `pin-limit` (default 0.6) of
+ *   the visible width, pinning is suspended ([data-pins-suspended]); the column state keeps
+ *   the pins and they return when the grid is wide enough.
  * - Rows: fixed height: `row-height` (px), or when it is 0 (default) the CSS token
  *   `--bz-data-grid-row-height` (theme, data-density; measured again when rows resize).
  *   Vertical virtual scrolling (`virtual`: "auto" above
@@ -138,7 +141,7 @@ interface Controller {
  * Anatomy: [data-part=scroller|table|head|header-cell|header|sort-indicator|menu|resize|body|
  * row|cell|select|spacer|empty]. Styling hooks: [loading], [data-scrolled-start],
  * [data-scrolled-end], [data-virtual], th[aria-sort], tr[aria-selected], [data-pinned],
- * [data-dragging], [data-resizing], [highlight-pinned], --bz-data-grid-row-height,
+ * [data-dragging], [data-resizing], [highlight-pinned], [data-pins-suspended], --bz-data-grid-row-height,
  * --bz-data-grid-max-height, --bz-data-grid-pinned-bg.
  */
 const DataGridBase = define("bz-data-grid", {
@@ -163,6 +166,11 @@ const DataGridBase = define("bz-data-grid", {
     persist: prop.string(),
     /** Tints the pinned columns (`--bz-data-grid-pinned-bg`). */
     highlightPinned: prop.boolean(false, { reflect: true }),
+    /**
+     * Largest share of the visible width the pinned columns may take (0–1). Above it (a phone,
+     * a narrow panel) pinning is suspended until the grid is wide enough again; 0 = never.
+     */
+    pinLimit: prop.number(0.6),
   },
   setup(props, ctx) {
     const { host } = ctx
@@ -343,6 +351,7 @@ const DataGridBase = define("bz-data-grid", {
     /** Rendered width of each visible column (flex columns share the space left over). */
     let layoutWidths = new Map<string, number>()
     let hasFlex = false
+    let hasPins = false
 
     const applyLayout = () => {
       if (!colgroup) return
@@ -389,6 +398,15 @@ const DataGridBase = define("bz-data-grid", {
         ...(selectable ? [{ pinned: "start" as const, width: SELECT_WIDTH }] : []),
         ...cols.map((c) => ({ pinned: c.pinned, width: widths.get(c.key)! })),
       ]
+      // Pinned columns that would cover most of a narrow grid leave nothing to scroll: suspended.
+      const pinnedWidth = cells.reduce((n, c) => n + (c.pinned ? c.width : 0), 0)
+      hasPins = cols.some((c) => c.pinned)
+      const view = scroller?.clientWidth ?? 0
+      const limit = props.pinLimit.peek()
+      const suspended = limit > 0 && view > 0 && pinnedWidth > view * limit
+      host.toggleAttribute("data-pins-suspended", suspended)
+      if (suspended) for (const c of cells) c.pinned = null
+
       const scope = `bz-data-grid[data-grid-id="${gridId}"]`
       const head = (n: string, flag = "") => `${scope}${flag} thead tr > :${n}`
       const bodyCell = (n: string, flag = "") => `${scope}${flag} tbody tr[data-part="row"] > :${n}`
@@ -901,6 +919,7 @@ const DataGridBase = define("bz-data-grid", {
       effect(() => {
         visible()
         props.selectable()
+        props.pinLimit()
         applyLayout()
       })
       effect(() => {
@@ -929,7 +948,8 @@ const DataGridBase = define("bz-data-grid", {
       if (typeof ResizeObserver !== "undefined") {
         let lastWidth = -1
         const ro = new ResizeObserver(() => {
-          if (hasFlex && scroller.clientWidth !== lastWidth) applyLayout()
+          // Flex widths and pin suspension depend on the visible width.
+          if ((hasFlex || hasPins) && scroller.clientWidth !== lastWidth) applyLayout()
           lastWidth = scroller.clientWidth
           updateRange()
           updateScrollFlags()
@@ -980,7 +1000,7 @@ const DataGridBase = define("bz-data-grid", {
             <tr aria-rowindex=${() => (isVirtual() ? "1" : null)} ref=${(el: HTMLTableRowElement) => (headRow = el)}>
               ${() =>
                 props.selectable()
-                  ? html`<th data-part="select" scope="col">
+                  ? html`<th data-part="select" scope="col" @click=${(e: Event) => e.target === e.currentTarget && toggleAll()}>
                       <input
                         type="checkbox"
                         aria-label=${() => text().selectAll}

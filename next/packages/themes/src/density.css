@@ -4,6 +4,31 @@
  * after the themes so it wins on the same element.
  */
 @layer bazlama.tokens {
+  /*
+   * Touch screens (a coarse pointer), or data-density="touch" to force it: 44px targets
+   * (Apple / Microsoft guidance), taller rows, a larger hit slop around small buttons.
+   * data-density="compact" below still wins where it is set explicitly.
+   */
+  @media (pointer: coarse) {
+    :root,
+    [data-theme] {
+      --bz-control-height: 2.75rem;
+      --bz-data-grid-row-height: 44px;
+      --bz-table-cell-padding-block: 0.75rem;
+      --bz-choice-padding-block: 0.875rem;
+      --bz-menu-item-height: 2.75rem;
+      --bz-hit-slop: 0.625rem;
+    }
+  }
+  [data-density="touch"] {
+    --bz-control-height: 2.75rem;
+    --bz-data-grid-row-height: 44px;
+    --bz-table-cell-padding-block: 0.75rem;
+    --bz-choice-padding-block: 0.875rem;
+    --bz-menu-item-height: 2.75rem;
+    --bz-hit-slop: 0.625rem;
+  }
+
   [data-density="compact"] {
     --bz-font-size: 0.8125rem;
     --bz-control-height: 1.875rem;
@@ -13,5 +38,6 @@
     --bz-table-cell-padding-block: 0.3125rem;
     --bz-choice-padding-block: 0.125rem;
     --bz-menu-item-height: 1.75rem;
+    --bz-hit-slop: 0.25rem;
   }
 }

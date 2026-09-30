@@ -119,7 +119,7 @@ const app = html`
       </div>
     </nav>
 
-    <bz-header slot="header" title="" no-menu-button user-name="Ada Yılmaz" user-detail="ada.yilmaz@firma.com.tr"
+    <bz-header slot="header" title="" no-menu-button center-label="İletilerde ara" user-name="Ada Yılmaz" user-detail="ada.yilmaz@firma.com.tr"
       @select=${() => toast.info("Hesap ayarları bu demoda yok.")}>
       <bz-button slot="logo" variant="ghost" size="sm" data-shell-toggle="start" aria-label="Klasörler" data-tooltip="Klasörler">${icon("menu")}</bz-button>
       <bz-input slot="center" class="mail-search" placeholder="İletilerde ara" aria-label="İletilerde ara" .value=${query}

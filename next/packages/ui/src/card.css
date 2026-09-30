@@ -217,6 +217,9 @@
     display: inline-flex;
     align-items: center;
     gap: var(--bz-space-2);
+    /* Taller to tap, same layout. */
+    padding-block: var(--bz-space-2);
+    margin-block: calc(-1 * var(--bz-space-2));
     font-size: 0.8em;
     font-weight: 700;
     letter-spacing: 0.04em;

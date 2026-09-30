@@ -159,7 +159,14 @@ export const Table = define("bz-table", {
         @focus=${() => activeKey.set(key)}
       >
         ${selectable
-          ? html`<td data-part="select">
+          ? html`<td
+              data-part="select"
+              @click=${(e: Event) => {
+                // The whole cell is the target (the checkbox alone is too small to tap).
+                e.stopPropagation()
+                if (e.target === e.currentTarget) toggleRow(row)
+              }}
+            >
               <input
                 type="checkbox"
                 aria-label="Select row"
@@ -179,7 +186,7 @@ export const Table = define("bz-table", {
         <thead data-part="head">
           ${() => html`<tr>
             ${props.selectable()
-              ? html`<th data-part="select" scope="col">
+              ? html`<th data-part="select" scope="col" @click=${(e: Event) => e.target === e.currentTarget && toggleAll()}>
                   <input
                     type="checkbox"
                     aria-label="Select all rows"

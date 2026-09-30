@@ -87,6 +87,10 @@
   bz-header > [data-part="bar"] > [data-part="center"][hidden] {
     display: none;
   }
+  /* Narrow-screen button for the center area: hidden while there is room. */
+  bz-header > [data-part="bar"] > [data-part="center-toggle"] {
+    display: none;
+  }
   bz-header > [data-part="bar"] > [data-part="actions"] {
     display: flex;
     align-items: center;
@@ -124,10 +128,54 @@
     font-weight: 400;
     color: var(--bz-color-fg-muted);
   }
-  /* Narrow screens: the subtitle and the user's text give way. */
+  /* Narrow screens: the subtitle and the user's text give way; the center area (search)
+     becomes a button that opens it as a full row below the bar. */
   @media (max-width: 640px) {
     bz-header :is([data-part="subtitle"], [data-part="user-text"]) {
       display: none;
+    }
+    bz-header > [data-part="bar"] {
+      flex-wrap: wrap;
+    }
+    bz-header > [data-part="bar"] > [data-part="center"] {
+      display: none;
+      order: 99;
+      flex-basis: 100%;
+      padding-bottom: var(--bz-space-2);
+    }
+    bz-header[data-center-open] > [data-part="bar"] > [data-part="center"]:not([hidden]) {
+      display: flex;
+    }
+    bz-header > [data-part="bar"] > [data-part="center"] > * {
+      flex: 1;
+      max-width: none;
+    }
+    bz-header > [data-part="bar"] > [data-part="center-toggle"]:not([hidden]) {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin-inline-start: auto;
+      padding: 0;
+      font-size: 1.1rem;
+      color: inherit;
+      background: none;
+      border: 0;
+      border-radius: var(--bz-radius-sm);
+      cursor: pointer;
+    }
+    bz-header > [data-part="bar"] > [data-part="center-toggle"]:hover,
+    bz-header[data-center-open] > [data-part="bar"] > [data-part="center-toggle"] {
+      background: var(--bz-color-surface-hover);
+    }
+    bz-header > [data-part="bar"] > [data-part="center-toggle"]:focus-visible {
+      outline: 2px solid var(--bz-color-focus);
+      outline-offset: 2px;
+    }
+    /* The toggle takes the push to the end; the actions follow it. */
+    bz-header > [data-part="bar"] > [data-part="center-toggle"]:not([hidden]) ~ :is([data-part="actions"], [data-part="user"]) {
+      margin-inline-start: 0;
     }
   }
 

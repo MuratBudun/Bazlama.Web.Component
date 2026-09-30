@@ -87,7 +87,7 @@ pre code {
 }
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: 1rem;
   align-items: start;
 }
@@ -765,7 +765,7 @@ details.source summary {
 }
 .icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(6.5rem, 100%), 1fr));
   gap: 0.5rem;
 }
 .icon-tile {
@@ -1217,4 +1217,18 @@ bz-shell[start-collapsed]:not([data-compact]) bz-tree [data-part="item"] {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--bz-color-fg-muted);
+}
+
+/* ---------------------------------------------------------------- header settings (narrow) */
+/* Wide: theme / density / UI CSS as fields in the header. Narrow: one settings menu. */
+.header-settings {
+  display: none;
+}
+@media (max-width: 640px) {
+  bz-header > [data-part="bar"] .field {
+    display: none;
+  }
+  .header-settings {
+    display: contents;
+  }
 }

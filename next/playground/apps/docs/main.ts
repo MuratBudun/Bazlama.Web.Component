@@ -272,7 +272,7 @@ const current = computed(() => router.current()?.path ?? "/")
 
 const app = html`
   <bz-shell scroll-mode="page" breakpoint="900" skip-label="İçeriğe geç" .busy=${router.pending}>
-    <bz-header slot="header" title="Bazlama Rehberi" subtitle="Dokümantasyon" href=${router.href("/")} menu-label="Menü">
+    <bz-header slot="header" title="Bazlama Rehberi" subtitle="Dokümantasyon" href=${router.href("/")} menu-label="Menü" center-label="Rehberde ara">
       <bz-icon slot="logo" name="book" size="26"></bz-icon>
       <div slot="center" class="docs-header-search">${articleSearch()}</div>
       <bz-button variant="ghost" size="sm" data-tooltip="GitHub (demo)" aria-label="GitHub" @click=${() => toast.info("Demo: dış bağlantı yok.")}>${icon("code")}</bz-button>
