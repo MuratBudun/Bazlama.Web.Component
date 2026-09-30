@@ -170,7 +170,7 @@ export function documentList(title: string) {
 
   return {
     open: openForm,
-    view: html`<bz-tabs class="qx-inner-tabs" .value=${tab} .beforeClose=${() => beforeClose}
+    view: html`<bz-tabs class="qx-inner-tabs" fill .value=${tab} .beforeClose=${() => beforeClose}
       @change.self=${(e: CustomEvent<{ value: string }>) => tab.set(e.detail.value)}
       @close=${(e: CustomEvent<{ value: string }>) => removeForm(e.detail.value)}
       ref=${(el: TabsElement) => (innerTabs = el)}>

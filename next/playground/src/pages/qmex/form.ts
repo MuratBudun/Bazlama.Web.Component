@@ -237,7 +237,7 @@ export function documentForm(docRow: DocRow, onClose: () => void): FormHandle {
         <bz-button size="sm" variant="ghost" @click=${close}>${icon("x")} Kapat</bz-button>
       </bz-toolbar>
 
-      <bz-tabs class="qx-form-tabs" .value=${tab} @change.self=${(e: CustomEvent<{ value: string }>) => tab.set(e.detail.value)}>
+      <bz-tabs class="qx-form-tabs" fill .value=${tab} @change.self=${(e: CustomEvent<{ value: string }>) => tab.set(e.detail.value)}>
         <bz-tab-list>
           <bz-tab value="general">Genel Bilgiler</bz-tab>
           <bz-tab value="reviews">Görüşler</bz-tab>

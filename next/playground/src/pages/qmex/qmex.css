@@ -73,12 +73,7 @@
   border-radius: 0;
 }
 
-/* MDI tabs. */
-.qx-mdi {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+/* MDI tabs: every tab level fills its panel (bz-tabs[fill]); only the innermost panel scrolls. */
 .qx-mdi > [role="tablist"],
 .qx-inner-tabs > [role="tablist"] {
   background: var(--bz-color-surface);
@@ -87,9 +82,6 @@
 .qx-mdi > bz-tab-panel,
 .qx-inner-tabs > bz-tab-panel {
   padding: 0;
-}
-.qx-mdi > bz-tab-panel {
-  padding: 0.5rem;
 }
 .qx-inner-tabs {
   background: var(--bz-color-surface);
@@ -169,7 +161,7 @@
   margin-top: 0.5rem;
 }
 .qx-grid-panel > [data-part="content"] {
-  padding: 0;
+  padding: 0 0.25rem;
 }
 
 
@@ -272,9 +264,21 @@
   font-size: 0.9rem;
 }
 
-/* Form. */
+/* Form: head and toolbar stay, the form tabs take the rest. */
 .qx-form {
-  padding: 0.5rem 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem 0;
+}
+.qx-form > :not(.qx-form-tabs) {
+  flex: none;
+}
+.qx-form-tabs > bz-tab-panel {
+  padding-block: 0.75rem;
+  /* Keeps the fields clear of the panel's scrollbar. */
+  padding-inline-end: 0.35rem;
 }
 .qx-form-head {
   display: flex;

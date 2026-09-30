@@ -142,7 +142,8 @@
    * data-shell-fill: the element takes the content's remaining height. Every element between
    * the content and it (found with :has) becomes a flex column; its other children keep their
    * size. Hidden elements (e.g. inactive tab panels) are left alone, and a fill inside a nested
-   * shell belongs to that shell: the chain stops at a nested bz-shell.
+   * shell belongs to that shell: the chain stops at a nested bz-shell. A container with its own
+   * fill layout (bz-tabs[fill], bz-accordion[fill]) sizes its children itself.
    */
   bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])),
   bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not([hidden], bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) {
@@ -154,7 +155,7 @@
     min-height: 0;
   }
   bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])),
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not(bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])) {
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not(bz-shell, [fill]):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])) {
     flex-shrink: 0;
   }
   bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill]:not([hidden]) {

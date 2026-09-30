@@ -6,10 +6,20 @@
     gap: 2px;
     font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
     color: var(--bz-color-fg);
+    --_mark-h: 1.05rem;
   }
+  bz-switch {
+    --_mark-h: 1.2rem;
+  }
+  /*
+   * The mark sits on the label's first line, so it stays there when the label wraps. Fallback:
+   * centred on the line box. With text-box (below) it is centred on the text itself.
+   */
   :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] {
     display: inline-flex;
     align-items: flex-start;
+    /* Room between stacked items; also a taller hit area (the field is the <label>). */
+    padding-block: var(--bz-space-1);
     gap: var(--bz-space-2);
     width: fit-content;
     cursor: pointer;
@@ -26,8 +36,10 @@
     flex-shrink: 0;
     box-sizing: border-box;
     width: 1.05rem;
-    height: 1.05rem;
-    margin: calc((1lh - 1.05rem) / 2) 0 0;
+    height: var(--_mark-h);
+    /* 1lh / 1cap / 1ex are the label's only with the inherited font (a UA input font differs). */
+    font: inherit;
+    margin: calc((1lh - var(--_mark-h)) / 2) 0 0;
     background: var(--bz-input-bg, var(--bz-color-surface));
     border: 1.5px solid var(--bz-input-border, var(--bz-color-border));
     border-radius: 4px;
@@ -73,11 +85,24 @@
     background: var(--bz-color-primary-fg);
   }
 
+  /*
+   * The line box centre sits above the text's visual centre (the descender space is below the
+   * baseline). Trim the label to cap height … baseline and centre the mark between the cap and
+   * x-height centres: (cap + ex) / 4 above the baseline. The shorter of the two gets the margin.
+   */
+  @supports (text-box: trim-both cap alphabetic) {
+    :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] > [data-part="label"] {
+      text-box: trim-both cap alphabetic;
+      margin-top: max(0px, (var(--_mark-h) - 1.5cap + 0.5ex) / 2);
+    }
+    :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] > [data-part="input"] {
+      margin-top: max(0px, (1.5cap - 0.5ex - var(--_mark-h)) / 2);
+    }
+  }
+
   /* Switch: a track with a thumb. */
   bz-switch [data-part="input"] {
     width: 2.1rem;
-    height: 1.2rem;
-    margin-top: calc((1lh - 1.2rem) / 2);
     place-items: center start;
     padding: 0 2px;
     border-color: transparent;
@@ -143,10 +168,10 @@
   bz-radio-group > [data-part="label"] {
     font-weight: 500;
   }
+  /* The items' own padding spaces them (as stacked checkboxes). */
   bz-radio-group > [data-part="items"] {
     display: flex;
     flex-direction: column;
-    gap: var(--bz-space-1);
   }
   bz-radio-group[orientation="horizontal"] > [data-part="items"] {
     flex-flow: row wrap;

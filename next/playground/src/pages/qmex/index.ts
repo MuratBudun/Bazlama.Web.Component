@@ -104,6 +104,7 @@ function qmexApp() {
 
     <bz-tabs
       class="qx-mdi"
+      fill
       .value=${active}
       .beforeClose=${() => beforeClose}
       @change.self=${(e: CustomEvent<{ value: string }>) => active.set(e.detail.value)}

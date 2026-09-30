@@ -290,6 +290,7 @@ html\`
     { name: "activation", type: '"auto" | "manual"', default: '"auto"', desc: "auto: ok tuşları seçer. manual: oklar odağı taşır, Enter/Space seçer." },
     { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', desc: "Ok tuşları ve aria-orientation. Yansıtılır." },
     { name: "variant", type: '"pills"', desc: "Sadece CSS (@bazlama/ui)." },
+    { name: "fill", type: "boolean", desc: "Sadece CSS: kabın yüksekliğini doldurur, sekme şeridi sabit kalır, açık panel kendi kayar. İç içe tablar paneli doldurabilir." },
     { name: "beforeClose", attr: false, type: "(value, tab) => boolean | Promise<boolean>", desc: "Kapatmadan önce sorulur; false (veya false dönen Promise, ör. onay dialogu) sekmeyi tutar." },
     { name: "removeOnClose", type: "boolean", default: "false", desc: "close olayından sonra sekmeyi ve panelini bileşen kaldırır (sadece HTML kullanımı için)." },
   ],
@@ -305,7 +306,7 @@ html\`
     { name: "Kaydırma", desc: "bz-tab-list sığmayınca yatay kayar; taşan uçlarda ‹ › görünür, tekerlek yana kaydırır, seçili sekme görünür alana gelir." },
     { name: "<bz-tab-panel value>", desc: "Panel; seçili değilse hidden. Aynı value'lu sekmeye bağlanır (aria-labelledby/controls)." },
   ],
-  hooks: ['bz-tab[aria-selected="true"]', 'bz-tab[aria-disabled="true"]', "bz-tab[closable] > [data-part=close]", "bz-tab-list[data-overflow]", "[data-part=scroll-prev|scroll-next]", "bz-tab-panel[hidden]", "[orientation]", "[variant]"],
+  hooks: ['bz-tab[aria-selected="true"]', 'bz-tab[aria-disabled="true"]', "bz-tab[closable] > [data-part=close]", "bz-tab-list[data-overflow]", "[data-part=scroll-prev|scroll-next]", "bz-tab-panel[hidden]", "[orientation]", "[variant]", "[fill]"],
   notes: [
     "Paneller DOM'da kalır, sadece gizlenir: form alanları sekme değişince kaybolmaz. İçerik pahalıysa change olayında yükleyin.",
   ],

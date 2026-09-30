@@ -97,7 +97,9 @@ Ayarlar repo kökündeki `.vscode/` klasöründe (`launch.json`, `tasks.json`). 
 
 **Dialog:** Her dialog native `<dialog>.showModal()` ile açılır; top layer, z-index ve alttakileri etkisizleştirme işini tarayıcı çözer. Manager yığını tutar: Esc (bubbling dinlenir; içerideki bir bileşen `preventDefault` ederse dialog açık kalır) ve arka plan tıklaması sadece en üsttekini kapatır. Bir dialog kapanırken önce üstündekiler kapanır ve her birinin guard'ı (`beforeClose`, iptal edilebilir `before-close`) sorulur. Guard async olabilir: "kaydedilmemiş değişiklik" onayı yığına bir seviye daha eklenir. Odak açan elemente döner, sayfa kaydırması kilitlenir. `show()` ve `dialogs.open()` `close(result)` değerini döner; formdan açılan seçim dialogu sonucunu `await` ile forma verir. Chrome'da art arda Esc (close watcher) sonrası durum tutarlılığı elle doğrulandı.
 
-**Tabs:** Enhancer; sekme ve paneller `value` (yoksa sıra) ile eşleşir, alt ağaç MutationObserver ile izlenir (sekmeler `repeat()` ile üretilebilir), iç içe `bz-tabs` birbirini etkilemez. Paneller sadece gizlenir; form durumu korunur.
+**Tabs:** Enhancer; sekme ve paneller `value` (yoksa sıra) ile eşleşir, alt ağaç MutationObserver ile izlenir (sekmeler `repeat()` ile üretilebilir), iç içe `bz-tabs` birbirini etkilemez. Paneller sadece gizlenir; form durumu korunur. `fill` (sadece CSS) ile sekmeler kabın yüksekliğini doldurur, şerit sabit kalır ve açık panel kendi kayar; iç içe `fill` sekmeler üst panelin yüksekliğini alır (MDI: sadece en içteki panel kayar). Shell'in `data-shell-fill` zinciri `[fill]` kaplarında durur, çocuklarını kap kendisi boyutlar.
+
+**Alan genişliği:** `bz-input`, `bz-combobox`, `bz-lookup`, `bz-textarea`, `bz-file-upload` tek sütunlu gridler (`minmax(0, 1fr)`): dar bir form hücresinde native input'un kendi genişliğinden (tarih alanı, combobox) küçülür, hücreden taşmaz.
 
 **Toast:** Konum başına bir kap, manual popover (top layer). Modal açıkken tarayıcı dialog dışındaki her şeyi inert yapar; bu yüzden kap en üstteki dialogun içine taşınır (Chrome'da gerçek tıklamayla doğrulandı). Süre üzerine gelince/odakta ve sekme gizliyken durur.
 

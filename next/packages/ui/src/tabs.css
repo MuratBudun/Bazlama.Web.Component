@@ -120,6 +120,29 @@
     border-radius: var(--bz-radius-sm);
   }
 
+  /*
+   * fill: the tabs take their container's height (or the rest of a flex column); the strip
+   * keeps its size and the open panel scrolls. Tabs nested in a panel can fill it too.
+   */
+  bz-tabs[fill] {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+  }
+  bz-tabs[fill] > [role="tablist"] {
+    flex: none;
+  }
+  bz-tabs[fill] > bz-tab-panel:not([hidden]) {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+  }
+
   /* Vertical */
   bz-tabs[orientation="vertical"] {
     display: grid;

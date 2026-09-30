@@ -1,6 +1,8 @@
 @layer bazlama.components {
   bz-file-upload {
     display: grid;
+    /* The column follows the container: controls shrink below their native input's width. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--bz-space-2);
     font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
     color: var(--bz-color-fg);

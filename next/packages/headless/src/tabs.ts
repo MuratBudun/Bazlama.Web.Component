@@ -150,7 +150,7 @@ interface Controller {
  *
  * Styling hooks: bz-tab[aria-selected="true"], [aria-disabled="true"], [closable],
  * bz-tab > [data-part=close], bz-tab-list[data-overflow] > [data-part=scroll-prev|scroll-next],
- * [orientation].
+ * [orientation], [fill] (CSS: fills the container's height, the open panel scrolls).
  */
 const TabsBase = define("bz-tabs", {
   props: {
