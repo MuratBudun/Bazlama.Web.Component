@@ -8,7 +8,7 @@ import customerPage from "./pages/customer"
 import customersPage from "./pages/customers"
 import dashboardPage from "./pages/dashboard"
 import ordersPage from "./pages/orders"
-import settingsPage, { savedTheme } from "./pages/settings"
+import settingsPage, { applyCrmTheme, savedTheme } from "./pages/settings"
 import { activity } from "./store"
 
 /*
@@ -18,7 +18,9 @@ import { activity } from "./store"
  * height where it helps (data-shell-fill). Hash routing: #/musteriler/12.
  */
 
-boot(savedTheme())
+boot("light")
+// The saved theme may be the company theme, generated at run time (pages/settings.ts).
+applyCrmTheme(savedTheme())
 
 const router = createRouter({
   mode: "hash",

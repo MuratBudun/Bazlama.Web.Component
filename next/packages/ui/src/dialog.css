@@ -11,7 +11,8 @@
     border: 0;
     border-radius: var(--bz-radius-lg, calc(var(--bz-radius) * 1.5));
     color: var(--bz-color-fg);
-    background: var(--bz-color-surface);
+    /* Popups and overlays sit one step above the page (dark themes lift them). */
+    background: var(--bz-color-surface-raised, var(--bz-color-surface));
     box-shadow: var(--bz-shadow-dialog, 0 24px 64px rgb(15 20 30 / 0.28), 0 4px 12px rgb(15 20 30 / 0.12));
     font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
     overflow: hidden;

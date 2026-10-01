@@ -1,9 +1,9 @@
 import { computed, effect, html, onCleanup, signal } from "@bazlama/core"
 import { dialogs, icon, toast } from "@bazlama/headless"
-import { isHex } from "./color"
 import { preview } from "./preview"
 import {
   contrastChecks,
+  isHex,
   DEFAULT_SETTINGS,
   diffOverrides,
   FONTS,
@@ -17,7 +17,8 @@ import {
   type ShadowLevel,
   type Style,
   type ThemeSettings,
-} from "./theme"
+} from "@bazlama/themes/builder"
+import { CONTRAST_TR, FONT_TR } from "../../../apps/shared/theme-tr"
 import "./theme-editor.css"
 
 /**
@@ -185,7 +186,7 @@ export default {
       <section>
         <h3>Yazı</h3>
         <bz-combobox label="Yazı tipi" .value=${() => settings().font} @change=${(e: CustomEvent<{ value: string }>) => set({ font: e.detail.value })}>
-          ${FONTS.map((f) => html`<bz-option value=${f.value}>${f.label}</bz-option>`)}
+          ${FONTS.map((f) => html`<bz-option value=${f.value}>${FONT_TR[f.id] ?? f.label}</bz-option>`)}
         </bz-combobox>
         <bz-radio-group label="Boyut" orientation="horizontal" .value=${() => String(settings().fontSize)} @change=${(e: CustomEvent<{ value: string }>) => set({ fontSize: Number(e.detail.value) })}>
           ${[13, 14, 15, 16].map((n) => html`<bz-radio value=${n}>${n}px</bz-radio>`)}
@@ -203,7 +204,7 @@ export default {
           ${() =>
             checks().map(
               (c) => html`<tr>
-                <td>${c.label}</td>
+                <td>${CONTRAST_TR[c.id]}</td>
                 <td><span class="te-swatch" style=${`color:${c.fg};background:${c.bg}`}>Aa ${c.min === 3 ? "▢" : ""}</span></td>
                 <td class="te-num">${ratioText(c.ratio)}</td>
                 <td>${

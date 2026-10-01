@@ -173,8 +173,12 @@
     display: flex;
     flex-direction: column;
   }
+  /* Horizontal: one control-high row with the options centred, so the group lines up with the
+     inputs beside it in a form (same label line, radios on the input's middle). */
   bz-radio-group[orientation="horizontal"] > [data-part="items"] {
     flex-flow: row wrap;
+    align-items: center;
     column-gap: var(--bz-space-4);
+    min-height: var(--bz-control-height);
   }
 }

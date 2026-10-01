@@ -56,3 +56,60 @@ bz-header bz-button bz-badge[dot] {
 .crm-list-page bz-toolbar bz-input {
   width: 16rem;
 }
+
+/* ---------------------------------------------------------------- settings: company theme */
+.brand-field {
+  display: grid;
+  gap: 0.375rem;
+}
+.brand-label {
+  font-weight: 500;
+}
+.brand-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brand-swatch,
+.brand-custom {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 2px solid var(--bz-color-surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--bz-color-border-strong, var(--bz-color-border));
+  cursor: pointer;
+}
+.brand-swatch {
+  background: var(--swatch);
+}
+.brand-swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--bz-color-fg);
+}
+.brand-swatch:focus-visible,
+.brand-custom:focus-within {
+  outline: 2px solid var(--bz-color-focus);
+  outline-offset: 2px;
+}
+/* The native colour input inside a round "+" button. */
+.brand-custom {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+}
+.brand-custom input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .brand-swatch,
+  .brand-custom {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

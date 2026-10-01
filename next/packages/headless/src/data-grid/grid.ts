@@ -141,7 +141,8 @@ interface Controller {
  * Anatomy: [data-part=scroller|table|head|header-cell|header|sort-indicator|menu|resize|body|
  * row|cell|select|spacer|empty]. Styling hooks: [loading], [data-scrolled-start],
  * [data-scrolled-end], [data-virtual], th[aria-sort], tr[aria-selected], [data-pinned],
- * [data-dragging], [data-resizing], [highlight-pinned], [data-pins-suspended], --bz-data-grid-row-height,
+ * [data-dragging], [data-resizing], [highlight-pinned], [data-pins-suspended], [striped], tr[data-stripe],
+ * --bz-row-stripe-bg, --bz-data-grid-row-height,
  * --bz-data-grid-max-height, --bz-data-grid-pinned-bg.
  */
 const DataGridBase = define("bz-data-grid", {
@@ -171,6 +172,11 @@ const DataGridBase = define("bz-data-grid", {
      * a narrow panel) pinning is suspended until the grid is wide enough again; 0 = never.
      */
     pinLimit: prop.number(0.6),
+    /**
+     * Zebra rows: every second row (by its position in the sorted rows, so the bands stay put
+     * while virtual scrolling) gets [data-stripe] and a faint band (`--bz-row-stripe-bg`).
+     */
+    striped: prop.boolean(false, { reflect: true }),
   },
   setup(props, ctx) {
     const { host } = ctx
@@ -417,7 +423,7 @@ const DataGridBase = define("bz-data-grid", {
         if (cell.pinned !== "start") return
         const n = `nth-child(${i + 1})`
         rules.push(`${head(n)}, ${bodyCell(n)} { position: sticky; inset-inline-start: ${offset}px; }`)
-        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
+        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background-color: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
         offset += cell.width
         lastStart = i + 1
       })
@@ -431,7 +437,7 @@ const DataGridBase = define("bz-data-grid", {
         if (cells[i].pinned !== "end") break
         const n = `nth-last-child(${k})`
         rules.push(`${head(n)}, ${bodyCell(n)} { position: sticky; inset-inline-end: ${offset}px; }`)
-        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
+        rules.push(`${head(n)} { z-index: 3; }`, `${bodyCell(n)} { z-index: 1; background-color: var(--_row-bg, var(--_pin-bg, var(--_bg))); }`)
         offset += cells[i].width
         firstEnd = k
       }
@@ -541,6 +547,7 @@ const DataGridBase = define("bz-data-grid", {
       const { start, end } = range()
       const structureKey = structure()
       const virtual = isVirtual()
+      const striped = props.striped()
       untrack(() => {
         const rh = rowHeight.peek()
         // Every write below is skipped when unchanged: attribute writes invalidate style even
@@ -568,6 +575,7 @@ const DataGridBase = define("bz-data-grid", {
             cache.set(key, e)
           }
           setAttr(e.tr, "aria-rowindex", virtual ? String(i + 2) : null)
+          setAttr(e.tr, "data-stripe", striped && i % 2 === 1 ? "" : null)
           if (prev.nextSibling !== e.tr) body.insertBefore(e.tr, prev.nextSibling)
           prev = e.tr
         }

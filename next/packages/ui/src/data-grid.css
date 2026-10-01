@@ -4,6 +4,7 @@
     --_header-bg: var(--bz-data-grid-header-bg, var(--bz-color-surface-hover));
     --_bg: var(--bz-color-surface);
     --_border: var(--bz-color-border);
+    --_stripe: var(--bz-row-stripe-bg, color-mix(in srgb, var(--bz-color-fg) 4%, transparent));
     --bz-data-grid-pin-shadow-start: 6px 0 6px -4px rgb(0 0 0 / 0.18);
     --bz-data-grid-pin-shadow-end: -6px 0 6px -4px rgb(0 0 0 / 0.18);
     position: relative;
@@ -64,6 +65,11 @@
   }
   bz-data-grid tbody tr[data-part="row"] > * {
     background: var(--_row-bg, var(--_bg));
+  }
+  /* striped: a translucent band over the cell's own colour (pinned tint, hover); not on a
+     selected row. [data-stripe] follows the row's position in the sorted rows (headless). */
+  bz-data-grid[striped] tbody tr[data-stripe]:not([aria-selected="true"]) > * {
+    background-image: linear-gradient(var(--_stripe), var(--_stripe));
   }
   bz-data-grid tbody tr[data-part="row"]:hover {
     --_row-bg: color-mix(in srgb, var(--bz-color-surface-hover) 100%, var(--_bg));

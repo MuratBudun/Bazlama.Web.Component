@@ -126,7 +126,7 @@ export default definePage({
         </bz-menu>
       </bz-toolbar>
 
-      <bz-data-grid id="crm-customers" data-shell-fill label="Müşteriler" selectable persist="ada-crm-customers" highlight-pinned
+      <bz-data-grid id="crm-customers" data-shell-fill label="Müşteriler" selectable striped persist="ada-crm-customers" highlight-pinned
         .labels=${CRM_GRID_TR} .columns=${COLUMNS} .rows=${rows} .selection=${selection}
         @selection-change=${(e: CustomEvent<{ selection: unknown[] }>) => selection.set(e.detail.selection)}
         @row-activate=${(e: CustomEvent<{ row: Customer }>) => open(e.detail.row)}

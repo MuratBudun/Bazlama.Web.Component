@@ -12,7 +12,8 @@
     overscroll-behavior: contain;
     font: var(--bz-font-size) / var(--bz-line-height) var(--bz-font-family);
     color: var(--bz-color-fg);
-    background: var(--bz-color-surface);
+    /* Popups and overlays sit one step above the page (dark themes lift them). */
+    background: var(--bz-color-surface-raised, var(--bz-color-surface));
     border: 1px solid var(--bz-color-border);
     border-radius: var(--bz-radius);
     box-shadow: var(--bz-shadow-popup);

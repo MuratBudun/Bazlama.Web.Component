@@ -186,7 +186,7 @@ export const RadioGroup = define("bz-radio-group", {
     const touched = signal(false)
     const message = signal("")
     const showError = computed(() => touched() && message() !== "")
-    const { version, disconnect } = observeOptions(host)
+    const { version, disconnect } = observeOptions(host, "bz-radio")
     onCleanup(disconnect)
 
     host.setAttribute("role", "radiogroup")

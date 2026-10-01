@@ -58,7 +58,8 @@
     max-height: var(--bz-combobox-max-height, 16rem);
     overflow: auto;
     padding: var(--bz-space-1);
-    background: var(--bz-color-surface);
+    /* Popups and overlays sit one step above the page (dark themes lift them). */
+    background: var(--bz-color-surface-raised, var(--bz-color-surface));
     border: 1px solid var(--bz-color-border);
     border-radius: var(--bz-radius-sm);
     box-shadow: var(--bz-shadow-popup);

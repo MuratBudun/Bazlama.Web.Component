@@ -95,7 +95,7 @@ export default definePage({
 
       <div class="grid-2">
         <bz-panel heading="Son siparişler" open>
-          <bz-table .columns=${columns} .rows=${recent} activatable aria-label="Son siparişler"
+          <bz-table .columns=${columns} .rows=${recent} activatable striped aria-label="Son siparişler"
             @row-activate=${() => void ctx.navigate("/siparisler")}></bz-table>
           <div class="row" style="padding: 0.5rem 0 0">
             <a href=${ctx.router.href("/siparisler")}>Tüm siparişler ${icon("chevron-right", { size: 14 })}</a>

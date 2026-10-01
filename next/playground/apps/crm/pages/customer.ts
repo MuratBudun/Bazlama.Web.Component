@@ -139,7 +139,7 @@ export default definePage({
         <bz-tab-panel value="general">${general}</bz-tab-panel>
         <bz-tab-panel value="orders">
           <div class="stack">
-            <bz-table label="Siparişler" .columns=${orderColumns} .rows=${pageRows}>
+            <bz-table label="Siparişler" striped .columns=${orderColumns} .rows=${pageRows}>
               <span slot="empty">Bu müşterinin siparişi yok.</span>
             </bz-table>
             <bz-pagination .total=${() => customerOrders().length} page-size="8" .page=${page} show-info .labels=${PAGINATION_TR}

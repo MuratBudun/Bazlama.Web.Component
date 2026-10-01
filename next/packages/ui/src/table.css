@@ -1,5 +1,6 @@
 @layer bazlama.components {
   bz-table {
+    --_stripe: var(--bz-row-stripe-bg, color-mix(in srgb, var(--bz-color-fg) 4%, transparent));
     display: block;
     max-height: var(--bz-table-max-height, none);
     overflow: auto;
@@ -81,6 +82,10 @@
   bz-table [aria-sort="descending"] [data-part="sort-indicator"]::after {
     content: "\25BC";
     color: var(--bz-color-primary);
+  }
+  /* striped: a translucent band over the row's own colour (hover); not on a selected row. */
+  bz-table[striped] tbody tr:nth-child(even):not([aria-selected="true"]) > td {
+    background-image: linear-gradient(var(--_stripe), var(--_stripe));
   }
   bz-table tbody tr:hover {
     background: var(--bz-color-surface-hover);

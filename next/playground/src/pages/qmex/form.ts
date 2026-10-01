@@ -95,7 +95,7 @@ export function documentForm(docRow: DocRow, onClose: () => void): FormHandle {
     dialogs.open({
       heading: `${base.no} · Tarihçe`,
       size: "lg",
-      content: html`<bz-table
+      content: html`<bz-table striped
         .columns=${[col("at", "Tarih/Saat"), col("step", "Adım"), col("user", "Kullanıcı"), col("note", "Açıklama")]}
         .rows=${[
           { id: 1, at: "17.07.2026 15:55", step: "Hazırlama", user: "Test User 10", note: "Form oluşturuldu" },

@@ -237,6 +237,7 @@ html\`
     { name: "rowKey", type: "string", default: '"id"', desc: "Satır anahtarı alanı." },
     { name: "selectable", type: "boolean", default: "false", desc: "Onay kutusu sütunu." },
     { name: "activatable", type: "boolean", default: "false", desc: "Satırlar odak alır (tek sekme durağı): ↑/↓, Home/End, PageUp/PageDown gezinir, Enter row-activate, Space seçer." },
+    { name: "striped", type: "boolean", default: "false", desc: "Zebra satırlar: her ikinci satır hafif bir şerit alır (--bz-row-stripe-bg). Şerit satırın kendi renginin (üzerine gelme) üstüne yarı saydam biner; seçili satırda yok. Yansıtılır." },
     { name: "selection", attr: false, type: "unknown[]", default: "[]", desc: "Seçili satır anahtarları." },
     { name: "sort", attr: false, type: '{ key, dir: "asc" | "desc" } | null', default: "null", desc: "Geçerli sıralama." },
     { name: "sortMode", type: '"client" | "manual"', default: '"client"', desc: "manual: tablo sıralamaz, sadece sort olayı atar (sunucu tarafı)." },

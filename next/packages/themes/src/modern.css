@@ -89,33 +89,39 @@
     --bz-dialog-backdrop-filter: blur(2px);
   }
 
+  /*
+   * Dark variant: like the standard dark theme, layers get lighter going up (page → panel →
+   * popup, 1.23:1 between page and panel) and controls have their own border at 3:1+ on every
+   * layer (WCAG 2.2, 1.4.11); hairlines for panels at ~1.85:1. Zinc greys as in the light one.
+   */
   [data-theme="modern-dark"] {
     color-scheme: dark;
-    scrollbar-color: #3f3f46 transparent;
-    --bz-color-bg: #0b0b0d;
-    --bz-color-surface: #141417;
-    --bz-color-surface-hover: #1f1f23;
+    scrollbar-color: #55555e transparent;
+    --bz-color-bg: #121214;
+    --bz-color-surface: #25252b;
+    --bz-color-surface-raised: #2d2d34;
+    --bz-color-surface-hover: #323239;
     --bz-color-fg: #f4f4f5;
-    --bz-color-fg-muted: #a1a1aa;
-    --bz-color-border: #27272a;
-    --bz-color-border-strong: #34343a;
-    --bz-color-border-hover: #52525b;
-    --bz-color-primary: #6ea0ff;
-    --bz-color-primary-hover: #8fb5ff;
+    --bz-color-fg-muted: #afafb9;
+    --bz-color-border: #4e4e57;
+    --bz-color-border-strong: #7d7d88;
+    --bz-color-border-hover: #9d9da8;
+    --bz-color-primary: #7aa7ff;
+    --bz-color-primary-hover: #9bbdff;
     --bz-color-primary-fg: #08111f;
-    --bz-color-primary-soft: #172238;
-    --bz-color-danger: #f87171;
-    --bz-color-danger-hover: #fca5a5;
+    --bz-color-primary-soft: #202b44;
+    --bz-color-danger: #ff8080;
+    --bz-color-danger-hover: #ffa3a3;
     --bz-color-danger-fg: #1c0a0a;
     --bz-color-success: #4ade80;
     --bz-color-warning: #fbbf24;
-    --bz-color-info: #38bdf8;
-    --bz-color-focus: #6ea0ff;
+    --bz-color-info: #4cc3f5;
+    --bz-color-focus: #9bbdff;
 
-    --bz-table-header-bg: #18181b;
+    --bz-table-header-bg: #29292f;
     --bz-table-header-fg: var(--bz-color-fg-muted);
-    --bz-data-grid-header-bg: #18181b;
-    --bz-tooltip-bg: #2a2a30;
+    --bz-data-grid-header-bg: #29292f;
+    --bz-tooltip-bg: #414149;
 
     --bz-shadow-control: 0 1px 2px rgb(0 0 0 / 0.4);
     --bz-shadow-button-solid: 0 1px 2px rgb(0 0 0 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.2);

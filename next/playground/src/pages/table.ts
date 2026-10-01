@@ -36,6 +36,7 @@ export default {
   render() {
     resetData()
     const rows = signal<Customer[]>(customers(25))
+    const striped = signal(true)
     const selection = signal<unknown[]>([])
 
     const perfRows = signal<Customer[]>([])
@@ -96,9 +97,11 @@ export default {
 
       <section class="demo">
         <h2>Temel</h2>
+        <bz-switch .checked=${striped} @change=${(e: CustomEvent<{ checked: boolean }>) => striped.set(e.detail.checked)}>Zebra satırlar</bz-switch>
         <bz-table
           label="Müşteriler"
           selectable
+          ?striped=${striped}
           .columns=${columns}
           .rows=${rows}
           .selection=${selection}

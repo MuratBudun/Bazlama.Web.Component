@@ -126,6 +126,7 @@ export function documentList(title: string) {
     </bz-toolbar>
     <div class="qx-grid">
       <bz-data-grid
+        striped
         data-shell-fill
         label=${title}
         row-height="32"

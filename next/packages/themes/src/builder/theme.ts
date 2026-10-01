@@ -1,9 +1,10 @@
 import { adjust, bestOn, contrast, ensureContrast, hexToOklch, isHex, oklchToHex } from "./color"
 
 /**
- * Theme editor model: a handful of choices (brand colour, neutral tone, shape, type) become
+ * Theme builder model: a handful of choices (brand colour, neutral tone, shape, type) become
  * a full token set for a light and a dark variant. Tokens can be overridden one by one; the
  * result is the CSS of a bazlama theme ([data-theme="name"] and [data-theme="name-dark"]).
+ * Used by the playground's theme editor and at run time (applyTheme), e.g. a tenant's brand.
  */
 
 export type Mode = "light" | "dark"
@@ -32,12 +33,13 @@ export interface ThemeSettings {
   overrides: Record<Mode, Tokens>
 }
 
-export const FONTS: { label: string; value: string }[] = [
-  { label: "Modern (Inter → Segoe UI Variable → sistem)", value: '"Inter var", Inter, "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif' },
-  { label: "Sistem fontu", value: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' },
-  { label: "Segoe UI", value: '"Segoe UI", system-ui, sans-serif' },
-  { label: "Roboto", value: "Roboto, system-ui, sans-serif" },
-  { label: "Serif (Georgia)", value: 'Georgia, "Times New Roman", serif' },
+/** Font stacks (no font files are loaded: each falls back to what the system has). */
+export const FONTS: { id: string; label: string; value: string }[] = [
+  { id: "modern", label: "Modern (Inter → Segoe UI Variable → system)", value: '"Inter var", Inter, "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif' },
+  { id: "system", label: "System font", value: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' },
+  { id: "segoe", label: "Segoe UI", value: '"Segoe UI", system-ui, sans-serif' },
+  { id: "roboto", label: "Roboto", value: "Roboto, system-ui, sans-serif" },
+  { id: "serif", label: "Serif (Georgia)", value: 'Georgia, "Times New Roman", serif' },
 ]
 
 export const DEFAULT_SETTINGS: ThemeSettings = {
@@ -81,27 +83,35 @@ export function generate(s: ThemeSettings, mode: Mode): Tokens {
   const { h, c } = neutralTone(s)
   const grey = (l: number, chroma = c) => oklchToHex({ l, c: chroma, h })
 
-  // Greys: lightness steps for each mode.
-  const bg = dark ? grey(0.15) : grey(0.982, c * 0.6)
-  const surface = dark ? grey(0.19) : "#ffffff"
-  const surfaceHover = dark ? grey(0.235) : grey(0.965)
-  const border = dark ? grey(0.28) : grey(0.922)
-  const borderStrong = dark ? grey(0.33) : grey(0.87)
-  const borderHover = dark ? grey(0.45) : grey(0.72)
-  const fg = dark ? grey(0.97, c * 0.5) : grey(0.2)
-  const fgMuted = ensureContrast(dark ? grey(0.72) : grey(0.5), surface, 4.5)
+  // Greys: lightness steps for each mode. Dark: not near-black; each layer up is lighter
+  // (page → panel → popup), hairline borders ~1.8:1 and control borders 3:1+ on every layer
+  // (WCAG 2.2, 1.4.11) — as the built-in dark themes (references: Carbon g90, GitHub dimmed).
+  const bg = dark ? grey(0.2) : grey(0.982, c * 0.6)
+  const surface = dark ? grey(0.28) : "#ffffff"
+  const raised = dark ? grey(0.312) : surface
+  const surfaceHover = dark ? grey(0.332) : grey(0.965)
+  const border = dark ? grey(0.434) : grey(0.922)
+  const borderStrong = dark ? ensureContrast(grey(0.605), raised, 3) : grey(0.87)
+  const borderHover = dark ? grey(0.705) : grey(0.72)
+  const fg = dark ? grey(0.94, c * 0.5) : grey(0.2)
+  // Colours must read on the lightest layer text sits on (popups in dark mode).
+  const top = raised
+  const fgMuted = ensureContrast(dark ? grey(0.758) : grey(0.5), top, 4.5)
 
-  // Brand colour: kept as picked in light mode; in dark mode lifted until it reads on the surface.
-  const primary = dark ? ensureContrast(adjust(s.primary, { l: (l) => Math.max(l, 0.68) }), surface, 4.5) : s.primary
+  // Brand colour: kept as picked in light mode; in dark mode lifted until it reads on the layers
+  // and on its own soft tint (selected items).
+  const baseOk = hexToOklch(s.primary)
+  const primarySoft = dark
+    ? oklchToHex({ l: 0.33, c: Math.min(0.07, baseOk.c * 0.45), h: baseOk.h })
+    : oklchToHex({ l: 0.965, c: Math.min(0.03, baseOk.c * 0.2), h: baseOk.h })
+  const primary = dark
+    ? ensureContrast(ensureContrast(adjust(s.primary, { l: (l) => Math.max(l, 0.68) }), top, 4.5), primarySoft, 4.5)
+    : s.primary
   const primaryHover = adjust(primary, { l: (l) => l + (dark ? 0.07 : -0.07) })
   const primaryFg = bestOn(primary, "#ffffff", grey(0.16))
-  const primaryOk = hexToOklch(primary)
-  const primarySoft = dark
-    ? oklchToHex({ l: 0.27, c: Math.min(0.06, primaryOk.c * 0.4), h: primaryOk.h })
-    : oklchToHex({ l: 0.965, c: Math.min(0.03, primaryOk.c * 0.2), h: primaryOk.h })
 
-  const danger = dark ? ensureContrast(adjust(s.danger, { l: (l) => Math.max(l, 0.68) }), surface, 4.5) : ensureContrast(s.danger, surface, 4.5)
-  const tone = (hex: string) => (dark ? ensureContrast(adjust(hex, { l: (l) => Math.max(l, 0.72) }), surface, 4.5) : ensureContrast(hex, surface, 4.5))
+  const danger = dark ? ensureContrast(adjust(s.danger, { l: (l) => Math.max(l, 0.68) }), top, 4.5) : ensureContrast(s.danger, surface, 4.5)
+  const tone = (hex: string) => (dark ? ensureContrast(adjust(hex, { l: (l) => Math.max(l, 0.72) }), top, 4.5) : ensureContrast(hex, surface, 4.5))
 
   const shadows: Record<ShadowLevel, Tokens> = dark
     ? {
@@ -152,6 +162,7 @@ export function generate(s: ThemeSettings, mode: Mode): Tokens {
 
     "--bz-color-bg": bg,
     "--bz-color-surface": surface,
+    "--bz-color-surface-raised": raised,
     "--bz-color-surface-hover": surfaceHover,
     "--bz-color-fg": fg,
     "--bz-color-fg-muted": fgMuted,
@@ -170,9 +181,9 @@ export function generate(s: ThemeSettings, mode: Mode): Tokens {
     "--bz-color-warning": tone(s.warning),
     "--bz-color-info": tone(s.info),
 
-    "--bz-table-header-bg": dark ? grey(0.215) : grey(0.985, c * 0.6),
-    "--bz-data-grid-header-bg": dark ? grey(0.215) : grey(0.985, c * 0.6),
-    "--bz-tooltip-bg": dark ? grey(0.32) : grey(0.22),
+    "--bz-table-header-bg": dark ? grey(0.297) : grey(0.985, c * 0.6),
+    "--bz-data-grid-header-bg": dark ? grey(0.297) : grey(0.985, c * 0.6),
+    "--bz-tooltip-bg": dark ? grey(0.389) : grey(0.22),
     "--bz-dialog-backdrop": dark ? "rgb(0 0 0 / 0.55)" : "rgb(24 24 27 / 0.4)",
 
     "--bz-shadow-control": sh.control,
@@ -201,19 +212,28 @@ export function generate(s: ThemeSettings, mode: Mode): Tokens {
       "--bz-card-shadow": sh.surface,
       "--bz-toast-accent-width": "1px",
       "--bz-toast-accent-color": border,
-      "--bz-menu-danger-focus-bg": oklchToHex({ ...hexToOklch(danger), l: dark ? 0.3 : 0.95, c: Math.min(0.05, hexToOklch(danger).c * 0.3) }),
+      "--bz-menu-danger-focus-bg": oklchToHex({ ...hexToOklch(danger), l: dark ? 0.37 : 0.95, c: Math.min(0.06, hexToOklch(danger).c * 0.3) }),
       "--bz-menu-danger-focus-fg": danger,
       "--bz-button-press-scale": "0.98",
       "--bz-dialog-backdrop-filter": "blur(2px)",
       "--bz-data-grid-row-height": `${Math.round(s.controlHeight + 2)}px`,
-      "--bz-data-grid-pinned-bg": dark ? grey(0.205) : grey(0.975, c * 0.6),
-      "scrollbar-color": `${dark ? grey(0.38) : grey(0.86)} transparent`,
+      "--bz-data-grid-pinned-bg": dark ? grey(0.3) : grey(0.975, c * 0.6),
+      "scrollbar-color": `${dark ? grey(0.46) : grey(0.86)} transparent`,
     })
   }
   return { ...t, ...s.overrides[mode] }
 }
 
-const slug = (name: string) => name.trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "") || "marka"
+/** A data-theme name from any text: accents dropped ("Kiracı Şube" → "kiraci-sube"). */
+const slug = (name: string) =>
+  name
+    .trim()
+    .toLocaleLowerCase("tr")
+    .replace(/ı/g, "i")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "theme"
 
 export const themeNames = (s: ThemeSettings) => ({ light: slug(s.name), dark: `${slug(s.name)}-dark` })
 
@@ -226,7 +246,7 @@ function block(selector: string, tokens: Tokens, indent = "  "): string {
 export function toCss(s: ThemeSettings): string {
   const names = themeNames(s)
   return [
-    `/* bazlama theme "${names.light}" (light) and "${names.dark}" (dark), made with the theme editor. */`,
+    `/* bazlama theme "${names.light}" (light) and "${names.dark}" (dark), made with the theme builder. */`,
     "@layer bazlama.tokens {",
     block(`[data-theme="${names.light}"]`, generate(s, "light")),
     "",
@@ -273,7 +293,15 @@ export function diffOverrides(s: ThemeSettings, imported: { light: Tokens; dark:
   return { light: diff("light"), dark: diff("dark") }
 }
 
+export type ContrastCheckId =
+  | "text-bg" | "text-surface" | "muted-surface" | "muted-bg" | "primary-button" | "primary-surface"
+  | "primary-soft" | "danger-button" | "danger-surface" | "success-surface" | "warning-surface"
+  | "info-surface" | "focus-surface" | "border-surface"
+
 export interface ContrastCheck {
+  /** Stable id (for translated labels). */
+  id: ContrastCheckId
+  /** English label. */
   label: string
   fg: string
   bg: string
@@ -286,25 +314,34 @@ export interface ContrastCheck {
 
 export function contrastChecks(tokens: Tokens): ContrastCheck[] {
   const color = (key: string) => (isHex(tokens[key] ?? "") ? tokens[key] : undefined)
-  const pairs: [string, string, string, number, boolean?][] = [
-    ["Metin / zemin", "--bz-color-fg", "--bz-color-bg", 4.5],
-    ["Metin / yüzey", "--bz-color-fg", "--bz-color-surface", 4.5],
-    ["Soluk metin / yüzey", "--bz-color-fg-muted", "--bz-color-surface", 4.5],
-    ["Soluk metin / zemin", "--bz-color-fg-muted", "--bz-color-bg", 4.5],
-    ["Birincil buton yazısı", "--bz-color-primary-fg", "--bz-color-primary", 4.5],
-    ["Bağlantı, seçili sekme (birincil / yüzey)", "--bz-color-primary", "--bz-color-surface", 4.5],
-    ["Seçili öğe (birincil / açık ton)", "--bz-color-primary", "--bz-color-primary-soft", 4.5],
-    ["Tehlike butonu yazısı", "--bz-color-danger-fg", "--bz-color-danger", 4.5],
-    ["Hata metni / yüzey", "--bz-color-danger", "--bz-color-surface", 4.5],
-    ["Başarı / yüzey", "--bz-color-success", "--bz-color-surface", 4.5],
-    ["Uyarı / yüzey", "--bz-color-warning", "--bz-color-surface", 4.5],
-    ["Bilgi / yüzey", "--bz-color-info", "--bz-color-surface", 4.5],
-    ["Odak halkası / yüzey", "--bz-color-focus", "--bz-color-surface", 3],
-    ["Kontrol kenarlığı / yüzey", "--bz-color-border-strong", "--bz-color-surface", 3, true],
+  const pairs: [ContrastCheckId, string, string, string, number, boolean?][] = [
+    ["text-bg", "Text / background", "--bz-color-fg", "--bz-color-bg", 4.5],
+    ["text-surface", "Text / surface", "--bz-color-fg", "--bz-color-surface", 4.5],
+    ["muted-surface", "Muted text / surface", "--bz-color-fg-muted", "--bz-color-surface", 4.5],
+    ["muted-bg", "Muted text / background", "--bz-color-fg-muted", "--bz-color-bg", 4.5],
+    ["primary-button", "Primary button text", "--bz-color-primary-fg", "--bz-color-primary", 4.5],
+    ["primary-surface", "Link, selected tab (primary / surface)", "--bz-color-primary", "--bz-color-surface", 4.5],
+    ["primary-soft", "Selected item (primary / soft)", "--bz-color-primary", "--bz-color-primary-soft", 4.5],
+    ["danger-button", "Danger button text", "--bz-color-danger-fg", "--bz-color-danger", 4.5],
+    ["danger-surface", "Error text / surface", "--bz-color-danger", "--bz-color-surface", 4.5],
+    ["success-surface", "Success / surface", "--bz-color-success", "--bz-color-surface", 4.5],
+    ["warning-surface", "Warning / surface", "--bz-color-warning", "--bz-color-surface", 4.5],
+    ["info-surface", "Info / surface", "--bz-color-info", "--bz-color-surface", 4.5],
+    ["focus-surface", "Focus ring / surface", "--bz-color-focus", "--bz-color-surface", 3],
+    ["border-surface", "Control border / surface", "--bz-color-border-strong", "--bz-color-surface", 3, true],
   ]
-  return pairs.flatMap(([label, f, b, min, advisory]) => {
+  return pairs.flatMap(([id, label, f, b, min, advisory]) => {
     const fg = color(f)
     const bg = color(b)
-    return fg && bg ? [{ label, fg, bg, ratio: contrast(fg, bg), min, advisory }] : []
+    return fg && bg ? [{ id, label, fg, bg, ratio: contrast(fg, bg), min, advisory }] : []
   })
+}
+
+/** The checks that fail (advisory ones excluded), for both variants. */
+export function contrastFailures(s: ThemeSettings): { mode: Mode; check: ContrastCheck }[] {
+  return (["light", "dark"] as const).flatMap((mode) =>
+    contrastChecks(generate(s, mode))
+      .filter((c) => !c.advisory && c.ratio < c.min)
+      .map((check) => ({ mode, check }))
+  )
 }

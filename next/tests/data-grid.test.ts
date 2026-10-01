@@ -106,6 +106,29 @@ describe("bz-data-grid", () => {
     expect(grid.hasAttribute("data-pins-suspended")).toBe(false)
   })
 
+  it("striped: every second row by position, re-laid after sorting and while virtual", async () => {
+    const { grid } = await mount(5, "striped")
+    const stripes = () => bodyRows(grid).map((tr) => tr.hasAttribute("data-stripe"))
+    expect(stripes()).toEqual([false, true, false, true, false])
+    // Sorting moves rows; the bands stay on the 2nd, 4th… rows.
+    grid.querySelector<HTMLElement>('th[data-key="name"] [data-part=header]')!.click()
+    flush()
+    await tick()
+    flush()
+    expect(stripes()).toEqual([false, true, false, true, false])
+    // Off: no marks.
+    grid.striped = false
+    flush()
+    expect(stripes().some(Boolean)).toBe(false)
+
+    // Virtual: the band follows the row's index in all rows, not its place among rendered rows.
+    const big = await mount(1000, 'striped virtual="on"')
+    for (const tr of bodyRows(big.grid)) {
+      const index = Number(tr.getAttribute("aria-rowindex")) - 2
+      expect(tr.hasAttribute("data-stripe")).toBe(index % 2 === 1)
+    }
+  })
+
   it("sorts from the header and keeps row DOM on re-sort", async () => {
     const { grid } = await mount(5)
     const events: unknown[] = []
@@ -284,7 +307,7 @@ describe("bz-data-grid", () => {
     expect(grid.highlightPinned).toBe(true)
     const css = grid.querySelector("style")!.textContent!
     // Pinned body cells use the row state first, then the pinned tint.
-    expect(css).toContain("background: var(--_row-bg, var(--_pin-bg, var(--_bg)))")
+    expect(css).toContain("background-color: var(--_row-bg, var(--_pin-bg, var(--_bg)))")
     grid.highlightPinned = false
     flush()
     expect(grid.hasAttribute("highlight-pinned")).toBe(false)

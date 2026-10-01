@@ -105,7 +105,7 @@ export default definePage({
         </bz-tab-list>
       </bz-tabs>
 
-      <bz-table label="Siparişler" sort-mode="manual" activatable .columns=${columns} .rows=${visible} .sort=${sort}
+      <bz-table label="Siparişler" sort-mode="manual" activatable striped .columns=${columns} .rows=${visible} .sort=${sort}
         @sort=${(e: CustomEvent<{ sort: Sort }>) => (sort.set(e.detail.sort), page.set(1))}
         @row-activate=${(e: CustomEvent<{ row: Order }>) => void showOrder(e.detail.row)}>
         <span slot="empty">Bu filtrede sipariş yok.</span>

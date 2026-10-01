@@ -85,6 +85,7 @@ html\`
     { name: "sort / sortMode", attr: "—, sort-mode", type: 'Sort / "client" | "manual"', desc: "Sıralama; manual: sadece olay (sunucu sıralar)." },
     { name: "label / loading", attr: "label, loading", type: "string / boolean", desc: "Erişilebilir ad; yükleniyor çubuğu (aria-busy)." },
     { name: "highlightPinned", attr: "highlight-pinned", type: "boolean", default: "false", desc: "Sabit (pinned) sütunlar hafif tonlu arka plan alır; renk --bz-data-grid-pinned-bg. Üzerine gelme ve seçim rengi tonun önüne geçer. Yansıtılır." },
+    { name: "striped", type: "boolean", default: "false", desc: "Zebra satırlar: sıralı listedeki konuma göre her ikinci satır [data-stripe] ve hafif bir şerit alır (--bz-row-stripe-bg); sanal kaydırmada şerit satırla birlikte kalır, sıralama / filtreden sonra yeniden dizilir. Sabit sütun tonu ve üzerine gelme renginin üstüne yarı saydam biner; seçili satırda yok. Yansıtılır." },
     { name: "labels", attr: false, type: "Partial<DataGridLabels>", desc: "Menü ve erişilebilirlik metinleri." },
     { name: "persist", type: "string", desc: "Saklama anahtarı (isteğe bağlı): sütun düzeni ve sıralama localStorage[\"bz-data-grid:<anahtar>\"] içinde saklanır; açılışta geri yüklenir, columns-change (reason: \"restore\") ve sort olayları gelir. Yoksa hiçbir şey saklanmaz." },
     { name: "bz-data-grid-columns: for", attr: "for", type: "string", desc: "\"Sütunlar\" düğmesinin bağlı olduğu grid id'si (yoksa en yakın grid)." },
@@ -109,7 +110,7 @@ html\`
   ],
   hooks: [
     "[loading]", "[data-virtual]", "[data-scrolled-start] / [data-scrolled-end] (sabit sütun gölgesi)", "th[data-pinned]",
-    "[data-resizing] / [data-dragging]", "[highlight-pinned]", "--bz-data-grid-row-height", "--bz-data-grid-max-height", "--bz-data-grid-header-bg", "--bz-data-grid-pinned-bg",
+    "[data-resizing] / [data-dragging]", "[highlight-pinned]", "[data-pins-suspended]", "[striped] / tr[data-stripe]", "--bz-row-stripe-bg", "--bz-data-grid-row-height", "--bz-data-grid-max-height", "--bz-data-grid-header-bg", "--bz-data-grid-pinned-bg",
   ],
   notes: [
     "Başlık klavyesi: Enter sıralar, Alt+↓ sütun menüsü, Alt+←/→ sütunu taşır, Shift+←/→ genişlik ±10 px (Ctrl ile ±50). Tutamaçta çift tık: sığdır.",

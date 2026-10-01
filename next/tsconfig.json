@@ -19,7 +19,8 @@
       "@bazlama/headless": ["./packages/headless/src/index.ts"],
       "@bazlama/headless/*": ["./packages/headless/src/*.ts"],
       "@bazlama/icons": ["./packages/icons/src/index.ts"],
-      "@bazlama/router": ["./packages/router/src/index.ts"]
+      "@bazlama/router": ["./packages/router/src/index.ts"],
+      "@bazlama/themes/builder": ["./packages/themes/src/builder/index.ts"]
     }
   },
   "include": ["packages", "playground", "tests"]

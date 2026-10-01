@@ -97,6 +97,7 @@ export function gridPanel<R extends Row>(o: GridPanelOptions<R>) {
       <bz-button size="sm" variant="ghost" @click=${() => toast.info(`"${o.title}" Excel'e aktarıldı (mockup)`)}>${icon("table")} Excel</bz-button>
     </bz-toolbar>
     <bz-table
+      striped
       selectable
       .columns=${o.columns}
       .rows=${visible}

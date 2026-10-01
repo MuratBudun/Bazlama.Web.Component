@@ -120,6 +120,7 @@ export default {
     const selection = signal<unknown[]>([])
     const loading = signal(false)
     const tint = signal(true)
+    const striped = signal(true)
     const reload = () => {
       loading.set(true)
       setTimeout(() => loading.set(false), 900)
@@ -139,6 +140,7 @@ export default {
           <bz-toolbar-separator></bz-toolbar-separator>
           <bz-button size="sm" variant="ghost" @click=${reload}>Yenile (loading)</bz-button>
           <bz-switch .checked=${tint} @change=${(e: CustomEvent<{ checked: boolean }>) => tint.set(e.detail.checked)}>Sabit sütunları renklendir</bz-switch>
+          <bz-switch .checked=${striped} @change=${(e: CustomEvent<{ checked: boolean }>) => striped.set(e.detail.checked)}>Zebra satırlar</bz-switch>
           <bz-toolbar-spacer></bz-toolbar-spacer>
           <span class="muted small">${() => (selection().length ? `${selection().length} seçili · ` : "")}${() => rows().length.toLocaleString("tr-TR")} satır</span>
           <bz-data-grid-columns for="demo-grid">Sütunlar</bz-data-grid-columns>
@@ -156,6 +158,7 @@ export default {
           .selection=${selection}
           ?loading=${loading}
           ?highlight-pinned=${tint}
+          ?striped=${striped}
           persist=${PERSIST_KEY}
           @columns-change=${(e: CustomEvent<{ state: ColumnState[]; reason: string; key?: string }>) => {
             columnState.set(e.detail.state)

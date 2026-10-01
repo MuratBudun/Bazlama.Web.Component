@@ -45,7 +45,8 @@
     padding: var(--bz-space-3) var(--bz-space-2) var(--bz-space-3) var(--bz-space-3);
     overflow: hidden;
     color: var(--bz-color-fg);
-    background: var(--bz-color-surface);
+    /* Popups and overlays sit one step above the page (dark themes lift them). */
+    background: var(--bz-color-surface-raised, var(--bz-color-surface));
     border: 1px solid var(--bz-color-border);
     border-left: var(--bz-toast-accent-width, 3px) solid var(--bz-toast-accent-color, var(--_accent));
     border-radius: var(--bz-radius);

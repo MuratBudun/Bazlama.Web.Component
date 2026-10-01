@@ -33,7 +33,9 @@ export const compareValues = (a: unknown, b: unknown) =>
  * and PageUp/PageDown move between them, Space toggles the selection (with `selectable`).
  *
  * Anatomy: [data-part=table|caption|head|body|row|cell|header-cell|sort|sort-indicator|select|empty].
- * Styling hooks: th[aria-sort], tr[aria-selected="true"], tr:focus-visible, [activatable], [data-align].
+ * `striped` (ui CSS): alternate rows get a faint band (`--bz-row-stripe-bg`).
+ *
+ * Styling hooks: th[aria-sort], tr[aria-selected="true"], tr:focus-visible, [activatable], [striped], [data-align].
  */
 export const Table = define("bz-table", {
   props: {
@@ -47,6 +49,8 @@ export const Table = define("bz-table", {
     label: prop.string(),
     /** Rows are focusable: arrow keys move, Enter fires row-activate. */
     activatable: prop.boolean(false, { reflect: true }),
+    /** Zebra rows (ui CSS): every second row gets a faint band. */
+    striped: prop.boolean(false, { reflect: true }),
   },
   setup(props, ctx) {
     const keyOf = (row: Row) => row[props.rowKey.peek()]

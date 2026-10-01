@@ -1,20 +1,40 @@
+/*
+ * Dark theme: between IBM Carbon g90 and GitHub Dark Dimmed. Not near-black: the page is a
+ * dark grey and every layer up is lighter (page → panel → popup), so panels stand apart even
+ * without borders. Two border levels: hairlines for panels and dividers (~1.8:1), and a
+ * stronger one for controls — radio, checkbox, input, button — at 3:1 or more on every layer
+ * (WCAG 2.2, 1.4.11). Text 12:1, muted text 6:1+, colours 4.5:1+ on panels and popups.
+ */
 @layer bazlama.tokens {
   [data-theme="dark"] {
     color-scheme: dark;
-    --bz-color-bg: #0f1115;
-    --bz-color-surface: #171a20;
-    --bz-color-surface-hover: #21252d;
-    --bz-color-fg: #e7e9ee;
-    --bz-color-fg-muted: #9aa1ad;
-    --bz-color-border: #2e333c;
-    --bz-color-primary: #6d8dff;
-    --bz-color-primary-hover: #8aa3ff;
-    --bz-color-primary-fg: #0c1020;
-    --bz-color-primary-soft: #1d2640;
-    --bz-color-danger: #ff6b74;
-    --bz-color-danger-hover: #ff8a91;
+    --bz-color-bg: #141619;
+    --bz-color-surface: #252930;
+    --bz-color-surface-raised: #2c3139;
+    --bz-color-surface-hover: #31363f;
+    --bz-color-fg: #e9ebef;
+    --bz-color-fg-muted: #aab1bc;
+    --bz-color-border: #4b515d;
+    --bz-color-border-strong: #7a8290;
+    --bz-color-border-hover: #99a0ae;
+    --bz-color-primary: #7d9dff;
+    --bz-color-primary-hover: #9bb3ff;
+    --bz-color-primary-fg: #0b1020;
+    --bz-color-primary-soft: #28344f;
+    --bz-color-danger: #ff7f88;
+    --bz-color-danger-hover: #ff9ca3;
     --bz-color-danger-fg: #1a0b0c;
-    --bz-color-focus: #8aa3ff;
-    --bz-shadow-popup: 0 10px 28px rgb(0 0 0 / 0.45), 0 2px 6px rgb(0 0 0 / 0.35);
+    --bz-color-success: #4fce87;
+    --bz-color-warning: #f2b84b;
+    --bz-color-info: #5fb6f2;
+    --bz-color-focus: #9bb3ff;
+
+    --bz-table-header-bg: #292d35;
+    --bz-data-grid-header-bg: #292d35;
+    --bz-tooltip-bg: #3f4550;
+    --bz-dialog-backdrop: rgb(0 0 0 / 0.55);
+    --bz-shadow-popup: 0 12px 32px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
+    --bz-shadow-dialog: 0 24px 64px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.06);
+    scrollbar-color: #5a616d transparent;
   }
 }

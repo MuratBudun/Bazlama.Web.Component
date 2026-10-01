@@ -114,13 +114,15 @@ export function listNavigation(options: {
 }
 
 /** Bumps a counter whenever the subtree's structure or option attributes change. */
-export function observeOptions(host: Element): { version: Signal<number>; disconnect(): void } {
+export function observeOptions(host: Element, items = "bz-option"): { version: Signal<number>; disconnect(): void } {
   const version = signal(0)
-  // Only <bz-option> changes count: a component that renders its own nodes inside the host
-  // (e.g. the <option>s of a native select built from the options) must not trigger itself.
-  const isOption = (n: Node) => n.nodeType === 1 && ((n as Element).localName === "bz-option" || !!(n as Element).querySelector("bz-option"))
+  // Only changes in or of the items (`items`: their selector) count: a component that renders
+  // its own nodes inside the host (e.g. the <option>s of a native select built from the
+  // options) must not trigger itself. Changes inside an item (a <bz-radio> rendering its
+  // input) do count.
+  const isItem = (n: Node) => n.nodeType === 1 && ((n as Element).matches(items) || !!(n as Element).querySelector(items))
   const relevant = (r: MutationRecord) =>
-    !!(r.target as Element).closest?.("bz-option") || [...r.addedNodes].some(isOption) || [...r.removedNodes].some(isOption)
+    !!(r.target as Element).closest?.(items) || [...r.addedNodes].some(isItem) || [...r.removedNodes].some(isItem)
   const observer = new MutationObserver((records) => {
     if (records.some(relevant)) version.update((n) => n + 1)
   })

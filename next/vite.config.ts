@@ -8,6 +8,7 @@ export const alias = {
   "@bazlama/headless": r("./packages/headless/src/index.ts"),
   "@bazlama/icons": r("./packages/icons/src/index.ts"),
   "@bazlama/router": r("./packages/router/src/index.ts"),
+  "@bazlama/themes/builder": r("./packages/themes/src/builder/index.ts"),
 }
 
 export default defineConfig({

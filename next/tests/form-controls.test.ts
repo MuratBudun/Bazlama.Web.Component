@@ -69,6 +69,22 @@ describe("bz-checkbox / bz-switch", () => {
   })
 })
 
+describe("bz-radio-group: radios added later", () => {
+  it("adopts radios rendered after the group (name, checked value)", async () => {
+    document.body.innerHTML = `<bz-radio-group label="Köşe" value="8"></bz-radio-group>`
+    flush()
+    const group = document.querySelector("bz-radio-group")!
+    group.insertAdjacentHTML("beforeend", `<bz-radio value="2">Keskin</bz-radio><bz-radio value="8">Normal</bz-radio>`)
+    flush()
+    await tick()
+    flush()
+    const inputs = [...group.querySelectorAll<HTMLInputElement>("input[type=radio]")]
+    expect(inputs).toHaveLength(2)
+    expect(inputs.every((i) => i.name && i.name === inputs[0].name)).toBe(true)
+    expect(inputs.find((i) => i.checked)?.value).toBe("8")
+  })
+})
+
 describe("bz-radio-group", () => {
   it("shares a name, reflects value, emits change { value }, submits and resets", async () => {
     document.body.innerHTML = `<form><bz-radio-group name="kind" label="Tür" value="form">
