@@ -211,7 +211,7 @@ const THEMES: [string, string][] = [
 ]
 
 const app = html`
-  <bz-shell skip-label="İçeriğe geç" .busy=${router.pending} data-wide=${() => wide() || null} end-collapsed=${() => (wide() ? "" : null)}
+  <bz-shell compact-footer="scroll" skip-label="İçeriğe geç" .busy=${router.pending} data-wide=${() => wide() || null} end-collapsed=${() => (wide() ? "" : null)}
     resizable resize-label="Paneli boyutlandır" persist="playground">
     <bz-header slot="header" title="Bazlama next" subtitle="core · headless · ui · themes · router" href="/" menu-label="Menü">
       <bz-icon slot="logo" name="layers" size="28" class="accent"></bz-icon>

@@ -54,6 +54,7 @@ html\`
 html\`<bz-button data-shell-toggle="end">Detaylar</bz-button>\``,
   props: [
     { name: "variant", type: '"classic" | "sidebar"', default: '"classic"', desc: "classic: header/footer tam genişlik. sidebar: kenarlar tam yükseklik. Yansıtılır." },
+    { name: "compactFooter", attr: "compact-footer", type: '"sticky" | "scroll" | "hidden"', default: '"sticky"', desc: "Dar ekranda footer: sticky altta sabit; scroll içerikten sonra gelir (shell kayar ve [data-scroll-container] olur, header sabit kalır, data-shell-fill öğesi ekran yüksekliğinde kendi içinde kayar); hidden gizlenir. Yansıtılır." },
     { name: "scrollMode", attr: "scroll-mode", type: '"content" | "page"', default: '"content"', desc: "content: uygulama çerçevesi; shell ekran (--bz-shell-height) kadar, sadece içerik ve kenar panelleri kayar, header/footer yerinde durur. İçerik [data-scroll-container]: router kaydırma konumunu onda saklar/geri yükler. page: belge kayar, header ve paneller yapışkan. Yansıtılır." },
     { name: "breakpoint", type: "number (px)", default: "960", desc: "Shell'in kendi genişliği bunun altındaysa kenarlar çekmeceye dönüşür." },
     { name: "startCollapsed", type: "boolean", default: "false", desc: "Geniş modda sol kenar dar bir şerit (ör. sadece ikonlar)." },

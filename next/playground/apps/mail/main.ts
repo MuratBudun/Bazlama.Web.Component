@@ -104,7 +104,7 @@ const FOLDERS = folderItems((f) => router.href(`/${f}`))
 const navItems = computed(() => FOLDERS.map((f) => (f.id === "gelen" ? { ...f, badge: unreadCount() || undefined } : f)))
 
 const app = html`
-  <bz-shell variant="sidebar" resizable persist="posta" resize-label="Paneli boyutlandır" skip-label="İçeriğe geç" breakpoint="1000"
+  <bz-shell variant="sidebar" resizable compact-footer="hidden" persist="posta" resize-label="Paneli boyutlandır" skip-label="İçeriğe geç" breakpoint="1000"
     ref=${(el: ShellElement) => (shell = el)}>
     <nav slot="start" class="mail-nav" aria-label="Klasörler">
       <div class="mail-brand">${icon("mail", { size: 22 })} <strong>Posta</strong></div>

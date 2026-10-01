@@ -11,6 +11,26 @@
     height: 1.25rem;
     cursor: pointer;
   }
+  /* native: the select covers the whole control (one tap opens the platform picker); the
+     arrow sits on top and lets taps through. */
+  bz-combobox[data-native] [data-part="control"] {
+    position: relative;
+  }
+  bz-combobox[data-native] select[data-part="input"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    padding: 0 calc(var(--bz-space-3) + 1.5rem) 0 var(--bz-space-3);
+    appearance: none;
+    cursor: pointer;
+  }
+  bz-combobox[data-native] [data-part="trigger"] {
+    margin-inline-start: auto;
+    pointer-events: none;
+  }
+  bz-combobox[data-native] [data-part="trigger"]::after {
+    content: none;
+  }
   /* A larger invisible hit area (the arrow is small): --bz-hit-slop, bigger on touch screens. */
   bz-combobox [data-part="trigger"]::after {
     content: "";

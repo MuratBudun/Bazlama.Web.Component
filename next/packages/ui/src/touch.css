@@ -1,0 +1,13 @@
+/*
+ * Touch screens. iOS Safari zooms into a focused field whose text is smaller than 16px and
+ * does not zoom back when the keyboard closes: text fields use at least 16px there. (Turning
+ * zoom off with maximum-scale would take pinch-zoom away from the user.)
+ */
+@layer bazlama.components {
+  @media (pointer: coarse) {
+    :is(bz-input, bz-password, bz-combobox, bz-lookup, bz-textarea) :is(input, select, textarea)[data-part],
+    textarea[data-part="editor"] {
+      font-size: max(16px, 1em);
+    }
+  }
+}

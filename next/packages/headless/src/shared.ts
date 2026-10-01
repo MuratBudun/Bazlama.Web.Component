@@ -116,7 +116,14 @@ export function listNavigation(options: {
 /** Bumps a counter whenever the subtree's structure or option attributes change. */
 export function observeOptions(host: Element): { version: Signal<number>; disconnect(): void } {
   const version = signal(0)
-  const observer = new MutationObserver(() => version.update((n) => n + 1))
+  // Only <bz-option> changes count: a component that renders its own nodes inside the host
+  // (e.g. the <option>s of a native select built from the options) must not trigger itself.
+  const isOption = (n: Node) => n.nodeType === 1 && ((n as Element).localName === "bz-option" || !!(n as Element).querySelector("bz-option"))
+  const relevant = (r: MutationRecord) =>
+    !!(r.target as Element).closest?.("bz-option") || [...r.addedNodes].some(isOption) || [...r.removedNodes].some(isOption)
+  const observer = new MutationObserver((records) => {
+    if (records.some(relevant)) version.update((n) => n + 1)
+  })
   observer.observe(host, {
     childList: true,
     subtree: true,

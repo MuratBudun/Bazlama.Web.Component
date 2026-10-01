@@ -9,7 +9,12 @@ import { fold, isDisabled, listNavigation, observeOptions, optionLabel, optionVa
  * typed text becomes the value. Form-associated (ElementInternals), supports `required`.
  * Fires `change`. `filter`: contains | starts-with | none.
  *
- * Anatomy: [data-part=label|control|input|trigger|popup|listbox|empty].
+ * `native`: "off" (default) | "touch" (on touch screens) | "on": a native <select> built from
+ * the options instead of the text field and popup — the platform picker (the iOS wheel), no
+ * typing or filtering ([data-native]).
+ *
+ * Anatomy: [data-part=label|control|input|trigger|popup|listbox|empty]; native: input is the
+ * <select>.
  * Slots: default (options), trigger (icon), empty.
  * Styling hooks: [open] on the host; options as in <bz-list>.
  */
@@ -25,11 +30,22 @@ export const Combobox = define("bz-combobox", {
     allowCustom: prop.boolean(),
     filter: prop.string<"contains" | "starts-with" | "none">("contains"),
     emptyText: prop.string("No results"),
+    native: prop.string<"off" | "touch" | "on">("off"),
   },
   setup(props, ctx) {
     const { host, internals } = ctx
     const id = uid("bz-combobox")
     let input!: HTMLInputElement
+    let select: HTMLSelectElement | undefined
+    const coarse = typeof matchMedia === "function" ? matchMedia("(pointer: coarse)") : null
+    const coarsePointer = signal(coarse?.matches ?? false)
+    if (coarse) {
+      const onChange = () => coarsePointer.set(coarse.matches)
+      coarse.addEventListener?.("change", onChange)
+      onCleanup(() => coarse.removeEventListener?.("change", onChange))
+    }
+    const native = computed(() => props.native() === "on" || (props.native() === "touch" && coarsePointer()))
+    effect(() => host.toggleAttribute("data-native", native()))
     const { version, disconnect } = observeOptions(host)
     onCleanup(disconnect)
 
@@ -137,8 +153,27 @@ export const Combobox = define("bz-combobox", {
       }
       if (isOpen) nav.handleKey(e)
     }
+    // A touch on an option can blur the input before its click (iOS): the list must stay
+    // open until the click has landed. Pointer presses in the popup set this flag.
+    let pressing = false
+    const onPopupPointerdown = (e: PointerEvent) => {
+      e.preventDefault()
+      pressing = true
+      const release = () => setTimeout(() => (pressing = false), 400)
+      window.addEventListener("pointerup", release, { once: true })
+      window.addEventListener("pointercancel", release, { once: true })
+    }
+    // With the input blurred by a touch, its blur cannot close the list: a press outside does.
+    effect(() => {
+      if (!props.open()) return
+      const onOutside = (e: Event) => {
+        if (!host.contains(e.target as Node)) close()
+      }
+      document.addEventListener("pointerdown", onOutside, true)
+      onCleanup(() => document.removeEventListener("pointerdown", onOutside, true))
+    })
     const onBlur = (e: FocusEvent) => {
-      if (host.contains(e.relatedTarget as Node)) return
+      if (pressing || host.contains(e.relatedTarget as Node)) return
       if (props.allowCustom.peek() && query.peek() !== null) ctx.emit("change", { value: props.value.peek() })
       close()
     }
@@ -155,27 +190,60 @@ export const Combobox = define("bz-combobox", {
       return o && !isDisabled(o) ? o : null
     }
 
-    ctx.onMount(() =>
+    ctx.onMount(() => {
       effect(() => {
         const value = props.value()
+        native()
         internals?.setFormValue(value || null)
         if (props.required() && !value)
-          internals?.setValidity({ valueMissing: true }, "Please select an option.", input)
+          internals?.setValidity({ valueMissing: true }, "Please select an option.", (native() && select) || input)
         else internals?.setValidity({})
       })
-    )
+      // Native mode: the select shows the value once its options are rendered.
+      effect(() => {
+        options()
+        const value = props.value()
+        if (native() && select) select.value = value
+      })
+    })
     ctx.onFormReset(() => {
       props.value.set(host.getAttribute("value") ?? "")
       query.set(null)
     })
 
     const expanded = () => String(props.open())
-    return html`
-      <label data-part="label" id=${`${id}-label`} for=${`${id}-input`} ?hidden=${() => !props.label()}>${props.label}</label>
-      <div data-part="control">
-        <input
+    const nativeControl = () => html`<div data-part="control">
+        <select
           data-part="input"
           id=${`${id}-input`}
+          ?disabled=${props.disabled}
+          ?required=${props.required}
+          @change=${(e: Event) => {
+            // The native change bubbles without a detail: the component's own change replaces it.
+            e.stopPropagation()
+            const value = (e.target as HTMLSelectElement).value
+            if (value === props.value.peek()) return
+            props.value.set(value)
+            ctx.emit("change", { value })
+          }}
+          ref=${(el: HTMLSelectElement) => (select = el)}
+        >
+          <option value="" ?disabled=${props.required} ?hidden=${() => !!props.value() && props.required()}>${() => props.placeholder() || ""}</option>
+          ${() =>
+            options().map(
+              (o) => html`<option value=${optionValue(o)} ?disabled=${isDisabled(o)}>${optionLabel(o)}</option>`
+            )}
+        </select>
+        <!-- The arrow is drawn by CSS (the trigger slot lives in the text field's button). -->
+        <span data-part="trigger" aria-hidden="true"></span>
+      </div>`
+    return html`
+      <label data-part="label" id=${`${id}-label`} for=${`${id}-input`} ?hidden=${() => !props.label()}>${props.label}</label>
+      ${() => (native() ? nativeControl() : null)}
+      <div data-part="control" ?hidden=${native}>
+        <input
+          data-part="input"
+          id=${() => (native() ? null : `${id}-input`)}
           type="text"
           role="combobox"
           autocomplete="off"
@@ -209,8 +277,8 @@ export const Combobox = define("bz-combobox", {
       </div>
       <div
         data-part="popup"
-        ?hidden=${() => !props.open()}
-        @pointerdown=${(e: Event) => e.preventDefault()}
+        ?hidden=${() => !props.open() || native()}
+        @pointerdown=${onPopupPointerdown}
         @click=${(e: Event) => {
           const o = optionFrom(e)
           if (o) commit(o)

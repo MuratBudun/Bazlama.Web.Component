@@ -13,9 +13,10 @@ export const alias = {
 export default defineConfig({
   root: r("./playground"),
   resolve: { alias },
-  // Fixed port: 5173 is used by another local project.
-  server: { port: 5391, strictPort: true, fs: { allow: [r(".")] } },
-  preview: { port: 5392, strictPort: true },
+  // Fixed port: 5173 is used by another local project. host: true also listens on the LAN
+  // address, so the playground can be opened from a phone on the same network.
+  server: { host: true, port: 5391, strictPort: true, fs: { allow: [r(".")] } },
+  preview: { host: true, port: 5392, strictPort: true },
   build: {
     outDir: r("./dist"),
     emptyOutDir: true,

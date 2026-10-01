@@ -26,6 +26,10 @@ import { loadPersisted, savePersisted } from "./shared"
  * - Wide (shell ≥ `breakpoint` px): the start side collapses to a narrow rail
  *   (`start-collapsed`), the end side hides (`end-collapsed`). The side panels stick below
  *   the header and scroll on their own.
+ * - `compact-footer` (narrow screens): "sticky" (default) keeps the footer at the bottom,
+ *   "scroll" puts it after the content (the shell scrolls and becomes the
+ *   [data-scroll-container]; the header stays; a data-shell-fill element gets the viewport
+ *   height below the header), "hidden" hides it.
  * - Compact: both sides become drawers (`start-open`, `end-open`, one at a time). While one
  *   is open the rest is inert, focus moves in (current item first); Escape, the backdrop or a
  *   link inside close it and focus returns to the button that opened it.
@@ -67,6 +71,11 @@ const ShellBase = define("bz-shell", {
   props: {
     variant: prop.string<"classic" | "sidebar">("classic", { reflect: true }),
     scrollMode: prop.string<"content" | "page">("content", { reflect: true }),
+    /**
+     * The footer on narrow screens (compact): "sticky" stays at the bottom (default), "scroll"
+     * comes after the content (the shell scrolls, the header stays), "hidden" is not shown.
+     */
+    compactFooter: prop.string<"sticky" | "scroll" | "hidden">("sticky", { reflect: true }),
     /** Width (px) of the shell below which the sides become drawers. */
     breakpoint: prop.number(960),
     startOpen: prop.boolean(false, { reflect: true }),
@@ -133,6 +142,9 @@ const ShellBase = define("bz-shell", {
     const openProp = (side: ShellSide) => (side === "start" ? props.startOpen : props.endOpen)
     const collapsedProp = (side: ShellSide) => (side === "start" ? props.startCollapsed : props.endCollapsed)
     const drawer = () => (!compact() ? null : props.startOpen() ? "start" : props.endOpen() ? "end" : null)
+    /** compact-footer="scroll" on a narrow screen: the shell itself scrolls (content + footer). */
+    const shellScrolls = () => compact() && props.compactFooter() === "scroll" && props.scrollMode() !== "page"
+    effect(() => host.toggleAttribute("data-scroll-container", shellScrolls()))
     let opener: HTMLElement | null = null
 
     effect(() => {
@@ -393,7 +405,7 @@ const ShellBase = define("bz-shell", {
         data-part="content"
         id=${`${id}-content`}
         tabindex="-1"
-        ?data-scroll-container=${() => props.scrollMode() !== "page"}
+        ?data-scroll-container=${() => props.scrollMode() !== "page" && !shellScrolls()}
         ref=${ref("content")}
       >${ctx.slot()}</main>
       ${region("end")} ${region("footer")}

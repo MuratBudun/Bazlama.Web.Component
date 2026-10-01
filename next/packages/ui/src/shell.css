@@ -219,6 +219,32 @@
     opacity: 0.55;
   }
 
+  /* compact-footer: the footer on narrow screens. */
+  bz-shell[data-compact][compact-footer="hidden"] > [data-part="footer"] {
+    display: none;
+  }
+  /* "scroll": the shell scrolls; the header sticks, the footer comes after the content. */
+  bz-shell[data-compact][compact-footer="scroll"]:not([scroll-mode="page"]) {
+    grid-template-rows: auto 1fr auto;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  bz-shell[data-compact][compact-footer="scroll"]:not([scroll-mode="page"]) > [data-part="header"] {
+    position: sticky;
+    top: 0;
+  }
+  bz-shell[data-compact][compact-footer="scroll"]:not([scroll-mode="page"]) > [data-part="content"] {
+    /* As tall as its content (the row grows, the footer follows); content mode sets 0. */
+    min-height: auto;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+  /* A fill element (a data grid) keeps a screen-high box and scrolls inside it. */
+  bz-shell[data-compact][compact-footer="scroll"]:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill]:not([hidden]) {
+    flex: none;
+    height: calc(var(--bz-shell-height, 100dvh) - var(--bz-shell-header-h, 0px));
+  }
+
   /* Compact: one column; the sides become drawers. */
   bz-shell[data-compact] {
     --_areas: "header" "content" "footer";

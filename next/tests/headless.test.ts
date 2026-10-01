@@ -140,6 +140,59 @@ describe("bz-combobox", () => {
   })
 })
 
+describe("bz-combobox on touch", () => {
+  const cities = `<bz-option value="ist">İstanbul</bz-option><bz-option value="ank">Ankara</bz-option>`
+
+  it("keeps the list open when a tap on an option blurs the input first (iOS)", async () => {
+    const box = mount(`<bz-combobox>${cities}</bz-combobox>`) as HTMLElement & { value: string; open: boolean }
+    const input = box.querySelector("input")!
+    input.click()
+    flush()
+    expect(box.open).toBe(true)
+    const option = box.querySelector<HTMLElement>('bz-option[value="ank"]')!
+    // touch: pointerdown on the option, the input loses focus, then the click lands
+    option.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, cancelable: true }))
+    input.dispatchEvent(new FocusEvent("blur", { relatedTarget: null }))
+    flush()
+    expect(box.open).toBe(true)
+    option.click()
+    flush()
+    expect(box.value).toBe("ank")
+    expect(box.open).toBe(false)
+  })
+
+  it("closes on a press outside", () => {
+    const box = mount(`<bz-combobox>${cities}</bz-combobox>`) as HTMLElement & { open: boolean }
+    box.querySelector("input")!.click()
+    flush()
+    expect(box.open).toBe(true)
+    document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }))
+    flush()
+    expect(box.open).toBe(false)
+  })
+
+  it('native="on" renders a select from the options', async () => {
+    const box = mount(`<bz-combobox native="on" value="ist" placeholder="Seçin">${cities}</bz-combobox>`) as HTMLElement & { value: string }
+    flush()
+    await tick()
+    flush()
+    expect(box.hasAttribute("data-native")).toBe(true)
+    const select = box.querySelector("select")!
+    expect([...select.options].map((o) => [o.value, o.textContent])).toEqual([["", "Seçin"], ["ist", "İstanbul"], ["ank", "Ankara"]])
+    expect(select.value).toBe("ist")
+    // the label points at the select; the hidden text field gives up the id
+    expect(box.querySelector("label")!.getAttribute("for")).toBe(select.id)
+    expect(box.querySelector("input")!.id).toBe("")
+    const events: string[] = []
+    box.addEventListener("change", (e) => events.push((e as CustomEvent).detail.value))
+    select.value = "ank"
+    select.dispatchEvent(new Event("change", { bubbles: true }))
+    flush()
+    expect(box.value).toBe("ank")
+    expect(events).toEqual(["ank"])
+  })
+})
+
 describe("matching", () => {
   it("is case and accent insensitive (Turkish İ)", async () => {
     const box = mount(`<bz-combobox><bz-option>İstanbul</bz-option><bz-option>Çanakkale</bz-option></bz-combobox>`)

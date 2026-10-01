@@ -214,7 +214,7 @@ const contactPage = definePage({
         <bz-form-layout columns="2" min-column-width="16rem">
           <bz-input label="Ad soyad" name="name" required autocomplete="name"></bz-input>
           <bz-input label="E-posta" name="email" type="email" required autocomplete="email"></bz-input>
-          <bz-combobox label="Konu" name="topic" .value=${topic} @change=${(e: CustomEvent<{ value: string }>) => topic.set(e.detail.value)}>
+          <bz-combobox label="Konu" name="topic" native="touch" .value=${topic} @change=${(e: CustomEvent<{ value: string }>) => topic.set(e.detail.value)}>
             <bz-option>Soru</bz-option><bz-option>Öneri</bz-option><bz-option>Hata bildirimi</bz-option><bz-option>Diğer</bz-option>
           </bz-combobox>
           <bz-lookup label="İlgili makale" name="article" clearable dialog-size="lg" .labels=${LOOKUP_TR} display-key="title"

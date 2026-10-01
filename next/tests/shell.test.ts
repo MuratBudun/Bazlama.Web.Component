@@ -83,6 +83,21 @@ describe("bz-shell", () => {
     expect(shell.hasAttribute("start-collapsed")).toBe(false)
   })
 
+  it('compact-footer="scroll": the shell becomes the scroll container on narrow screens', () => {
+    const narrow = mount(600)
+    expect(narrow.part("content").hasAttribute("data-scroll-container")).toBe(true)
+    narrow.shell.setAttribute("compact-footer", "scroll")
+    flush()
+    expect(narrow.shell.hasAttribute("data-scroll-container")).toBe(true)
+    expect(narrow.part("content").hasAttribute("data-scroll-container")).toBe(false)
+    // Wide: the content scrolls as usual.
+    const wide = mount(1400)
+    wide.shell.setAttribute("compact-footer", "scroll")
+    flush()
+    expect(wide.shell.hasAttribute("data-scroll-container")).toBe(false)
+    expect(wide.part("content").hasAttribute("data-scroll-container")).toBe(true)
+  })
+
   it("compact: drawers, one at a time, inert background, focus in and back", async () => {
     const { shell, part, menu } = mount(600)
     expect(shell.hasAttribute("data-compact")).toBe(true)

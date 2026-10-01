@@ -70,7 +70,7 @@ export default definePage({
           ${text("Firma adı", "company", { required: true, span: "2" })}
           <bz-lookup label="Sektör" selection="leaf" required .items=${SECTORS} .labels=${LOOKUP_TR}
             .value=${() => draft().sector} @change=${(e: CustomEvent<{ value: string }>) => set("sector", e.detail.value)}></bz-lookup>
-          <bz-combobox label="Şehir" .value=${() => draft().city} @change=${(e: CustomEvent<{ value: string }>) => set("city", e.detail.value)}>
+          <bz-combobox label="Şehir" native="touch" .value=${() => draft().city} @change=${(e: CustomEvent<{ value: string }>) => set("city", e.detail.value)}>
             ${CITY_LIST.map((c) => html`<bz-option value=${c}>${c}</bz-option>`)}
           </bz-combobox>
           <bz-radio-group label="Segment" orientation="horizontal" data-span="2" .value=${() => draft().segment}
@@ -85,7 +85,7 @@ export default definePage({
           ${text("Yetkili", "name", { required: true })}
           ${text("E-posta", "email", { type: "email" })}
           ${text("Telefon", "phone", { type: "tel" })}
-          <bz-combobox label="Müşteri temsilcisi" .value=${() => draft().owner} @change=${(e: CustomEvent<{ value: string }>) => set("owner", e.detail.value)}>
+          <bz-combobox label="Müşteri temsilcisi" native="touch" .value=${() => draft().owner} @change=${(e: CustomEvent<{ value: string }>) => set("owner", e.detail.value)}>
             ${OWNERS.map((o) => html`<bz-option value=${o}>${o}</bz-option>`)}
           </bz-combobox>
         </bz-form-section>

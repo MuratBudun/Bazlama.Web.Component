@@ -80,7 +80,7 @@ export default definePage({
             <bz-input label="Firma" required autofocus .value=${form.company} @input=${(e: Event) => form.company.set((e.currentTarget as HTMLInputElement).value)} data-span="full"></bz-input>
             <bz-input label="Yetkili" required .value=${form.name} @input=${(e: Event) => form.name.set((e.currentTarget as HTMLInputElement).value)}></bz-input>
             <bz-input label="E-posta" type="email" .value=${form.email} @input=${(e: Event) => form.email.set((e.currentTarget as HTMLInputElement).value)}></bz-input>
-            <bz-combobox label="Şehir" .value=${form.city} @change=${(e: CustomEvent<{ value: string }>) => form.city.set(e.detail.value)}>
+            <bz-combobox label="Şehir" native="touch" .value=${form.city} @change=${(e: CustomEvent<{ value: string }>) => form.city.set(e.detail.value)}>
               ${CITY_LIST.map((c) => html`<bz-option value=${c}>${c}</bz-option>`)}
             </bz-combobox>
             <bz-radio-group label="Durum" orientation="horizontal" .value=${form.status} @change=${(e: CustomEvent<{ value: CustomerStatus }>) => form.status.set(e.detail.value)}>

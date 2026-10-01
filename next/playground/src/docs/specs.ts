@@ -157,6 +157,7 @@ html\`
     { name: "allowCustom", type: "boolean", default: "false", desc: "Yazılan metin değer olur." },
     { name: "filter", type: '"contains" | "starts-with" | "none"', default: '"contains"', desc: "Filtreleme biçimi (aksan/harf duyarsız). none: sunucu tarafı filtre için." },
     { name: "emptyText", type: "string", default: '"No results"', desc: "Eşleşme yokken gösterilen metin." },
+    { name: "native", type: '"off" | "touch" | "on"', default: '"off"', desc: "Seçeneklerden native <select> üretir: platformun seçicisi (iPhone'da tekerlek). touch: sadece dokunmatik ekranda. Yazarak filtreleme ve allow-custom bu modda yok. [data-native]." },
     { name: "name", attr: "name", type: "string", desc: "Form alanı adı (öznitelik)." },
   ],
   events: [{ name: "change", detail: "{ value: string }", desc: "Seçim değişince (allow-custom ise odak çıkınca da)." }],
