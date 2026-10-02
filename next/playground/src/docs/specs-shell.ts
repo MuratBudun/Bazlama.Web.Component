@@ -58,6 +58,7 @@ html\`<bz-button data-shell-toggle="end">Detaylar</bz-button>\``,
     { name: "scrollMode", attr: "scroll-mode", type: '"content" | "page"', default: '"content"', desc: "content: uygulama çerçevesi; shell ekran (--bz-shell-height) kadar, sadece içerik ve kenar panelleri kayar, header/footer yerinde durur. İçerik [data-scroll-container]: router kaydırma konumunu onda saklar/geri yükler. page: belge kayar, header ve paneller yapışkan. Yansıtılır." },
     { name: "breakpoint", type: "number (px)", default: "960", desc: "Shell'in kendi genişliği bunun altındaysa kenarlar çekmeceye dönüşür." },
     { name: "startCollapsed", type: "boolean", default: "false", desc: "Geniş modda sol kenar dar bir şerit (ör. sadece ikonlar)." },
+    { name: "startCollapse", type: '"rail" | "hidden"', default: '"rail"', desc: "Daraltılmış sol kenar: ikon şeridi ya da tamamen gizli (çalışma alanı gibi geniş içerik için). Yansıtılır." },
     { name: "endCollapsed", type: "boolean", default: "false", desc: "Geniş modda sağ kenar gizli." },
     { name: "startOpen / endOpen", attr: "start-open, end-open", type: "boolean", default: "false", desc: "Dar modda çekmece açık mı (aynı anda biri)." },
     { name: "busy", type: "boolean", default: "false", desc: "Üstte ilerleme çubuğu (ör. router.pending)." },
@@ -207,4 +208,65 @@ html\`
   ],
   parts: [{ name: "image / initials / status", desc: "Resim, baş harfler, durum noktası" }],
   hooks: ["[size]", "[status]", "[data-fallback]", "--bz-avatar-hue", "--bz-avatar-radius"],
+}
+
+export const splitUsage: UsageSpec = {
+  tag: "bz-split",
+  html: `
+<bz-split size="180" min="120" collapsible label="Gezgini boyutlandır" style="height: 220px; border: 1px solid var(--bz-color-border)">
+  <nav style="padding: 8px">Gezgin</nav>
+  <bz-split orientation="vertical" primary="end" size="70" min="48" label="Paneli boyutlandır">
+    <main style="padding: 8px">Editör</main>
+    <section style="padding: 8px">Sorunlar</section>
+  </bz-split>
+</bz-split>`,
+  js: `
+const split = document.createElement("bz-split")
+split.size = 160
+split.collapsible = true
+split.style.height = "160px"
+const a = document.createElement("div")
+a.textContent = "Sol"
+const b = document.createElement("div")
+b.textContent = "Sağ"
+split.append(a, b)
+split.addEventListener("resize", (e) => log("resize", e.detail.size))
+split.addEventListener("toggle", (e) => log("toggle", e.detail.collapsed))
+output.append(split)`,
+  template: `
+html\`
+  <bz-split size="260" min="160" collapsible persist="ide-explorer" label="Gezgini boyutlandır" data-shell-fill>
+    <nav>\${explorer}</nav>
+    <bz-split orientation="vertical" primary="end" size="160" min="80" persist="ide-problems">
+      <main>\${editor}</main>
+      <section>\${problems}</section>
+    </bz-split>
+  </bz-split>
+\``,
+  props: [
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', desc: "Yan yana ya da üst üste. Yansıtılır." },
+    { name: "primary", type: '"start" | "end"', default: '"start"', desc: "Boyutu tutulan bölme; diğeri kalan alanı alır. Yansıtılır." },
+    { name: "size", type: "number", default: "240", desc: "Birincil bölmenin boyutu (px). Çift tık ilk değere döner." },
+    { name: "min", type: "number", default: "120", desc: "En küçük boyut; diğer bölme de en az bu kadar yer bırakır." },
+    { name: "max", type: "number", default: "0", desc: "En büyük boyut; 0: diğer bölmenin min'i kadar yer kalana dek." },
+    { name: "collapsible", type: "boolean", desc: "Enter ya da min'in yarısının altına sürüklemek birincil bölmeyi daraltır." },
+    { name: "collapsed", type: "boolean", desc: "Daraltılmış durum (yansıtılır); daraltılmış bölme inert olur." },
+    { name: "persist", type: "string", desc: "localStorage anahtarı (bz-split:anahtar): boyut ve daraltma saklanır, öznitelikten önce gelir." },
+    { name: "label", type: "string", default: '"Resize"', desc: "Ayırıcının erişilebilir adı." },
+  ],
+  events: [
+    { name: "resize", detail: "{ size }", desc: "Kullanıcı boyutu değiştirince (bırakınca / tuşla / çift tıkla). Kabarcıklanmaz." },
+    { name: "toggle", detail: "{ collapsed }", desc: "Daraltılınca / açılınca. Kabarcıklanmaz." },
+  ],
+  slots: [{ name: "(varsayılan)", desc: "İlk eleman başlangıç bölmesine, kalanlar bitiş bölmesine girer." }],
+  parts: [
+    { name: "pane", desc: "Bölme; [data-pane=start|end]. Tek çocuğu bölmeyi doldurur." },
+    { name: "separator", desc: "role=separator; aria-valuenow/min/max, aria-controls, daraltılabilirse aria-expanded." },
+  ],
+  hooks: ["[orientation]", "[primary]", "[collapsed]", "[data-resizing]", "[data-resize-collapse]", "--bz-split-size", "--bz-split-separator-size", "--bz-split-separator-color"],
+  notes: [
+    "Klavye (ayırıcıda): ←/→ (dikeyde ↑/↓), Shift ile büyük adım; Home/End en küçük/en büyük; Enter daraltır/açar.",
+    "Sürükleme sırasında bölmeler fare olaylarını almaz: altta kalan bir iframe ya da kod editörü hareketi yutmaz.",
+    "İç içe kullanılabilir; CSS yalnız çocuk seçicileriyle (>) yazıldı.",
+  ],
 }

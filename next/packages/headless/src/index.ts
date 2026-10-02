@@ -1,4 +1,6 @@
 export { Shell } from "./shell"
+export { Split } from "./split"
+export type { SplitElement } from "./split"
 export type { ShellElement, ShellSide } from "./shell"
 export { Header, Footer } from "./header"
 export { Avatar, initials, hueOf } from "./avatar"

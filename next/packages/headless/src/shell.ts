@@ -24,7 +24,8 @@ import { loadPersisted, savePersisted } from "./shared"
  * - `variant`: "classic" (header and footer span the width) or "sidebar" (the sides take the
  *   full height); `--bz-shell-areas` accepts any grid-template-areas.
  * - Wide (shell ≥ `breakpoint` px): the start side collapses to a narrow rail
- *   (`start-collapsed`), the end side hides (`end-collapsed`). The side panels stick below
+ *   (`start-collapsed`), or hides entirely with `start-collapse="hidden"` (more room for a
+ *   workspace; the menu button brings it back); the end side hides (`end-collapsed`). The side panels stick below
  *   the header and scroll on their own.
  * - `compact-footer` (narrow screens): "sticky" (default) keeps the footer at the bottom,
  *   "scroll" puts it after the content (the shell scrolls and becomes the
@@ -50,7 +51,7 @@ import { loadPersisted, savePersisted } from "./shared"
  * Anatomy: [data-part=skip|header|start|start-panel|start-resizer|content|end|end-panel|
  * end-resizer|footer|backdrop|progress].
  * Styling hooks: [variant], [data-compact], [data-drawer="start|end"], [start-open], [end-open],
- * [start-collapsed], [end-collapsed], [busy], [resizable], [data-resizing="start|end"],
+ * [start-collapsed], [start-collapse="rail|hidden"], [end-collapsed], [busy], [resizable], [data-resizing="start|end"],
  * [data-resize-collapse], [data-has-header|footer|start|end].
  */
 
@@ -81,6 +82,8 @@ const ShellBase = define("bz-shell", {
     startOpen: prop.boolean(false, { reflect: true }),
     endOpen: prop.boolean(false, { reflect: true }),
     startCollapsed: prop.boolean(false, { reflect: true }),
+    /** How the collapsed start side looks in wide mode: an icon rail or nothing. */
+    startCollapse: prop.string<"rail" | "hidden">("rail", { reflect: true }),
     endCollapsed: prop.boolean(false, { reflect: true }),
     busy: prop.boolean(false, { reflect: true }),
     skipLabel: prop.string("Skip to content"),

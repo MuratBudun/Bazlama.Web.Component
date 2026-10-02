@@ -103,7 +103,8 @@
   bz-shell[start-collapsed]:not([data-compact]) > * > [data-part="start-panel"] {
     overflow-x: hidden;
   }
-  bz-shell[end-collapsed]:not([data-compact]) > [data-part="end"] {
+  bz-shell[end-collapsed]:not([data-compact]) > [data-part="end"],
+  bz-shell[start-collapsed][start-collapse="hidden"]:not([data-compact]) > [data-part="start"] {
     display: none;
   }
   bz-shell > [data-part="backdrop"] {

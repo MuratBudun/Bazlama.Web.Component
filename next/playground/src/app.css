@@ -1232,3 +1232,13 @@ bz-shell[start-collapsed]:not([data-compact]) bz-tree [data-part="item"] {
     display: contents;
   }
 }
+
+.split-demo {
+  height: 280px;
+  border: 1px solid var(--bz-color-border);
+  border-radius: var(--bz-radius);
+}
+.split-pane {
+  padding: var(--bz-space-2) var(--bz-space-3);
+  overflow: auto;
+}

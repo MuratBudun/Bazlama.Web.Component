@@ -98,6 +98,20 @@ describe("bz-shell", () => {
     expect(wide.part("content").hasAttribute("data-scroll-container")).toBe(true)
   })
 
+  it("start-collapse: a rail by default, hidden on request; reflected for the CSS", () => {
+    const { shell, menu } = mount(1400)
+    expect(shell.getAttribute("start-collapse")).toBe("rail")
+    shell.setAttribute("start-collapse", "hidden")
+    menu().click()
+    flush()
+    expect(shell.hasAttribute("start-collapsed")).toBe(true)
+    expect(shell.getAttribute("start-collapse")).toBe("hidden")
+    expect(menu().getAttribute("aria-expanded")).toBe("false")
+    menu().click()
+    flush()
+    expect(shell.hasAttribute("start-collapsed")).toBe(false)
+  })
+
   it("compact: drawers, one at a time, inert background, focus in and back", async () => {
     const { shell, part, menu } = mount(600)
     expect(shell.hasAttribute("data-compact")).toBe(true)

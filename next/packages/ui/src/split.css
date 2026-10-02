@@ -1,0 +1,92 @@
+@layer bazlama.components {
+  /*
+   * Grid of three tracks: pane, separator, pane. The primary pane's track is --bz-split-size
+   * (written by the component), the other takes the rest. Child selectors only: splits nest.
+   */
+  bz-split {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    --bz-split-size: 240px;
+    --_start: var(--bz-split-size);
+    --_end: minmax(0, 1fr);
+    grid-template-columns: var(--_start) auto var(--_end);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  bz-split[primary="end"] {
+    --_start: minmax(0, 1fr);
+    --_end: var(--bz-split-size);
+  }
+  bz-split[orientation="vertical"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--_start) auto var(--_end);
+  }
+  bz-split[data-collapsed]:not([primary="end"]) {
+    --_start: 0px;
+  }
+  bz-split[data-collapsed][primary="end"] {
+    --_end: 0px;
+  }
+
+  /* A pane's single child fills it; the pane itself never grows past its track. */
+  bz-split > [data-part="pane"] {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  bz-split[data-collapsed]:not([primary="end"]) > [data-pane="start"],
+  bz-split[data-collapsed][primary="end"] > [data-pane="end"] {
+    visibility: hidden;
+  }
+
+  bz-split > [data-part="separator"] {
+    position: relative;
+    z-index: 2;
+    width: var(--bz-split-separator-size, 1px);
+    background: var(--bz-split-separator-color, var(--bz-color-border));
+    cursor: col-resize;
+    touch-action: none;
+    outline: none;
+  }
+  bz-split[orientation="vertical"] > [data-part="separator"] {
+    width: auto;
+    height: var(--bz-split-separator-size, 1px);
+    cursor: row-resize;
+  }
+  /* A wider hit area than the visible line; it highlights on hover, focus and drag. */
+  bz-split > [data-part="separator"]::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: -4px;
+    transition: background-color var(--bz-duration) 0.15s;
+  }
+  bz-split[orientation="vertical"] > [data-part="separator"]::after {
+    inset-block: -4px;
+    inset-inline: 0;
+  }
+  bz-split > [data-part="separator"]:hover::after,
+  bz-split[data-resizing] > [data-part="separator"]::after {
+    background: color-mix(in oklch, var(--bz-color-primary) 55%, transparent);
+  }
+  bz-split > [data-part="separator"]:focus-visible::after {
+    background: var(--bz-color-focus);
+  }
+  bz-split[data-resizing] {
+    cursor: col-resize;
+    user-select: none;
+  }
+  bz-split[orientation="vertical"][data-resizing] {
+    cursor: row-resize;
+  }
+  /* Iframes and editors under the pointer would swallow the move events. */
+  bz-split[data-resizing] > [data-part="pane"] {
+    pointer-events: none;
+  }
+  bz-split[data-resize-collapse] > [data-part="pane"] {
+    opacity: 0.55;
+  }
+}

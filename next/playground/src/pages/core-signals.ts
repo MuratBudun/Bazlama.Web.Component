@@ -73,12 +73,13 @@ export default {
         <ul>
           <li><strong>Tembel:</strong> Kimse okumadıkça hesaplanmaz.</li>
           <li><strong>Önbellekli:</strong> Bağımlılıkları değişmedikçe tekrar okumak hesaplamayı çalıştırmaz.</li>
+          <li><strong>Eşitlik kesmesi:</strong> Yeniden hesaplanan değer öncekiyle aynıysa (<code>Object.is</code>) ona bağlı effect'ler çalışmaz. <code>computed(() =&gt; liste().length &gt; 0)</code> yalnız cevap değişince haber verir.</li>
           <li><strong>Senkron doğru:</strong> <code>a.set(2)</code> satırından hemen sonra <code>double()</code> okumak güncel değeri verir; effect'ler gibi microtask beklemez.</li>
           <li><strong>Salt okunur:</strong> <code>set</code> yoktur.</li>
         </ul>
         ${runner(computedExample, "Tembel ve önbellekli hesaplama")}
         ${sourceBlock("signal.ts", signalSource, ["export function computed"],
-          "computed bir Reaction'dır (kind = COMPUTED). notify() geldiğinde yeniden hesaplamaz, sadece 'dirty' işaretler ve kendi abonelerine haber verir. Hesaplama bir sonraki okumada yapılır.")}
+          "computed bir Reaction'dır (kind = COMPUTED). notify() geldiğinde yeniden hesaplamaz: kendini DIRTY, abonelerini CHECK işaretler. CHECK durumundaki bir effect çalışmadan önce computed'ı günceller (update); değer değişmediyse effect çalışmaz.")}
       </section>
 
       <section class="doc" id="effect">
