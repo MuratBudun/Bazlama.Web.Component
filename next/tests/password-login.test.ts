@@ -166,6 +166,33 @@ describe("bz-login", () => {
     ])
   })
 
+  it("Enter in either field submits (the form has two fields and no native submit button)", async () => {
+    const el = mount()
+    await settle()
+    const details: unknown[] = []
+    el.addEventListener("submit", (e) => details.push((e as unknown as CustomEvent).detail))
+    type(el.querySelector("[data-part=identifier]")!, "ali@example.com")
+    type(el.querySelector("[data-part=password]")!, "s3cret")
+
+    const enter = (field: string) => {
+      const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })
+      el.querySelector(`[data-part=${field}] input`)!.dispatchEvent(event)
+      return event
+    }
+    expect(enter("password").defaultPrevented).toBe(true)
+    expect(enter("identifier").defaultPrevented).toBe(true)
+    await settle()
+    expect(details).toHaveLength(2)
+    expect(details[0]).toMatchObject({ step: "credentials", identifier: "ali@example.com", password: "s3cret" })
+
+    // Shift+Enter (and IME composition) is left alone.
+    const shifted = new KeyboardEvent("keydown", { key: "Enter", shiftKey: true, bubbles: true, cancelable: true })
+    el.querySelector("[data-part=password] input")!.dispatchEvent(shifted)
+    await settle()
+    expect(shifted.defaultPrevented).toBe(false)
+    expect(details).toHaveLength(2)
+  })
+
   it("does not let the inner form's native submit escape the component", async () => {
     const el = mount()
     await settle()

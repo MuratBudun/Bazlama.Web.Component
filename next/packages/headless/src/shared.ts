@@ -12,6 +12,19 @@ export function setAttr(el: Element, name: string, value: string | null | undefi
 }
 
 /** Options are read from attributes so they work before <bz-option> is upgraded. */
+/**
+ * Enter in a text field submits its form, as with plain inputs. Needed because a form whose
+ * only submit button is a <bz-button> has no submit button for the browser, and then implicit
+ * submission does nothing once the form has two or more fields (a login form).
+ */
+export function submitOnEnter(e: KeyboardEvent): void {
+  if (e.key !== "Enter" || e.isComposing || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+  const form = (e.currentTarget as HTMLInputElement).form
+  if (!form) return
+  e.preventDefault()
+  form.requestSubmit()
+}
+
 export const optionValue = (el: Element) => el.getAttribute("value") ?? el.textContent!.trim()
 export const optionLabel = (el: Element) => el.getAttribute("label") ?? el.textContent!.trim()
 /** Case- and accent-insensitive form for matching: "İstanbul" and "istanbul" both become "istanbul". */

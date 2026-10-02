@@ -1,5 +1,6 @@
 import { computed, define, effect, html, prop, signal, uid } from "@bazlama/core"
 import { hasIcon, icon } from "./icon"
+import { submitOnEnter } from "./shared"
 
 /**
  * <bz-password> — a password field: reveal toggle, Caps Lock warning, optional strength meter.
@@ -160,7 +161,7 @@ export const Password = define("bz-password", {
           aria-describedby=${describedBy}
           .value=${props.value}
           @input=${(e: Event) => props.value.set((e.target as HTMLInputElement).value)}
-          @keydown=${trackCaps}
+          @keydown=${(e: KeyboardEvent) => (trackCaps(e), submitOnEnter(e))}
           @keyup=${trackCaps}
           @focus=${(e: FocusEvent) => (focused.set(true), trackCaps(e as unknown as KeyboardEvent))}
           @blur=${() => (focused.set(false), touched.set(true))}

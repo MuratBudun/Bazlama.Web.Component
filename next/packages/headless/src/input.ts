@@ -1,4 +1,5 @@
 import { computed, define, effect, html, prop, signal, uid } from "@bazlama/core"
+import { submitOnEnter } from "./shared"
 
 /**
  * <bz-input> — label + native <input> + hint + error.
@@ -91,6 +92,7 @@ export const Input = define("bz-input", {
             [props.hint() && hintId, showError() && errorId].filter(Boolean).join(" ") || null}
           .value=${props.value}
           @input=${(e: Event) => props.value.set((e.target as HTMLInputElement).value)}
+          @keydown=${submitOnEnter}
           @blur=${() => touched.set(true)}
           @invalid=${() => touched.set(true)}
           ref=${(el: HTMLInputElement) => (input = el)}
