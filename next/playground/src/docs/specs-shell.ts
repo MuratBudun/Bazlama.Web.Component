@@ -69,7 +69,7 @@ html\`<bz-button data-shell-toggle="end">Detaylar</bz-button>\``,
     { name: "persist", type: "string", desc: "Saklama anahtarı (isteğe bağlı): kenar genişlikleri ve daraltma durumu localStorage[\"bz-shell:<anahtar>\"] içinde saklanır, açılışta geri gelir (başlangıç özniteliklerinin önüne geçer, genişlikler sınırlara kısılır). Yoksa hiçbir şey saklanmaz; sunucuda saklamak için resize / toggle olaylarını kullanın." },
     { name: "skipLabel", type: "string", default: '"Skip to content"', desc: "İçeriğe geç düğmesi." },
     { name: "sticky-footer", attr: "sticky-footer", type: "boolean (CSS)", desc: "scroll-mode=page: footer ekranın altına yapışır; yan paneller onun üstünde biter." },
-    { name: "data-shell-fill (içerikteki bir öğe)", attr: "data-shell-fill", type: "boolean (CSS)", desc: "scroll-mode=content: öğe içeriğin kalan yüksekliğini doldurur (ör. bz-data-grid). Aradaki öğeler :has() ile flex sütun olur; --bz-shell-fill-min-height (12rem)." },
+    { name: "data-shell-fill (içerikteki bir öğe)", attr: "data-shell-fill", type: "boolean (CSS)", desc: "scroll-mode=content: öğe içeriğin kalan yüksekliğini doldurur (ör. bz-data-grid). Shell aradaki öğeleri data-shell-fill-path ile işaretler, onlar flex sütun olur; --bz-shell-fill-min-height (12rem)." },
   ],
   events: [
     { name: "toggle", detail: "{ side, open, compact }", desc: "Bir kenar açılıp kapanınca (düğme, Esc, örtü, bağlantı, sürükleyerek daraltma veya metot)." },

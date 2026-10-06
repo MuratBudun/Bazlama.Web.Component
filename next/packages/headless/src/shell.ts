@@ -20,7 +20,9 @@ import { loadPersisted, savePersisted } from "./shared"
  *   content and the side panels scroll, each on its own. The content is a
  *   `[data-scroll-container]`, which the router uses to restore scroll positions. Put
  *   `data-shell-fill` on an element inside the content to give it the remaining height
- *   (e.g. a data grid). "page": the document scrolls; header and side panels are sticky.
+ *   (e.g. a data grid); the shell marks the content and the elements between it and that
+ *   element with `data-shell-fill-path` (they become flex columns) and keeps the marks up to
+ *   date as the content changes. "page": the document scrolls; header and side panels are sticky.
  * - `variant`: "classic" (header and footer span the width) or "sidebar" (the sides take the
  *   full height); `--bz-shell-areas` accepts any grid-template-areas.
  * - Wide (shell ≥ `breakpoint` px): the start side collapses to a narrow rail
@@ -125,6 +127,52 @@ const ShellBase = define("bz-shell", {
         describe("end")
       })
     }
+
+    // ------------------------------------------------------------------ data-shell-fill
+    /*
+     * The content and every element between it and a [data-shell-fill] element of this shell
+     * get [data-shell-fill-path]; the CSS makes them flex columns. They are marked here rather
+     * than selected with `:has([data-shell-fill])`: that selector had to be tried on every
+     * element of the content, and it took more than half of the style time of every page.
+     * A fill element inside a nested shell belongs to that shell.
+     */
+    let fillPath = new Set<Element>()
+    const markFillPath = () => {
+      const content = parts.content
+      const next = new Set<Element>()
+      if (content) {
+        for (const fill of content.querySelectorAll("[data-shell-fill]")) {
+          if (fill.closest("bz-shell") !== host) continue
+          for (let el = fill.parentElement; el && !next.has(el); el = el.parentElement) {
+            next.add(el)
+            if (el === content) break
+          }
+        }
+      }
+      for (const el of fillPath) if (!next.has(el)) el.removeAttribute("data-shell-fill-path")
+      for (const el of next) if (!fillPath.has(el)) el.setAttribute("data-shell-fill-path", "")
+      fillPath = next
+    }
+    if (typeof MutationObserver !== "undefined") {
+      // Elements coming and going (text changes cannot change the path), and the attribute itself.
+      const hasElement = (nodes: NodeList) => {
+        for (const node of nodes) if (node.nodeType === 1) return true
+        return false
+      }
+      const fillObserver = new MutationObserver((records) => {
+        if (records.some((r) => r.type === "attributes" || hasElement(r.addedNodes) || hasElement(r.removedNodes))) markFillPath()
+      })
+      ctx.onMount(() => {
+        markFillPath()
+        if (parts.content) fillObserver.observe(parts.content, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-shell-fill"] })
+      })
+      onCleanup(() => {
+        fillObserver.disconnect()
+        for (const el of fillPath) el.removeAttribute("data-shell-fill-path")
+        fillPath.clear()
+      })
+    }
+
     if (typeof ResizeObserver !== "undefined") {
       const observer = new ResizeObserver(measure)
       ctx.onMount(() => {

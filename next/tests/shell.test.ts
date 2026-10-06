@@ -177,6 +177,49 @@ describe("bz-shell", () => {
   })
 })
 
+describe("data-shell-fill path", () => {
+  const path = (root: ParentNode = document) => Array.from(root.querySelectorAll("[data-shell-fill-path]"), (el) => el.getAttribute("data-part") ?? el.id)
+
+  it("marks the content and the elements between it and a fill element, and follows the DOM", async () => {
+    const { shell, part } = mount(1200, `
+      <section id="page"><h1 id="title">Liste</h1><div id="wrap"><div id="grid" data-shell-fill></div></div></section>
+      <p id="other">not on the path</p>`)
+    expect(path()).toEqual(["content", "page", "wrap"])
+    expect(part("content").hasAttribute("data-shell-fill-path")).toBe(true)
+    // The fill element itself and its siblings are not marked.
+    expect(document.getElementById("grid")!.hasAttribute("data-shell-fill-path")).toBe(false)
+
+    // A second fill element elsewhere; the attribute removed from the first.
+    document.getElementById("other")!.innerHTML = `<div id="deep"><i data-shell-fill></i></div>`
+    await tick()
+    expect(path()).toEqual(["content", "page", "wrap", "other", "deep"])
+    document.getElementById("grid")!.removeAttribute("data-shell-fill")
+    await tick()
+    expect(path()).toEqual(["content", "other", "deep"])
+
+    // Removed from the page: nothing stays marked; the shell gone: the marks go too.
+    document.getElementById("other")!.remove()
+    await tick()
+    expect(path()).toEqual([])
+    document.getElementById("grid")!.setAttribute("data-shell-fill", "")
+    await tick()
+    expect(path()).toEqual(["content", "page", "wrap"])
+    const page = document.getElementById("page")!
+    shell.remove()
+    await tick() // a component cleans up a moment after it leaves the document
+    expect(page.hasAttribute("data-shell-fill-path")).toBe(false)
+  })
+
+  it("leaves a fill element of a nested shell to that shell", async () => {
+    mount(1200, `<div id="outer"><bz-shell id="inner"><div id="box"><div data-shell-fill></div></div></bz-shell></div>`)
+    await tick()
+    const inner = document.getElementById("inner")!
+    // The outer shell marks nothing; the inner one marks its own content and the box.
+    expect(document.getElementById("outer")!.hasAttribute("data-shell-fill-path")).toBe(false)
+    expect(path(inner)).toEqual(["content", "box"])
+  })
+})
+
 describe("shell demo source (playground)", () => {
   it("writes only non-default attributes and the generated HTML builds the same shell", async () => {
     const { shellHtml, shellJs, shellTemplate } = await import("../playground/src/pages/shell-code")

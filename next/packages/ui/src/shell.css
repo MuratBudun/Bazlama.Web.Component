@@ -140,30 +140,40 @@
   }
 
   /*
-   * data-shell-fill: the element takes the content's remaining height. Every element between
-   * the content and it (found with :has) becomes a flex column; its other children keep their
-   * size. Hidden elements (e.g. inactive tab panels) are left alone, and a fill inside a nested
-   * shell belongs to that shell: the chain stops at a nested bz-shell. A container with its own
-   * fill layout (bz-tabs[fill], bz-accordion[fill]) sizes its children itself.
+   * data-shell-fill: the element takes the content's remaining height. The shell marks the
+   * content and every element between it and the fill element with [data-shell-fill-path]
+   * (bz-shell, headless); they become flex columns and their other children keep their size.
+   * Hidden elements (e.g. inactive tab panels) are left alone, and a fill inside a nested shell
+   * belongs to that shell. A container with its own fill layout (bz-tabs[fill],
+   * bz-accordion[fill]) sizes its children itself.
+   *
+   * The path is an attribute, not `:has([data-shell-fill])`: that selector has no tag, class or
+   * attribute to be found by, so it was tried on every element of the content at every style
+   * recalculation (more than half of a page's style time).
    */
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])),
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not([hidden], bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) {
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"][data-shell-fill-path],
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill-path]:not([hidden]) {
     display: flex;
     flex-direction: column;
   }
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not([hidden], bz-shell):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) {
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill-path]:not([hidden]) {
     flex: 1 1 auto;
     min-height: 0;
   }
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"]:has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])),
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"] :not(bz-shell, [fill]):has([data-shell-fill]):not(:has(bz-shell [data-shell-fill])) > :not([data-shell-fill]):not(:has([data-shell-fill])) {
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"][data-shell-fill-path] > :not([data-shell-fill], [data-shell-fill-path]),
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill-path]:not([fill]) > :not([data-shell-fill], [data-shell-fill-path]) {
     flex-shrink: 0;
   }
-  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill]:not([hidden]) {
+  /*
+   * Only once its parent is on the path: until then (the moment it is inserted) a data grid
+   * keeps its max height, so it never measures an unbounded viewport and renders every row.
+   * The max height is lifted on the element itself; grids deeper inside keep theirs.
+   */
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"] [data-shell-fill-path] > [data-shell-fill]:not([hidden]),
+  bz-shell:not([scroll-mode="page"]) > [data-part="content"][data-shell-fill-path] > [data-shell-fill]:not([hidden]) {
     flex: 1 1 auto;
     min-height: var(--bz-shell-fill-min-height, 12rem);
     /* A data grid (or anything with a max height) may grow. */
-    --bz-data-grid-max-height: none;
     max-height: none;
   }
 

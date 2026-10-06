@@ -307,6 +307,8 @@ interface Entry {
   first: Node
   last: Node
   dispose: Cleanup
+  /** Position in the list before the update being applied (-1: created by it). */
+  index: number
 }
 
 class KeyedList {
@@ -318,11 +320,18 @@ class KeyedList {
     readonly render: (item: never, index: number) => unknown
   ) {}
 
+  /*
+   * Rows that are kept and still in the same relative order stay where they are (the longest
+   * such run); only the others are moved, and new rows next to each other go in together.
+   * Swapping two rows of a thousand moves two rows, appending a thousand is one insertion.
+   */
   update(items: readonly unknown[]): void {
     const parent = this.end.parentNode!
     const fresh = this.entries.size === 0
     const next = new Map<unknown, Entry>()
     const order: Entry[] = []
+    let position = 0
+    this.entries.forEach((entry) => (entry.index = position++))
     items.forEach((item, i) => {
       const k = this.key(item as never, i)
       let entry = this.entries.get(k)
@@ -346,12 +355,27 @@ class KeyedList {
       parent.insertBefore(fragment, this.end)
       return
     }
+    const stay = inOrder(order)
     let ref: Node = this.end
+    // Rows to put before `ref`, collected from the end of the list backwards.
+    let group: Entry[] = []
+    const place = () => {
+      if (group.length === 1) move(group[0], parent, ref)
+      else if (group.length > 1) {
+        const fragment = document.createDocumentFragment()
+        for (let j = group.length - 1; j >= 0; j--) move(group[j], fragment, null)
+        parent.insertBefore(fragment, ref)
+      }
+      group = []
+    }
     for (let i = order.length - 1; i >= 0; i--) {
       const entry = order[i]
-      if (entry.last.nextSibling !== ref) move(entry, parent, ref)
-      ref = entry.first
+      if (stay[i]) {
+        place()
+        ref = entry.first
+      } else group.push(entry)
     }
+    place()
   }
 
   create(item: unknown, index: number): Entry {
@@ -364,7 +388,7 @@ class KeyedList {
       if (!single) holder.appendChild(first)
       for (const node of nodes) holder.appendChild(node)
       if (!single) holder.appendChild(last)
-      return { item, first, last, dispose }
+      return { item, first, last, dispose, index: -1 }
     })
   }
 
@@ -382,6 +406,49 @@ class KeyedList {
     this.entries.forEach((entry) => this.remove(entry))
     this.entries.clear()
   }
+}
+
+/**
+ * Which rows of the new order keep their place: the kept rows (index >= 0) forming the longest
+ * run whose old positions still increase. 1 = stays, 0 = is moved (or new).
+ */
+function inOrder(order: Entry[]): Uint8Array {
+  const n = order.length
+  const stay = new Uint8Array(n)
+  // Usual case (rows added, removed or replaced, none moved): every kept row stays.
+  let last = -1
+  let ordered = true
+  for (let i = 0; i < n; i++) {
+    const p = order[i].index
+    if (p < 0) continue
+    if (p < last) {
+      ordered = false
+      break
+    }
+    last = p
+  }
+  if (ordered) {
+    for (let i = 0; i < n; i++) if (order[i].index >= 0) stay[i] = 1
+    return stay
+  }
+  // Longest increasing subsequence of the old positions (patience sorting, O(n log n)).
+  const tails: number[] = [] // tails[k]: where the shortest-ending run of length k + 1 ends
+  const previous = new Int32Array(n).fill(-1)
+  for (let i = 0; i < n; i++) {
+    const p = order[i].index
+    if (p < 0) continue
+    let low = 0
+    let high = tails.length
+    while (low < high) {
+      const middle = (low + high) >> 1
+      if (order[tails[middle]].index < p) low = middle + 1
+      else high = middle
+    }
+    if (low > 0) previous[i] = tails[low - 1]
+    tails[low] = i
+  }
+  for (let i = tails.length ? tails[tails.length - 1] : -1; i >= 0; i = previous[i]) stay[i] = 1
+  return stay
 }
 
 function move(entry: Entry, parent: Node, ref: Node | null): void {

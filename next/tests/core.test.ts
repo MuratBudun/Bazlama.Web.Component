@@ -220,6 +220,63 @@ describe("html", () => {
     expect(Array.from(host.children)).toEqual([a])
   })
 
+  it("keyed repeat moves only the rows that changed place, and inserts new neighbours together", () => {
+    const host = document.createElement("ul")
+    const make = (n: number, from = 0) => Array.from({ length: n }, (_, i) => ({ id: from + i }))
+    const items = signal(make(100))
+    root(() => render(repeat(items, (i) => i.id, (i) => html`<li>${i.id}</li>`), host))
+    const ids = () => Array.from(host.children, (li) => Number(li.textContent))
+    const insertions = vi.spyOn(host, "insertBefore")
+    const apply = (next: { id: number }[]) => {
+      insertions.mockClear()
+      items.set(next)
+      flush()
+      expect(ids()).toEqual(next.map((i) => i.id))
+      return insertions.mock.calls.length
+    }
+
+    // Two rows swapped: two moves, the other 98 stay.
+    const swapped = [...items.peek()]
+    ;[swapped[1], swapped[98]] = [swapped[98], swapped[1]]
+    const rows = Array.from(host.children)
+    expect(apply(swapped)).toBe(2)
+    expect(host.children[1]).toBe(rows[98])
+    expect(host.children[50]).toBe(rows[50])
+
+    // Fifty rows appended: one insertion (a fragment).
+    expect(apply([...swapped, ...make(50, 100)])).toBe(1)
+    // A row moved to the front, one removed, two new ones in the middle.
+    const mixed = [...items.peek()]
+    mixed.unshift(mixed.splice(120, 1)[0])
+    mixed.splice(30, 1)
+    mixed.splice(60, 0, { id: 500 }, { id: 501 })
+    expect(apply(mixed)).toBe(2)
+    // Everything replaced: one insertion. Reversed: one row stays, the other 39 are neighbours
+    // again and go in together.
+    expect(apply(make(40, 1000))).toBe(1)
+    const kept = host.children[39]
+    expect(apply([...items.peek()].reverse())).toBe(1)
+    expect(host.children[0]).toBe(kept)
+
+    // Any reordering ends in the right order with the same nodes.
+    let seed = 7
+    const random = (n: number) => (seed = (seed * 16807) % 2147483647) % n
+    for (let round = 0; round < 30; round++) {
+      const next = [...items.peek()].filter(() => random(5) > 0)
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = random(i + 1)
+        if (random(3) === 0) [next[i], next[j]] = [next[j], next[i]]
+      }
+      for (let k = random(4); k > 0; k--) next.splice(random(next.length + 1), 0, { id: 2000 + round * 10 + k })
+      const before = new Map(Array.from(host.children, (li) => [Number(li.textContent), li]))
+      apply(next)
+      for (const li of Array.from(host.children)) {
+        const was = before.get(Number(li.textContent))
+        if (was) expect(li).toBe(was)
+      }
+    }
+  })
+
   it("event modifiers: .self ignores bubbled events, .prevent, .stop, .once", () => {
     const calls: string[] = []
     const host = document.createElement("div")
