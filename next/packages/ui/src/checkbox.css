@@ -17,7 +17,7 @@
    */
   :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] {
     display: inline-flex;
-    align-items: flex-start;
+    align-items: center;
     /* Room between stacked items; also a taller hit area (the field is the <label>). */
     padding-block: var(--bz-choice-padding-block, var(--bz-space-1));
     gap: var(--bz-space-2);
@@ -93,7 +93,7 @@
   @supports (text-box: trim-both cap alphabetic) {
     :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] > [data-part="label"] {
       text-box: trim-both cap alphabetic;
-      margin-top: max(0px, (var(--_mark-h) - 1.5cap + 0.5ex) / 2);
+      /* margin-top: max(0px, (var(--_mark-h) - 1.5cap + 0.5ex) / 2); */
     }
     :is(bz-checkbox, bz-switch, bz-radio) > [data-part="field"] > [data-part="input"] {
       margin-top: max(0px, (1.5cap - 0.5ex - var(--_mark-h)) / 2);
